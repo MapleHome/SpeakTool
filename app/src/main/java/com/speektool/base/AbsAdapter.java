@@ -6,7 +6,6 @@ import android.content.Context;
 import android.widget.BaseAdapter;
 
 import com.google.common.collect.Lists;
-import com.speektool.utils.T;
 
 public abstract class AbsAdapter<T> extends BaseAdapter {
 	protected Context mContext;

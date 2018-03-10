@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import android.text.TextUtils;
 
 import com.google.common.collect.Maps;
-import com.http.UniversalHttp;
 import com.speektool.Const;
 
 public class TaskUploadException extends BaseRunnable<Integer, Void> {
@@ -45,8 +44,9 @@ public class TaskUploadException extends BaseRunnable<Integer, Void> {
 
 		Map<String, File> paramsFile = Maps.newHashMap();
 		paramsFile.put("mobileExceptionZip", exceptionZip);
-		String result = UniversalHttp.post(Const.EXCEPTION_UPLOAD_URL, null,
-				paramsFile);
+		String result =
+//				UniversalHttp.post(Const.EXCEPTION_UPLOAD_URL, null, paramsFile);
+		null;
 		if (TextUtils.isEmpty(result)) {
 			uiHandler.post(new Runnable() {
 

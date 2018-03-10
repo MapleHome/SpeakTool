@@ -37,7 +37,7 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
 			MainActivity pMainActivity) {
 		super(ctx, datas);
 
-		initBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.defalut_icon);
+		initBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
 		mAppIconAsyncLoader = appIconAsyncLoader;
 		mMainActivity = pMainActivity;
 	}

@@ -219,7 +219,7 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
 	};
 
 	private Bitmap getDefBmp() {
-		return BitmapFactory.decodeResource(SpeekToolApp.app().getResources(), R.drawable.defalut_icon);
+		return BitmapFactory.decodeResource(SpeekToolApp.app().getResources(), R.drawable.ic_launcher);
 	}
 
 	public void onEventMainThread(LocalPhotoDirIconLoadedEvent event) {

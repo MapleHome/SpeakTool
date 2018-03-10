@@ -24,7 +24,6 @@ import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.adapters.SplashPageAdapter;
 import com.speektool.utils.MiuiManager;
-import com.speektool.utils.PhoneOSUtils;
 import com.speektool.utils.SPUtils;
 import com.speektool.utils.T;
 
@@ -167,7 +166,7 @@ public class SplashActivity extends RoboActivity {
      */
     private void checkOs() {
         Log.e("main", "当前系统型号为:: " + Build.MODEL);// Lenovo S810t
-        if (PhoneOSUtils.isXiaomiOS()) {
+        if (isXiaomiOS()) {
             if (SPUtils.getBool(OS_IS_CHECKED, false))
                 return;
 
@@ -188,6 +187,17 @@ public class SplashActivity extends RoboActivity {
                         }
                     }).show();
         }
+    }
+
+    public boolean isXiaomiOS() {
+        String display = Build.DISPLAY;// 显示器- JLS36C
+        String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
+
+        if ((display != null) && (display.toLowerCase().indexOf("miui") >= 0))
+            return true;
+        if ((manufacturer != null) && (manufacturer.toLowerCase().indexOf("xiaomi") >= 0))
+            return true;
+        return false;
     }
 
     /**

@@ -19,7 +19,6 @@ import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 
 import com.google.common.base.Preconditions;
-import com.http.UniversalHttp;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.api.CourseItem;
@@ -115,7 +114,7 @@ public class QQShareChoiceDialog extends Dialog implements View.OnClickListener,
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-							UniversalHttp.downloadFile(iconUrl, "", saveFile);
+//							UniversalHttp.downloadFile(iconUrl, "", saveFile);
 							mSWBparams.setImagePath(saveFile.getAbsolutePath());
 						} else {
 							mSWBparams.setImagePath(iconUrl);

@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import android.text.TextUtils;
 
 import com.google.common.collect.Maps;
-import com.http.UniversalHttp;
 import com.speektool.Const;
 import com.speektool.SpeekToolApp;
 import com.speektool.api.CourseItem;
@@ -59,7 +58,9 @@ public class TaskDeleteServerCourse extends BaseRunnable<Integer, Void> {
 		params.put("uid", userBean.getId());
 		params.put("password", userBean.getPassword());
 		params.put("courseId", course.getCourseId());
-		String result = UniversalHttp.post(Const.COURSE_DELETE_URL, params);
+		String result =
+//				UniversalHttp.post(Const.COURSE_DELETE_URL, params);
+		null;
 		if (TextUtils.isEmpty(result)) {
 			uiHandler.post(new Runnable() {
 

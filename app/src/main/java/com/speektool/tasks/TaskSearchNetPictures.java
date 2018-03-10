@@ -12,143 +12,145 @@ import android.text.TextUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.http.UniversalHttp;
 import com.speektool.bean.NetPictureBean;
 import com.speektool.utils.BitmapScaleUtil;
 
 public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
 
-	public static interface SearchNetPicturesCallback {
-		void onConnectFail();
+    public static interface SearchNetPicturesCallback {
+        void onConnectFail();
 
-		void onFail();
+        void onFail();
 
-		void onSuccess(List<NetPictureBean> ret);
+        void onSuccess(List<NetPictureBean> ret);
 
-	}
-	private static final String tag=TaskSearchNetPictures.class.getSimpleName();
-	private static final String SEARCH_URL = "http://pic.sogou.com/pics";
-	private final WeakReference<SearchNetPicturesCallback> mListener;
-	private String searchKey;
-	private int startIndex;
+    }
 
-	public TaskSearchNetPictures(SearchNetPicturesCallback listener,
-			String searchKey, int startIndex) {
+    private static final String tag = TaskSearchNetPictures.class.getSimpleName();
+    private static final String SEARCH_URL = "http://pic.sogou.com/pics";
+    private final WeakReference<SearchNetPicturesCallback> mListener;
+    private String searchKey;
+    private int startIndex;
 
-		mListener = new WeakReference<SearchNetPicturesCallback>(listener);
-		this.searchKey = searchKey;
-		this.startIndex = startIndex;
-	}
+    public TaskSearchNetPictures(SearchNetPicturesCallback listener,
+                                 String searchKey, int startIndex) {
 
-	@Override
-	public void onPostExecute(Void result) {
+        mListener = new WeakReference<SearchNetPicturesCallback>(listener);
+        this.searchKey = searchKey;
+        this.startIndex = startIndex;
+    }
 
-		super.onPostExecute(result);
-	}
+    @Override
+    public void onPostExecute(Void result) {
 
-	@Override
-	public Void doBackground() {
+        super.onPostExecute(result);
+    }
 
-		Map<String, String> params = Maps.newHashMap();
-		params.put("query", searchKey);
-		params.put("start", startIndex + "");
-		params.put("reqType", "ajax");
-		String result = UniversalHttp.get(SEARCH_URL, params);
-		if (TextUtils.isEmpty(result)) {
-			uiHandler.post(new Runnable() {
+    @Override
+    public Void doBackground() {
 
-				@Override
-				public void run() {
-					SearchNetPicturesCallback listener = mListener.get();
-					if (null != listener) {
-						listener.onConnectFail();
-					}
+        Map<String, String> params = Maps.newHashMap();
+        params.put("query", searchKey);
+        params.put("start", startIndex + "");
+        params.put("reqType", "ajax");
+        String result =
+//				UniversalHttp.get(SEARCH_URL, params);
+                null;
+        if (TextUtils.isEmpty(result)) {
+            uiHandler.post(new Runnable() {
 
-				}
-			});
+                @Override
+                public void run() {
+                    SearchNetPicturesCallback listener = mListener.get();
+                    if (null != listener) {
+                        listener.onConnectFail();
+                    }
 
-			return null;
+                }
+            });
 
-		}
-		try {
+            return null;
 
-			JSONObject response = new JSONObject(result);
+        }
+        try {
 
-			final List<NetPictureBean> ret = Lists.newArrayList();
-			String totalItems = response.getString("totalItems");
-			if ("0".equals(totalItems)) {
+            JSONObject response = new JSONObject(result);
 
-				uiHandler.post(new Runnable() {
+            final List<NetPictureBean> ret = Lists.newArrayList();
+            String totalItems = response.getString("totalItems");
+            if ("0".equals(totalItems)) {
 
-					@Override
-					public void run() {
-						SearchNetPicturesCallback listener = mListener.get();
-						if (null != listener) {
-							listener.onSuccess(ret);
-						}
+                uiHandler.post(new Runnable() {
 
-					}
-				});
-				return null;
-			}
+                    @Override
+                    public void run() {
+                        SearchNetPicturesCallback listener = mListener.get();
+                        if (null != listener) {
+                            listener.onSuccess(ret);
+                        }
 
-			JSONArray items = response.getJSONArray("items");
-			if (items == null || items.length() <= 0) {
-				uiHandler.post(new Runnable() {
+                    }
+                });
+                return null;
+            }
 
-					@Override
-					public void run() {
-						SearchNetPicturesCallback listener = mListener.get();
-						if (null != listener) {
-							listener.onSuccess(ret);
-						}
+            JSONArray items = response.getJSONArray("items");
+            if (items == null || items.length() <= 0) {
+                uiHandler.post(new Runnable() {
 
-					}
-				});
-				return null;
-			}
+                    @Override
+                    public void run() {
+                        SearchNetPicturesCallback listener = mListener.get();
+                        if (null != listener) {
+                            listener.onSuccess(ret);
+                        }
 
-			for (int i = 0; i < items.length(); i++) {
-				JSONObject item = (JSONObject) items.get(i);
+                    }
+                });
+                return null;
+            }
 
-				NetPictureBean bean = new NetPictureBean();
-				bean.picUrl = item.getString("pic_url");
-				if (BitmapScaleUtil.isGif(bean.picUrl))
-					bean.thumbUrl = bean.picUrl;
-				else
-					bean.thumbUrl = item.getString("thumbUrl");
-				ret.add(bean);
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = (JSONObject) items.get(i);
 
-			}
-			uiHandler.post(new Runnable() {
+                NetPictureBean bean = new NetPictureBean();
+                bean.picUrl = item.getString("pic_url");
+                if (BitmapScaleUtil.isGif(bean.picUrl))
+                    bean.thumbUrl = bean.picUrl;
+                else
+                    bean.thumbUrl = item.getString("thumbUrl");
+                ret.add(bean);
 
-				@Override
-				public void run() {
-					SearchNetPicturesCallback listener = mListener.get();
-					if (null != listener) {
-						listener.onSuccess(ret);
-					}
+            }
+            uiHandler.post(new Runnable() {
 
-				}
-			});
+                @Override
+                public void run() {
+                    SearchNetPicturesCallback listener = mListener.get();
+                    if (null != listener) {
+                        listener.onSuccess(ret);
+                    }
 
-		} catch (JSONException e) {
-			e.printStackTrace();
-			uiHandler.post(new Runnable() {
+                }
+            });
 
-				@Override
-				public void run() {
-					SearchNetPicturesCallback listener = mListener.get();
-					if (null != listener) {
-						listener.onFail();
-					}
+        } catch (JSONException e) {
+            e.printStackTrace();
+            uiHandler.post(new Runnable() {
 
-				}
-			});
-		}
+                @Override
+                public void run() {
+                    SearchNetPicturesCallback listener = mListener.get();
+                    if (null != listener) {
+                        listener.onFail();
+                    }
 
-		return null;
+                }
+            });
+        }
 
-	}
+        return null;
+
+    }
 
 }

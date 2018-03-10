@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
-import com.http.UniversalHttp;
 import com.ishare_lib.ui.dialog.AlertDialog;
 import com.ishare_lib.utils.DeviceUtils;
 import com.speektool.Const;
@@ -458,7 +457,9 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
 				}
 				tempdir.mkdirs();
 				//
-				File saveFile = UniversalHttp.downloadFile(zipurlfileReal, "", tempzip);
+				File saveFile =
+//						UniversalHttp.downloadFile(zipurlfileReal, "", tempzip);
+						null;
 				if (saveFile != null) {
 					try {
 						ZipUtils.upZipFile(tempzip, tempdir.getAbsolutePath());

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.http.HttpStatus;
 
 /**
  * 上传文件线程
@@ -213,7 +212,7 @@ public class UploadFileRunnable extends CancelableRunnable {
 			outStream.write(end_data);
 			outStream.flush();
 
-			if (conn.getResponseCode() == HttpStatus.SC_OK) {
+			if (conn.getResponseCode() == 200) {
 				InputStream in = conn.getInputStream();
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 

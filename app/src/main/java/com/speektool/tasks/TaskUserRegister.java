@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.common.collect.Maps;
-import com.http.UniversalHttp;
 import com.speektool.Const;
 import com.speektool.SpeekToolApp;
 import com.speektool.bean.UserBean;
@@ -85,7 +84,9 @@ public class TaskUserRegister extends BaseRunnable<Integer, Void> {
 			File photo = new File(userBean.getPortraitPath());
 			paramsFile.put("photo", photo);
 		}
-		String result = UniversalHttp.post(Const.USER_REGISTER_URL, params, paramsFile);
+		String result =
+//				UniversalHttp.post(Const.USER_REGISTER_URL, params, paramsFile);
+		null;
 		if (TextUtils.isEmpty(result)) {
 			uiHandler.post(new Runnable() {
 				@Override

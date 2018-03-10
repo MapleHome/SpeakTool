@@ -5,10 +5,8 @@ import java.io.File;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.ishare_lib.ui.dialog.AlertDialog;
 import com.speektool.Const;

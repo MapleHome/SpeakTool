@@ -26,7 +26,7 @@ public class AdapterPhotoDirs extends AbsAdapter<LocalPhotoDirBean> {
 		}
 		final ItemViewLocalPhotoDirs item = (ItemViewLocalPhotoDirs) convertView;
 		LocalPhotoDirBean bean = (LocalPhotoDirBean) getItem(position);
-		Bitmap initBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.defalut_icon);
+		Bitmap initBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
 		item.setDirIcon(initBmp);
 		if (bean == null)
 			return item;

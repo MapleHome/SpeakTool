@@ -24,7 +24,7 @@ public class AdapterThirdpartyList extends AbsAdapter<ThirdParty> {
 
 	public AdapterThirdpartyList(Context ctx, List<ThirdParty> datas) {
 		super(ctx, datas);
-		defbmp = BitmapScaleUtil.decodeSampledBitmapFromResource(ctx.getResources(), R.drawable.defalut_icon,
+		defbmp = BitmapScaleUtil.decodeSampledBitmapFromResource(ctx.getResources(), R.drawable.ic_launcher,
 				1024 * 1024);
 	}
 
