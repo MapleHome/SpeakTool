@@ -42,7 +42,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.sharesdk.framework.ShareSDK;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -89,7 +88,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 //        mUploadStateReceiver = new UploadStateReceiver();
 //        this.registerReceiver(mUploadStateReceiver, new IntentFilter(UploadService.ACTION_UPLOAD_STATE));
         //
-        ShareSDK.initSDK(this);
+//        ShareSDK.initSDK(this);
         KeepAliveService.start(this);
         // 检查更新
         mAppUpdateManager = new AppUpdateManager(this, singleExecutor, false);
@@ -224,7 +223,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         mAppIconAsyncLoader = null;
         // mLocalPicturesIconAsyncLoader.destroy();
         // mLocalPicturesIconAsyncLoader = null;
-        ShareSDK.stopSDK(this);
+//        ShareSDK.stopSDK(this);
 
         KeepAliveService.stop(this);
 //        this.unregisterReceiver(mUploadStateReceiver);
