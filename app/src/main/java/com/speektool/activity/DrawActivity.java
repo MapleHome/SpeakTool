@@ -34,9 +34,9 @@ import android.widget.ViewFlipper;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.ishare_lib.ui.dialog.AlertDialog;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.maple.msdialog.AlertDialog;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.SpeekToolApp;
@@ -538,17 +538,17 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 savedia.show();
             } else {// no record.
                 if (isUserHaveOperationInSomeBoard()) {
-                    new AlertDialog(this).builder().setTitle("提示").setMsg("是否退出？退出后之前所有操作都会被清空！")
-                            .setNegativeButton("取消", new OnClickListener() {
+                    new AlertDialog(this)
+                            .setTitle("提示")
+                            .setMessage("是否退出？退出后之前所有操作都会被清空！")
+                            .setLeftButton("取消", null)
+                            .setRightButton("退出", new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    exitDrawWithoutSave();
                                 }
-                            }).setPositiveButton("退出", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            exitDrawWithoutSave();
-                        }
-                    }).show();
+                            })
+                            .show();
                 } else {
                     getPageRecorder().deleteRecordDir();
                     this.finish();
@@ -605,10 +605,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         if (pages.size() <= 1) {
             T.showShort(mContext, "已经是最后一页了");
         } else {
-            new AlertDialog(mContext).builder()
+            new AlertDialog(mContext)
                     .setTitle("提示")
-                    .setMsg("请问是否删除本页？")
-                    .setPositiveButton("确认", new OnClickListener() {
+                    .setMessage("请问是否删除本页？")
+                    .setRightButton("确认", new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             preChangePage(new Runnable() {
@@ -618,11 +618,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                             });
                         }
                     })
-                    .setNegativeButton("取消", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    }).show();
+                    .setLeftButton("取消", null)
+                    .show();
         }
     }
 
@@ -997,18 +994,18 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
      * 显示取消合成课程记录Dialog
      */
     private void showCancelMakeReleaseRecordDialog() {
-        new AlertDialog(this).builder().setTitle("提示").setMsg("您确定要放弃合成录像吗？")
-                .setPositiveButton("确认", new OnClickListener() {
+        new AlertDialog(this)
+                .setTitle("提示")
+                .setMessage("您确定要放弃合成录像吗？")
+                .setRightButton("确认", new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         killPlayProcess();
                         dismissLoading();
                     }
-                }).setNegativeButton("取消", new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        }).show();
+                })
+                .setLeftButton("取消", null)
+                .show();
 
     }
 
@@ -1068,18 +1065,22 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 postTaskToUiThread(new Runnable() {
                     public void run() {
                         if (ret != RecordError.SUCCESS) {
-                            new AlertDialog(context()).builder().setTitle("提示").setMsg(getErrorMsg(ret))
-                                    .setNegativeButton("退出", new OnClickListener() {
+                            new AlertDialog(context())
+                                    .setTitle("提示")
+                                    .setMessage(getErrorMsg(ret))
+                                    .setLeftButton("退出", new OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             onExitDraw();
                                         }
-                                    }).setPositiveButton("重试", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    preChangePage(successRunnable);
-                                }
-                            }).show();
+                                    })
+                                    .setRightButton("重试", new OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            preChangePage(successRunnable);
+                                        }
+                                    })
+                                    .show();
                         } else {
                             successRunnable.run();
                             postChangePage();
@@ -1101,18 +1102,21 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 postTaskToUiThread(new Runnable() {
                     public void run() {
                         if (ret != RecordError.SUCCESS) {
-                            new AlertDialog(context()).builder().setTitle("提示").setMsg(getErrorMsg(ret))
-                                    .setNegativeButton("退出", new OnClickListener() {
+                            new AlertDialog(context())
+                                    .setTitle("提示")
+                                    .setMessage(getErrorMsg(ret))
+                                    .setLeftButton("退出", new OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             onExitDraw();
                                         }
-                                    }).setPositiveButton("重试", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    postChangePage();
-                                }
-                            }).show();
+                                    })
+                                    .setRightButton("重试", new OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            postChangePage();
+                                        }
+                                    }).show();
 
                         } else {
                             // do nothing.

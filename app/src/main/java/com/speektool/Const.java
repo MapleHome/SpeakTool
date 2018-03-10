@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Environment;
 
-import com.ishare_lib.utils.DensityUtils;
+import com.speektool.utils.DensityUtils;
 import com.speektool.utils.DisplayUtil;
 
 import java.io.File;

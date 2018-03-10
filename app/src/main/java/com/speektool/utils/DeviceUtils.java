@@ -1,4 +1,4 @@
-package com.ishare_lib.utils;
+package com.speektool.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;

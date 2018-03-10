@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.ishare_lib.ui.dialog.AlertDialog;
+import com.maple.msdialog.AlertDialog;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.adapters.SplashPageAdapter;
@@ -162,21 +162,17 @@ public class SplashActivity extends RoboActivity {
                 return;
 
             new AlertDialog(this)
-                    .builder()
                     .setTitle("提示")
-                    .setMsg("正常使用本应用需要悬浮窗权限，请到设置中心开启！")
-                    .setPositiveButton("去开启", new OnClickListener() {
+                    .setMessage("正常使用本应用需要悬浮窗权限，请到设置中心开启！")
+                    .setRightButton("去开启", new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             MiuiManager.openMiuiPermissionActivity(mContext);
                             SPUtils.putBool(OS_IS_CHECKED, true);
                         }
                     })
-                    .setNegativeButton("暂不", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    }).show();
+                    .setLeftButton("暂不", null)
+                    .show();
         }
     }
 

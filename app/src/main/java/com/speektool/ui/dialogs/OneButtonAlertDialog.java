@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
-import com.ishare_lib.utils.DensityUtils;
 import com.speektool.R;
 import com.speektool.SpeekToolApp;
+import com.speektool.utils.DensityUtils;
 import com.speektool.utils.DisplayUtil;
 
 public class OneButtonAlertDialog extends Dialog implements View.OnClickListener {

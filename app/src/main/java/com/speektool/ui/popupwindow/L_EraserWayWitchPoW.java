@@ -7,61 +7,60 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import com.ishare_lib.utils.DensityUtils;
 import com.speektool.R;
 import com.speektool.base.BasePopupWindow;
 import com.speektool.paint.EraserPaint;
 import com.speektool.ui.layouts.StrokeWidthPreview;
+import com.speektool.utils.DensityUtils;
 import com.speektool.utils.MyColors;
 
 /**
  * 左侧——橡皮擦——更改擦除路径宽度
- * 
+ *
  * @author shaoshuai
- * 
  */
 public class L_EraserWayWitchPoW extends BasePopupWindow implements OnSeekBarChangeListener {
-	private StrokeWidthPreview strokeWidthPreview;
-	private SeekBar seekBarAdjustStrokeWidth;
+    private StrokeWidthPreview strokeWidthPreview;
+    private SeekBar seekBarAdjustStrokeWidth;
 
-	@Override
-	public View getContentView() {
-		return LayoutInflater.from(mContext).inflate(R.layout.pow_eraserclick, null);
-	}
+    @Override
+    public View getContentView() {
+        return LayoutInflater.from(mContext).inflate(R.layout.pow_eraserclick, null);
+    }
 
-	public L_EraserWayWitchPoW(Context context, View anchor) {
-		this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-	}
+    public L_EraserWayWitchPoW(Context context, View anchor) {
+        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
 
-	public L_EraserWayWitchPoW(Context context, View anchor, int w, int h) {
-		super(context, anchor, w, h);
+    public L_EraserWayWitchPoW(Context context, View anchor, int w, int h) {
+        super(context, anchor, w, h);
 
-		strokeWidthPreview = (StrokeWidthPreview) mRootView.findViewById(R.id.strokeWidthPreview);
-		seekBarAdjustStrokeWidth = (SeekBar) mRootView.findViewById(R.id.seekBarAdjustStrokeWidth);
-		/** dip==progress */
-		int pxPro = EraserPaint.getGlobalPaintInfo().getStrokeWidth();
-		strokeWidthPreview.preview(pxPro, MyColors.WHITE);// 实例画线
+        strokeWidthPreview = (StrokeWidthPreview) mRootView.findViewById(R.id.strokeWidthPreview);
+        seekBarAdjustStrokeWidth = (SeekBar) mRootView.findViewById(R.id.seekBarAdjustStrokeWidth);
+        /** dip==progress */
+        int pxPro = EraserPaint.getGlobalPaintInfo().getStrokeWidth();
+        strokeWidthPreview.preview(pxPro, MyColors.WHITE);// 实例画线
 
-		int progress = (int) DensityUtils.px2dp(mContext, pxPro);
-		seekBarAdjustStrokeWidth.setProgress(progress);
-		seekBarAdjustStrokeWidth.setOnSeekBarChangeListener(this);
+        int progress = (int) DensityUtils.px2dp(mContext, pxPro);
+        seekBarAdjustStrokeWidth.setProgress(progress);
+        seekBarAdjustStrokeWidth.setOnSeekBarChangeListener(this);
 
-	}
+    }
 
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		int strokeWidthPix = DensityUtils.dp2px(mContext, progress);
-		strokeWidthPreview.preview(strokeWidthPix, MyColors.WHITE);
-		EraserPaint.getGlobalPaintInfo().setStrokeWidth(strokeWidthPix);// gloabl.
-	}
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        int strokeWidthPix = DensityUtils.dp2px(mContext, progress);
+        strokeWidthPreview.preview(strokeWidthPix, MyColors.WHITE);
+        EraserPaint.getGlobalPaintInfo().setStrokeWidth(strokeWidthPix);// gloabl.
+    }
 
-	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
 
-	}
+    }
 
-	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
 
-	}
+    }
 }

@@ -24,8 +24,6 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
 import com.google.common.base.Preconditions;
-import com.ishare_lib.utils.DensityUtils;
-import com.ishare_lib.utils.DeviceUtils;
 import com.speektool.R;
 import com.speektool.SpeekToolApp;
 import com.speektool.adapters.AdapterRecordTypes;
@@ -41,6 +39,8 @@ import com.speektool.tasks.TaskLoadRecordCategories.RecordTypeLoadListener;
 import com.speektool.ui.layouts.FillSaveRecordInfoAddKindPage;
 import com.speektool.ui.layouts.FillSaveRecordInfoEditPage;
 import com.speektool.ui.layouts.FillSaveRecordInfoKindListPage;
+import com.speektool.utils.DensityUtils;
+import com.speektool.utils.DeviceUtils;
 import com.speektool.utils.RecordFileUtils;
 import com.speektool.utils.T;
 

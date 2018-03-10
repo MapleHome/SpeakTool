@@ -19,8 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
-import com.ishare_lib.ui.dialog.AlertDialog;
-import com.ishare_lib.utils.DeviceUtils;
+import com.maple.msdialog.AlertDialog;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.SpeekToolApp;
@@ -50,6 +49,7 @@ import com.speektool.service.PlayService;
 import com.speektool.tasks.MyThreadFactory;
 import com.speektool.tasks.TaskGetThirdpartys;
 import com.speektool.tasks.TaskGetThirdpartys.TaskGetThirdpartysCallback;
+import com.speektool.utils.DeviceUtils;
 import com.speektool.utils.RecordFileUtils;
 import com.speektool.utils.T;
 import com.speektool.utils.ZipUtils;
@@ -497,18 +497,18 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     }
 
     private void showDeleteDialog() {
-        new AlertDialog(mActivityContext).builder().setTitle("提示").setMsg("请问是否确定删除录像？")
-                .setPositiveButton("确定", new View.OnClickListener() {
+        new AlertDialog(mActivityContext)
+                .setTitle("提示")
+                .setMessage("请问是否确定删除录像？")
+                .setRightButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         deleteRecord();
                     }
 
-                }).setNegativeButton("取消", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        }).show();
+                })
+                .setLeftButton("取消", null)
+                .show();
     }
 
     private final LoadingDialogHelper mLoadingDialogHelper;
@@ -558,10 +558,12 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         dir.delete();
     }
 
-    
+
     private void afterDeleteSuccess() {
-        new AlertDialog(mActivityContext).builder().setTitle("提示").setMsg("课程删除成功！")
-                .setPositiveButton("确定", new View.OnClickListener() {
+        new AlertDialog(mActivityContext)
+                .setTitle("提示")
+                .setMessage("课程删除成功！")
+                .setRightButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         EventBus.getDefault().post(new RefreshCourseListEvent());

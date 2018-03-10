@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
-import com.ishare_lib.utils.DeviceUtils;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.SpeekToolApp;
@@ -23,6 +22,7 @@ import com.speektool.api.CourseItem;
 import com.speektool.api.ThirdPartyRunState;
 import com.speektool.impl.platforms.ShareLocation;
 import com.speektool.utils.BitmapScaleUtil;
+import com.speektool.utils.DeviceUtils;
 import com.speektool.utils.NetUtil;
 
 import java.lang.ref.WeakReference;

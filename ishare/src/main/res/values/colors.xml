@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- 仿IOS效果Dialog -->
-    <color name="dialog_bg">#E3E3E3</color>
-    <color name="dialog_sel_bg">#C7C7C7</color>
-    <color name="dialog_line">#C7C8CD</color>
-
-</resources>

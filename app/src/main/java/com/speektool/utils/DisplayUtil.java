@@ -5,8 +5,6 @@ import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.ishare_lib.utils.DensityUtils;
-
 import java.lang.reflect.Field;
 
 /**

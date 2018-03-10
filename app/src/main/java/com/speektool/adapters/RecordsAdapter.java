@@ -4,17 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 
-import com.ishare_lib.utils.DeviceUtils;
 import com.speektool.R;
 import com.speektool.activity.MainActivity;
 import com.speektool.api.AsyncDataLoader;
 import com.speektool.api.CourseItem;
 import com.speektool.base.AbsAdapter;
 import com.speektool.ui.layouts.ItemViewLocalRecord;
+import com.speektool.utils.DeviceUtils;
 
 import java.util.List;
 

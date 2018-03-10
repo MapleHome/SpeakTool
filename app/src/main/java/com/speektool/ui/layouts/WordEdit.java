@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.google.common.collect.Lists;
-import com.ishare_lib.utils.DensityUtils;
 import com.speektool.R;
 import com.speektool.api.Draw;
 import com.speektool.api.FocusedView;
@@ -39,6 +38,7 @@ import com.speektool.impl.modes.DrawModeCode;
 import com.speektool.impl.shapes.EditWidget;
 import com.speektool.impl.shapes.ViewShape_;
 import com.speektool.manager.DrawModeManager;
+import com.speektool.utils.DensityUtils;
 import com.speektool.utils.MyColors;
 
 import java.util.List;
