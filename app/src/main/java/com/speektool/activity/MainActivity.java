@@ -3,7 +3,6 @@ package com.speektool.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -19,14 +18,11 @@ import android.widget.TextView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.speektool.R;
-import com.speektool.api.AsyncDataLoader;
 import com.speektool.api.Draw.PlayMode;
 import com.speektool.base.BasePopupWindow.WeiZhi;
 import com.speektool.bean.SearchCategoryBean;
 import com.speektool.busevents.CourseThumbnailLoadedEvent;
 import com.speektool.busevents.RefreshCourseListEvent;
-import com.speektool.factory.AsyncDataLoaderFactory;
-import com.speektool.manager.AppUpdateManager;
 import com.speektool.service.KeepAliveService;
 import com.speektool.tasks.TaskLoadRecordCategories;
 import com.speektool.tasks.TaskLoadRecordCategories.RecordTypeLoadListener;
@@ -60,12 +56,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     public SearchCategoryBean mCurSearchType;
     public String mCurSearchKeyWords = null;
 
-    private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader = AsyncDataLoaderFactory
-            .newCourseThumbnailAsyncLoader();
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
-//    private UploadStateReceiver mUploadStateReceiver;
-//    private ServiceConnection mServiceConnection;
-    private AppUpdateManager mAppUpdateManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +75,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private void initView() {
         // 注册EventBus订阅者
         EventBus.getDefault().register(this);
-        // 注册广播接受者
-//        mUploadStateReceiver = new UploadStateReceiver();
-//        this.registerReceiver(mUploadStateReceiver, new IntentFilter(UploadService.ACTION_UPLOAD_STATE));
-        //
-//        ShareSDK.initSDK(this);
+
         KeepAliveService.start(this);
-        // 检查更新
-        mAppUpdateManager = new AppUpdateManager(this, singleExecutor, false);
-        mAppUpdateManager.checkAppUpdate();
         // 填充视图
         mHomePage = new HomePage();
         loadView(mHomePage);
@@ -101,21 +85,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private void initData() {
         // 搜索框
         setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
-        //
-//        mServiceConnection = new ServiceConnection() {
-//            // 服务中断
-//            @Override
-//            public void onServiceDisconnected(ComponentName name) {
-//                mUploadAIDL = null;
-//            }
-//
-//            // 服务连接
-//            @Override
-//            public void onServiceConnected(ComponentName name, IBinder service) {
-//                mUploadAIDL = UploadAIDL.Stub.asInterface(service);
-//            }
-//        };
-//        this.bindService(new Intent(mContext, UploadService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -208,7 +177,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 exitTime = System.currentTimeMillis();
             } else {
                 finish();
-                // System.exit(0);
             }
             return true;
         }
@@ -219,15 +187,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);// 解除注册EventBus订阅者
         singleExecutor.shutdownNow();
-        mAppIconAsyncLoader.destroy();
-        mAppIconAsyncLoader = null;
-        // mLocalPicturesIconAsyncLoader.destroy();
-        // mLocalPicturesIconAsyncLoader = null;
-//        ShareSDK.stopSDK(this);
-
         KeepAliveService.stop(this);
-//        this.unregisterReceiver(mUploadStateReceiver);
-//        this.unbindService(mServiceConnection);
         super.onDestroy();
     }
 
@@ -259,35 +219,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      * 是否需要上传
      */
     public boolean isUploading(String courseKey) {
-//        if (mUploadAIDL == null) {
-            return false;
-//        } else {
-//            try {
-//                return mUploadAIDL.isUploading(courseKey);
-//            } catch (RemoteException e) {
-//                e.printStackTrace();
-//                return false;
-//            }
-//        }
-    }
-
-    /**
-     * 更新上传状态UI
-     */
-    public void updateUploadStateUi(String tag, boolean isUploading) {
-        ItemViewLocalRecord item = (ItemViewLocalRecord) mHomePage.gridViewAllRecords.findViewWithTag(tag);
-        if (item != null)
-            item.setUploadingState(isUploading);
-
-    }
-
-    /**
-     * 更新上传进度
-     */
-    public void updateUploadProgressUi(String tag, int progress) {
-        ItemViewLocalRecord item = (ItemViewLocalRecord) mHomePage.gridViewAllRecords.findViewWithTag(tag);
-        if (item != null)
-            item.setProgress(progress);
+        return false;
     }
 
     // ===========================================================================
@@ -331,8 +263,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 popupWindow = null;
             }
         });
-        // int offsetx = popupWindow.getShowOffsetXPix();
-        // int offsetY = popupWindow.getShowOffsetYPix();
         singleExecutor.execute(new TaskLoadRecordCategories(new RecordTypeLoadListener() {
 
             @Override
@@ -343,8 +273,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             }
         }, true));
         popupWindow.showPopupWindow(WeiZhi.Bottom);
-        // (Gravity.NO_GRAVITY, offsetx, offsetY,
-        // PopupMenuWindow.ANIM_GROW_FORM_TOP);
     }
 
     /**
@@ -370,7 +298,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      */
     private void toUserMGPage(int viewIndex) {
         Intent intent = new Intent(mContext, UserFMActivity.class);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, viewIndex);// 默认加载界面
         startActivity(intent);// 开启目标Activity
     }
