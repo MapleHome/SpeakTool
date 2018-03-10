@@ -84,7 +84,7 @@ public class UserLoginPage extends BaseFragment implements OnClickListener, Thir
 	@Override
 	public void initData(Bundle savedInstanceState) {
 		mActivity = (UserFMActivity) getActivity();
-		mActivity.tv_title.setText(FRAGMENT_NAME);
+		mActivity.setTitle(FRAGMENT_NAME);
 		// 初始化
 		mLoadingDialog = new LoadingDialog(mActivity);
 	}

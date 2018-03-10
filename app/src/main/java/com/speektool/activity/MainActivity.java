@@ -2,7 +2,6 @@ package com.speektool.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -28,9 +27,7 @@ import com.speektool.busevents.CourseThumbnailLoadedEvent;
 import com.speektool.busevents.RefreshCourseListEvent;
 import com.speektool.factory.AsyncDataLoaderFactory;
 import com.speektool.manager.AppUpdateManager;
-import com.speektool.receiver.UploadStateReceiver;
 import com.speektool.service.KeepAliveService;
-import com.speektool.service.UploadService;
 import com.speektool.tasks.TaskLoadRecordCategories;
 import com.speektool.tasks.TaskLoadRecordCategories.RecordTypeLoadListener;
 import com.speektool.tasks.ThreadPoolWrapper;
@@ -67,7 +64,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader = AsyncDataLoaderFactory
             .newCourseThumbnailAsyncLoader();
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
-    private UploadStateReceiver mUploadStateReceiver;
+//    private UploadStateReceiver mUploadStateReceiver;
 //    private ServiceConnection mServiceConnection;
     private AppUpdateManager mAppUpdateManager;
 
@@ -89,8 +86,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         // 注册EventBus订阅者
         EventBus.getDefault().register(this);
         // 注册广播接受者
-        mUploadStateReceiver = new UploadStateReceiver();
-        this.registerReceiver(mUploadStateReceiver, new IntentFilter(UploadService.ACTION_UPLOAD_STATE));
+//        mUploadStateReceiver = new UploadStateReceiver();
+//        this.registerReceiver(mUploadStateReceiver, new IntentFilter(UploadService.ACTION_UPLOAD_STATE));
         //
         ShareSDK.initSDK(this);
         KeepAliveService.start(this);
@@ -230,7 +227,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         ShareSDK.stopSDK(this);
 
         KeepAliveService.stop(this);
-        this.unregisterReceiver(mUploadStateReceiver);
+//        this.unregisterReceiver(mUploadStateReceiver);
 //        this.unbindService(mServiceConnection);
         super.onDestroy();
     }

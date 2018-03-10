@@ -105,7 +105,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
 	@Override
 	public void initData(Bundle savedInstanceState) {
 		mActivity = (UserFMActivity) getActivity();
-		mActivity.tv_title.setText(FRAGMENT_NAME);
+		mActivity.setTitle(FRAGMENT_NAME);
 
 		mLoadingDialog = new LoadingDialog(mActivity);
 		session = UserDatabase.getUserLocalSession(mContext);

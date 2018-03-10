@@ -100,14 +100,10 @@ public class Const {
      */
     public static final String SPEEKTOOL_BBS_URL = "http://bbs.speaktool.com:8080/";
 
-    /**
-     * Dialog最小宽度
-     */
+    // Dialog最小宽度
     public static final int DIALOG_MIN_WIDTH = DensityUtils.dp2px(SpeekToolApp.app(), 600);// pix
-    /**
-     * Dialog最小高度
-     */
-    public static final int DIALOG_MIN_HEIGHT = DensityUtils.dp2px(SpeekToolApp.app(), 500);// pixv
+    // Dialog最小高度
+    public static final int DIALOG_MIN_HEIGHT = DensityUtils.dp2px(SpeekToolApp.app(), 500);// pix
 
     public static Point getDialogSize(Context context) {
         Point screen = DisplayUtil.getScreenSize(context);
@@ -117,69 +113,9 @@ public class Const {
         return new Point(w, h);
     }
 
-    /**
-     * BMP图片最大可以分配内存
-     */
+    //BMP图片最大可以分配内存
     public static final long MAX_MEMORY_BMP_CAN_ALLOCATE = 1 * 1024 * 1024;
-    /**
-     * 上传课程
-     */
+    //上传课程
     public static final String COURSE_UPLOAD_URL = SPEEKTOOL_SERVER_API_URL + "uploadCourse.do";
-    /**
-     * 课程列表
-     */
-    public static final String COURSE_SEARCH_URL = SPEEKTOOL_SERVER_API_URL + "getCourseList.do";
-    /**
-     * 删除课程
-     */
-    public static final String COURSE_DELETE_URL = SPEEKTOOL_SERVER_API_URL + "deleteCourse.do";
-    /**
-     * 课程类型列表
-     */
-    public static final String COURSE_TYPES_URL = SPEEKTOOL_SERVER_API_URL + "getCategoryList.do";
-    /**
-     * 最新版本
-     */
-    public static final String UPDATE_URL = SPEEKTOOL_SERVER_API_URL + "getLatestVersion.do";
-    /**
-     * 注册用户
-     */
-    public static final String USER_REGISTER_URL = SPEEKTOOL_SERVER_API_URL + "addUser.do";
-    /**
-     * 用户登陆
-     */
-    public static final String USER_LOGIN_URL = SPEEKTOOL_SERVER_API_URL + "userLogin.do";
-    /**
-     * 用户修改
-     */
-    public static final String USER_MODIFY_URL = SPEEKTOOL_SERVER_API_URL + "modifyUser.do";
-    /**
-     * 用户退出
-     */
-    public static final String USER_LOGINOUT_URL = SPEEKTOOL_SERVER_API_URL + "userLogout.do";
-    /**
-     * 搜索检查用户是否存在
-     */
-    public static final String USER_CHECK_EXIST = SPEEKTOOL_SERVER_API_URL + "widgetUserSearch.do";
-    /**
-     * 通过ID查询用户信息
-     */
-    public static final String USER_GET_INFO_BY_UID = SPEEKTOOL_SERVER_API_URL + "searchByUserid.do";
-    /**
-     * 上传活动异常
-     */
-    public static final String EXCEPTION_UPLOAD_URL = SPEEKTOOL_SERVER_API_URL + "uploadMobileException.do";
 
-    /**
-     * 获取魔灯网学URL
-     */
-    public static final String GET_THIRDPARTY_URL = "http://www.speaktool.com/api/getThirdPartyList.do";
-    /**
-     * 音乐列表URL
-     */
-    public static final String MUSIC_LIST_URL = "http://www.speaktool.com/api/getMusicList.do";
-    /**
-     * 音乐类型URL
-     */
-    public static final String MUSIC_CATEGORY_URL = "http://www.speaktool.com/api/getMusicCategory.do";
 }

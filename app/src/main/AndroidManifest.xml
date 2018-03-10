@@ -111,12 +111,7 @@
             android:exported="false"
             android:process=":service"/>
 
-        <receiver android:name=".receiver.SystemDownloadCompleteRecevier">
 
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
-            </intent-filter>
-        </receiver>
         <!--  分享  -->
 
         <activity

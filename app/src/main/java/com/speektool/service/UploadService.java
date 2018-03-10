@@ -90,7 +90,7 @@ public class UploadService extends Service {
     /**
      * 上传请求方式
      */
-    public static enum UploadRequestCode implements Serializable {
+    public enum UploadRequestCode implements Serializable {
         /**
          * 分享新浪微博
          */

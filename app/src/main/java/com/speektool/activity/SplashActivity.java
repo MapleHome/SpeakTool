@@ -18,8 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.ishare_lib.ui.dialog.AlertDialog;
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.adapters.SplashPageAdapter;
@@ -29,6 +27,8 @@ import com.speektool.utils.T;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import roboguice.activity.RoboActivity;
 
 /**
@@ -37,12 +37,9 @@ import roboguice.activity.RoboActivity;
  * @author shaoshuai
  */
 public class SplashActivity extends RoboActivity {
-    @ViewInject(R.id.rl_root)
-    private RelativeLayout rl_root;// 根布局
-    @ViewInject(R.id.guide_viewpager)
-    private ViewPager guide_viewpager;// ViwePager
-    @ViewInject(R.id.ll_point)
-    private LinearLayout ll_point;// 相应的点区域
+    @BindView(R.id.rl_root) RelativeLayout rl_root;// 根布局
+    @BindView(R.id.guide_viewpager) ViewPager guide_viewpager;// ViwePager
+    @BindView(R.id.ll_point) LinearLayout ll_point;// 相应的点区域
 
     protected static final int MSG_ENTER_HOME = 20;// 进入主界面
     protected static final int MSG_IO_ERROR = 30;// IO异常
@@ -75,14 +72,12 @@ public class SplashActivity extends RoboActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
         mContext = getApplicationContext();
-        ViewUtils.inject(this);
 
         long startTime = System.currentTimeMillis();
         boolean isFirst = SPUtils.getBool(Const.First_ComeIn, true);
         initData();
-        // copyDb("address.db");
-        // copyDb("antivirus.db");
         if (isFirst) {
             initViews();
         } else {
@@ -127,11 +122,7 @@ public class SplashActivity extends RoboActivity {
     }
 
     private void initData() {
-        // http://192.168.8.101:8080/qfx/pages/index.json
-        // String url = FlyApp.HOME_CATEGORIES;
-        // Log.e("SplashActivity", "连接服务器：" + url);
         checkOs();// 检查系统
-
     }
 
     /**

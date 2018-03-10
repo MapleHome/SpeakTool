@@ -48,7 +48,7 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
 	@Override
 	public void initData(Bundle savedInstanceState) {
 		mActivity = (UserFMActivity) getActivity();
-		mActivity.tv_title.setText(FRAGMENT_NAME);
+		mActivity.setTitle(FRAGMENT_NAME);
 		// 版本号
 		String versionName = AppManager.getCurrentAppVersionName(mContext);
 		tv_version.setText("For Android V " + versionName);

@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.bean.ThirdParty;
 import com.speektool.bean.UserBean;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 public class TaskGetThirdpartys extends BaseRunnable<Integer, Void> {
 
-    public static interface TaskGetThirdpartysCallback {
+    public interface TaskGetThirdpartysCallback {
 
         void onThirdpartyLoaded(List<ThirdParty> result);
 
@@ -29,11 +28,10 @@ public class TaskGetThirdpartys extends BaseRunnable<Integer, Void> {
         void onResponseFail();
     }
 
-    public static enum PartyType {
-        LOGIN, SHARE;
+    public enum PartyType {
+        LOGIN, SHARE
     }
 
-    private static final String tag = TaskGetThirdpartys.class.getSimpleName();
     private final WeakReference<TaskGetThirdpartysCallback> mListener;
     private PartyType mPartyType;
     private String companyIdIfExist;
@@ -60,7 +58,6 @@ public class TaskGetThirdpartys extends BaseRunnable<Integer, Void> {
     private static final String APP_ID = "jiangjiang";
     private static final String APP_KEY = MD5Util.MD5("JiangjiangOnceAs");
 
-    private static final String GET_THIRDPARTY_URL = Const.GET_THIRDPARTY_URL;
 
     private void getThirdPartyListForLogin() {
         final List<ThirdParty> partys = Lists.newArrayList();

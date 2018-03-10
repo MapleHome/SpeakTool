@@ -80,7 +80,7 @@ public class UserInfoPage extends BaseFragment implements OnClickListener {
 	@Override
 	public void initData(Bundle savedInstanceState) {
 		mActivity = (UserFMActivity) getActivity();
-		mActivity.tv_title.setText(FRAGMENT_NAME);
+		mActivity.setTitle(FRAGMENT_NAME);
 
 		mLoadingDialog = new LoadingDialog(mActivity);
 		if (UserDatabase.getUserLoginState(mContext) == UserBean.STATE_IN) {
