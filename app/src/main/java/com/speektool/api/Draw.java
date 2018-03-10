@@ -30,7 +30,7 @@ public interface Draw extends PhotoImporter {
 	/**
 	 * 创建画板纸张
 	 * 
-	 * @param backgroundType
+	 * @param bgType
 	 *            - 纸张背景类型
 	 * @param position
 	 *            - 纸张在画册中的索引

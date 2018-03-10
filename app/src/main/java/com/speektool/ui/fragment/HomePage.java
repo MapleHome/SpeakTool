@@ -244,4 +244,8 @@ public class HomePage extends BaseFragment {
         return mAdapterAllRecords.getDefBmp();
     }
 
+    public ItemViewLocalRecord findViewWithTag(String key) {
+        return gridViewAllRecords.findViewWithTag(key);
+    }
+
 }

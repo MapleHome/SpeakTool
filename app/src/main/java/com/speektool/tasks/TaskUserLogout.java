@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TaskUserLogout extends BaseRunnable<Integer, Void> {
 
-    public static interface UserLogoutCallback {
+    public interface UserLogoutCallback {
         void onConnectFail();
 
         void onResponseFail();
@@ -24,7 +24,6 @@ public class TaskUserLogout extends BaseRunnable<Integer, Void> {
 
     }
 
-    private static final String tag = TaskUserLogout.class.getSimpleName();
     private final WeakReference<UserLogoutCallback> mListener;
     private UserBean userBean;
 

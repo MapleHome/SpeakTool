@@ -17,7 +17,7 @@ import com.speektool.utils.BitmapScaleUtil;
 
 public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
 
-    public static interface SearchNetPicturesCallback {
+    public  interface SearchNetPicturesCallback {
         void onConnectFail();
 
         void onFail();
@@ -26,7 +26,6 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
 
     }
 
-    private static final String tag = TaskSearchNetPictures.class.getSimpleName();
     private static final String SEARCH_URL = "http://pic.sogou.com/pics";
     private final WeakReference<SearchNetPicturesCallback> mListener;
     private String searchKey;

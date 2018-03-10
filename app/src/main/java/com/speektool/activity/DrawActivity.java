@@ -95,8 +95,6 @@ import com.speektool.impl.shapes.ImageWidget;
 import com.speektool.manager.DrawModeManager;
 import com.speektool.paint.DrawPaint;
 import com.speektool.service.PlayService;
-import com.speektool.service.UploadService;
-import com.speektool.service.UploadService.UploadRequestCode;
 import com.speektool.ui.dialogs.OneButtonAlertDialog;
 import com.speektool.ui.dialogs.ProgressDialogOffer;
 import com.speektool.ui.dialogs.SaveRecordAlertDialog;
@@ -1024,8 +1022,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             T.showShort(mContext, "上传内容为空！");
             return;
         }
-        // 开启上传服务
-        toStartUploadService(recordUploadBean);
         finish();
     }
 
@@ -1683,16 +1679,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     // ---------------------------------------------------------------------------------------
 
-    /**
-     * 开启上传服务
-     */
-    private void toStartUploadService(RecordUploadBean recordUploadBean) {
-        Intent requestUploadIntent = new Intent(this, UploadService.class);
-        requestUploadIntent.putExtra(UploadService.EXTRA_ACTION, UploadService.ACTION_UPLOAD_TO_SPEAKTOOL);
-        requestUploadIntent.putExtra(UploadService.EXTRA_REQUEST_DATA, recordUploadBean);
-        requestUploadIntent.putExtra(UploadService.EXTRA_REQUEST_CODE, UploadRequestCode.JUST_UPLOAD);
-        this.startService(requestUploadIntent);
-    }
 
     /**
      * 开启播放服务

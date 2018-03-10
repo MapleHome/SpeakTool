@@ -7,7 +7,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.ishare_lib.ui.dialog.AlertDialog;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.speektool.R;
@@ -16,8 +15,6 @@ import com.speektool.base.BaseFragment;
 import com.speektool.bean.UserBean;
 import com.speektool.busevents.RefreshCourseListEvent;
 import com.speektool.tasks.MyThreadFactory;
-import com.speektool.tasks.TaskUserRegister;
-import com.speektool.tasks.TaskUserRegister.UserRegisterCallback;
 import com.speektool.ui.dialogs.LoadingDialog;
 import com.speektool.utils.T;
 import com.speektool.utils.UserInfoValidateUtil;
@@ -119,41 +116,11 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
         mUser.setIntroduce(introduce);// 简介
         //
         mLoadingDialog.show("请耐心等待...");
-        singleExecutor.execute(new TaskUserRegister(mUserRegisterCallback, mUser));
-        //
+
+        mLoadingDialog.dismiss();
+        EventBus.getDefault().post(new RefreshCourseListEvent());
+        fm.popBackStack();// 退出当前界面
     }
 
-    private UserRegisterCallback mUserRegisterCallback = new UserRegisterCallback() {
-
-        @Override
-        public void onUserAlreadyExist() {
-            mLoadingDialog.dismiss();
-            new AlertDialog(mActivity).builder().setTitle("提示").setMsg("用户已经存在！").show();
-        }
-
-        @Override
-        public void onRegisterSuccess() {
-            mLoadingDialog.dismiss();
-            EventBus.getDefault().post(new RefreshCourseListEvent());
-            fm.popBackStack();// 退出当前界面
-            // close(LoginCallback.SUCCESS);
-        }
-
-        @Override
-        public void onRegisterFail() {
-            mLoadingDialog.dismiss();
-            new AlertDialog(mActivity).builder().setTitle("提示").setMsg("注册失败！").show();
-
-            // OneButtonAlertDialog dia = new OneButtonAlertDialog(mContext,
-            // "注册失败！");
-            // dia.show();
-        }
-
-        @Override
-        public void onConnectFail() {
-            mLoadingDialog.dismiss();
-            T.showShort(mContext, "服务器链接失败！请检查网络");
-        }
-    };
 
 }

@@ -138,7 +138,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
 
     public void onEventMainThread(CourseThumbnailLoadedEvent event) {
-        ItemViewLocalRecord item = (ItemViewLocalRecord) mHomePage.gridViewAllRecords.findViewWithTag(event.getKey());
+        ItemViewLocalRecord item = mHomePage.findViewWithTag(event.getKey());
         if (item != null)
             item.setThumbnail(event.getIcon());
 
@@ -212,17 +212,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         ft.replace(R.id.id_content, fg);
         ft.commitAllowingStateLoss();
     }
-
-    // =========================================================================
-
-    /**
-     * 是否需要上传
-     */
-    public boolean isUploading(String courseKey) {
-        return false;
-    }
-
-    // ===========================================================================
 
     /**
      * 搜索

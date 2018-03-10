@@ -20,11 +20,10 @@ import com.speektool.utils.FileUtil;
 
 public class TaskLoadLocalPhotos extends BaseRunnable<Integer, Void> {
 
-	public static interface LoadLocalPhotosCallback {
+	public  interface LoadLocalPhotosCallback {
 		void onFinish(List<LocalPhotoDirBean> dirs);
 	}
 
-	private static final String tag = TaskLoadLocalPhotos.class.getSimpleName();
 	private final WeakReference<LoadLocalPhotosCallback> mListener;
 
 	public TaskLoadLocalPhotos(LoadLocalPhotosCallback listener) {

@@ -101,11 +101,6 @@
             android:enabled="true"
             android:exported="false"
             android:process=":error"/>
-        <service
-            android:name=".service.UploadService"
-            android:enabled="true"
-            android:exported="false"
-            android:process=":service"/>
     </application>
 
 </manifest>

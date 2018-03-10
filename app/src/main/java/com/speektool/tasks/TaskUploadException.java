@@ -14,7 +14,7 @@ import com.speektool.Const;
 
 public class TaskUploadException extends BaseRunnable<Integer, Void> {
 
-	public static interface UploadExceptionCallback {
+	public  interface UploadExceptionCallback {
 		void onConnectFail();
 
 		void onUploadFail();
@@ -22,7 +22,6 @@ public class TaskUploadException extends BaseRunnable<Integer, Void> {
 		void onUploadSuccess();
 
 	}
-	private static final String tag=TaskUploadException.class.getSimpleName();
 	private final WeakReference<UploadExceptionCallback> mListener;
 	private File exceptionZip;
 

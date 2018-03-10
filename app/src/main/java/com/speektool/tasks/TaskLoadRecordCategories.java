@@ -1,19 +1,9 @@
 package com.speektool.tasks;
 
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.text.TextUtils;
 
 import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
-import com.speektool.Const;
 import com.speektool.SpeekToolApp;
 import com.speektool.bean.SearchCategoryBean;
 import com.speektool.bean.UserBean;
@@ -21,14 +11,22 @@ import com.speektool.dao.RecordCategoriesDatabase;
 import com.speektool.dao.UserDatabase;
 import com.speektool.utils.JsonUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
 public class TaskLoadRecordCategories extends BaseRunnable<Integer, Void> {
 
-    public static interface RecordTypeLoadListener {
+    public interface RecordTypeLoadListener {
 
         void onRecordTypeLoaded(List<SearchCategoryBean> result);
     }
 
-    private static final String tag = TaskLoadRecordCategories.class.getSimpleName();
     private final WeakReference<RecordTypeLoadListener> mListener;
     private boolean isNeedAllType;
 

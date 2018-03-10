@@ -17,7 +17,7 @@ import com.speektool.dao.UserDatabase;
 
 public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
 
-    public static interface ModifyUserInfoCallback {
+    public  interface ModifyUserInfoCallback {
         void onConnectFail();
 
         void onResponseFail();
@@ -25,7 +25,6 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
         void onSuccess();
     }
 
-    private static final String tag = TaskModifyUserInfo.class.getSimpleName();
     private final WeakReference<ModifyUserInfoCallback> mListener;
     private UserBean userBean;
 

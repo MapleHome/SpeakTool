@@ -47,11 +47,7 @@ import com.speektool.impl.platforms.TencentWeiboPlat;
 import com.speektool.impl.platforms.WechartPlat;
 import com.speektool.impl.player.PlayProcess;
 import com.speektool.service.PlayService;
-import com.speektool.service.UploadService;
-import com.speektool.service.UploadService.UploadRequestCode;
 import com.speektool.tasks.MyThreadFactory;
-import com.speektool.tasks.TaskDeleteServerCourse;
-import com.speektool.tasks.TaskDeleteServerCourse.DeleteServerCourseCallback;
 import com.speektool.tasks.TaskGetThirdpartys;
 import com.speektool.tasks.TaskGetThirdpartys.TaskGetThirdpartysCallback;
 import com.speektool.utils.RecordFileUtils;
@@ -199,24 +195,12 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
                 if (!loginSessionCheck()) {
                     break;
                 }
-                if (mActivityContext.isUploading(mItemBean.getThumbnailImgPath())) {
-                    T.showShort(mContext, "课程正在上传,请稍后再试！");
-                    break;
-                }
                 more();
                 break;
             case R.id.ivDeleteVideo:// 删除
-                if (mActivityContext.isUploading(mItemBean.getThumbnailImgPath())) {
-                    T.showShort(mContext, "课程正在上传,请稍后再试！");
-                    break;
-                }
                 showDeleteDialog();
                 break;
             case R.id.ivCopyLink:// 复制路径
-                if (mActivityContext.isUploading(mItemBean.getThumbnailImgPath())) {
-                    T.showShort(mContext, "课程正在上传,请稍后再试！");
-                    break;
-                }
                 if (mItemBean instanceof LocalRecordBean) {
                     copyLinkLocalRecord();// 复制本地记录路径
                 } else {
@@ -388,11 +372,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
             T.showShort(mContext, "上传失败！");
             return;
         }
-        Intent requestUploadIntent = new Intent(mActivityContext, UploadService.class);
-        requestUploadIntent.putExtra(UploadService.EXTRA_ACTION, UploadService.ACTION_UPLOAD_TO_SPEAKTOOL);
-        requestUploadIntent.putExtra(UploadService.EXTRA_REQUEST_DATA, recordUploadBean);
-        requestUploadIntent.putExtra(UploadService.EXTRA_REQUEST_CODE, UploadRequestCode.COPY_LINK);
-        mActivityContext.startService(requestUploadIntent);
         //
         dismiss();
     }
@@ -555,23 +534,13 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
                     }
                 });
             } else {
-                deleteServerRecord(true);
+                // deleteServerRecord(true);
             }
         } else {
-            deleteServerRecord(false);
+            // deleteServerRecord(false);
         }
     }
 
-    /**
-     * 删除服务器端记录
-     */
-    private void deleteServerRecord(final boolean isNeedDeleteLocalRecord) {
-        if (!loginSessionCheck())
-            return;
-        mLoadingDialogHelper.showLoading("正在加载", null);
-        singleExecutor.execute(new TaskDeleteServerCourse(mDeleteServerCourseCallback, mItemBean,
-                isNeedDeleteLocalRecord));
-    }
 
     /**
      * 删除本地记录
@@ -589,26 +558,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         dir.delete();
     }
 
-    private DeleteServerCourseCallback mDeleteServerCourseCallback = new DeleteServerCourseCallback() {
-        @Override
-        public void onDeleteSuccess() {
-            mLoadingDialogHelper.dismissLoading();
-            afterDeleteSuccess();
-        }
-
-        @Override
-        public void onDeleteFail() {
-            mLoadingDialogHelper.dismissLoading();
-            afterDeleteSuccess();
-        }
-
-        @Override
-        public void onConnectFail() {
-            mLoadingDialogHelper.dismissLoading();
-            T.showShort(mContext, "服务器链接失败！请检查网络。");
-        }
-    };
-
+    
     private void afterDeleteSuccess() {
         new AlertDialog(mActivityContext).builder().setTitle("提示").setMsg("课程删除成功！")
                 .setPositiveButton("确定", new View.OnClickListener() {

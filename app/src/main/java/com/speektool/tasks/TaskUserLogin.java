@@ -18,7 +18,7 @@ public class TaskUserLogin extends BaseRunnable<Integer, Void> {
     /**
      * 用户登陆回调
      */
-    public static interface UserLoginCallback {
+    public interface UserLoginCallback {
         /**
          * 连接失败
          */
