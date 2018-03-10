@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <com.speektool.ui.layouts.SquareImageView
+        android:id="@+id/ivPlayPause"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_pause" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ProgressBar
+            android:id="@+id/pbProgress"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:indeterminateOnly="false"
+            android:max="1000"
+            android:progressDrawable="@drawable/progressbar_bg" />
+
+        <TextView
+            android:id="@+id/tvProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="00:24/00:50"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</LinearLayout>

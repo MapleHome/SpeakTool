@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_pow_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+
+        <ImageView
+            android:id="@+id/iv_add_text"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_add_text_icon" />
+
+        <ImageView
+            android:id="@+id/iv_add_img"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_add_img_icon" />
+
+        <ImageView
+            android:id="@+id/iv_change_bg"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_add_change_bg_icon" />
+    </LinearLayout>
+
+</LinearLayout>

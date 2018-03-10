@@ -9,6 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/ishare" />
+            <option value="$PROJECT_DIR$/pgble" />
+            <option value="$PROJECT_DIR$/pulltorefresh" />
+            <option value="$PROJECT_DIR$/smartpen" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

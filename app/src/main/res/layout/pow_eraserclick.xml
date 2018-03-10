@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="100dp"
+        android:background="@drawable/shape_pow_bg"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <com.speektool.ui.layouts.StrokeWidthPreview
+            android:id="@+id/strokeWidthPreview"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/popup_selectColor_strokepreview_height"
+            android:background="@drawable/ic_launcher" />
+
+        <SeekBar
+            android:id="@+id/seekBarAdjustStrokeWidth"
+            style="@style/Widget.SeekBar.Normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="50"
+            android:progress="1" />
+    </LinearLayout>
+
+</LinearLayout>

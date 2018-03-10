@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:background="@drawable/shape_pow_bg"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/tvReRecordPage"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_popup_button"
+            android:gravity="center"
+            android:text="重录本页"
+            android:textColor="@color/pow_text_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvReRecordAll"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_popup_button"
+            android:gravity="center"
+            android:text="重录全部"
+            android:textColor="@color/pow_text_color"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

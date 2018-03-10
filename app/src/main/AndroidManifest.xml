@@ -2,20 +2,163 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.speektool">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SET_PROCESS_LIMIT"/>
+    <!-- BLE璁惧闇€瑕佹潈闄?-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- 鎷撴€濆痉 -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
+        android:name=".SpeekToolApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name="com.speektool.activity.UserFMActivity"
+            android:screenOrientation="portrait"/>
+        <!--  用户界面  -->
+        <activity android:name="com.speektool.activity.WebActivity"/>
+        <!--  网页 -->
+        <!--  编辑界面  -->
+        <activity
+            android:name="com.speektool.activity.DrawActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+        <!--  本地视频播放界面 -->
+        <activity
+            android:name="com.speektool.activity.PlayVideoActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:hardwareAccelerated="true"
+            android:launchMode="standard"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+        <!--  Url视频播放界面 -->
+        <activity
+            android:name="com.speektool.activity.PlayUrlVideoActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+        <!--  ******************************** 服务  ************************************* -->
+        <!--  添加BLE数码笔蓝牙服务 -->
+        <service
+            android:name="com.smart.pen.core.services.SmartPenService"
+            android:enabled="true">
+
+            <intent-filter android:priority="10000">
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+            </intent-filter>
+        </service>
+        <!--  添加USB OTG数码笔服务 -->
+        <service
+            android:name="com.smart.pen.core.services.UsbPenService"
+            android:enabled="true"/>
+        <service
+            android:name=".service.PlayService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":play"/>
+        <service
+            android:name=".service.KeepAliveService"
+            android:enabled="true"
+            android:exported="false"/>
+        <service
+            android:name=".service.ErrorService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":error"/>
+        <service
+            android:name=".service.UploadService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":service"/>
+
+        <receiver android:name=".receiver.SystemDownloadCompleteRecevier">
+
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
+        <!--  分享  -->
+
+        <activity
+            android:name="cn.sharesdk.framework.ShareSDKUIShell"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <!--             	AuthorizeAdapter表示一个继承自cn.sharesdk.framework.authorize.AuthorizeAdapter
+              的类，这个类可以监听到页面的生命周期，也可以获取授权页面的各种UI控件。
+              开发者可以通过继承AuthorizeAdapter，重写其方法，并获取各种UI来自定义这个页面的行为。
+          -->
+            <meta-data
+                android:name="AuthorizeAdapter"
+                android:value="cn.sharesdk.demo.MyAdapter"/>
+            <!--             	QZoneWebShareAdapter表示一个继承自cn.sharesdk.tencent.qzone.QZoneWebShareAdapter
+            	的类，这个类可以监听到页面的生命周期，也可以获QQ空间网页分享权页面的各种UI控件。
+            	开发者可以通过继承QZoneWebShareAdapter，重写其方法，并获取各种UI来自定义这个页面的行为。
+  -->
+            <meta-data
+                android:name="QZoneWebShareAdapter"
+                android:value="cn.sharesdk.demo.MyQZoneWebShareAdapter"/>
+            <!--             	如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，须要在此处添加一个对ACTION_VIEW
+               事件的过滤器，其中的scheme是“tencent”前缀再开发者应用的加上appId。如果此过滤器不设置，
+               则分享结束以后不能得到正确的回调
+        -->
+            <intent-filter>
+                <data android:scheme="tencent1102044077"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+        <!--  分享  -->
+        <!--  微信分享回调  -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
     </application>
 
 </manifest>
