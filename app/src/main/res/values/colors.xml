@@ -3,4 +3,22 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="draw_left_bar_bg">#aa0066CC</color> <!-- 左侧功能条颜色 -->
+    <color name="draw_right_bar_bg">#aa0066CC</color> <!-- 右侧功能条颜色 -->
+    <color name="bar_recording_background">#f08080</color> <!-- 录屏状态功能条颜色 -->
+
+    <!-- PopoWindow -->
+    <color name="pow_text_color">#676767</color> <!-- 字体颜色 -->
+    <!-- 记录条目 -->
+    <color name="taikonghui_def">#F2F2F2</color>
+    <color name="taikonghui_sel">#d2d2d2</color>
+    <color name="line_bg">#BBBBBB</color>
+    <!-- 其他 -->
+    <color name="split_line">#DDDDDD</color> <!-- LV分割线 -->
+    <color name="split_bg">#EBEBEB</color> <!-- LV背景 -->
+    <!-- 仿IOS效果Dialog -->
+    <color name="dialog_bg">#E3E3E3</color>
+    <color name="dialog_sel_bg">#C7C7C7</color>
+    <color name="dialog_line">#C7C8CD</color>
 </resources>

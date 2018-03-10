@@ -1,0 +1,73 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="jiaodu">8dp</dimen>
+    <dimen name="drawactivity_top_icon_width">30dp</dimen>
+    <dimen name="drawactivity_top_icon_height">30dp</dimen>
+    <dimen name="drawactivity_top_icon_marginLeft">30dp</dimen>
+    <dimen name="drawactivity_bottombar_height">60dp</dimen>
+    <dimen name="drawactivity_topbar_height">60dp</dimen>
+    <dimen name="drawactivity_pop_icon_marginLeft">40dp</dimen>
+    <dimen name="drawactivity_pop_icon_selectbg_marginLeft">70dp</dimen>
+    <dimen name="drawactivity_pop_icon_undo_marginLeft">50dp</dimen>
+    <dimen name="drawactivity_bottom_icon_width">30dp</dimen>
+    <dimen name="drawactivity_bottom_icon_height">30dp</dimen>
+    <dimen name="dialog_fillsaveinfo_width">600dp</dimen>
+    <dimen name="dialog_fillsaveinfo_height">500dp</dimen>
+    <dimen name="dialog_fillsaveinfo_width_inner">580dp</dimen>
+    <dimen name="dialog_fillsaveinfo_height_inner">480dp</dimen>
+    <dimen name="dialog_fillsaveinfo_inner_paddingTop">20dp</dimen>
+    <dimen name="dialog_fillsaveinfo_inner_paddingBottom">20dp</dimen>
+    <dimen name="dialog_fillsaveinfo_margingTop">20dp</dimen>
+    <dimen name="dialog_fillsaveinfo_icon_width">50dp</dimen>
+    <dimen name="dialog_fillsaveinfo_icon_height">50dp</dimen>
+    <dimen name="dialog_fillsaveinfo_title_size">30dp</dimen>
+    <dimen name="dialog_fillsaveinfo_secondtitle_size">20dp</dimen>
+    <dimen name="dialog_fillsaveinfo_edittext_size">20dp</dimen>
+    <!-- below is pop at top -->
+    <dimen name="popup_pickPhoto__width">300dp</dimen>
+    <dimen name="popup_pickPhoto__height">400dp</dimen>
+    <dimen name="popup_getNetImage_width">400dp</dimen>
+    <dimen name="popup_getNetImage_height">400dp</dimen>
+    <dimen name="popup_selectbg_width">400dp</dimen>
+    <dimen name="popup_selectbg_height">300dp</dimen>
+    <dimen name="popup_selectbg_devider_marginleft">80dp</dimen>
+    <dimen name="popup_clear_width">200dp</dimen>
+    <dimen name="popup_clear_height">180dp</dimen>
+    <dimen name="popup_addImage_width">200dp</dimen>
+    <dimen name="popup_addImage_height">220dp</dimen>
+    <dimen name="popup_selectColor_width">200dp</dimen>
+    <dimen name="popup_selectColor_height">250dp</dimen>
+    <dimen name="popup_eraser_width">200dp</dimen>
+    <dimen name="popup_eraser_height">150dp</dimen>
+    <dimen name="popup_search_width">110dp</dimen>
+    <dimen name="popup_search_height">200dp</dimen>
+    <dimen name="popup_selectColor_strokepreview_height">50dp</dimen>
+    <!-- below is pop at bottom -->
+    <dimen name="popup_newpage_width">250dp</dimen>
+    <dimen name="popup_newpage_height">180dp</dimen>
+    <dimen name="popup_preview_width">200dp</dimen>
+    <dimen name="popup_preview_height">140dp</dimen>
+    <dimen name="popup_rerecord_width">200dp</dimen>
+    <dimen name="popup_rerecord_height">140dp</dimen>
+    <dimen name="popup_setting_width">250dp</dimen>
+    <dimen name="popup_setting_heigth">230dp</dimen>
+    <dimen name="popup_setting_blackarrow_marginRight">10dp</dimen>
+    <dimen name="popup_selectUserPortrait_height">150dp</dimen>
+    <dimen name="popup_pickFontColor_width">200dp</dimen>
+    <dimen name="popup_pickFontColor_height">160dp</dimen>
+
+    <!--  -->
+
+    <dimen name="dialog_fillShareinfo_width">500dp</dimen>
+    <dimen name="dialog_fillShareinfo_height">600dp</dimen>
+    <dimen name="video_controller_height">50dp</dimen>
+    <dimen name="pop_arrow_width">20dp</dimen>
+    <dimen name="pop_arrow_height">30dp</dimen>
+    <dimen name="setting_size">16dp</dimen>
+    <dimen name="pop_more_operations_h_padding">8dp</dimen>
+    <dimen name="dialog_swipe_menu_item_textSize">16dp</dimen>
+
+</resources>
