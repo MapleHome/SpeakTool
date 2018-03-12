@@ -19,8 +19,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.maple.msdialog.ActionSheetDialog;
 import com.maple.msdialog.AlertEditDialog;
 import com.speektool.Const;
@@ -45,42 +43,31 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 用户信息修改界面
  *
  * @author shaoshuai
  */
 public class UserInfoChangePage extends BaseFragment implements OnClickListener {
-    @ViewInject(R.id.rl_portrait_area)
-    private RelativeLayout rl_portrait_area;// 用户头像
-    @ViewInject(R.id.rl_name_area)
-    private RelativeLayout rl_name_area;// 用户名称
-    @ViewInject(R.id.rl_introduce_area)
-    private RelativeLayout rl_introduce_area;// 简介
-    @ViewInject(R.id.rl_sex_area)
-    private RelativeLayout rl_sex_area;// 性别
-    @ViewInject(R.id.rl_birthday_area)
-    private RelativeLayout rl_birthday_area;// 生日
-    @ViewInject(R.id.rl_mail_area)
-    private RelativeLayout rl_mail_area;// 邮箱
-    @ViewInject(R.id.rl_change_pwd_area)
-    private RelativeLayout rl_change_pwd_area;// 修改密码
+    @BindView(R.id.rl_portrait_area) RelativeLayout rl_portrait_area;// 用户头像
+    @BindView(R.id.rl_name_area) RelativeLayout rl_name_area;// 用户名称
+    @BindView(R.id.rl_introduce_area) RelativeLayout rl_introduce_area;// 简介
+    @BindView(R.id.rl_sex_area) RelativeLayout rl_sex_area;// 性别
+    @BindView(R.id.rl_birthday_area) RelativeLayout rl_birthday_area;// 生日
+    @BindView(R.id.rl_mail_area) RelativeLayout rl_mail_area;// 邮箱
+    @BindView(R.id.rl_change_pwd_area) RelativeLayout rl_change_pwd_area;// 修改密码
 
-    @ViewInject(R.id.iv_portrait)
-    private ImageView iv_portrait;// 头像
-    @ViewInject(R.id.tv_name)
-    private TextView tv_name;// 用户名
-    @ViewInject(R.id.tv_introduce)
-    private TextView tv_introduce;// 用户简介
-    @ViewInject(R.id.tv_sex)
-    private TextView tv_sex;// 性别
-    @ViewInject(R.id.tv_birthday)
-    private TextView tv_birthday;// 生日
-    @ViewInject(R.id.tv_mail)
-    private TextView tv_mail;// 邮箱
+    @BindView(R.id.iv_portrait) ImageView iv_portrait;// 头像
+    @BindView(R.id.tv_name) TextView tv_name;// 用户名
+    @BindView(R.id.tv_introduce) TextView tv_introduce;// 用户简介
+    @BindView(R.id.tv_sex) TextView tv_sex;// 性别
+    @BindView(R.id.tv_birthday) TextView tv_birthday;// 生日
+    @BindView(R.id.tv_mail) TextView tv_mail;// 邮箱
 
-    @ViewInject(R.id.bt_save_info)
-    private Button bt_save_info;// 保存信息
+    @BindView(R.id.bt_save_info) Button bt_save_info;// 保存信息
 
     public static final String FRAGMENT_NAME = "个人信息修改";
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;// 捕获图片
@@ -97,7 +84,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_user_info_change, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
 
         return view;
     }

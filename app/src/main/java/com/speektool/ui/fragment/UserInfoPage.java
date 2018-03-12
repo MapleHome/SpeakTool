@@ -14,8 +14,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.speektool.Const;
 import com.speektool.R;
 import com.speektool.activity.UserFMActivity;
@@ -31,6 +29,8 @@ import com.speektool.ui.dialogs.LoadingDialog;
 import com.speektool.utils.BitmapScaleUtil;
 import com.speektool.utils.T;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -39,27 +39,18 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  */
 public class UserInfoPage extends BaseFragment implements OnClickListener {
-    @ViewInject(R.id.ib_userPortrait)
-    private ImageButton ib_userPortrait;// 用户头像
-    @ViewInject(R.id.user_name)
-    private TextView user_name;// 用户名
+    @BindView(R.id.ib_userPortrait) ImageButton ib_userPortrait;// 用户头像
+    @BindView(R.id.user_name) TextView user_name;// 用户名
 
-    @ViewInject(R.id.ll_my_note)
-    private LinearLayout ll_my_note;// 我的笔记
-    @ViewInject(R.id.ll_my_record)
-    private LinearLayout ll_my_record;// 我的视频
+    @BindView(R.id.ll_my_note) LinearLayout ll_my_note;// 我的笔记
+    @BindView(R.id.ll_my_record) LinearLayout ll_my_record;// 我的视频
 
-    @ViewInject(R.id.ll_guanwang)
-    private LinearLayout ll_guanwang;// 官网
-    @ViewInject(R.id.ll_tieba)
-    private LinearLayout ll_tieba;// 贴吧
-    @ViewInject(R.id.ll_feedback)
-    private LinearLayout ll_feedback;// 意见反馈
-    @ViewInject(R.id.ll_about)
-    private LinearLayout ll_about;// 关于
+    @BindView(R.id.ll_guanwang) LinearLayout ll_guanwang;// 官网
+    @BindView(R.id.ll_tieba) LinearLayout ll_tieba;// 贴吧
+    @BindView(R.id.ll_feedback) LinearLayout ll_feedback;// 意见反馈
+    @BindView(R.id.ll_about) LinearLayout ll_about;// 关于
 
-    @ViewInject(R.id.bt_logout)
-    private Button bt_logout;// 注销
+    @BindView(R.id.bt_logout) Button bt_logout;// 注销
 
     public static final String FRAGMENT_NAME = "设置";
     private UserFMActivity mActivity;
@@ -69,7 +60,7 @@ public class UserInfoPage extends BaseFragment implements OnClickListener {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_user_info, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
 
         return view;
     }

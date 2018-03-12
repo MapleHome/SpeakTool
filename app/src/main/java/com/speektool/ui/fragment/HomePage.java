@@ -44,8 +44,7 @@ import butterknife.ButterKnife;
  * @author shaoshuai
  */
 public class HomePage extends BaseFragment {
-    @BindView(R.id.prgw_ServerRecords)
-    PullToRefreshGridView gridViewAllRecords;// 所有记录
+    @BindView(R.id.prgw_ServerRecords) PullToRefreshGridView gridViewAllRecords;// 所有记录
 
     private MainActivity mActivity;
     private LoadingDialog mLoadingDialog;
@@ -67,7 +66,6 @@ public class HomePage extends BaseFragment {
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_home, null);
         ButterKnife.bind(this, view);
-
         mActivity = (MainActivity) getActivity();
 
         // 记录列表

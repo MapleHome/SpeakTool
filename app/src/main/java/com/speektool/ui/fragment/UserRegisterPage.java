@@ -7,21 +7,17 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.speektool.R;
 import com.speektool.activity.UserFMActivity;
 import com.speektool.base.BaseFragment;
 import com.speektool.bean.UserBean;
 import com.speektool.busevents.RefreshCourseListEvent;
-import com.speektool.tasks.MyThreadFactory;
 import com.speektool.ui.dialogs.LoadingDialog;
 import com.speektool.utils.T;
 import com.speektool.utils.UserInfoValidateUtil;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -30,30 +26,21 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  */
 public class UserRegisterPage extends BaseFragment implements OnClickListener {
-    @ViewInject(R.id.etAccount)
-    private EditText etAccount;// 帐号
-    @ViewInject(R.id.etPwd)
-    private EditText etPwd;// 密码
-    @ViewInject(R.id.etNick)
-    private EditText etNick;// 昵称
-    @ViewInject(R.id.etEmail)
-    private EditText etEmail;// 邮箱
-    @ViewInject(R.id.etIntroduce)
-    private EditText etIntroduce;// 简介
-
-    @ViewInject(R.id.btnFinish)
-    private Button btnFinish;// 完成
+    @BindView(R.id.etAccount) EditText etAccount;// 帐号
+    @BindView(R.id.etPwd) EditText etPwd;// 密码
+    @BindView(R.id.etNick) EditText etNick;// 昵称
+    @BindView(R.id.etEmail) EditText etEmail;// 邮箱
+    @BindView(R.id.etIntroduce) EditText etIntroduce;// 简介
+    @BindView(R.id.btnFinish) Button btnFinish;// 完成
 
     public static final String FRAGMENT_NAME = "注册";
     private UserFMActivity mActivity;
     private LoadingDialog mLoadingDialog;
-    private ExecutorService singleExecutor = Executors.newSingleThreadExecutor(new MyThreadFactory(
-            "loadThirdpartysThread"));
 
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_user_register, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
 
         return view;
     }
@@ -121,6 +108,5 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
         EventBus.getDefault().post(new RefreshCourseListEvent());
         fm.popBackStack();// 退出当前界面
     }
-
 
 }

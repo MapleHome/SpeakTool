@@ -16,11 +16,12 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.speektool.R;
 import com.speektool.tasks.ThreadPoolWrapper;
 import com.speektool.ui.layouts.MyProgress;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 网页
@@ -28,15 +29,10 @@ import com.speektool.ui.layouts.MyProgress;
  * @author shaoshuai
  */
 public class WebActivity extends FragmentActivity implements OnClickListener {
-    @ViewInject(R.id.iv_back)
-    private ImageView iv_back;// 返回
-    @ViewInject(R.id.tv_title)
-    private TextView tv_title;// 标题
-
-    @ViewInject(R.id.mp_ProgressBar)
-    private MyProgress mp_ProgressBar;// 加载圈
-    @ViewInject(R.id.wv_content)
-    private WebView webView;// 网页
+    @BindView(R.id.iv_back) ImageView iv_back;// 返回
+    @BindView(R.id.tv_title) TextView tv_title;// 标题
+    @BindView(R.id.mp_ProgressBar) MyProgress mp_ProgressBar;// 加载圈
+    @BindView(R.id.wv_content) WebView webView;// 网页
 
     public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_URL = "extra_url";
@@ -51,7 +47,7 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         mContext = getApplicationContext();
-        ViewUtils.inject(this);
+        ButterKnife.bind(this);
 
         Intent it = getIntent();
         title = (String) it.getSerializableExtra(EXTRA_TITLE);

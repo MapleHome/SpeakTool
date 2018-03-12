@@ -34,8 +34,6 @@ import android.widget.ViewFlipper;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.maple.msdialog.AlertDialog;
 import com.speektool.Const;
 import com.speektool.R;
@@ -125,6 +123,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -132,55 +132,33 @@ import de.greenrobot.event.EventBus;
  *
  * @author shaoshuai
  */
-public class DrawActivity extends Activity implements OnClickListener, OnTouchListener, Draw, PickPhotoCallback,
-        OnSeekBarChangeListener {
+public class DrawActivity extends Activity implements OnClickListener, OnTouchListener,
+        Draw, PickPhotoCallback, OnSeekBarChangeListener {
     // 左侧功能条
-    @ViewInject(R.id.ll_left_bar)
-    private View layoutLeftBar;// 左侧功能条
-    @ViewInject(R.id.ivHandPen)
-    private ImageView ivHandPen;// 手写笔
-    @ViewInject(R.id.ivChoose)
-    private ImageView ivChoose;// 手
-    @ViewInject(R.id.ivPath)
-    private ImageView ivPath;// 颜色画笔
-    @ViewInject(R.id.ivEraser)
-    private ImageView ivEraser;// 橡皮
-    @ViewInject(R.id.ivMore)
-    private ImageView ivMore;// 添加
-    @ViewInject(R.id.ivDeletePage)
-    private ImageView ivDeletePage;// 删除界面
-    @ViewInject(R.id.ivUndo)
-    private ImageView ivUndo;// 撤销
-    @ViewInject(R.id.ivRedo)
-    private ImageView ivRedo;// 返回
+    @BindView(R.id.ll_left_bar) View layoutLeftBar;// 左侧功能条
+    @BindView(R.id.ivHandPen) ImageView ivHandPen;// 手写笔
+    @BindView(R.id.ivChoose) ImageView ivChoose;// 手
+    @BindView(R.id.ivPath) ImageView ivPath;// 颜色画笔
+    @BindView(R.id.ivEraser) ImageView ivEraser;// 橡皮
+    @BindView(R.id.ivMore) ImageView ivMore;// 添加
+    @BindView(R.id.ivDeletePage) ImageView ivDeletePage;// 删除界面
+    @BindView(R.id.ivUndo) ImageView ivUndo;// 撤销
+    @BindView(R.id.ivRedo) ImageView ivRedo;// 返回
     // 内容区
-    @ViewInject(R.id.drawBoardContainer)
-    private ViewFlipper viewFlipper;// 绘画板容器
-    @ViewInject(R.id.viewFlipperOverlay)
-    private View viewFlipperOverlay;// 文本
-    @ViewInject(R.id.layoutVideoController)
-    private VideoPlayControllerView layoutVideoController;// 视频播放控制器
+    @BindView(R.id.drawBoardContainer) ViewFlipper viewFlipper;// 绘画板容器
+    @BindView(R.id.viewFlipperOverlay) View viewFlipperOverlay;// 文本
+    @BindView(R.id.layoutVideoController) VideoPlayControllerView layoutVideoController;// 视频播放控制器
     // 底部功能条
-    @ViewInject(R.id.ll_right_bar)
-    private View layoutBottom;// 底部功能条
-    @ViewInject(R.id.ivRecord)
-    private ImageView ivRecord;// 录制
-    @ViewInject(R.id.tvTime)
-    private TextView tvTime;// 时间
-    @ViewInject(R.id.ivReRecord)
-    private ImageView ivReRecord;// 重录
-    @ViewInject(R.id.ivPrePage)
-    private ImageView ivPrePage;// 上一页
-    @ViewInject(R.id.tvPageInfo)
-    private TextView tvPageInfo;// 1/5 页面信息
-    @ViewInject(R.id.ivNextPage)
-    private ImageView ivNextPage;// 下一页
-    @ViewInject(R.id.ivNewPage)
-    private ImageView ivNewPage;// 添加新界面
-    @ViewInject(R.id.ivPreview)
-    private ImageView ivPreview;// 预览
-    @ViewInject(R.id.tvFinish)
-    private TextView tvFinish;// 完成
+    @BindView(R.id.ll_right_bar) View layoutBottom;// 底部功能条
+    @BindView(R.id.ivRecord) ImageView ivRecord;// 录制
+    @BindView(R.id.tvTime) TextView tvTime;// 时间
+    @BindView(R.id.ivReRecord) ImageView ivReRecord;// 重录
+    @BindView(R.id.ivPrePage) ImageView ivPrePage;// 上一页
+    @BindView(R.id.tvPageInfo) TextView tvPageInfo;// 1/5 页面信息
+    @BindView(R.id.ivNextPage) ImageView ivNextPage;// 下一页
+    @BindView(R.id.ivNewPage) ImageView ivNewPage;// 添加新界面
+    @BindView(R.id.ivPreview) ImageView ivPreview;// 预览
+    @BindView(R.id.tvFinish) TextView tvFinish;// 完成
 
     // 常量
     public static final String EXTRA_PLAY_MODE = "play_mode";// 画板模式关键字
@@ -243,7 +221,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         super.onCreate(savedInstanceState);// inject finish.
         setContentView(R.layout.activity_draw_yulan);
         mContext = DrawActivity.this;
-        ViewUtils.inject(this);
+        ButterKnife.bind(this);
         EventBus.getDefault().register(this);// 注册EventBus订阅者
         Preconditions.checkNotNull(tvFinish);
         //

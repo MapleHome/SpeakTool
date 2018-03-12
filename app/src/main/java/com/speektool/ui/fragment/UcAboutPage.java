@@ -9,13 +9,14 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.speektool.R;
 import com.speektool.activity.UserFMActivity;
 import com.speektool.base.BaseFragment;
 import com.speektool.manager.AppManager;
 import com.speektool.tasks.ThreadPoolWrapper;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 关于
@@ -23,13 +24,9 @@ import com.speektool.tasks.ThreadPoolWrapper;
  * @author shao
  */
 public class UcAboutPage extends BaseFragment implements OnClickListener {
-    @ViewInject(R.id.tv_version)
-    private TextView tv_version;// APP版本
-
-    @ViewInject(R.id.ll_check_update)
-    private LinearLayout ll_check_update;// 检查更新
-    @ViewInject(R.id.ll_service_tel)
-    private LinearLayout ll_service_tel;// 服务热线
+    @BindView(R.id.tv_version) TextView tv_version;// APP版本
+    @BindView(R.id.ll_check_update) LinearLayout ll_check_update;// 检查更新
+    @BindView(R.id.ll_service_tel) LinearLayout ll_service_tel;// 服务热线
 
     public static final String FRAGMENT_NAME = "关于";
     private UserFMActivity mActivity;
@@ -39,7 +36,7 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_uc_about, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
