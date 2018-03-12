@@ -1,5 +1,7 @@
 package com.pengenerations.lib.ble.scan;
 
+import java.util.ArrayList;
+
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +12,12 @@ import android.widget.TextView;
 
 import com.example.pgbleex.R;
 
-import java.util.ArrayList;
-
+/**
+ * 蓝牙设备适配器
+ *
+ * @author shaoshuai
+ *
+ */
 public class BLEDeviceItemAdapter extends ArrayAdapter<BluetoothDevice> {
     public ArrayList<BluetoothDevice> m_items = null;
 

@@ -6,15 +6,15 @@ package com.pengenerations.lib.ble.streaming;
  */
 public abstract interface OnStreamingConnectionListeneter {
 	/**
-	 * ±Ê¶Ï¿ª. No reason code of disconnection is not existed.
-	 * 
+	 * ç¬”æ–­å¼€. No reason code of disconnection is not existed.
+	 *
 	 * @return
 	 */
 	public abstract int onDisconnected();
 
 	/**
-	 * ±ÊÁ¬½Ó
-	 * 
+	 * ç¬”è¿žæŽ¥
+	 *
 	 * @return
 	 */
 	public abstract void onConnected(int penType);

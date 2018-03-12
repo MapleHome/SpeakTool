@@ -9,10 +9,10 @@ import android.util.Log;
 import com.pengenerations.lib.ble.streaming.PGBLEManager.OperatingMode;
 
 /**
- * ¡˜øÿ÷∆∆˜
- * 
+ * ÊµÅÊéßÂà∂Âô®
+ *
  * @author shaoshuai
- * 
+ *
  */
 public class StreamingController {
 
@@ -76,7 +76,7 @@ public class StreamingController {
 		m_event = event;
 	}
 
-	// ± Ãß∆
+	// Á¨îÊä¨Ëµ∑
 	public void PenUp() {
 		m_penStatus = false;
 		m_firstFlag = false;
@@ -88,7 +88,7 @@ public class StreamingController {
 		return m_penStatus;
 	}
 
-	// ± ∞¥œ¬
+	// Á¨îÊåâ‰∏ã
 	public void PenDown() {
 		if (m_penStatus == true) {
 			m_firstFlag = false;
@@ -99,7 +99,7 @@ public class StreamingController {
 
 	String m_PenSerial = "";
 
-	// …Ë÷√± ID
+	// ËÆæÁΩÆÁ¨îID
 	public void SetPenID(String penId) {
 		m_PenSerial = penId;
 	}
@@ -175,7 +175,7 @@ public class StreamingController {
 	}
 
 	public void addCoordinate(int x, int y, int force, long ulPage) {
-		// ± ∞¥œ¬
+		// Á¨îÊåâ‰∏ã
 		if (m_penStatus == true && m_firstFlag == false) {
 			m_firstFlag = true;
 			m_path.moveTo((x * m_scaleX), (y * m_scaleY));
@@ -188,7 +188,7 @@ public class StreamingController {
 		} else {
 			if (m_penStatus == false)
 				return;
-			// ± Ãß∆
+			// Á¨îÊä¨Ëµ∑
 			m_path.lineTo((x * m_scaleX), (y * m_scaleY));
 
 			m_x = x;
@@ -221,23 +221,23 @@ public class StreamingController {
 		}
 
 		switch (m_event) {
-		case 0:
-			m_str += "EVENT : STATUS_NO_POSTION_DECODE_FAILED" + "\n";
-			break;
-		case 1:
-			m_str += "EVENT : STATUS_NO_POSTION_LOCKED_SEGMENT" + "\n";
-			break;
-		case 2:
-			m_str += "EVENT : STATUS_NO_POSTION_NON_ANOTO_PAPER" + "\n";
-			break;
-		case 3:
-			m_str += "EVENT : STATUS_NO_POSTION_FRAME_SKIPPED" + "\n";
-			break;
-		case 4:
-			m_str += "EVENT : STATUS_NO_POSTION_CAMERA_RESTARTED" + "\n";
-			break;
-		default:
-			break;
+			case 0:
+				m_str += "EVENT : STATUS_NO_POSTION_DECODE_FAILED" + "\n";
+				break;
+			case 1:
+				m_str += "EVENT : STATUS_NO_POSTION_LOCKED_SEGMENT" + "\n";
+				break;
+			case 2:
+				m_str += "EVENT : STATUS_NO_POSTION_NON_ANOTO_PAPER" + "\n";
+				break;
+			case 3:
+				m_str += "EVENT : STATUS_NO_POSTION_FRAME_SKIPPED" + "\n";
+				break;
+			case 4:
+				m_str += "EVENT : STATUS_NO_POSTION_CAMERA_RESTARTED" + "\n";
+				break;
+			default:
+				break;
 		}
 		m_event = -1;
 		m_str += "Remained Battery : " + m_battery + ", Memory Fill Level : " + m_memory + "\n";

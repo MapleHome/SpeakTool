@@ -3,10 +3,10 @@ package com.pengenerations.lib.ble.scan;
 import android.bluetooth.BluetoothDevice;
 
 /**
- * À¶ÑÀÉ¨Ãè¼àÌı
- * 
+ * è“ç‰™æ‰«æç›‘å¬
+ *
  * @author shaoshuai
- * 
+ *
  */
 public interface OnBLEScanListener {
 

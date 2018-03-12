@@ -1,6 +1,5 @@
 package com.pengenerations.lib.ble.scan;
 
-import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -8,6 +7,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+/**
+ * 蓝牙扫描管理
+ *
+ * @author shaoshuai
+ *
+ */
 public class BLEScanManager {
 	final String TAG = BLEScanManager.class.getName();
 	private Context m_Context = null;
@@ -16,9 +21,8 @@ public class BLEScanManager {
 	// Stops scanning after 10 seconds.
 	private static final long SCAN_PERIOD = 10000;
 
-	OnBLEScanListener m_OnBleScanListener = null;
+	OnBLEScanListener m_OnBleScanListener = null;// 扫描监听
 
-	@SuppressLint("NewApi")
 	public BLEScanManager(Context context, OnBLEScanListener onBleScanListener) {
 		m_Context = context;
 		m_OnBleScanListener = onBleScanListener;
@@ -62,10 +66,9 @@ public class BLEScanManager {
 
 	/**
 	 * This function is scan handler.
-	 * 
+	 *
 	 * @param enable
 	 */
-	@SuppressLint("NewApi")
 	private void scanLeDevice(final boolean enable) {
 
 		if (mBluetoothAdapter == null) {
@@ -77,7 +80,6 @@ public class BLEScanManager {
 		if (enable) {
 
 			mHandler.postDelayed(new Runnable() {
-				@SuppressLint("NewApi")
 				@Override
 				public void run() {
 					try {

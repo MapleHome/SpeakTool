@@ -83,10 +83,10 @@ public class PGBLEManager {
 	}
 
 	/**
-	 * ³õÊ¼»¯
-	 * 
+	 * åˆå§‹åŒ–
+	 *
 	 * @param devAddress
-	 *            - Éè±¸µÄÀ¶ÑÀµØÖ·
+	 *            - è®¾å¤‡çš„è“ç‰™åœ°å€
 	 */
 	public void initialize(String devAddress) {
 		if (m_Handler == null)
@@ -158,7 +158,7 @@ public class PGBLEManager {
 							}
 							mConnectDev = mBluetoothAdapter.getRemoteDevice(mDeviceAddress);
 							if (m_bfDevPaired == false) {
-								Log.d(TAG, "Á¬½Óµ½ " + mConnectDev.getName());
+								Log.d(TAG, "è¿žæŽ¥åˆ° " + mConnectDev.getName());
 								unpairEachDevice(mConnectDev);
 								try {
 									Thread.sleep(100);
@@ -207,7 +207,7 @@ public class PGBLEManager {
 		}
 	}
 
-	/** Á÷ÏûÏ¢ÀàÐÍ */
+	/** æµæ¶ˆæ¯ç±»åž‹ */
 	public enum PGStreamingMessageType {
 		MT_REQUEST_COMMAND(0x10), //
 		MT_EVENT(0x11), //
@@ -283,7 +283,7 @@ public class PGBLEManager {
 
 	/**
 	 * Check Bluetooth LE packet with checksum
-	 * 
+	 *
 	 * @param data
 	 * @return true : valid data false : invalid data
 	 */
@@ -308,7 +308,7 @@ public class PGBLEManager {
 
 	/**
 	 * Main Pasor for Bluetooth LE
-	 * 
+	 *
 	 * @param characteristic
 	 */
 	void parseBLEPakcet(BluetoothGattCharacteristic characteristic) {
@@ -339,44 +339,44 @@ public class PGBLEManager {
 
 	/**
 	 * Streaming Parsor
-	 * 
+	 *
 	 * @param data
 	 */
 	private void StreamingParsor(byte[] data) {
 		// packet structure| preamble | type | length | payload | crc |
 		byte[] command = new byte[data[2]];
 		System.arraycopy(data, 3, command, 0, data[2]);
-		// ¸ù¾ÝÀàÐÍÖµ¶ÔÀ¶ÑÀ½øÐÐÏêÏ¸½âÎö
+		// æ ¹æ®ç±»åž‹å€¼å¯¹è“ç‰™è¿›è¡Œè¯¦ç»†è§£æž
 		switch (GetPGStreamingMessageType(GetIndexPGStreamingMessageType(data[1]))) {
-		case MT_REQUEST_COMMAND:
-			handlerCommand(command);
-			break;
-		case MT_EVENT:
-			handlerEvent(command);
-			break;
-		case MT_COORDINATE:
-			handlerCoordinate(command);
-			break;
-		case MT_NO_COORDINATE:
-			handlerNoCoordinate(command);
-			break;
-		case MT_GET_PEN_INFO:
-			DisplayPenInfo(command);
-			break;
-		case MT_GET_PEN_INFO_EXT:
-			break;
-		case MT_MULTI_COORIDNATE:
-			handlerMultiCoordinate(command);
-			break;
-		default:
-			Log.e(TAG, "²»Ö§³ÖµÄÏûÏ¢ÀàÐÍ");
-			break;
+			case MT_REQUEST_COMMAND:
+				handlerCommand(command);
+				break;
+			case MT_EVENT:
+				handlerEvent(command);
+				break;
+			case MT_COORDINATE:
+				handlerCoordinate(command);
+				break;
+			case MT_NO_COORDINATE:
+				handlerNoCoordinate(command);
+				break;
+			case MT_GET_PEN_INFO:
+				DisplayPenInfo(command);
+				break;
+			case MT_GET_PEN_INFO_EXT:
+				break;
+			case MT_MULTI_COORIDNATE:
+				handlerMultiCoordinate(command);
+				break;
+			default:
+				Log.e(TAG, "ä¸æ”¯æŒçš„æ¶ˆæ¯ç±»åž‹");
+				break;
 		}
 	}
 
 	/**
 	 * ReqMessageType handler
-	 * 
+	 *
 	 * @param cmd
 	 */
 	private void handlerCommand(byte[] cmd) {
@@ -384,50 +384,50 @@ public class PGBLEManager {
 		byte subLength = 0;
 
 		switch (GetSctCommand(cmd[0])) {
-		case RHC_DEV_RTS:// rts
-		{
-			subLength = 2;
-			subPayload = new byte[subLength];
-			subPayload[0] = (byte) ResponseHandlerCommand.RHS_HOST_CTS.ordinal();// cts
-			subPayload[1] = 0;
+			case RHC_DEV_RTS:// rts
+			{
+				subLength = 2;
+				subPayload = new byte[subLength];
+				subPayload[0] = (byte) ResponseHandlerCommand.RHS_HOST_CTS.ordinal();// cts
+				subPayload[1] = 0;
 
-			// notify pen connected
-			NotifyConnection(notifyConnection.NC_CONNECT, cmd[1]);
+				// notify pen connected
+				NotifyConnection(notifyConnection.NC_CONNECT, cmd[1]);
 
-			m_SeqHandler = new SeqHandler(cmd[2]);
-		}
-			break;
-		case RHC_DEV_ACK:// ack
-			subLength = 3;
-			subPayload = new byte[subLength];
-
-			if (m_SeqHandler.GetSeqStatus() == true)
-				subPayload[0] = (byte) ResponseHandlerCommand.RHS_HOST_RSP_ACK.ordinal();// ack
-			else {
-				subPayload[0] = (byte) ResponseHandlerCommand.RHS_HOST_RSP_NAK.ordinal();// nak
-				m_SeqHandler.initSeq(cmd[1]);
+				m_SeqHandler = new SeqHandler(cmd[2]);
 			}
-			subPayload[1] = cmd[1]; // start seq;
-			subPayload[2] = cmd[2]; // last seq;
+			break;
+			case RHC_DEV_ACK:// ack
+				subLength = 3;
+				subPayload = new byte[subLength];
 
-			break;
-		case RHC_DEV_BAT_INFO:
-			Log.d(TAG, "Batter Capacity : " + cmd[1]);
-			// notify pen connected
-			NotifyStreaming(notifyStreaming.NS_BATTERY, new notifyArgs(cmd[1]));
-			break;
-		case RHC_DEV_MEM_INFO:
-			Log.d(TAG, "Memory Fill Level : " + cmd[1]);
-			// notify pen connected
-			NotifyStreaming(notifyStreaming.NS_MEMORY, new notifyArgs(cmd[1]));
-			break;
-		case RHC_DEV_SOUND_CTRL:
-			Log.d(TAG, "All Sound : " + cmd[1] + ", Sleep Sound : " + cmd[2]);
-			NotifyStreaming(notifyStreaming.NS_SOUND_STATUS, new notifyArgs(cmd[1], cmd[2]));
-			break;
-		default:
-			// ²»Ö§³ÖµÄÀàÐÍ
-			break;
+				if (m_SeqHandler.GetSeqStatus() == true)
+					subPayload[0] = (byte) ResponseHandlerCommand.RHS_HOST_RSP_ACK.ordinal();// ack
+				else {
+					subPayload[0] = (byte) ResponseHandlerCommand.RHS_HOST_RSP_NAK.ordinal();// nak
+					m_SeqHandler.initSeq(cmd[1]);
+				}
+				subPayload[1] = cmd[1]; // start seq;
+				subPayload[2] = cmd[2]; // last seq;
+
+				break;
+			case RHC_DEV_BAT_INFO:
+				Log.d(TAG, "Batter Capacity : " + cmd[1]);
+				// notify pen connected
+				NotifyStreaming(notifyStreaming.NS_BATTERY, new notifyArgs(cmd[1]));
+				break;
+			case RHC_DEV_MEM_INFO:
+				Log.d(TAG, "Memory Fill Level : " + cmd[1]);
+				// notify pen connected
+				NotifyStreaming(notifyStreaming.NS_MEMORY, new notifyArgs(cmd[1]));
+				break;
+			case RHC_DEV_SOUND_CTRL:
+				Log.d(TAG, "All Sound : " + cmd[1] + ", Sleep Sound : " + cmd[2]);
+				NotifyStreaming(notifyStreaming.NS_SOUND_STATUS, new notifyArgs(cmd[1], cmd[2]));
+				break;
+			default:
+				// ä¸æ”¯æŒçš„ç±»åž‹
+				break;
 		}
 		if (subLength > 0) {
 			SendHostCommand(subPayload, subLength);
@@ -441,7 +441,7 @@ public class PGBLEManager {
 
 	/**
 	 * EventMessageType data handler
-	 * 
+	 *
 	 * @param data
 	 */
 	private void handlerEvent(byte[] data) {
@@ -458,7 +458,7 @@ public class PGBLEManager {
 
 	/**
 	 * CoordinateMessageType data handler
-	 * 
+	 *
 	 * @param data
 	 */
 	int m_nFsrCnt = 0;
@@ -507,7 +507,7 @@ public class PGBLEManager {
 
 	/**
 	 * Muti-CoordinateMessageType data handler
-	 * 
+	 *
 	 * @param data
 	 */
 	private void handlerMultiCoordinate(byte[] data) {
@@ -570,7 +570,7 @@ public class PGBLEManager {
 
 	/**
 	 * NoCoordinateMessageType data handler
-	 * 
+	 *
 	 * @param data
 	 */
 	private void handlerNoCoordinate(byte[] data) {
@@ -674,7 +674,7 @@ public class PGBLEManager {
 
 	/**
 	 * Send data to Bluetooth LE device
-	 * 
+	 *
 	 * @param data
 	 * @param size
 	 */
@@ -688,7 +688,7 @@ public class PGBLEManager {
 		packet[1] = (byte) 0x01; // type
 		packet[2] = (byte) size; // payload length
 		System.arraycopy(data, 0, packet, 3, size); // copy data to payload
-													// buffer
+		// buffer
 
 		// calc checksum
 		for (int i = 1; i < totalSize - 1; i++) {
@@ -723,7 +723,7 @@ public class PGBLEManager {
 
 	/**
 	 * Send data to Bluetooth LE device
-	 * 
+	 *
 	 * @param data
 	 * @param size
 	 */
@@ -737,7 +737,7 @@ public class PGBLEManager {
 		packet[1] = (byte) 0x01; // type
 		packet[2] = (byte) size; // payload length
 		System.arraycopy(data, 0, packet, 3, size); // copy data to payload
-													// buffer
+		// buffer
 
 		// calc checksum
 		for (int i = 1; i < totalSize - 1; i++) {
@@ -784,7 +784,7 @@ public class PGBLEManager {
 
 	/**
 	 * Usb Command Parsor
-	 * 
+	 *
 	 * @param data
 	 */
 	public static final byte UMT_NONT = 0x00;
@@ -796,16 +796,16 @@ public class PGBLEManager {
 
 	private void UsbCommandParsor(byte[] data) {
 		switch (data[1]) {
-		case UMT_NONT:
-			break;
-		case UMT_STREAMING:
-			break;
-		case UMT_USB_COMMAND:
-			break;
-		case UMT_DUT_TEST:
-			break;
-		case UMT_DEBUG:
-			break;
+			case UMT_NONT:
+				break;
+			case UMT_STREAMING:
+				break;
+			case UMT_USB_COMMAND:
+				break;
+			case UMT_DUT_TEST:
+				break;
+			case UMT_DEBUG:
+				break;
 		}
 	}
 
@@ -834,7 +834,7 @@ public class PGBLEManager {
 
 	/**
 	 * Enable notification each service of IBIS Pen
-	 * 
+	 *
 	 * @param gatt
 	 */
 	boolean enablePGCharateristics(BluetoothGatt gatt) {
@@ -854,7 +854,7 @@ public class PGBLEManager {
 
 	/**
 	 * Enable notification of service
-	 * 
+	 *
 	 * @param gatt
 	 * @param uuid
 	 * @param notify
@@ -1094,16 +1094,16 @@ public class PGBLEManager {
 
 	private String connectionState(int status) {
 		switch (status) {
-		case BluetoothProfile.STATE_CONNECTED:
-			return "Connected";
-		case BluetoothProfile.STATE_DISCONNECTED:
-			return "Disconnected";
-		case BluetoothProfile.STATE_CONNECTING:
-			return "Connecting";
-		case BluetoothProfile.STATE_DISCONNECTING:
-			return "Disconnecting";
-		default:
-			return String.valueOf(status);
+			case BluetoothProfile.STATE_CONNECTED:
+				return "Connected";
+			case BluetoothProfile.STATE_DISCONNECTED:
+				return "Disconnected";
+			case BluetoothProfile.STATE_CONNECTING:
+				return "Connecting";
+			case BluetoothProfile.STATE_DISCONNECTING:
+				return "Disconnecting";
+			default:
+				return String.valueOf(status);
 		}
 	}
 
@@ -1112,14 +1112,14 @@ public class PGBLEManager {
 
 	OnPenStreamListener m_OnPenStreamListener = null;
 
-	/** ×¢²áµãÕó±ÊÁ÷¼àÌý */
+	/** æ³¨å†Œç‚¹é˜µç¬”æµç›‘å¬ */
 	public void RegisterOnPenStreamListener(OnPenStreamListener onPenStreamListener) {
 		m_OnPenStreamListener = onPenStreamListener;
 	}
 
 	OnPenConnectListener m_OnPenConnectListener = null;
 
-	/** ×¢²áµãÕó±ÊÁ¬½Ó¼àÌý */
+	/** æ³¨å†Œç‚¹é˜µç¬”è¿žæŽ¥ç›‘å¬ */
 	public void RegisterOnPenConnectListener(OnPenConnectListener onPenConnectListener) {
 		m_OnPenConnectListener = onPenConnectListener;
 	}
@@ -1139,24 +1139,24 @@ public class PGBLEManager {
 		}
 
 		switch (notify) {
-		case NC_CONNECT:
+			case NC_CONNECT:
 
-			m_BlePenStatus = BLEPenStatus.BPS_CONNECTED;
+				m_BlePenStatus = BLEPenStatus.BPS_CONNECTED;
 
-			m_OnPenConnectListener.onConnected(args);
-			break;
-		case NC_CONNECT_FAIL:
+				m_OnPenConnectListener.onConnected(args);
+				break;
+			case NC_CONNECT_FAIL:
 
-			m_BlePenStatus = BLEPenStatus.BPS_CONNECT_FAIL;
+				m_BlePenStatus = BLEPenStatus.BPS_CONNECT_FAIL;
 
-			m_OnPenConnectListener.onConnectFailed(args);
-			break;
-		case NC_START_PEN_SERVICE:
+				m_OnPenConnectListener.onConnectFailed(args);
+				break;
+			case NC_START_PEN_SERVICE:
 
-			m_BlePenStatus = BLEPenStatus.BPS_CONNECTTING;
+				m_BlePenStatus = BLEPenStatus.BPS_CONNECTTING;
 
-			m_OnPenConnectListener.onPenServiceStarted();
-			break;
+				m_OnPenConnectListener.onPenServiceStarted();
+				break;
 		}
 	}
 
@@ -1211,37 +1211,37 @@ public class PGBLEManager {
 		}
 
 		switch (notify) {
-		case NS_NEW_SESSION:
-			m_OnPenStreamListener.onNewSession(0, args.m_Vid, args.m_Pid, args.m_Serial, args.m_swVer);
-			break;
-		case NS_EVENT:
-			if (args.m_Event == EVENT_PEN_DOWN)
-				m_OnPenStreamListener.onPendown();
-			else if (args.m_Event == EVENT_PEN_UP)
-				m_OnPenStreamListener.onPenup();
-			break;
-		case NS_COORDINATE:
-			m_OnPenStreamListener
-					.onCoord(args.m_nTimeStamp, args.m_ullPageAddress, args.m_nX, args.m_nY, args.m_nForce);
-			break;
-		case NS_PENINFO:
-			break;
-		case NS_BATTERY:
-			m_OnPenStreamListener.onRemainBattery(args.m_Event);
-			break;
-		case NS_MEMORY:
-			m_OnPenStreamListener.onMemoryFillLevel(args.m_Event);
-			break;
-		case NS_SOUND_STATUS:
-			m_OnPenStreamListener.onSoundStatus(args.m_AllSound, args.m_SleepSound);
-			break;
-		case NS_DISCONNECT:
+			case NS_NEW_SESSION:
+				m_OnPenStreamListener.onNewSession(0, args.m_Vid, args.m_Pid, args.m_Serial, args.m_swVer);
+				break;
+			case NS_EVENT:
+				if (args.m_Event == EVENT_PEN_DOWN)
+					m_OnPenStreamListener.onPendown();
+				else if (args.m_Event == EVENT_PEN_UP)
+					m_OnPenStreamListener.onPenup();
+				break;
+			case NS_COORDINATE:
+				m_OnPenStreamListener
+						.onCoord(args.m_nTimeStamp, args.m_ullPageAddress, args.m_nX, args.m_nY, args.m_nForce);
+				break;
+			case NS_PENINFO:
+				break;
+			case NS_BATTERY:
+				m_OnPenStreamListener.onRemainBattery(args.m_Event);
+				break;
+			case NS_MEMORY:
+				m_OnPenStreamListener.onMemoryFillLevel(args.m_Event);
+				break;
+			case NS_SOUND_STATUS:
+				m_OnPenStreamListener.onSoundStatus(args.m_AllSound, args.m_SleepSound);
+				break;
+			case NS_DISCONNECT:
 
-			m_BlePenStatus = BLEPenStatus.BPS_DISCONNECTED;
+				m_BlePenStatus = BLEPenStatus.BPS_DISCONNECTED;
 
-			m_OnPenStreamListener.onDisconnected();
+				m_OnPenStreamListener.onDisconnected();
 
-			break;
+				break;
 		}
 	}
 

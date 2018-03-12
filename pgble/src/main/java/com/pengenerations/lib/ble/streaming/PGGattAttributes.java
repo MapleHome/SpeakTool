@@ -31,7 +31,7 @@ public class PGGattAttributes {
 	public static String PG_STREAMING_SERVICE_WRITE_UUID = "00008000-0000-1000-8000-00805f9b34fb";
 
 	static {
-		// Ò»°ã·şÎñ
+		// ä¸€èˆ¬æœåŠ¡
 		attributes.put("0000180a-0000-1000-8000-00805f9b34fb", "Device Information Service");
 		// PG Streaming Service
 		attributes.put("00001b15-0000-1000-8000-00805f9b34fb", "PG Streaming Service");
@@ -50,7 +50,7 @@ public class PGGattAttributes {
 	}
 
 	public static UUID String2UUID(String uuid) {
-		// ´´½¨ UUID
+		// åˆ›å»º UUID
 		UUID uid = UUID.fromString(uuid);
 		return uid;
 	}

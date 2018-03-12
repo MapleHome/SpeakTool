@@ -1,24 +1,24 @@
 package com.pengenerations.lib.ble.streaming;
 
 /**
- * ±ÊµÄÁ¬½Ó×´Ì¬¼àÌıÆ÷
+ * ç¬”çš„è¿æ¥çŠ¶æ€ç›‘å¬å™¨
  */
 public abstract interface OnPenConnectListener {
 	/**
-	 * ±ÊµÄ·şÎñ×¼±¸¾ÍĞ÷¡£
+	 * ç¬”çš„æœåŠ¡å‡†å¤‡å°±ç»ªã€‚
 	 */
 	abstract public void onPenServiceStarted();
 
 	/**
-	 * ±ÊÁ¬½Ó×´Ì¬
-	 * 
+	 * ç¬”è¿æ¥çŠ¶æ€
+	 *
 	 * @param penType
-	 *            ±ÊµÄÁ¬½ÓÀàĞÍ (À¶ÑÀ, TDN-101 or PGD-601)
+	 *            ç¬”çš„è¿æ¥ç±»å‹ (è“ç‰™, TDN-101 or PGD-601)
 	 */
 	abstract public void onConnected(int penType);
 
 	/**
-	 * USBÁ¬½Ó±ÊÊ§°Ü¡£
+	 * USBè¿æ¥ç¬”å¤±è´¥ã€‚
 	 */
 	abstract public void onConnectFailed(int reasonCode);
 }

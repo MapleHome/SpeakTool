@@ -11,10 +11,10 @@ import android.os.Environment;
 import android.util.Log;
 
 /**
- * 文件管理
- * 
+ * 鏂囦欢绠＄悊
+ *
  * @author shaoshuai
- * 
+ *
  */
 public class FileManager {
 	final String TAG = "FileManager";
@@ -48,8 +48,8 @@ public class FileManager {
 	}
 
 	/**
-	 * 获取保存的蓝牙地址
-	 * 
+	 * 鑾峰彇淇濆瓨鐨勮摑鐗欏湴鍧�
+	 *
 	 * @return
 	 */
 	public String GetStoredBLEAddress() {
@@ -71,8 +71,8 @@ public class FileManager {
 	}
 
 	/**
-	 * 保存蓝牙地址
-	 * 
+	 * 淇濆瓨钃濈墮鍦板潃
+	 *
 	 * @param btAddr
 	 * @return
 	 */

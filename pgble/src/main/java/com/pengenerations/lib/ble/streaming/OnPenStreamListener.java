@@ -1,13 +1,13 @@
 package com.pengenerations.lib.ble.streaming;
 
 /**
- * µãÕó±ÊÁ÷¼àÌı--È¥¼àÌı´Ó±Ê·¢³öµÄÊÂ¼ş
- * 
+ * ç‚¹é˜µç¬”æµç›‘å¬--å»ç›‘å¬ä»ç¬”å‘å‡ºçš„äº‹ä»¶
+ *
  * @author shaoshuai
- * 
+ *
  */
 public abstract interface OnPenStreamListener {
-	/** ½âÂëÊ§°Ü */
+	/** è§£ç å¤±è´¥ */
 	public final static int STREAM_ERROR_DECODE_FAILED = 0x01;
 	/**
 	 * Error event of the used dot-pattern is not allowed
@@ -18,7 +18,7 @@ public abstract interface OnPenStreamListener {
 	 */
 	public final static int STREAM_ERROR_NON_ANOTO_PAPER = 0x03;
 	/**
-	 * Ö¡Ìø¹ı Error event of frame skipped
+	 * å¸§è·³è¿‡ Error event of frame skipped
 	 */
 	public final static int STREAM_ERROR_FRAME_SKIPPED = 0x04;
 	/**
@@ -29,7 +29,7 @@ public abstract interface OnPenStreamListener {
 	/**
 	 * This callback is called when pen is disconnected. No reason code of
 	 * disconnection is not existed.
-	 * 
+	 *
 	 * @return
 	 */
 	public abstract int onDisconnected();
@@ -37,7 +37,7 @@ public abstract interface OnPenStreamListener {
 	/**
 	 * This callback is called when ADP601's pen information is received from
 	 * pen
-	 * 
+	 *
 	 * @param nTimeStamp
 	 *            time stamp for the first stream event
 	 * @param nVid
@@ -52,7 +52,7 @@ public abstract interface OnPenStreamListener {
 
 	/**
 	 * This callback is called when coordinate data is received from pen
-	 * 
+	 *
 	 * @param nTimeStamp
 	 *            time stamp for each coordinate is arrived
 	 * @param ullPageAddress
@@ -69,21 +69,21 @@ public abstract interface OnPenStreamListener {
 
 	/**
 	 * This callback is call when pen down event happened Note : Not used.
-	 * 
+	 *
 	 * @return 0
 	 */
 	public abstract int onPendown();
 
 	/**
 	 * This callback is call when pen up event happened
-	 * 
+	 *
 	 * @return 0
 	 */
 	public abstract int onPenup();
 
 	/**
 	 * This callback is call when error events are received
-	 * 
+	 *
 	 * @param m_nEventType
 	 *            STREAM_ERROR_DECODE_FAILED : decoding failure
 	 *            STREAM_ERROR_LOCKED_SEGMENT : the used dot-pattern is not
