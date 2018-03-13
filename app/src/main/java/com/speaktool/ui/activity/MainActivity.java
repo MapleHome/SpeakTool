@@ -16,10 +16,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
 import com.speaktool.R;
 import com.speaktool.api.Draw.PlayMode;
-import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
@@ -27,6 +25,7 @@ import com.speaktool.service.KeepAliveService;
 import com.speaktool.tasks.TaskLoadRecordCategories;
 import com.speaktool.tasks.TaskLoadRecordCategories.RecordTypeLoadListener;
 import com.speaktool.tasks.ThreadPoolWrapper;
+import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.ui.fragment.HomePage;
 import com.speaktool.ui.layouts.ItemViewLocalRecord;
 import com.speaktool.ui.layouts.SearchView;
@@ -64,7 +63,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mContext = this;
-        ViewUtils.inject(this);
 
         initView();
         initData();
