@@ -7,7 +7,7 @@ import com.speaktool.api.Draw;
 import com.speaktool.api.DrawMode;
 import com.speaktool.api.Page;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
-import com.speaktool.manager.DrawModeManager;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.ui.layouts.WordEdit;
 
 import de.greenrobot.event.EventBus;

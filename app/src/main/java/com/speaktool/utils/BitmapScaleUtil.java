@@ -12,14 +12,7 @@ public class BitmapScaleUtil {
 
 	private static final String tag = BitmapScaleUtil.class.getSimpleName();
 
-	/**
-	 * 
-	 * @param res
-	 * @param resId
-	 * @param reqWidth
-	 * @param reqHeight
-	 * @return
-	 */
+
 	public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, long reqMemorySize) {
 		try {
 			final BitmapFactory.Options options = new BitmapFactory.Options();

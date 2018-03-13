@@ -1,4 +1,4 @@
-package com.speaktool.manager;
+package com.speaktool.impl;
 
 import android.view.MotionEvent;
 

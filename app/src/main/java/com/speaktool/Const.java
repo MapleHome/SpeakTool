@@ -1,11 +1,6 @@
 package com.speaktool;
 
-import android.content.Context;
-import android.graphics.Point;
 import android.os.Environment;
-
-import com.speaktool.utils.DensityUtils;
-import com.speaktool.utils.DisplayUtil;
 
 import java.io.File;
 
@@ -84,10 +79,6 @@ public class Const {
     public static final int SCRIPT_INPUT_RATE = 60;
 
     /**
-     * 当前APP服务器API版本
-     */
-    public static final String CURRENT_APPSERVER_API_VERSION = "1.1.0";
-    /**
      * 讲讲服务器地址
      */
     public static final String SPEEKTOOL_SERVER__URL = "http://www.speaktool.com/";
@@ -100,18 +91,6 @@ public class Const {
      */
     public static final String SPEEKTOOL_BBS_URL = "http://bbs.speaktool.com:8080/";
 
-    // Dialog最小宽度
-    public static final int DIALOG_MIN_WIDTH = DensityUtils.dp2px(SpeakToolApp.app(), 600);// pix
-    // Dialog最小高度
-    public static final int DIALOG_MIN_HEIGHT = DensityUtils.dp2px(SpeakToolApp.app(), 500);// pix
-
-    public static Point getDialogSize(Context context) {
-        Point screen = DisplayUtil.getScreenSize(context);
-        int stH = DisplayUtil.getStatusbarHeightPix(context);
-        int w = screen.x > DIALOG_MIN_WIDTH ? DIALOG_MIN_WIDTH : screen.x - stH;
-        int h = screen.y > DIALOG_MIN_HEIGHT ? DIALOG_MIN_HEIGHT : screen.y - stH;
-        return new Point(w, h);
-    }
 
     //BMP图片最大可以分配内存
     public static final long MAX_MEMORY_BMP_CAN_ALLOCATE = 1 * 1024 * 1024;

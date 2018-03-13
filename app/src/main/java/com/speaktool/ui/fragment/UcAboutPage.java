@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.speaktool.R;
 import com.speaktool.ui.activity.UserFMActivity;
 import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.manager.AppManager;
+import com.speaktool.utils.AppManager;
 import com.speaktool.tasks.ThreadPoolWrapper;
 
 import butterknife.BindView;

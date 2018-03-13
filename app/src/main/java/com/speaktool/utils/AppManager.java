@@ -1,4 +1,4 @@
-package com.speaktool.manager;
+package com.speaktool.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

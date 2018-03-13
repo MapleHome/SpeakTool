@@ -11,7 +11,7 @@ import com.speaktool.api.Draw;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.impl.modes.DrawModeWord;
-import com.speaktool.manager.DrawModeManager;
+import com.speaktool.impl.DrawModeManager;
 
 /**
  * 顶部功能栏——更多功能窗体

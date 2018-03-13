@@ -17,11 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.ui.adapters.SplashPageAdapter;
-import com.speaktool.utils.MiuiManager;
 import com.speaktool.utils.SPUtils;
 import com.speaktool.utils.T;
 
@@ -122,7 +120,9 @@ public class SplashActivity extends RoboActivity {
     }
 
     private void initData() {
-        checkOs();// 检查系统
+        String display = Build.DISPLAY;// 显示器- JLS36C
+        String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
+        Log.e("Splash", "当前设备：" + display + " -- " + manufacturer);
     }
 
     /**
@@ -149,43 +149,6 @@ public class SplashActivity extends RoboActivity {
         public void onPageScrollStateChanged(int arg0) {
         }
     };
-    // 是否检查系统
-    private final static String OS_IS_CHECKED = "OS_IS_CHECKED";
-
-    /**
-     * 检查系统
-     */
-    private void checkOs() {
-        Log.e("main", "当前系统型号为:: " + Build.MODEL);// Lenovo S810t
-        if (isXiaomiOS()) {
-            if (SPUtils.getBool(OS_IS_CHECKED, false))
-                return;
-
-            new AlertDialog(this)
-                    .setTitle("提示")
-                    .setMessage("正常使用本应用需要悬浮窗权限，请到设置中心开启！")
-                    .setRightButton("去开启", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            MiuiManager.openMiuiPermissionActivity(mContext);
-                            SPUtils.putBool(OS_IS_CHECKED, true);
-                        }
-                    })
-                    .setLeftButton("暂不", null)
-                    .show();
-        }
-    }
-
-    public boolean isXiaomiOS() {
-        String display = Build.DISPLAY;// 显示器- JLS36C
-        String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
-
-        if ((display != null) && (display.toLowerCase().indexOf("miui") >= 0))
-            return true;
-        if ((manufacturer != null) && (manufacturer.toLowerCase().indexOf("xiaomi") >= 0))
-            return true;
-        return false;
-    }
 
     /**
      * 进入主界面

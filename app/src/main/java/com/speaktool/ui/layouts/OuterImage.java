@@ -35,7 +35,7 @@ import com.speaktool.impl.cmd.transform.CmdScaleImage;
 import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.impl.shapes.ViewShape_;
-import com.speaktool.manager.DrawModeManager;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;

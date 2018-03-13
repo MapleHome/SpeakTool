@@ -5,7 +5,6 @@ import android.graphics.Point;
 import com.speaktool.bean.ScreenInfoBean;
 
 public class ScreenFitUtil {
-	private static final String tag = ScreenFitUtil.class.getSimpleName();
 
 	private static int inputScreenWidth = 1;
 	private static int inputScreenHeight = 1;

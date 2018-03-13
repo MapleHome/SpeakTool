@@ -47,7 +47,7 @@ import com.speaktool.impl.shapes.PenShape_;
 import com.speaktool.impl.shapes.Point_;
 import com.speaktool.impl.shapes.Shape_;
 import com.speaktool.impl.shapes.ViewShape_;
-import com.speaktool.manager.DrawModeManager;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.paint.DrawPaint;
 import com.speaktool.impl.paint.EraserPaint;
 import com.speaktool.utils.BitmapScaleUtil;
