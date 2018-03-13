@@ -127,14 +127,14 @@ public class L_HandPenPoW extends BasePopupWindow {
 
 		Log.e("条目点击", bleItem.getName() + "------" + bleItem.getAddress());
 
-		if (PenHelper.isIBISPen(bleItem)) {// 点阵笔
-			drawActivity.getIBISPenController().connectHandPen(bleItem);
-		} else if (PenHelper.isDigitalPen(bleItem)) {// 数码笔
-			drawActivity.getDigitalPenController().connect(bleItem);
-		} else {// USB
-			T.showShort(mContext, "警告：未知类型手写笔！");
-			Log.e("错误", "其它类型手写笔");
-		}
+//		if (PenHelper.isIBISPen(bleItem)) {// 点阵笔
+//			drawActivity.getIBISPenController().connectHandPen(bleItem);
+//		} else if (PenHelper.isDigitalPen(bleItem)) {// 数码笔
+//			drawActivity.getDigitalPenController().connect(bleItem);
+//		} else {// USB
+//			T.showShort(mContext, "警告：未知类型手写笔！");
+//			Log.e("错误", "其它类型手写笔");
+//		}
 	}
 
 	/** 开始BLE扫描 */

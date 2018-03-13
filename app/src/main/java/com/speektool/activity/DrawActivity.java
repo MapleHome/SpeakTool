@@ -189,8 +189,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
      */
     private JsonScriptPlayer mJsonScriptPlayer;
 
-    private IBISPenController mIBISPenController;// 点阵笔控制器
-    private DigitalPenController mDigitalPenController;// 数码笔控制器
+//    private IBISPenController mIBISPenController;// 点阵笔控制器
+//    private DigitalPenController mDigitalPenController;// 数码笔控制器
 
     private AsyncDataLoader<String, PicDataHolder> mNetPicturesIconAsyncLoader = AsyncDataLoaderFactory
             .newNetPicturesIconAsyncLoader();
@@ -256,8 +256,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             //
         } else {// 绘制
             if (android.os.Build.VERSION.SDK_INT >= 18) {
-                mIBISPenController = new IBISPenController(this);
-                mDigitalPenController = new DigitalPenController(this);
+//                mIBISPenController = new IBISPenController(this);
+//                mDigitalPenController = new DigitalPenController(this);
                 ivHandPen.setEnabled(true);// 设置可用
             } else {
                 ivHandPen.setEnabled(false);// 设置不可用
@@ -323,8 +323,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         switch (v.getId()) {
             case R.id.ivHandPen:// 手写笔
                 Log.e("监听", "点击了手写笔");
-                getDigitalPenController().destroy();// 断开设备
-                getIBISPenController().destroy();
+//                getDigitalPenController().destroy();// 断开设备
+//                getIBISPenController().destroy();
                 // 显示智能笔扫描窗口
                 L_HandPenPoW handPenPow = new L_HandPenPoW(mContext, v, this);
                 handPenPow.showPopupWindow(WeiZhi.Right);
@@ -471,19 +471,19 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     // =====================功能点击事件--开始============================================================================
 
-    /**
-     * 获取点阵笔控制器
-     */
-    public IBISPenController getIBISPenController() {
-        return mIBISPenController;
-    }
-
-    /**
-     * 获取数字笔控制器
-     */
-    public DigitalPenController getDigitalPenController() {
-        return mDigitalPenController;
-    }
+//    /**
+//     * 获取点阵笔控制器
+//     */
+//    public IBISPenController getIBISPenController() {
+//        return mIBISPenController;
+//    }
+//
+//    /**
+//     * 获取数字笔控制器
+//     */
+//    public DigitalPenController getDigitalPenController() {
+//        return mDigitalPenController;
+//    }
 
     private OnActivityResultListener mOnActivityResultListener;
 
@@ -798,14 +798,14 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     protected void onDestroy() {
-        if (mIBISPenController != null) {
-            mIBISPenController.destroy();
-            mIBISPenController = null;
-        }
-        if (mDigitalPenController != null) {
-            mDigitalPenController.destroy();
-            mDigitalPenController = null;
-        }
+//        if (mIBISPenController != null) {
+//            mIBISPenController.destroy();
+//            mIBISPenController = null;
+//        }
+//        if (mDigitalPenController != null) {
+//            mDigitalPenController.destroy();
+//            mDigitalPenController = null;
+//        }
 
         if (mMakeReleaseScriptResultReceiver != null) {
             this.unregisterReceiver(mMakeReleaseScriptResultReceiver);

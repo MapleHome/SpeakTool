@@ -101,7 +101,7 @@ public class DigitalPenController {
 
 	/** 连接数码笔 */
 	public void connect(BluetoothDevice pen) {
-		draw.getIBISPenController().destroy();
+//		draw.getIBISPenController().destroy();
 		// draw.getDigitalPenController().destroy();// usb.
 
 		this.pen = pen;
