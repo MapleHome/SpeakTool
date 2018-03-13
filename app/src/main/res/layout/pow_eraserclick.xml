@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:padding="5dp" >
 
-        <com.speektool.ui.layouts.StrokeWidthPreview
+        <com.speaktool.ui.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/popup_selectColor_strokepreview_height"

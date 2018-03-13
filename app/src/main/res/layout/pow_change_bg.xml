@@ -29,7 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:src="#aacccccc" />
 
-        <com.speektool.ui.layouts.ItemViewChooseBackgroundPop
+        <com.speaktool.ui.layouts.ItemViewChooseBackgroundPop
             android:id="@+id/itemWhiteBg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:layout_marginLeft="65dp"
             android:src="#5acccccc" />
 
-        <com.speektool.ui.layouts.ItemViewChooseBackgroundPop
+        <com.speaktool.ui.layouts.ItemViewChooseBackgroundPop
             android:id="@+id/itemListBg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:layout_marginLeft="65dp"
             android:src="#5acccccc" />
 
-        <com.speektool.ui.layouts.ItemViewChooseBackgroundPop
+        <com.speaktool.ui.layouts.ItemViewChooseBackgroundPop
             android:id="@+id/itemGridBg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:layout_marginLeft="65dp"
             android:src="#5acccccc" />
 
-        <com.speektool.ui.layouts.ItemViewChooseBackgroundPop
+        <com.speaktool.ui.layouts.ItemViewChooseBackgroundPop
             android:id="@+id/itemCoordinateBg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -12,17 +12,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <com.speektool.ui.layouts.FillSaveRecordInfoEditPage
+        <com.speaktool.ui.layouts.FillSaveRecordInfoEditPage
             android:id="@+id/firstPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.speektool.ui.layouts.FillSaveRecordInfoKindListPage
+        <com.speaktool.ui.layouts.FillSaveRecordInfoKindListPage
             android:id="@+id/secondPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.speektool.ui.layouts.FillSaveRecordInfoAddKindPage
+        <com.speaktool.ui.layouts.FillSaveRecordInfoAddKindPage
             android:id="@+id/thirdPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -43,7 +43,7 @@
             android:layout_toRightOf="@+id/rl_left_img"
             android:src="@drawable/draw_vetical_line" />
 
-        <com.speektool.ui.layouts.SearchView
+        <com.speaktool.ui.layouts.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

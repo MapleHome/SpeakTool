@@ -30,7 +30,7 @@
             android:visibility="gone" />
         <!-- 视频播放控制器 -->
 
-        <com.speektool.ui.layouts.VideoPlayControllerView
+        <com.speaktool.ui.layouts.VideoPlayControllerView
             android:id="@+id/layoutVideoController"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -22,7 +22,7 @@
             android:verticalSpacing="5dp" >
         </GridView>
 
-        <com.speektool.ui.layouts.StrokeWidthPreview
+        <com.speaktool.ui.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
             android:layout_width="fill_parent"
             android:layout_height="50dp"

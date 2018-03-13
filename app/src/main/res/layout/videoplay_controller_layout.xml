@@ -6,7 +6,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
-    <com.speektool.ui.layouts.SquareImageView
+    <com.speaktool.ui.layouts.SquareImageView
         android:id="@+id/ivPlayPause"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

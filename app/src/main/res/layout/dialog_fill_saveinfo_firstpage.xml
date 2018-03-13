@@ -184,7 +184,7 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <com.speektool.ui.layouts.CheckBoxImageView
+            <com.speaktool.ui.layouts.CheckBoxImageView
                 android:id="@+id/ivCheckbox"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

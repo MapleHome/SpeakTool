@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.speektool">
+          package="com.speaktool">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
-        android:name=".SpeekToolApp"
+        android:name="com.speaktool.SpeakToolApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,7 +33,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="com.speaktool.ui.activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
 
             <intent-filter>
@@ -42,18 +42,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.speaktool.ui.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".activity.UserFMActivity"
+            android:name="com.speaktool.ui.activity.UserFMActivity"
             android:screenOrientation="portrait"/>
         <!--  用户界面  -->
-        <activity android:name=".activity.WebActivity"/>
+        <activity android:name="com.speaktool.ui.activity.WebActivity"/>
         <!--  网页 -->
         <!--  编辑界面  -->
         <activity
-            android:name=".activity.DrawActivity"
+            android:name="com.speaktool.ui.activity.DrawActivity"
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
@@ -61,7 +61,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
         <!--  本地视频播放界面 -->
         <activity
-            android:name=".activity.PlayVideoActivity"
+            android:name="com.speaktool.ui.activity.PlayVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
@@ -69,7 +69,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
         <!--  Url视频播放界面 -->
         <activity
-            android:name=".activity.PlayUrlVideoActivity"
+            android:name="com.speaktool.ui.activity.PlayUrlVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
@@ -88,16 +88,16 @@
             android:name="com.smart.pen.core.services.UsbPenService"
             android:enabled="true"/>
         <service
-            android:name=".service.PlayService"
+            android:name="com.speaktool.service.PlayService"
             android:enabled="true"
             android:exported="false"
             android:process=":play"/>
         <service
-            android:name=".service.KeepAliveService"
+            android:name="com.speaktool.service.KeepAliveService"
             android:enabled="true"
             android:exported="false"/>
         <service
-            android:name=".service.ErrorService"
+            android:name="com.speaktool.service.ErrorService"
             android:enabled="true"
             android:exported="false"
             android:process=":error"/>

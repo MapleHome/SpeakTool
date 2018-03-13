@@ -1,0 +1,43 @@
+package com.speaktool.impl.cmd.create;
+
+import com.speaktool.api.Draw;
+import com.speaktool.api.Page;
+import com.speaktool.bean.ActivePageData;
+import com.speaktool.impl.cmd.CmdBase;
+import com.speaktool.impl.cmd.ICmd;
+
+/**
+ * 互动页面
+ * 
+ * @author shaoshuai
+ * 
+ */
+public class CmdActivePage extends CmdBase<ActivePageData> {
+
+	public CmdActivePage() {
+		super();
+		setType(TYPE_SET_ACTIVE_PAGE);
+	}
+
+	@Override
+	public void run(final Draw draw, Page board) {
+		final int pageId = getData().getPageID();
+		draw.postTaskToUiThread(new Runnable() {
+			@Override
+			public void run() {
+				draw.setActivePageImpl(pageId);
+			}
+		});
+	}
+
+	@Override
+	public ICmd inverse() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ICmd copy() {
+		return null;
+	}
+
+}
