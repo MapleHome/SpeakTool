@@ -19,8 +19,6 @@ import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
 import com.speaktool.api.CourseItem;
-import com.speaktool.api.ThirdPartyRunState;
-import com.speaktool.impl.platforms.ShareLocation;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.NetUtil;
@@ -42,24 +40,19 @@ public class FillShareInfoDialog extends Dialog implements View.OnClickListener 
     private EditText etShareContent;// 编辑框
 
     private String mBaseContent;// 分享文本内容
-    private ShareLocation mShareLocation;
-    private ThirdPartyRunState mShareState;
     private Context mActivityContext;
     private CourseItem mCourseItem;
     private WeakReference<ImageView> ivShareThumbRef;
 
-    public FillShareInfoDialog(Context context, ShareLocation shareLocation, CourseItem course, ThirdPartyRunState st) {
-        this(context, R.style.dialogTheme, shareLocation, course, st);
+    public FillShareInfoDialog(Context context, CourseItem course) {
+        this(context, R.style.dialogTheme, course);
 
     }
 
-    public FillShareInfoDialog(Context context, int theme, ShareLocation shareLocation, CourseItem course,
-                               ThirdPartyRunState st) {
+    public FillShareInfoDialog(Context context, int theme, CourseItem course) {
         super(context, theme);
         Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
-        mShareState = st;
-        mShareLocation = shareLocation;
         mCourseItem = course;
         mBaseContent = getContext()
                 .getString(R.string.share_baseContent, course.getRecordTitle(), course.getShareUrl());
@@ -153,17 +146,12 @@ public class FillShareInfoDialog extends Dialog implements View.OnClickListener 
     }
 
     private void initDataForType() {
-        switch (mShareLocation) {
-            case SINA_WEIBO:
-                tvShareTitle.setText("新浪微博分享");
-                ivShareIcon.setImageResource(R.drawable.share_platform_sinaweibo);
-                break;
-            case TENCENT_WEIBO:
-                tvShareTitle.setText("腾讯微博分享");
-                ivShareIcon.setImageResource(R.drawable.share_platform_qqweibo);
-                break;
-            default:
-                break;
+        if (1 == 1) {
+            tvShareTitle.setText("新浪微博分享");
+            ivShareIcon.setImageResource(R.drawable.share_platform_sinaweibo);
+        } else {
+            tvShareTitle.setText("腾讯微博分享");
+            ivShareIcon.setImageResource(R.drawable.share_platform_qqweibo);
         }
     }
 

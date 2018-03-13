@@ -10,25 +10,22 @@ import android.widget.Button;
 import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.api.CourseItem;
-import com.speaktool.api.ThirdPartyRunState;
 
 public class WechartShareChoiceDialog extends Dialog implements View.OnClickListener {
     private Button btnShareToWechartMoments;
     private Button btnShareToWechart;
     private Button btnCancelExit;
     private CourseItem mCourseItem;
-    private ThirdPartyRunState mShareState;
     private Context mActivityContext;
 
-    public WechartShareChoiceDialog(Context context, CourseItem course, ThirdPartyRunState state) {
-        this(context, R.style.dialogTheme, course, state);
+    public WechartShareChoiceDialog(Context context, CourseItem course) {
+        this(context, R.style.dialogTheme, course);
     }
 
-    public WechartShareChoiceDialog(Context context, int theme, CourseItem course, ThirdPartyRunState state) {
+    public WechartShareChoiceDialog(Context context, int theme, CourseItem course) {
         super(context, theme);
         Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
-        mShareState = state;
         mCourseItem = course;
         init();
     }
@@ -67,6 +64,4 @@ public class WechartShareChoiceDialog extends Dialog implements View.OnClickList
 
         }
     }
-
-
 }

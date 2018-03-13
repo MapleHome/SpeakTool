@@ -23,10 +23,6 @@ import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.ui.activity.DrawActivity;
-import com.speaktool.ui.activity.MainActivity;
-import com.speaktool.ui.activity.PlayUrlVideoActivity;
-import com.speaktool.ui.activity.PlayVideoActivity;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.api.Draw.PlayMode;
@@ -39,16 +35,15 @@ import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.dao.UserDatabase;
-import com.speaktool.impl.platforms.PartnerPlat;
-import com.speaktool.impl.platforms.QQPlat;
-import com.speaktool.impl.platforms.SinaPlat;
-import com.speaktool.impl.platforms.TencentWeiboPlat;
-import com.speaktool.impl.platforms.WechartPlat;
 import com.speaktool.impl.player.PlayProcess;
 import com.speaktool.service.PlayService;
 import com.speaktool.tasks.MyThreadFactory;
 import com.speaktool.tasks.TaskGetThirdpartys;
 import com.speaktool.tasks.TaskGetThirdpartys.TaskGetThirdpartysCallback;
+import com.speaktool.ui.activity.DrawActivity;
+import com.speaktool.ui.activity.MainActivity;
+import com.speaktool.ui.activity.PlayUrlVideoActivity;
+import com.speaktool.ui.activity.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
@@ -312,34 +307,12 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
                     T.showShort(mContext, "分享失败！");
                     return;
                 }
-                int partyId = party.getId();
-                switch (partyId) {
-                    case ThirdParty.ID_QQ:
-                        QQPlat lQQPlat = new QQPlat(mActivityContext, ShareDialog.this);
-                        lQQPlat.share(mItemBean);
-                        break;
-                    case ThirdParty.ID_QQ_WEIBO:
-                        TencentWeiboPlat lTencentWeiboPlat = new TencentWeiboPlat(mActivityContext, ShareDialog.this);
-                        lTencentWeiboPlat.share(mItemBean);
-                        break;
-                    case ThirdParty.ID_SINA_WEIBO:
-                        SinaPlat lSinaPlat = new SinaPlat(mActivityContext, ShareDialog.this);
-                        lSinaPlat.share(mItemBean);
-                        break;
-                    case ThirdParty.ID_WECHART:
-                        WechartPlat lWechartPlat = new WechartPlat(mActivityContext, ShareDialog.this);
-                        lWechartPlat.share(mItemBean);
-                        break;
-                    case ThirdParty.ID_NET_COMPANY:
-                        PartnerPlat lPartnerPlat = new PartnerPlat(mActivityContext, ShareDialog.this, party);
-                        lPartnerPlat.share(mItemBean);
-                        break;
-                }
+                // mItemBean
+
             }
         });
         UserBean session = UserDatabase.getUserLocalSession(mActivityContext);
-        singleExecutor
-                .execute(new TaskGetThirdpartys(this, TaskGetThirdpartys.PartyType.SHARE, session.getCompanyId()));
+        singleExecutor.execute(new TaskGetThirdpartys(this, TaskGetThirdpartys.PartyType.SHARE, session.getCompanyId()));
     }
 
     /**
