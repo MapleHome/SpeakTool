@@ -26,7 +26,6 @@ import com.speaktool.SpeakToolApp;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.api.Draw.PlayMode;
-import com.speaktool.api.ThirdPartyRunState;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ServerRecordBean;
@@ -63,7 +62,7 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  */
 public class ShareDialog extends Dialog implements View.OnClickListener, OnDismissListener,
-        ThirdPartyRunState, TaskGetThirdpartysCallback {
+        TaskGetThirdpartysCallback {
 
     private View firstFrame;// dialog跟布局
     private View loadingLayout;// 加载框跟布局
@@ -238,48 +237,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isLoading()) {
-            onFinishRun();
-            return;
-        }
-        this.dismiss();
-    }
 
-    private boolean isLoading() {
-        return loadingLayout.getVisibility() == View.VISIBLE;
-    }
-
-    @Override
-    public void onStartRun() {
-        SpeakToolApp.getUiHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                loadingLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        SpeakToolApp.getUiHandler().postDelayed(hideLoadingRunnable, 5000);
-    }
-
-    @Override
-    public void onFinishRun() {
-        SpeakToolApp.getUiHandler().removeCallbacks(hideLoadingRunnable);
-        SpeakToolApp.getUiHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                loadingLayout.setVisibility(View.GONE);
-                dismiss();
-            }
-        });
-    }
-
-    private Runnable hideLoadingRunnable = new Runnable() {
-        @Override
-        public void run() {
-            loadingLayout.setVisibility(View.GONE);
-        }
-    };
     // -------------------------------点击事件----------------------------------------------------
     private ThirdpartyListDialog mThirdpartyListDialog;
 

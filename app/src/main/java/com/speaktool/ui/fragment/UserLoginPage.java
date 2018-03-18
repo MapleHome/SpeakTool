@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.speaktool.R;
-import com.speaktool.api.LoginCallback;
 import com.speaktool.bean.UserBean;
 import com.speaktool.ui.activity.UserFMActivity;
 import com.speaktool.ui.base.BaseFragment;
@@ -112,12 +111,6 @@ public class UserLoginPage extends BaseFragment implements OnClickListener {
 
 
         fm.popBackStack();// 退出当前页面
-    }
-
-    private LoginCallback mLoginCallback;
-
-    public void setLoginCallback(LoginCallback callback) {
-        mLoginCallback = callback;
     }
 
 

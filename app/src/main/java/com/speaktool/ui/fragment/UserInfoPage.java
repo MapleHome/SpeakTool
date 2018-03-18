@@ -16,18 +16,16 @@ import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.ui.activity.UserFMActivity;
-import com.speaktool.ui.activity.WebActivity;
-import com.speaktool.api.LoginCallback;
-import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.dao.UserDatabase;
 import com.speaktool.tasks.TaskGetNetImage;
 import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
+import com.speaktool.ui.activity.UserFMActivity;
+import com.speaktool.ui.activity.WebActivity;
+import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.utils.BitmapScaleUtil;
-import com.speaktool.utils.T;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -187,7 +185,6 @@ public class UserInfoPage extends BaseFragment implements OnClickListener {
             Bitmap bp = BitmapScaleUtil.decodeSampledBitmapFromPath(portraitPath, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
             ib_userPortrait.setImageBitmap(bp);
             portraitCache.put(imagepath, bp);
-
         }
     }
 
@@ -196,16 +193,6 @@ public class UserInfoPage extends BaseFragment implements OnClickListener {
      */
     private void toLogin() {
         UserLoginPage login = new UserLoginPage();
-        login.setLoginCallback(new LoginCallback() {
-            @Override
-            public void onLoginFinish(int resultCode) {
-                if (resultCode == LoginCallback.SUCCESS) {
-                    initData(getArguments());
-                } else {
-                    T.showShort(mContext, "登陆失败");
-                }
-            }
-        });
         mActivity.replacePage(login);
     }
 
