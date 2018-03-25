@@ -187,9 +187,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
      */
     private JsonScriptPlayer mJsonScriptPlayer;
 
-//    private IBISPenController mIBISPenController;// 点阵笔控制器
-//    private DigitalPenController mDigitalPenController;// 数码笔控制器
-
     private AsyncDataLoader<String, PicDataHolder> mNetPicturesIconAsyncLoader = AsyncDataLoaderFactory
             .newNetPicturesIconAsyncLoader();
     private AsyncDataLoader<String, PicDataHolder> mLocalPicturesIconAsyncLoader = AsyncDataLoaderFactory
@@ -1285,7 +1282,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
-    private static final String CAMERA_TEMP_IMAGE_PATH = Const.SD_PATH + "/camera_temp.jpg";
+    private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
     private PickPhotoCallback mPickPhotoCallback;
 
     @Override

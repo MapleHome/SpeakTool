@@ -72,7 +72,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     public static final String FRAGMENT_NAME = "个人信息修改";
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;// 捕获图片
     private static final int REQUEST_CODE_PICK_IMAGE = 2;// 挑选图片
-    private static final String CAMERA_TEMP_IMAGE_PATH = Const.SD_PATH + "/camera_temp.jpg";
+    private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
     private UserFMActivity mActivity;
     private LoadingDialog mLoadingDialog;
     private UserBean session;
