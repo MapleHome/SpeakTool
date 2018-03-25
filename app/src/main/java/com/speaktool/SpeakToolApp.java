@@ -1,8 +1,8 @@
 package com.speaktool;
 
+import android.app.Application;
 import android.os.Handler;
 
-import com.smart.pen.core.PenApplication;
 import com.speaktool.bean.LocalPhotoDirBean;
 import com.speaktool.bean.UserBean;
 import com.speaktool.dao.UserDatabase;
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author shaoshuai
  */
-public class SpeakToolApp extends PenApplication implements LoadLocalPhotosCallback {
+public class SpeakToolApp extends Application implements LoadLocalPhotosCallback {
 
     private static SpeakToolApp app;
     private static Handler sHandler = new Handler();

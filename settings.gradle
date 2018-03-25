@@ -1,1 +1,1 @@
-include ':app', ':smartpen', ':pulltorefresh', ':pgble'
+include ':app', ':pulltorefresh'
