@@ -3,6 +3,7 @@ package com.speaktool.ffmpeg;
 import android.util.Log;
 
 public class FFmpegNative {
+
 	static {
 		System.loadLibrary("ffmpeg_api");
 	}
