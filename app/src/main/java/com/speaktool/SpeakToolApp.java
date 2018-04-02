@@ -1,16 +1,24 @@
 package com.speaktool;
 
 import android.app.Application;
-import android.os.Environment;
 import android.os.Handler;
 
-import java.io.File;
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
-/**
- * 讲讲APP
- *
- * @author shaoshuai
- */
+
+@ReportsCrashes(
+        mode = ReportingInteractionMode.DIALOG,
+        mailTo = "maple.shao@everbridge.com",
+        resToastText = R.string.crash_toast_text,
+        resDialogText = R.string.crash_dialog_text,
+        resDialogIcon = R.drawable.ic_launcher,
+        resDialogTitle = R.string.crash_dialog_title,
+        resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
+        // resDialogTheme = R.style.AppTheme_Dialog,
+        resDialogOkToast = R.string.crash_dialog_ok_toast
+)
 public class SpeakToolApp extends Application {
     private static SpeakToolApp app;
     private static Handler sHandler = new Handler();
@@ -20,7 +28,16 @@ public class SpeakToolApp extends Application {
         super.onCreate();
         app = this;
         initPath();
+        ACRA.init(this);
     }
+
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(base);
+//
+//        // The following line triggers the initialization of ACRA
+//        ACRA.init(this);
+//    }
 
     public static SpeakToolApp app() {
         return app;

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.speaktool">
+    package="com.speaktool">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- ble -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name=".SpeakToolApp"
@@ -23,19 +24,19 @@
             android:configChanges="keyboardHidden|orientation|screenSize">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.UserFMActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <!--  用户界面  -->
-        <activity android:name=".ui.activity.WebActivity"/>
+        <activity android:name=".ui.activity.WebActivity" />
         <!--  网页 -->
         <!--  编辑界面  -->
         <activity
@@ -44,7 +45,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <!--  本地视频播放界面 -->
         <activity
             android:name=".ui.activity.PlayVideoActivity"
@@ -52,19 +53,19 @@
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <!--  Url视频播放界面 -->
         <activity
             android:name=".ui.activity.PlayUrlVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <!--  ******************************** 服务  ************************************* -->
         <service
             android:name=".service.PlayService"
             android:enabled="true"
             android:exported="false"
-            android:process=":play"/>
+            android:process=":play" />
     </application>
 
 </manifest>
