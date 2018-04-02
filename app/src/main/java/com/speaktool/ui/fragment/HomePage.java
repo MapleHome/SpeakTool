@@ -136,7 +136,7 @@ public class HomePage extends BaseFragment {
         mActivity.setSearchView(mSearchType, mSearchKeywords);
 
         CourseSearchBean info = new CourseSearchBean();
-        info.setUid(SpeakToolApp.getUid());
+        info.setUid("UID");
         info.setPageSize(GRID_PAGE_SIZE);// 页大小
         info.setPageNumber(mPageNumber);// 第几页
         info.setCategory(mSearchType);// 搜索类型

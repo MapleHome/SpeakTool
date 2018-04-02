@@ -43,7 +43,6 @@ import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
-import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.bean.ActivePageData;
 import com.speaktool.bean.ClearPageData;
 import com.speaktool.bean.CopyPageData;
@@ -67,7 +66,7 @@ import com.speaktool.busevents.RecordPausingEvent;
 import com.speaktool.busevents.RecordRunningEvent;
 import com.speaktool.busevents.RecordTimeChangedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.clear.CmdClearPage;
 import com.speaktool.impl.cmd.copy.CmdCopyPage;
 import com.speaktool.impl.cmd.create.CmdActivePage;
@@ -79,6 +78,7 @@ import com.speaktool.impl.modes.DrawModeChoice;
 import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.modes.DrawModeEraser;
 import com.speaktool.impl.modes.DrawModePath;
+import com.speaktool.impl.paint.DrawPaint;
 import com.speaktool.impl.player.JsonScriptPlayer;
 import com.speaktool.impl.player.PlayProcess;
 import com.speaktool.impl.player.SoundPlayer;
@@ -88,9 +88,8 @@ import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.impl.DrawModeManager;
-import com.speaktool.impl.paint.DrawPaint;
-import com.speaktool.service.PlayService;
+import com.speaktool.service.AsyncDataLoaderFactory;
+import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.ui.dialogs.OneButtonAlertDialog;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
@@ -186,9 +185,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
      * JSON脚本播放器
      */
     private JsonScriptPlayer mJsonScriptPlayer;
-
-//    private IBISPenController mIBISPenController;// 点阵笔控制器
-//    private DigitalPenController mDigitalPenController;// 数码笔控制器
 
     private AsyncDataLoader<String, PicDataHolder> mNetPicturesIconAsyncLoader = AsyncDataLoaderFactory
             .newNetPicturesIconAsyncLoader();
@@ -510,7 +506,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         if (mPlayMode == PlayMode.MAKE) {
             if (getPageRecorder().isHaveRecordForAll()) {
                 this.pauseRecord();
-                SaveRecordAlertDialog savedia = new SaveRecordAlertDialog(this, this);
+                SaveRecordAlertDialog savedia = new SaveRecordAlertDialog(DrawActivity.this, this);
                 savedia.show();
             } else {// no record.
                 if (isUserHaveOperationInSomeBoard()) {
@@ -534,7 +530,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         } else {// play/preview mode.
             mJsonScriptPlayer.exitPlayer();
             finish();
-            killPlayProcess();// must do.
         }
     }
 
@@ -817,7 +812,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         //
         if (getPlayMode() == PlayMode.MAKE)
             SoundRecorder.closeWorldTimer();
-        killPlayProcess();
 
         if (isRecordsChanged) {
             EventBus.getDefault().post(new RefreshCourseListEvent());
@@ -948,19 +942,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String msg;
                 getPageRecorder().saveCurrentPageRecord();
-                final boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
+                boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
                 if (!isSuccess) {
-                    dismissLoading();
-                    postTaskToUiThread(new Runnable() {
-                        public void run() {
-                            OneButtonAlertDialog dia = new OneButtonAlertDialog(context(), "保存录像信息文件失败，请检查存储卡是否有剩余空间！");
-                            dia.show();
-                        }
-                    });
-                    return;
+                    msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
+                } else {
+                    msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
                 }
-                toStartPlayService();
+                dismissLoading();
+                new OneButtonAlertDialog(context(), msg).show();
             }
         }).start();
 
@@ -976,7 +967,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 .setRightButton("确认", new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        killPlayProcess();
                         dismissLoading();
                     }
                 })
@@ -1285,7 +1275,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_PICK_IMAGE = 2;
-    private static final String CAMERA_TEMP_IMAGE_PATH = Const.SD_PATH + "/camera_temp.jpg";
+    private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
     private PickPhotoCallback mPickPhotoCallback;
 
     @Override
@@ -1657,25 +1647,4 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return pages.indexOf(bd);// 搜索指定的对象，并返回整个 List 中第一个匹配项的从零开始的索引。
     }
 
-    // ---------------------------------------------------------------------------------------
-
-
-    /**
-     * 开启播放服务
-     */
-    private void toStartPlayService() {
-        Intent it = new Intent(context(), PlayService.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_MAKE_RELEASE_SCRIPT);
-        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, getRecordDir());
-        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
-        context().startService(it);
-    }
-
-    /**
-     * 停止播放服务
-     */
-    private final void killPlayProcess() {
-        PlayService.killServiceProcess(this);
-    }
 }

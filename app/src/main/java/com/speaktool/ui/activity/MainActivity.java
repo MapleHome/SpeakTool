@@ -21,7 +21,6 @@ import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.service.KeepAliveService;
 import com.speaktool.tasks.TaskLoadRecordCategories;
 import com.speaktool.tasks.TaskLoadRecordCategories.RecordTypeLoadListener;
 import com.speaktool.tasks.ThreadPoolWrapper;
@@ -74,7 +73,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         // 注册EventBus订阅者
         EventBus.getDefault().register(this);
 
-        KeepAliveService.start(this);
         // 填充视图
         mHomePage = new HomePage();
         loadView(mHomePage);
@@ -185,7 +183,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);// 解除注册EventBus订阅者
         singleExecutor.shutdownNow();
-        KeepAliveService.stop(this);
         super.onDestroy();
     }
 

@@ -1,5 +1,6 @@
 package com.speaktool.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,8 @@ import com.speaktool.R;
 import com.speaktool.ui.adapters.SplashPageAdapter;
 import com.speaktool.utils.SPUtils;
 import com.speaktool.utils.T;
+import com.speaktool.utils.permission.PermissionFragment;
+import com.speaktool.utils.permission.PermissionListener;
 
 import java.util.ArrayList;
 
@@ -76,6 +79,7 @@ public class SplashActivity extends RoboActivity {
         long startTime = System.currentTimeMillis();
         boolean isFirst = SPUtils.getBool(Const.First_ComeIn, true);
         initData();
+        checkPermission();
         if (isFirst) {
             initViews();
         } else {
@@ -123,6 +127,31 @@ public class SplashActivity extends RoboActivity {
         String display = Build.DISPLAY;// 显示器- JLS36C
         String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
         Log.e("Splash", "当前设备：" + display + " -- " + manufacturer);
+    }
+
+    private void checkPermission() {
+        String[] permissions = new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO
+        };
+        PermissionFragment.getPermissionFragment(this)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(String[] deniedPermissions) {
+                        T.showShort(mContext, "请打开内存读写权限");
+                    }
+
+                    @Override
+                    public void onPermissionDeniedDotAgain(String[] deniedPermissions) {
+
+                    }
+                }).checkPermissions(permissions, null);
     }
 
     /**

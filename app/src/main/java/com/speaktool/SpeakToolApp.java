@@ -1,24 +1,25 @@
 package com.speaktool;
 
+import android.app.Application;
 import android.os.Handler;
 
-import com.smart.pen.core.PenApplication;
-import com.speaktool.bean.LocalPhotoDirBean;
-import com.speaktool.bean.UserBean;
-import com.speaktool.dao.UserDatabase;
-import com.speaktool.service.SpeakToolUncaughtExceptionHandler;
-import com.speaktool.tasks.TaskLoadLocalPhotos;
-import com.speaktool.tasks.TaskLoadLocalPhotos.LoadLocalPhotosCallback;
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
-import java.util.List;
 
-/**
- * 讲讲APP
- *
- * @author shaoshuai
- */
-public class SpeakToolApp extends PenApplication implements LoadLocalPhotosCallback {
-
+@ReportsCrashes(
+        mode = ReportingInteractionMode.DIALOG,
+        mailTo = "maple.shao@everbridge.com",
+        resToastText = R.string.crash_toast_text,
+        resDialogText = R.string.crash_dialog_text,
+        resDialogIcon = R.drawable.ic_launcher,
+        resDialogTitle = R.string.crash_dialog_title,
+        resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
+        // resDialogTheme = R.style.AppTheme_Dialog,
+        resDialogOkToast = R.string.crash_dialog_ok_toast
+)
+public class SpeakToolApp extends Application {
     private static SpeakToolApp app;
     private static Handler sHandler = new Handler();
 
@@ -26,35 +27,27 @@ public class SpeakToolApp extends PenApplication implements LoadLocalPhotosCallb
     public void onCreate() {
         super.onCreate();
         app = this;
-        Thread.setDefaultUncaughtExceptionHandler(new SpeakToolUncaughtExceptionHandler());
-        initLocalPhoto();
-
+        initPath();
+        ACRA.init(this);
     }
 
-    private void initLocalPhoto() {
-        new Thread(new TaskLoadLocalPhotos(this)).start();
-    }
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(base);
+//
+//        // The following line triggers the initialization of ACRA
+//        ACRA.init(this);
+//    }
 
     public static SpeakToolApp app() {
         return app;
-    }
-
-    public static String getUid() {
-        String uid = "";
-        UserBean session = UserDatabase.getUserLocalSession(app);
-        if (session != null && session.getLoginState() == UserBean.STATE_IN) {
-            uid = session.getId();
-        }
-        return uid;
     }
 
     public static Handler getUiHandler() {
         return sHandler;
     }
 
-    @Override
-    public void onFinish(List<LocalPhotoDirBean> dirs) {
-        // ignore,just use to preload.
+    public void initPath() {
 
     }
 
