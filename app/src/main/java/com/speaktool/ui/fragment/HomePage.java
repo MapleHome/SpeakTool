@@ -69,7 +69,7 @@ public class HomePage extends BaseFragment {
         mActivity = (MainActivity) getActivity();
 
         // 记录列表
-        mAdapterAllRecords = new RecordsAdapter(mContext, null, mAppIconAsyncLoader, mActivity);
+        mAdapterAllRecords = new RecordsAdapter(mContext, null, mAppIconAsyncLoader);
         gridViewAllRecords.setMode(Mode.BOTH);
         gridViewAllRecords.setAdapter(mAdapterAllRecords);
 
@@ -102,8 +102,7 @@ public class HomePage extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseItem course = (CourseItem) parent.getAdapter().getItem(position);
                 // 条目详情框
-                ShareDialog dia = new ShareDialog(mContext, course, mAppIconAsyncLoader);
-                dia.show();
+                new ShareDialog(mContext, course, mAppIconAsyncLoader).show();
             }
         });
         /** 刷新加载监听 */

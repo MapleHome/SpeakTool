@@ -26,18 +26,12 @@ public class SpeakToolApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
-        initPath();
         ACRA.init(this);
+        app = this;
+
+        initPath();
     }
 
-//    @Override
-//    protected void attachBaseContext(Context base) {
-//        super.attachBaseContext(base);
-//
-//        // The following line triggers the initialization of ACRA
-//        ACRA.init(this);
-//    }
 
     public static SpeakToolApp app() {
         return app;
