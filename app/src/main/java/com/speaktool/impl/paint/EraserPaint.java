@@ -7,7 +7,7 @@ import android.graphics.PorterDuffXfermode;
 import com.speaktool.SpeakToolApp;
 import com.speaktool.bean.PaintInfoBean;
 import com.speaktool.utils.DensityUtils;
-import com.speaktool.utils.MyColors;
+import com.speaktool.tasks.MyColors;
 
 /**
  * 橡皮擦

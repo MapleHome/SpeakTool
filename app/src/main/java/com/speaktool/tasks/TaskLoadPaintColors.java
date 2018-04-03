@@ -3,7 +3,6 @@ package com.speaktool.tasks;
 import com.google.common.collect.Lists;
 import com.speaktool.R;
 import com.speaktool.bean.PaintInfoBean;
-import com.speaktool.utils.MyColors;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

@@ -1,6 +1,7 @@
 package com.speaktool.ui.fragment;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +13,8 @@ import android.widget.TextView;
 import com.speaktool.R;
 import com.speaktool.ui.activity.UserFMActivity;
 import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.utils.AppManager;
 import com.speaktool.tasks.ThreadPoolWrapper;
+import com.speaktool.utils.AppUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +32,7 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
     public static final String FRAGMENT_NAME = "关于";
     private UserFMActivity mActivity;
     //	private AppUpdateManager mAppUpdateManager;
-    private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
+//    private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -45,8 +46,8 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
         mActivity = (UserFMActivity) getActivity();
         mActivity.setTitle(FRAGMENT_NAME);
         // 版本号
-        String versionName = AppManager.getCurrentAppVersionName(mContext);
-        tv_version.setText("For Android V " + versionName);
+        PackageInfo packageInfo = AppUtils.getPackageInfo(mContext);
+        tv_version.setText("For Android V " + packageInfo.versionName + " - " + packageInfo.versionCode);
         // app更新
 //		mAppUpdateManager = new AppUpdateManager(mContext, singleExecutor, true);
     }
@@ -71,12 +72,12 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        singleExecutor.shutdownNow();
+//    @Override
+//    public void onDestroyView() {
+//        singleExecutor.shutdownNow();
 //		mAppUpdateManager = null;
-        super.onDestroyView();
-    }
+//        super.onDestroyView();
+//    }
 
     /**
      * 拨打电话

@@ -12,7 +12,7 @@ import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.impl.paint.EraserPaint;
 import com.speaktool.ui.layouts.StrokeWidthPreview;
 import com.speaktool.utils.DensityUtils;
-import com.speaktool.utils.MyColors;
+import com.speaktool.tasks.MyColors;
 
 /**
  * 左侧——橡皮擦——更改擦除路径宽度

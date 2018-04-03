@@ -39,7 +39,7 @@ import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ViewShape_;
 import com.speaktool.impl.DrawModeManager;
 import com.speaktool.utils.DensityUtils;
-import com.speaktool.utils.MyColors;
+import com.speaktool.tasks.MyColors;
 
 import java.util.List;
 
