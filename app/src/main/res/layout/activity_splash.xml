@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/guide_viewpager"
@@ -18,7 +17,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:padding="5.0dip" >
+        android:padding="5.0dip">
 
         <ImageView
             android:id="@+id/guide_dot1_iv"

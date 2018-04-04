@@ -213,7 +213,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         super.onCreate(savedInstanceState);// inject finish.
-        setContentView(R.layout.activity_draw_yulan);
+        setContentView(R.layout.activity_draw_board);
         mContext = DrawActivity.this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);// 注册EventBus订阅者

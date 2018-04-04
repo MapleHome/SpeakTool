@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <include
+        layout="@layout/activity_draw_board_left_bar"
         android:layout_width="50dp"
-        android:layout_height="match_parent"
-        layout="@layout/activity_draw_board_left_bar" />
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@android:color/black"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical">
 
         <!-- 绘画板容器 -->
 
@@ -44,8 +44,8 @@
     </RelativeLayout>
 
     <include
+        layout="@layout/activity_draw_board_right_bar"
         android:layout_width="50dp"
-        android:layout_height="match_parent"
-        layout="@layout/activity_draw_board_right_bar" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

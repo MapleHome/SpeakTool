@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="200dp"
         android:layout_height="220dp"
         android:background="@drawable/shape_pow_bg"
         android:orientation="vertical"
-        android:padding="5dp" >
+        android:padding="5dp">
 
         <GridView
             android:id="@+id/gridViewColors"
@@ -19,15 +19,14 @@
             android:horizontalSpacing="5dp"
             android:numColumns="4"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp" >
-        </GridView>
+            android:verticalSpacing="5dp" />
 
         <com.speaktool.ui.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/ic_launcher" />
+            android:background="#dddddd" />
 
         <SeekBar
             android:id="@+id/seekBarAdjustStrokeWidth"
