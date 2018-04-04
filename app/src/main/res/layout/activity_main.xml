@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/drawactivity_topbar_height"
-        android:background="@color/draw_left_bar_bg" >
+        android:background="@color/draw_left_bar_bg">
 
         <RelativeLayout
             android:id="@+id/rl_left_img"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true" >
+            android:layout_alignParentLeft="true">
 
             <TextView
                 android:id="@+id/tvMakeVideo"
@@ -50,7 +50,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toRightOf="@+id/ivDevider"
-            android:background="@drawable/searchbox" />
+            android:background="#fff" />
     </RelativeLayout>
 
     <FrameLayout
@@ -59,7 +59,8 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/bottomBar"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/topBar" >
+        android:layout_below="@+id/topBar">
+
     </FrameLayout>
 
     <RelativeLayout
@@ -67,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/drawactivity_bottombar_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/draw_right_bar_bg" >
+        android:background="@color/draw_right_bar_bg">
 
         <ImageView
             android:id="@+id/ivSetting"
