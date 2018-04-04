@@ -3,21 +3,25 @@
 
     <!-- 左下部-圆角 -->
     <!-- 默认状态 -->
-    <item android:state_pressed="false"><shape android:shape="rectangle">
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="@color/dialog_bg" />
             <!-- 矩形的圆角半径 -->
             <corners android:bottomLeftRadius="@dimen/jiaodu" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
-        </shape></item>
+        </shape>
+    </item>
 
     <!-- 选择状态 -->
-    <item android:state_pressed="true"><shape android:shape="rectangle">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="@color/dialog_sel_bg" />
             <!-- 矩形的圆角半径 -->
             <corners android:bottomLeftRadius="@dimen/jiaodu" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
-        </shape></item>
+        </shape>
+    </item>
 
 </selector>

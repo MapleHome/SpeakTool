@@ -5,7 +5,8 @@
 
 
     <!-- 默认状态 -->
-    <item android:state_pressed="false"><shape android:shape="rectangle">
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="@color/taikonghui_def" />
@@ -13,10 +14,12 @@
             <stroke android:width="0.7dip" android:color="@color/line_bg" />
             <!-- 矩形的圆角半径 -->
             <corners android:radius="1dp" />
-        </shape></item>
+        </shape>
+    </item>
 
     <!-- 选择状态 -->
-    <item android:state_pressed="true"><shape android:shape="rectangle">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="@color/taikonghui_sel" />
@@ -24,6 +27,7 @@
             <stroke android:width="0.7dip" android:color="@color/line_bg" />
             <!-- 矩形的圆角半径 -->
             <corners android:radius="1dp" />
-        </shape></item>
+        </shape>
+    </item>
 
 </selector>

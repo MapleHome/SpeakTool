@@ -5,17 +5,21 @@
 
 
     <!-- 默认状态 -->
-    <item android:state_pressed="false"><shape android:shape="rectangle">
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="#FFFFFF" />
-        </shape></item>
+        </shape>
+    </item>
 
     <!-- 选择状态 -->
-    <item android:state_pressed="true"><shape android:shape="rectangle">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="#99DDDDDD" />
-        </shape></item>
+        </shape>
+    </item>
 
 </selector>

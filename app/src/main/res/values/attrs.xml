@@ -6,7 +6,7 @@
         <attr name="textVal" format="string|reference" />
         <attr name="imgSrc" format="reference|color" />
     </declare-styleable>
-    
+
     <declare-styleable name="itemSelectBg">
         <attr name="itemSelectBg_note" format="string|reference" />
         <attr name="itemSelectBg_icon" format="reference|color" />
