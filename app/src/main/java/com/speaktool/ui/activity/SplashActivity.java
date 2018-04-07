@@ -133,6 +133,7 @@ public class SplashActivity extends RoboActivity {
         String[] permissions = new String[]{
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
                 Manifest.permission.RECORD_AUDIO
         };
         PermissionFragment.getPermissionFragment(this)
