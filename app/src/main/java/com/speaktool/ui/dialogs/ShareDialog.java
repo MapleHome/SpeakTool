@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 import com.maple.msdialog.AlertDialog;
-import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
 import com.speaktool.api.AsyncDataLoader;
@@ -37,8 +36,8 @@ import com.speaktool.service.PlayService;
 import com.speaktool.tasks.MyThreadFactory;
 import com.speaktool.tasks.TaskGetThirdpartys;
 import com.speaktool.tasks.TaskGetThirdpartys.TaskGetThirdpartysCallback;
+import com.speaktool.ui.activity.DrawActivity;
 import com.speaktool.ui.activity.MainActivity;
-import com.speaktool.ui.activity.PlayUrlVideoActivity;
 import com.speaktool.ui.activity.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.RecordFileUtils;
@@ -174,12 +173,11 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         switch (v.getId()) {
             case R.id.ivPlay:// 播放
                 dismiss();
-                toPlayVideoPage((LocalRecordBean) mItemBean);
-//                if (mItemBean instanceof LocalRecordBean) {
-//                    playLocalRecord();// 播放本地视频
-//                } else {
-//                    // playServerRecord();// 播放服务器视频
-//                }
+
+                LocalRecordBean localItem = (LocalRecordBean) mItemBean;
+//                toDrawPager(localItem);
+                toPlayVideoPage(localItem);
+//                playLocalRecord(localItem);
                 break;
             case R.id.ivShare:// 分享
                 more();
@@ -382,10 +380,8 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     /**
      * 播放本地视频
      */
-    private void playLocalRecord() {
-        LocalRecordBean localItem = (LocalRecordBean) mItemBean;
+    private void playLocalRecord(LocalRecordBean localItem) {
         Log.e("点击播放按钮", "播放本地视频" + localItem.getRecordDir());
-
         Intent playIntent = new Intent(mContext, PlayService.class);
         playIntent.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PLAY);
         playIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -401,8 +397,20 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     private void toPlayVideoPage(LocalRecordBean item) {
         Intent it = new Intent(getContext(), PlayVideoActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayVideoActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
         it.putExtra(PlayVideoActivity.EXTRA_RECORD_BEAN, item);
+        getContext().startActivity(it);
+    }
+
+    /**
+     * 去画板页面
+     *
+     * @param item
+     */
+    private void toDrawPager(LocalRecordBean item) {
+        Intent it = new Intent(getContext(), DrawActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        it.putExtra(DrawActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
+        it.putExtra(DrawActivity.EXTRA_RECORD_BEAN, item);
         getContext().startActivity(it);
     }
 

@@ -29,7 +29,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 创建画板纸张
-	 * 
+	 *
 	 * @param bgType
 	 *            - 纸张背景类型
 	 * @param position
@@ -41,7 +41,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 设置指定id的画纸为当前活动画纸
-	 * 
+	 *
 	 * @param pageId
 	 *            - 画纸ID
 	 */
@@ -49,7 +49,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 设置指定id的画纸为当前互动画纸
-	 * 
+	 *
 	 * @param pageId
 	 *            - 画纸ID
 	 */
@@ -72,7 +72,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 复制当前页面
-	 * 
+	 *
 	 * @param option
 	 *            操作类型
 	 */
@@ -80,7 +80,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 复制页面图片
-	 * 
+	 *
 	 * @param srcPageId
 	 *            源页面ID
 	 * @param destPageId
@@ -92,7 +92,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 清除页面内容
-	 * 
+	 *
 	 * @param pageId
 	 *            页面ID
 	 * @param option
@@ -102,7 +102,7 @@ public interface Draw extends PhotoImporter {
 
 	/**
 	 * 清除页面图片
-	 * 
+	 *
 	 * @param pageId
 	 * @param option
 	 */

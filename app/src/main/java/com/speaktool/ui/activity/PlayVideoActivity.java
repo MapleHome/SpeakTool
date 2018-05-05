@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.clear.CmdClearPage;
 import com.speaktool.impl.cmd.copy.CmdCopyPage;
 import com.speaktool.impl.cmd.create.CmdActivePage;
@@ -53,7 +55,6 @@ import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.impl.DrawModeManager;
 import com.speaktool.service.PlayService;
 import com.speaktool.ui.dialogs.OneButtonAlertDialog;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
@@ -66,25 +67,23 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
-import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 
 /**
  * 播放本地视频
  *
  * @author shaoshuai
  */
-@ContentView(R.layout.activity_play_video)
-public class PlayVideoActivity extends RoboActivity implements Draw {
+public class PlayVideoActivity extends FragmentActivity implements Draw {
     // 内容区
-    @InjectView(R.id.drawBoardContainer)
-    private ViewFlipper viewFlipper;// 绘画板容器
-    @InjectView(R.id.viewFlipperOverlay)
-    private View viewFlipperOverlay;// 文本
-    @InjectView(R.id.layoutVideoController)
-    private VideoPlayControllerView layoutVideoController;// 视频播放控制器
+    @BindView(R.id.drawBoardContainer)
+    ViewFlipper viewFlipper;// 绘画板容器
+    @BindView(R.id.viewFlipperOverlay)
+    View viewFlipperOverlay;// 文本
+    @BindView(R.id.layoutVideoController)
+    VideoPlayControllerView layoutVideoController;// 视频播放控制器
 
     // 常量
     public static final String EXTRA_RECORD_BEAN = "record_bean";
@@ -114,51 +113,54 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
      * JSON脚本播放器
      */
     private JsonScriptPlayer mJsonScriptPlayer;
-    private PlayMode mPlayMode;
 
     private int pageWidth;
     private int pageHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_play_video);
+
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(null);
-        mContext = this;
-        // 注册EventBus订阅者
-        EventBus.getDefault().register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        super.onCreate(savedInstanceState);// inject finish.
 
-        mPlayMode = (PlayMode) getIntent().getSerializableExtra(EXTRA_PLAY_MODE);
+        mContext = this;
+        ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
-        if (mPlayMode == PlayMode.PLAY) {
 
-            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
-            //
-            LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
-            // 检查是否为空
-            Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
-            mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
+        play();
 
-            ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-            pageWidth = currentScreen.w;
-            pageHeight = currentScreen.h;
-            // 设置播放器大小
-            LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
-            lp.width = pageWidth;
-            layoutVideoController.setLayoutParams(lp);
-            //
-            LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
-            lp2.width = pageWidth;
-            lp2.height = pageHeight;
-            viewFlipperOverlay.setLayoutParams(lp2);
-            //
-            initListener();
+    }
 
-            DrawModeManager.getIns().setDrawMode(new DrawModePath());
-            mJsonScriptPlayer.play();
-            //
-        }
+    private void play() {
+        layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+        //
+        LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
+        // 检查是否为空
+        Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
+        mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
+
+        ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
+        pageWidth = currentScreen.w;
+        pageHeight = currentScreen.h;
+        // 设置播放器大小
+        LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
+        lp.width = pageWidth;
+        layoutVideoController.setLayoutParams(lp);
+        //
+        LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
+        lp2.width = pageWidth;
+        lp2.height = pageHeight;
+        viewFlipperOverlay.setLayoutParams(lp2);
+        //
+        initListener();
+
+        DrawModeManager.getIns().setDrawMode(new DrawModePath());
+        mJsonScriptPlayer.play();
+        //
     }
 
     private void initListener() {
@@ -210,12 +212,10 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
      */
     @Override
     public void onExitDraw() {
-        if (mPlayMode == PlayMode.MAKE) {
-        } else {// play/preview mode.
-            mJsonScriptPlayer.exitPlayer();
-            finish();
-            killPlayProcess();// must do.
-        }
+        // play/preview mode.
+        mJsonScriptPlayer.exitPlayer();
+        finish();
+        killPlayProcess();// must do.
     }
 
     // 上一页
@@ -554,13 +554,10 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
 
     @Override
     protected void onStop() {
-        if (getPlayMode() == PlayMode.MAKE) {
-
-        } else {// play.
-            if (mJsonScriptPlayer.isPlaying()) {
-                mJsonScriptPlayer.pause();
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-            }
+        // play.
+        if (mJsonScriptPlayer.isPlaying()) {
+            mJsonScriptPlayer.pause();
+            layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
         }
         super.onStop();
     }
@@ -792,7 +789,7 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
 
     @Override
     public PlayMode getPlayMode() {
-        return mPlayMode;
+        return PlayMode.PLAY;
     }
 
     @Override

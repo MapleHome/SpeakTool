@@ -16,18 +16,18 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.ui.activity.MainActivity;
-import com.speaktool.ui.adapters.RecordsAdapter;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
-import com.speaktool.ui.base.AbsListScrollListener;
-import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.bean.CourseSearchBean;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.service.AsyncDataLoaderFactory;
 import com.speaktool.tasks.TaskLoadRecords;
 import com.speaktool.tasks.TaskLoadRecords.RecordsUi;
 import com.speaktool.tasks.ThreadPoolWrapper;
+import com.speaktool.ui.activity.MainActivity;
+import com.speaktool.ui.adapters.RecordsAdapter;
+import com.speaktool.ui.base.AbsListScrollListener;
+import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.ui.dialogs.ShareDialog;
 import com.speaktool.ui.layouts.ItemViewLocalRecord;
@@ -89,7 +89,7 @@ public class HomePage extends BaseFragment {
         mPageNumber = 1;
         mIsHaveMoreData = true;
         // 加载本地记录
-        searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords, true);
+        searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class HomePage extends BaseFragment {
                     gridViewAllRecords.onRefreshComplete();
                     return;
                 }
-                searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords, true);
+                searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords);
             }
         });
     }
@@ -129,7 +129,7 @@ public class HomePage extends BaseFragment {
     /**
      * 搜索课程记录
      */
-    public void searchRecords(SearchCategoryBean mSearchType, String mSearchKeywords, boolean isNeedLoadLocalRecord) {
+    public void searchRecords(SearchCategoryBean mSearchType, String mSearchKeywords) {
         mLoadingDialog.show("正在加载...");
 
         mActivity.setSearchView(mSearchType, mSearchKeywords);
@@ -142,37 +142,15 @@ public class HomePage extends BaseFragment {
         info.setKeywords(mSearchKeywords);// 关键字
 
         mCurrentData.clear();
-        singleExecutor.execute(new TaskLoadRecords(indexRecordsUi, info, isNeedLoadLocalRecord, mCurrentData));
+        singleExecutor.execute(new TaskLoadRecords(indexRecordsUi, info, mCurrentData));
     }
 
     private RecordsUi indexRecordsUi = new RecordsUi() {
-
         @Override
         public void onRecordsLoaded(List<CourseItem> datas) {
             mPageNumber++;
             refreshIndexAdp(datas);
             gridViewAllRecords.onRefreshComplete();
-        }
-
-        @Override
-        public void onNoMoreData(List<CourseItem> datas) {
-            mIsHaveMoreData = false;
-            refreshIndexAdp(datas);
-            gridViewAllRecords.onRefreshComplete();
-        }
-
-        @Override
-        public void onFail(List<CourseItem> datas) {
-            refreshIndexAdp(datas);
-            gridViewAllRecords.onRefreshComplete();
-            T.showShort(mContext, "服务器链接失败！请检查网络");
-        }
-
-        @Override
-        public void onNotLogin(List<CourseItem> datas) {
-            refreshIndexAdp(datas);
-            gridViewAllRecords.onRefreshComplete();
-
         }
     };
 
@@ -215,7 +193,7 @@ public class HomePage extends BaseFragment {
                 final String imageUrl = bean.getThumbnailImgPath();
                 if (TextUtils.isEmpty(imageUrl))
                     continue;
-                final ItemViewLocalRecord item = (ItemViewLocalRecord) gridViewAllRecords.findViewWithTag(imageUrl);
+                final ItemViewLocalRecord item =  gridViewAllRecords.findViewWithTag(imageUrl);
                 if (item == null)
                     continue;
                 if (mAppIconAsyncLoader == null) {

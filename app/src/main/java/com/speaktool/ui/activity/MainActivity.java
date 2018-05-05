@@ -221,7 +221,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             return;
         }
 
-        mHomePage.searchRecords(type, keywords, true);
+        mHomePage.searchRecords(type, keywords);
     }
 
     private CategoryPoW popupWindow;
@@ -233,7 +233,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 SearchCategoryBean befCategory = searchView.getCategory();
                 if (!befCategory.equals(categoryNew)) {
                     setSearchView(categoryNew, "");
-                    // 通过EventBus订阅者发送消息
                     EventBus.getDefault().post(new RefreshCourseListEvent());
                 }
             }
