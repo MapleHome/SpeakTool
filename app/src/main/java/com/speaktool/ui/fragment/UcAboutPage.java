@@ -28,7 +28,6 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.ll_check_update) LinearLayout ll_check_update;// 检查更新
     @BindView(R.id.ll_service_tel) LinearLayout ll_service_tel;// 服务热线
 
-    public static final String FRAGMENT_NAME = "关于";
     private UserFMActivity mActivity;
 
     @Override
@@ -41,7 +40,7 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("关于");
         // 版本号
         PackageInfo packageInfo = AppUtils.getPackageInfo(mContext);
         tv_version.setText("For Android V " + packageInfo.versionName + " - " + packageInfo.versionCode);

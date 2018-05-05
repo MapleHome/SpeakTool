@@ -8,10 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.speaktool.R;
-import com.speaktool.ui.activity.UserFMActivity;
-import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
+import com.speaktool.ui.activity.UserFMActivity;
+import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.utils.T;
 import com.speaktool.utils.UserInfoValidateUtil;
@@ -33,7 +33,6 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.etIntroduce) EditText etIntroduce;// 简介
     @BindView(R.id.btnFinish) Button btnFinish;// 完成
 
-    public static final String FRAGMENT_NAME = "注册";
     private UserFMActivity mActivity;
     private LoadingDialog mLoadingDialog;
 
@@ -48,7 +47,7 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("注册");
         //
         mLoadingDialog = new LoadingDialog(mActivity);
     }

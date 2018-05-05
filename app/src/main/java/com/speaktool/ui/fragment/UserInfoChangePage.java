@@ -23,17 +23,17 @@ import com.maple.msdialog.ActionSheetDialog;
 import com.maple.msdialog.AlertEditDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.ui.activity.UserFMActivity;
 import com.speaktool.api.PhotoImporter;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
-import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.bean.UserBean;
 import com.speaktool.dao.UserDatabase;
 import com.speaktool.tasks.TaskGetNetImage;
 import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
 import com.speaktool.tasks.TaskModifyUserInfo;
 import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
+import com.speaktool.ui.activity.UserFMActivity;
+import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.ui.popupwindow.L_M_AddSinglePhotosPoW;
 import com.speaktool.utils.BitmapScaleUtil;
@@ -69,7 +69,6 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
 
     @BindView(R.id.bt_save_info) Button bt_save_info;// 保存信息
 
-    public static final String FRAGMENT_NAME = "个人信息修改";
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;// 捕获图片
     private static final int REQUEST_CODE_PICK_IMAGE = 2;// 挑选图片
     private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
@@ -92,7 +91,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("个人信息修改");
 
         mLoadingDialog = new LoadingDialog(mActivity);
         session = UserDatabase.getUserLocalSession(mContext);

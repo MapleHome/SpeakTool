@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <!-- 搜索记录 -->
 
     <com.handmark.pulltorefresh.library.PullToRefreshGridView
-        android:id="@+id/prgw_ServerRecords"
+        android:id="@+id/gv_Records"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="#00000000"
@@ -14,7 +14,7 @@
         android:listSelector="#00000000"
         android:numColumns="2"
         android:padding="5dp"
-        android:verticalSpacing="10dp" />
+        android:verticalSpacing="10dp"/>
 
     <!--
          <com.speektool.ui.layouts.SpkLoadingLayout

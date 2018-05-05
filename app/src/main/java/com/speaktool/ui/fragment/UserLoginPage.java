@@ -35,7 +35,6 @@ public class UserLoginPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.layQQLogin) LinearLayout layQQLogin;// QQ
     @BindView(R.id.layMore) LinearLayout layMore;// 更多
 
-    public static final String FRAGMENT_NAME = "登录";
     private UserFMActivity mActivity;
 
     @Override
@@ -49,7 +48,7 @@ public class UserLoginPage extends BaseFragment implements OnClickListener {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("登录");
     }
 
     @Override

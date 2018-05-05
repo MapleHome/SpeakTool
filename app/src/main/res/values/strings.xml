@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">讲讲</string>
+
+
     <string name="deletepage_last">已经是最后一页了</string>
     <string name="saveRecord_empty_title">标题不能为空</string>
     <string name="recordType_exist">目录已经存在</string>

@@ -44,19 +44,14 @@ import butterknife.ButterKnife;
  * @author shaoshuai
  */
 public class HomePage extends BaseFragment {
-    @BindView(R.id.prgw_ServerRecords) PullToRefreshGridView gridViewAllRecords;// 所有记录
+    @BindView(R.id.gv_Records) PullToRefreshGridView gv_allRecords;// 所有记录
 
     private MainActivity mActivity;
     private LoadingDialog mLoadingDialog;
-    /**
-     * 搜索记录
-     */
-    private List<CourseItem> mCurrentData = Lists.newArrayList();
+    private List<CourseItem> mCurrentData = Lists.newArrayList();// 搜索记录
     private RecordsAdapter mAdapterAllRecords;
-
     private static final int GRID_PAGE_SIZE = 20;// 网格页面大小
     private int mPageNumber = 1;
-
     private boolean mIsHaveMoreData = true;
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
     private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader = AsyncDataLoaderFactory
@@ -70,8 +65,8 @@ public class HomePage extends BaseFragment {
 
         // 记录列表
         mAdapterAllRecords = new RecordsAdapter(mContext, null, mAppIconAsyncLoader);
-        gridViewAllRecords.setMode(Mode.BOTH);
-        gridViewAllRecords.setAdapter(mAdapterAllRecords);
+        gv_allRecords.setMode(Mode.BOTH);
+        gv_allRecords.setAdapter(mAdapterAllRecords);
 
         return view;
     }
@@ -95,9 +90,9 @@ public class HomePage extends BaseFragment {
     @Override
     public void initListener() {
         // 课程记录
-        gridViewAllRecords.setOnScrollListener(mAllListOnScrollListener);
+        gv_allRecords.setOnScrollListener(mAllListOnScrollListener);
         // 课程记录-条目点击
-        gridViewAllRecords.setOnItemClickListener(new OnItemClickListener() {
+        gv_allRecords.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseItem course = (CourseItem) parent.getAdapter().getItem(position);
@@ -106,7 +101,7 @@ public class HomePage extends BaseFragment {
             }
         });
         /** 刷新加载监听 */
-        gridViewAllRecords.setOnRefreshListener(new OnRefreshListener2<GridView>() {
+        gv_allRecords.setOnRefreshListener(new OnRefreshListener2<GridView>() {
             // 下拉刷新
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
@@ -118,7 +113,7 @@ public class HomePage extends BaseFragment {
             public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
                 if (!mIsHaveMoreData) {
                     T.showShort(mContext, "没有更多数据了");
-                    gridViewAllRecords.onRefreshComplete();
+                    gv_allRecords.onRefreshComplete();
                     return;
                 }
                 searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords);
@@ -150,7 +145,7 @@ public class HomePage extends BaseFragment {
         public void onRecordsLoaded(List<CourseItem> datas) {
             mPageNumber++;
             refreshIndexAdp(datas);
-            gridViewAllRecords.onRefreshComplete();
+            gv_allRecords.onRefreshComplete();
         }
     };
 
@@ -167,8 +162,8 @@ public class HomePage extends BaseFragment {
 
             @Override
             public void run() {
-                int first = gridViewAllRecords.getRefreshableView().getFirstVisiblePosition();
-                int last = gridViewAllRecords.getRefreshableView().getLastVisiblePosition();
+                int first = gv_allRecords.getRefreshableView().getFirstVisiblePosition();
+                int last = gv_allRecords.getRefreshableView().getLastVisiblePosition();
 
                 mAllListOnScrollListener.setVisibleItems(first, last);
                 mAllListOnScrollListener.whenIdle();
@@ -185,15 +180,15 @@ public class HomePage extends BaseFragment {
 
         @Override
         public void whenIdle() {
-            final int itemcount = gridViewAllRecords.getRefreshableView().getAdapter().getCount() - 1;
+            final int itemcount = gv_allRecords.getRefreshableView().getAdapter().getCount() - 1;
             final int min = Math.min(itemcount, mlastvisibleItem);
 
             for (int i = mfirstVisibleItem; i <= min; i++) {
-                CourseItem bean = (CourseItem) gridViewAllRecords.getRefreshableView().getAdapter().getItem(i);
+                CourseItem bean = (CourseItem) gv_allRecords.getRefreshableView().getAdapter().getItem(i);
                 final String imageUrl = bean.getThumbnailImgPath();
                 if (TextUtils.isEmpty(imageUrl))
                     continue;
-                final ItemViewLocalRecord item =  gridViewAllRecords.findViewWithTag(imageUrl);
+                final ItemViewLocalRecord item = gv_allRecords.findViewWithTag(imageUrl);
                 if (item == null)
                     continue;
                 if (mAppIconAsyncLoader == null) {
@@ -220,7 +215,7 @@ public class HomePage extends BaseFragment {
     }
 
     public ItemViewLocalRecord findViewWithTag(String key) {
-        return gridViewAllRecords.findViewWithTag(key);
+        return gv_allRecords.findViewWithTag(key);
     }
 
 }

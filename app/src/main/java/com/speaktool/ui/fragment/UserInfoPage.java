@@ -50,7 +50,6 @@ public class UserInfoPage extends BaseFragment implements OnClickListener {
 
     @BindView(R.id.bt_logout) Button bt_logout;// 注销
 
-    public static final String FRAGMENT_NAME = "设置";
     private UserFMActivity mActivity;
     private boolean isLogin = false;// 是否登陆
     private LoadingDialog mLoadingDialog;
@@ -66,7 +65,7 @@ public class UserInfoPage extends BaseFragment implements OnClickListener {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("设置");
 
         mLoadingDialog = new LoadingDialog(mActivity);
         if (UserDatabase.getUserLoginState(mContext) == UserBean.STATE_IN) {
