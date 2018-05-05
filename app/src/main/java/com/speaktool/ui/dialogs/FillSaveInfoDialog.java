@@ -3,8 +3,6 @@ package com.speaktool.ui.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,8 +22,6 @@ import com.speaktool.utils.T;
 
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * 填写保存信息
  *
@@ -43,13 +39,9 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
     public FillSaveInfoDialog(Context context, int theme, Draw draw) {
         super(context, theme);
         Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
+        this.setCanceledOnTouchOutside(false);
         mActivityContext = context;
         mDraw = draw;
-        init();
-    }
-
-    private void init() {
-        this.setCanceledOnTouchOutside(false);
     }
 
     @Override
@@ -112,7 +104,6 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
             case R.id.ivOk:// 信息页——完成
                 onSaveOk();
                 break;
-
         }
     }
 

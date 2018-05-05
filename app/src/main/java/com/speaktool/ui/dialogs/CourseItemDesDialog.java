@@ -25,7 +25,6 @@ import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ThirdParty;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
@@ -40,7 +39,6 @@ import com.speaktool.ui.activity.DrawActivity;
 import com.speaktool.ui.activity.MainActivity;
 import com.speaktool.ui.activity.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
-import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
 
 import java.io.File;
@@ -48,41 +46,39 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
- * 分享
+ * 课程条目信息
  *
  * @author shaoshuai
  */
-public class ShareDialog extends Dialog implements View.OnClickListener, OnDismissListener,
-        TaskGetThirdpartysCallback {
-
-    private View firstFrame;// dialog跟布局
-    private View loadingLayout;// 加载框跟布局
-
-    private ImageView ivBack;// 返回
-    private TextView tvTips;// 视频标题
-    private ImageView ivPlay;// 播放
-    private ImageView ivThumbnail;// 缩略图
-
-    private ImageView ivShare;// 分享
-    private ImageView ivCopyLink;// 复制路径
-    private ImageView ivDeleteVideo;// 删除
+public class CourseItemDesDialog extends Dialog implements OnDismissListener, TaskGetThirdpartysCallback {
+    @BindView(R.id.firstFrame) View firstFrame;// dialog跟布局
+    @BindView(R.id.ivBack) ImageView ivBack;// 返回
+    @BindView(R.id.tvTips) TextView tvTips;// 视频标题
+    @BindView(R.id.ivPlay) ImageView ivPlay;// 播放
+    @BindView(R.id.ivThumbnail) ImageView ivThumbnail;// 缩略图
+    // btn
+    @BindView(R.id.ivShare) ImageView ivShare;// 分享
+    @BindView(R.id.ivCopyLink) ImageView ivCopyLink;// 复制路径
+    @BindView(R.id.ivDeleteVideo) ImageView ivDeleteVideo;// 删除
     // 其他
     private Context mContext;
     private MainActivity mActivityContext;
     private CourseItem mItemBean;// 课程记录条目
     private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader;
-
     private ExecutorService singleExecutor = Executors.newSingleThreadExecutor(new MyThreadFactory(
             "loadThirdpartysThread"));
 
-    public ShareDialog(Context context, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
+    public CourseItemDesDialog(Context context, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
         this(context, R.style.dialogTheme, itembean, loader);
     }
 
-    public ShareDialog(Context context, int theme, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
+    public CourseItemDesDialog(Context context, int theme, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
         super(context, theme);
         mContext = context;
         Preconditions.checkArgument(context instanceof Activity, "在Dialog中Context必须是Activity.");
@@ -100,38 +96,21 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_sharevideo);
+        ButterKnife.bind(this);
 
-        firstFrame = findViewById(R.id.firstFrame);// 跟布局
         resetLayout();
-        loadingLayout = findViewById(R.id.loadingLayout);// 加载框跟布局
-        loadingLayout.setVisibility(View.GONE);
-        //
-        ivBack = findViewById(R.id.ivBack);// 返回按钮
-        tvTips = findViewById(R.id.tvTips);// 视频标题
-        ivPlay = findViewById(R.id.ivPlay);// 播放按钮
-        ivThumbnail = findViewById(R.id.ivThumbnail);// 视频缩略图
-        // 底部功能
-        ivDeleteVideo = findViewById(R.id.ivDeleteVideo);// 删除
-        ivCopyLink = findViewById(R.id.ivCopyLink);// 复制视频路径
-        ivShare = findViewById(R.id.ivShare);// 分享按钮
-        //
+        initData();
+    }
 
-        ivBack.setOnClickListener(this);// 返回
-        ivPlay.setOnClickListener(this);// 播放
-        ivShare.setOnClickListener(this);// 分享
-        ivCopyLink.setOnClickListener(this);// 复制路径
-        ivDeleteVideo.setOnClickListener(this);// 删除
-        loadingLayout.setOnClickListener(this);// 加载根视图
-
+    private void initData() {
         tvTips.setText(mItemBean.getRecordTitle());// 设置标题
         Bitmap cache = mAppIconAsyncLoader.load(mItemBean.getThumbnailImgPath());
         // 缩略图路径：/storage/emulated/0/.spktl/records/15215343233/15215391310.jpg
         if (cache != null) {
             ivThumbnail.setImageBitmap(cache);// 设置缩略图
         }
-
-        super.onCreate(savedInstanceState);
     }
 
     private void resetLayout() {
@@ -169,37 +148,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ivPlay:// 播放
-                dismiss();
-
-                LocalRecordBean localItem = (LocalRecordBean) mItemBean;
-//                toDrawPager(localItem);
-                toPlayVideoPage(localItem);
-//                playLocalRecord(localItem);
-                break;
-            case R.id.ivShare:// 分享
-                more();
-                break;
-            case R.id.ivDeleteVideo:// 删除
-                showDeleteDialog();
-                break;
-            case R.id.ivCopyLink:// 复制路径
-                if (mItemBean instanceof LocalRecordBean) {
-                    copyLinkLocalRecord();// 复制本地记录路径
-                } else {
-                    copyLinkServerRecord();// 复制服务器记录路径
-                }
-                break;
-            case R.id.ivBack:// 返回
-                dismiss();
-                break;
-        }
-
-    }
-
-    @Override
     public void onConnectFail() {
         T.showShort(mContext, "服务器链接失败！请检查网络。");
     }
@@ -216,7 +164,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         EventBus.getDefault().unregister(this);
     }
 
-
     // -------------------------------点击事件----------------------------------------------------
     private ThirdpartyListDialog mThirdpartyListDialog;
 
@@ -227,10 +174,25 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         }
     }
 
+    @OnClick(R.id.ivBack)
+    public void back() {
+        dismiss();
+    }
+
+    @OnClick(R.id.ivPlay)
+    public void toPlayPage() {
+        dismiss();
+        LocalRecordBean localItem = (LocalRecordBean) mItemBean;
+//        toDrawPager(localItem);
+        toPlayVideoPage(localItem);
+//        playLocalRecord(localItem);
+    }
+
     /**
      * 分享
      */
-    private void more() {
+    @OnClick(R.id.ivShare)
+    public void more() {
         mThirdpartyListDialog = new ThirdpartyListDialog(mActivityContext);
         mThirdpartyListDialog.show();
         mThirdpartyListDialog.setListItemClickListener(new OnItemClickListener() {
@@ -245,7 +207,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
                     return;
                 }
                 // mItemBean
-
             }
         });
         UserBean session = UserDatabase.getUserLocalSession(mActivityContext);
@@ -255,51 +216,20 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     /**
      * 复制本地路径
      */
-    private void copyLinkLocalRecord() {
+    @OnClick(R.id.ivCopyLink)
+    public void copyLinkLocalRecord() {
         String shareUrl = mItemBean.getShareUrl();
         if (shareUrl != null) {
-            copyUploadedLink(shareUrl);
+            ClipboardManager cmb = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            cmb.setText(shareUrl);
+            T.showShort(mContext, "录像地址已复制到剪贴板！");
         } else {
-            // upload then share.
-            try {
-                uploadFileForCopylink();
-            } catch (Exception e) {
-                e.printStackTrace();
-                T.showShort(mActivityContext, "upload fail!");
-            }
+            T.showShort(mContext, "录像地址是空的！");
         }
     }
 
-    /**
-     * 上传文件并复制连接
-     */
-    private void uploadFileForCopylink() {
-        LocalRecordBean localItem = (LocalRecordBean) mItemBean;
-        RecordUploadBean recordUploadBean = RecordFileUtils.getSpklUploadBeanFromDir(localItem.getRecordDir(),
-                mActivityContext);
-        if (recordUploadBean == null) {
-            T.showShort(mContext, "上传失败！");
-            return;
-        }
-        //
-        dismiss();
-    }
-
-    /**
-     * 复制服务器路径
-     */
-    private void copyLinkServerRecord() {
-        copyUploadedLink(mItemBean.getShareUrl());
-    }
-
-    private void copyUploadedLink(String url) {
-        ClipboardManager cmb = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        cmb.setText(url);
-        T.showShort(mContext, "录像地址已复制到剪贴板！");
-    }
-
-
-    private void showDeleteDialog() {
+    @OnClick(R.id.ivDeleteVideo)
+    public void showDeleteDialog() {
         new AlertDialog(mActivityContext)
                 .setTitle("提示")
                 .setMessage("请问是否确定删除录像？")

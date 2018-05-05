@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/firstFrame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@drawable/shape_roundrectangle_white"
-    android:gravity="center"
-    android:padding="5dp" >
+                android:id="@+id/firstFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_roundrectangle_white"
+                android:gravity="center"
+                android:padding="5dp">
 
     <LinearLayout
         android:id="@+id/secondFrame"
@@ -15,12 +15,12 @@
         android:layout_centerInParent="true"
         android:background="@drawable/shape_pow_bg"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" >
+            android:layout_margin="5dp">
 
             <TextView
                 android:id="@+id/tvTips"
@@ -31,7 +31,7 @@
                 android:maxLines="2"
                 android:text="课程名称"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/dialog_fillsaveinfo_title_size" />
+                android:textSize="@dimen/dialog_fillsaveinfo_title_size"/>
 
             <ImageView
                 android:id="@+id/ivBack"
@@ -41,14 +41,14 @@
                 android:layout_centerVertical="true"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/selector_wrong_icon" />
+                android:src="@drawable/selector_wrong_icon"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="1" >
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/ivThumbnail"
@@ -56,35 +56,35 @@
                 android:layout_height="fill_parent"
                 android:background="@android:color/darker_gray"
                 android:scaleType="fitCenter"
-                android:src="@android:color/darker_gray" />
+                android:src="@android:color/darker_gray"/>
 
             <ImageView
                 android:id="@+id/ivPlay"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/selector_play_icon" />
+                android:src="@drawable/selector_play_icon"/>
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center" >
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="50dp"
                 android:layout_height="fill_parent"
                 android:background="#5acccccc"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/ivShare"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/selector_share_icon" />
+                    android:src="@drawable/selector_share_icon"/>
             </LinearLayout>
 
             <LinearLayout
@@ -92,14 +92,14 @@
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/ivCopyLink"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:scaleType="fitXY"
-                    android:src="@drawable/selector_copylink_icon" />
+                    android:src="@drawable/selector_copylink_icon"/>
             </LinearLayout>
 
             <LinearLayout
@@ -107,37 +107,16 @@
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="15dp"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/ivDeleteVideo"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:scaleType="fitXY"
-                    android:src="@drawable/selector_deletevideo_icon" />
+                    android:src="@drawable/selector_deletevideo_icon"/>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <!-- loading -->
-
-    <LinearLayout
-        android:id="@+id/loadingLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:visibility="gone" >
-
-        <ProgressBar
-            android:id="@+id/loadingImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateDrawable="@drawable/progressbar_ring"
-            android:indeterminateDuration="1000"
-            android:indeterminateOnly="true" />
     </LinearLayout>
 
 </RelativeLayout>
