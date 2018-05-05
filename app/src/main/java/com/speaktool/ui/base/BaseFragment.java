@@ -14,7 +14,6 @@ import android.view.ViewGroup;
  * @author shaoshuai
  * 
  */
-
 public abstract class BaseFragment extends Fragment {
 	public View view;
 	public Context mContext;

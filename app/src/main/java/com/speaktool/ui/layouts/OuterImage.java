@@ -62,7 +62,6 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         Drawable old = this.getDrawable();
         if (old == null) {
             setResourceID(resourceID);
-
         }
         super.onAttachedToWindow();
     }

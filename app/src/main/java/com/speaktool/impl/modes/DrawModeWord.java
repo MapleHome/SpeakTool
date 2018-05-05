@@ -42,8 +42,7 @@ public class DrawModeWord implements DrawMode {
 		case MotionEvent.ACTION_MOVE:
 			break;
 		case MotionEvent.ACTION_UP:
-			WordEdit edit = new WordEdit(draw.context(), draw,
-					drawBoard.makeShapeId());
+			WordEdit edit = new WordEdit(draw.context(), draw, drawBoard.makeShapeId());
 			AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(
 					AbsoluteLayout.LayoutParams.WRAP_CONTENT,
 					AbsoluteLayout.LayoutParams.WRAP_CONTENT, (int) x, (int) y);

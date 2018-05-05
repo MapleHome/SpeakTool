@@ -1,6 +1,5 @@
 package com.speaktool.ui.layouts;
 
-import roboguice.inject.InjectView;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -10,80 +9,63 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.speaktool.R;
-import com.speaktool.injectmodules.IInject;
-import com.speaktool.injectmodules.Layout;
-import com.speaktool.injectmodules.ViewInjectUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 课程记录条目
- * 
+ *
  * @author shaoshuai
- * 
  */
-@Layout(R.layout.griditem_local_record)
-public class ItemViewLocalRecord extends FrameLayout implements IInject {
-	@InjectView(R.id.ivThumbnail)
-	private ImageView ivThumbnail;
-	@InjectView(R.id.tvRecordTitle)
-	private TextView tvRecordTitle;
+public class ItemViewLocalRecord extends FrameLayout {
+    @BindView(R.id.ivThumbnail) ImageView ivThumbnail;
+    @BindView(R.id.tvRecordTitle) TextView tvRecordTitle;
+    @BindView(R.id.uploadProgressLay) View uploadProgressLay;
+    @BindView(R.id.progressBarUploadProgress) ProgressBar progressBarUploadProgress;
+    @BindView(R.id.closeUpload) ImageView closeUpload;
 
-	@InjectView(R.id.uploadProgressLay)
-	private View uploadProgressLay;
+    public ItemViewLocalRecord(Context context) {
+        super(context);
+        init();
+    }
 
-	@InjectView(R.id.progressBarUploadProgress)
-	private ProgressBar progressBarUploadProgress;
+    private void init() {
+        View view = View.inflate(getContext(), R.layout.griditem_local_record, this);
+        ButterKnife.bind(this, view);
 
-	@InjectView(R.id.closeUpload)
-	private ImageView closeUpload;
+        // uploadProgressLay.setVisibility(View.GONE);
+    }
 
-	/** 取消上传监听 */
-	public void setCancelCLickListener(OnClickListener lsn) {
-		closeUpload.setOnClickListener(lsn);
-	}
+    /**
+     * 取消上传监听
+     */
+    public void setCancelCLickListener(OnClickListener lsn) {
+        closeUpload.setOnClickListener(lsn);
+    }
 
-	public ItemViewLocalRecord(Context context) {
-		super(context);
-		init();
-	}
+    public void setThumbnail(Bitmap icon) {
+        ivThumbnail.setImageBitmap(icon);
+    }
 
-	private void init() {
-		startInject();
-		afterInject();
-	}
+    public void setTitle(String title) {
+        tvRecordTitle.setText(title);
+    }
 
-	@Override
-	public void startInject() {
-		ViewInjectUtils.injectViews(this);
-	}
+    public ImageView getImageView() {
+        return ivThumbnail;
+    }
 
-	@Override
-	public void afterInject() {
-		// uploadProgressLay.setVisibility(View.GONE);
-	}
+    public void setProgress(int progress) {
+        uploadProgressLay.setVisibility(View.VISIBLE);
+        progressBarUploadProgress.setProgress(progress);
+    }
 
-	public void setThumbnail(Bitmap icon) {
-		ivThumbnail.setImageBitmap(icon);
-	}
-
-	public void setTitle(String title) {
-		tvRecordTitle.setText(title);
-	}
-
-	public ImageView getImageView() {
-		return ivThumbnail;
-	}
-
-	public void setProgress(int progress) {
-		uploadProgressLay.setVisibility(View.VISIBLE);
-		progressBarUploadProgress.setProgress(progress);
-
-	}
-
-	public void setUploadingState(boolean isUploading) {
-		if (isUploading)
-			uploadProgressLay.setVisibility(View.VISIBLE);
-		else
-			uploadProgressLay.setVisibility(View.GONE);
-	}
+    public void setUploadingState(boolean isUploading) {
+        if (isUploading)
+            uploadProgressLay.setVisibility(View.VISIBLE);
+        else
+            uploadProgressLay.setVisibility(View.GONE);
+    }
 
 }

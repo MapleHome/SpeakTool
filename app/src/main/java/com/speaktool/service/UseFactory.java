@@ -1,12 +1,13 @@
-package com.speaktool.injectmodules;
+package com.speaktool.service;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(value = RetentionPolicy.RUNTIME)
+@Retention(value = RetentionPolicy.SOURCE)
 @Target(value = { ElementType.TYPE })
-public @interface Layout {
-	public abstract int value();
+public @interface UseFactory {
+	
+	public abstract Class value();
 }

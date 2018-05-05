@@ -26,8 +26,7 @@ public class SquareImageView extends ImageView {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int sidelen = widthMeasureSpec > heightMeasureSpec ? heightMeasureSpec
-				: widthMeasureSpec;
+		int sidelen = widthMeasureSpec > heightMeasureSpec ? heightMeasureSpec : widthMeasureSpec;
 		super.onMeasure(sidelen, sidelen);
 	}
 

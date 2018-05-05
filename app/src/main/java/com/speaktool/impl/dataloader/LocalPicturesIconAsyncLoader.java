@@ -15,7 +15,7 @@ import com.speaktool.Const;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.busevents.LocalPictureThumbnailLoadedEvent;
 import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.injectmodules.UseFactory;
+import com.speaktool.service.UseFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.LocalFileUtils;
 

@@ -16,14 +16,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MulticheckableView extends FrameLayout {
-    @BindView(R.id.ivImage)
-    GifImageView ivImage;
-    @BindView(R.id.ivImageOverlay)
-    ImageView ivImageOverlay;
-    @BindView(R.id.ivImageOverlayFlag)
-    ImageView ivImageOverlayFlag;
-    @BindView(R.id.loadingImageView)
-    View loadingImageView;
+    @BindView(R.id.ivImage) GifImageView ivImage;
+    @BindView(R.id.ivImageOverlay) ImageView ivImageOverlay;
+    @BindView(R.id.ivImageOverlayFlag) ImageView ivImageOverlayFlag;
+    @BindView(R.id.loadingImageView) View loadingImageView;
 
     public MulticheckableView(Context context) {
         super(context);
