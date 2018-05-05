@@ -21,7 +21,7 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  * 
  */
-public class EditClickPopupWindow extends BasePopupWindow implements OnClickListener {
+public class EditClickPoW extends BasePopupWindow implements OnClickListener {
 	private EditWidget mWordEdit;
 
 	@Override
@@ -29,11 +29,11 @@ public class EditClickPopupWindow extends BasePopupWindow implements OnClickList
 		return LayoutInflater.from(mContext).inflate(R.layout.pow_edit_bar, null);
 	}
 
-	public EditClickPopupWindow(Context context, EditWidget edit) {
+	public EditClickPoW(Context context, EditWidget edit) {
 		this(context, edit, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 	}
 
-	public EditClickPopupWindow(Context context, EditWidget edit, int w, int h) {
+	public EditClickPoW(Context context, EditWidget edit, int w, int h) {
 		super(context, edit.getPage().view(), w, h);
 		mWordEdit = edit;
 		EventBus.getDefault().register(this);

@@ -57,19 +57,13 @@ public class Const {
             downloadDir.mkdirs();
     }
 
-    public static final String CMD_FILE_SUFFIX = ".json";
+    public static final String CMD_FILE_SUFFIX = ".txt";
     public static final String SOUND_FILE_SUFFIX = ".amr";
     public static final String REALEASE_SOUND_FILE_TYPE = "mp3";
     public static final String UN_RECORD_FILE_FLAG = "#";
     // 发布文件
-    /**
-     * 文件特征信息
-     */
-    public static final String INFO_FILE_NAME = "info.properties";
-    /**
-     * 操作文本
-     */
-    public static final String RELEASE_JSON_SCRIPT_NAME = "release.json";
+    public static final String INFO_FILE_NAME = "info.txt";
+    public static final String RELEASE_JSON_SCRIPT_NAME = "release.txt";
     public static final String RELEASE_SOUND_NAME = "release.mp3";
     public static final String IMAGE_SUFFIX = ".jpg";
     public static final String GIF_SUFFIX = ".gif";

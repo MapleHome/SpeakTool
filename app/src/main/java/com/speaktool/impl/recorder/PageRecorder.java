@@ -1,15 +1,5 @@
 package com.speaktool.impl.recorder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,10 +11,19 @@ import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
+import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.JsonUtil;
 import com.speaktool.utils.MD5Util;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 画纸页面记录器
@@ -267,15 +266,13 @@ public class PageRecorder {
         scriptData.setWbEvents(cmdList);
         //
         String cmdjson = JsonUtil.toJson(scriptData);
-        if (TextUtils.isEmpty(cmdjson))
-            return RecordError.SUCCESS;
         try {
-            BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cmdFile, true)));
-            bufw.write(cmdjson + "\n");
-            bufw.close();
+            FileIOUtils.writeFile(cmdFile, cmdjson);
+            File file = new File(Const.RECORD_DIR, "cmdfile.text");
+            FileIOUtils.writeFile(file, cmdjson);
             Log.e("PageRecorder", "保存CMD到文件成功,\n cmdjson:" + cmdjson + "\n filename:" + cmdFile.getAbsolutePath());
             return RecordError.SUCCESS;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             if (e.getMessage().contains("space"))
                 return RecordError.SDCARD_NO_ENOUGH_SPACE;

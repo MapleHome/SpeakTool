@@ -95,8 +95,8 @@ import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
 import com.speaktool.ui.layouts.DrawPage;
 import com.speaktool.ui.layouts.VideoPlayControllerView;
-import com.speaktool.ui.popupwindow.EditClickPopupWindow;
-import com.speaktool.ui.popupwindow.ImageClickPopupWindow;
+import com.speaktool.ui.popupwindow.EditClickPoW;
+import com.speaktool.ui.popupwindow.ImageClickPoW;
 import com.speaktool.ui.popupwindow.L_ClearPoW;
 import com.speaktool.ui.popupwindow.L_EraserWayWitchPoW;
 import com.speaktool.ui.popupwindow.L_HandPenPoW;
@@ -1596,14 +1596,14 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 显示文本编辑功能栏
     @Override
     public void showEditClickPopup(final EditWidget edit) {
-        EditClickPopupWindow popupWindow = new EditClickPopupWindow(mContext, edit);
+        EditClickPoW popupWindow = new EditClickPoW(mContext, edit);
         popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示图片编辑功能栏
     @Override
     public void showImageClickPopup(final ImageWidget imageWidget) {
-        ImageClickPopupWindow popupWindow = new ImageClickPopupWindow(mContext, imageWidget);
+        ImageClickPoW popupWindow = new ImageClickPoW(mContext, imageWidget);
         popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 

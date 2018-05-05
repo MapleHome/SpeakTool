@@ -21,7 +21,7 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  * 
  */
-public class ImageClickPopupWindow extends BasePopupWindow implements OnClickListener {
+public class ImageClickPoW extends BasePopupWindow implements OnClickListener {
 
 	private ImageWidget mImage;
 
@@ -30,11 +30,11 @@ public class ImageClickPopupWindow extends BasePopupWindow implements OnClickLis
 		return LayoutInflater.from(mContext).inflate(R.layout.pow_imageclick, null);
 	}
 
-	public ImageClickPopupWindow(Context context, ImageWidget edit) {
+	public ImageClickPoW(Context context, ImageWidget edit) {
 		this(context, edit, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 	}
 
-	public ImageClickPopupWindow(Context context, ImageWidget edit, int w, int h) {
+	public ImageClickPoW(Context context, ImageWidget edit, int w, int h) {
 		super(context, edit.getPage().view(), w, h);
 		mImage = edit;
 		EventBus.getDefault().register(this);
