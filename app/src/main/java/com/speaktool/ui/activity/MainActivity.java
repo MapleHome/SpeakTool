@@ -45,23 +45,25 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  */
 public class MainActivity extends FragmentActivity implements OnClickListener {
-    @BindView(R.id.tvMakeVideo) TextView tvMakeVideo;// 新建按钮
-    @BindView(R.id.iv_back) ImageView iv_back;// 返回
-    @BindView(R.id.searchView) SearchView searchView;// 整个搜索框
-    @BindView(R.id.ivSetting) ImageView ivSetting;// 设置按钮
+    @BindView(R.id.tvMakeVideo) TextView tvMakeVideo;
+    @BindView(R.id.iv_back) ImageView iv_back;
+    @BindView(R.id.searchView) SearchView searchView;
+    @BindView(R.id.ivSetting) ImageView ivSetting;
 
     private HomePage mHomePage;
     private Context mContext;
     public SearchCategoryBean mCurSearchType;
     public String mCurSearchKeyWords = null;
-
+    SearchCategoryBean defSearchBean;
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         mContext = this;
 
         initView();
@@ -71,17 +73,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
 
     private void initView() {
-        // 注册EventBus订阅者
-        EventBus.getDefault().register(this);
-
-        // 填充视图
         mHomePage = new HomePage();
         loadView(mHomePage);
     }
 
     private void initData() {
         // 搜索框
-        setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
+        defSearchBean = new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL);
+        setSearchView(defSearchBean, null);
     }
 
     /**
@@ -119,7 +118,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 make();
                 break;
             case R.id.iv_back:// 返回
-                setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
+                setSearchView(defSearchBean, null);
                 mHomePage.refreshIndexPage();
                 break;
             case R.id.layDropdownHandle:// 分类下拉框
@@ -177,7 +176,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);// 解除注册EventBus订阅者
+        EventBus.getDefault().unregister(this);
         singleExecutor.shutdownNow();
         super.onDestroy();
     }
@@ -191,7 +190,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
         mHomePage = new HomePage();
         replacePage(mHomePage);
-
     }
 
     /**

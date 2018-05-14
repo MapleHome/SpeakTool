@@ -43,7 +43,7 @@ public class Const {
             downloadDir.mkdirs();
     }
 
-    public static final String CMD_FILE_SUFFIX = ".txt";
+    public static final String CMD_FILE_SUFFIX = ".json";
     public static final String SOUND_FILE_SUFFIX = ".amr";
     public static final String REALEASE_SOUND_FILE_TYPE = "mp3";
     public static final String UN_RECORD_FILE_FLAG = "#";

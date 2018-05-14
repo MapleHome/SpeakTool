@@ -823,7 +823,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @Override
     public void onBackPressed() {
         if (getPlayMode() == PlayMode.MAKE && getCurrentBoard().getFocusedView() != null) {
-            // 通过EventBus订阅者发送消息
             EventBus.getDefault().post(new CloseEditPopupWindowEvent());
             return;
         }

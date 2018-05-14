@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.SeekBar;
@@ -21,6 +22,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.speaktool.Const;
 import com.speaktool.R;
@@ -75,61 +77,85 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  */
 public class PlayVideoActivity extends FragmentActivity implements Draw {
+    // 内容区
     @BindView(R.id.drawBoardContainer) ViewFlipper viewFlipper;// 绘画板容器
     @BindView(R.id.viewFlipperOverlay) View viewFlipperOverlay;// 文本
     @BindView(R.id.layoutVideoController) VideoPlayControllerView layoutVideoController;// 视频播放控制器
 
+    // 常量
     public static final String EXTRA_RECORD_BEAN = "record_bean";
-    private static final long Video_CONTROLLER_DISMISS_DELAY = 5000;//视频控制器延迟
-    private final List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
-
+    public static final String EXTRA_PLAY_MODE = "play_mode";
+    /**
+     * 视频控制器延迟
+     */
+    private static final long Video_CONTROLLER_DISMISS_DELAY = 5000;
     private Context mContext;
-    private List<Page> pages = new ArrayList<Page>();// 界面集合
-    private int currentBoardIndex = 0;// 当前界面索引
-    private String mRecordDir;// 课程目录
-    private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
+    /**
+     * 界面集合
+     */
+    private List<Page> pages = new ArrayList<Page>();
+    /**
+     * 添加音乐集合
+     */
+    private final List<MusicBean> globalMusics = Lists.newArrayList();
+    /**
+     * 当前界面索引
+     */
+    private int currentBoardIndex = 0;
+    /**
+     * 课程目录
+     */
+    private String mRecordDir;
+    /**
+     * JSON脚本播放器
+     */
+    private JsonScriptPlayer mJsonScriptPlayer;
+    private PlayMode mPlayMode;
 
     private int pageWidth;
     private int pageHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setBackgroundDrawable(null);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        super.onCreate(savedInstanceState);// inject finish.
         setContentView(R.layout.activity_play_video);
-        ButterKnife.bind(this);
-
-//        getWindow().setBackgroundDrawable(null);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mContext = this;
+        ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        mPlayMode = (PlayMode) getIntent().getSerializableExtra(EXTRA_PLAY_MODE);
 
-        LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
+        if (mPlayMode == PlayMode.PLAY) {
 
-        play(rec);
-    }
+            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+            //
+            LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
+            // 检查是否为空
+            Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
+            mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
 
-    private void play(LocalRecordBean rec) {
-        ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-        pageWidth = currentScreen.w;
-        pageHeight = currentScreen.h;
-        // 设置播放器大小
-        LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
-        lp.width = pageWidth;
-        layoutVideoController.setLayoutParams(lp);
-        //
-        LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
-        lp2.width = pageWidth;
-        lp2.height = pageHeight;
-        viewFlipperOverlay.setLayoutParams(lp2);
-        //
-        initListener();
+            ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
+            pageWidth = currentScreen.w;
+            pageHeight = currentScreen.h;
+            // 设置播放器大小
+            LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
+            lp.width = pageWidth;
+            layoutVideoController.setLayoutParams(lp);
+            //
+            LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
+            lp2.width = pageWidth;
+            lp2.height = pageHeight;
+            viewFlipperOverlay.setLayoutParams(lp2);
+            //
+            initListener();
 
-        DrawModeManager.getIns().setDrawMode(new DrawModePath());
-
-//        mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
-//        mJsonScriptPlayer.play();
-        //
+            DrawModeManager.getIns().setDrawMode(new DrawModePath());
+            mJsonScriptPlayer.play();
+            //
+        }
     }
 
     private void initListener() {
@@ -181,11 +207,12 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
      */
     @Override
     public void onExitDraw() {
-        // play/preview mode.
-        if (mJsonScriptPlayer != null)
+        if (mPlayMode == PlayMode.MAKE) {
+        } else {// play/preview mode.
             mJsonScriptPlayer.exitPlayer();
-        finish();
-        killPlayProcess();// must do.
+            finish();
+            killPlayProcess();// must do.
+        }
     }
 
     // 上一页
@@ -524,10 +551,13 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     protected void onStop() {
-        // play.
-        if (mJsonScriptPlayer != null && mJsonScriptPlayer.isPlaying()) {
-            mJsonScriptPlayer.pause();
-            layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
+        if (getPlayMode() == PlayMode.MAKE) {
+
+        } else {// play.
+            if (mJsonScriptPlayer.isPlaying()) {
+                mJsonScriptPlayer.pause();
+                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
+            }
         }
         super.onStop();
     }
@@ -759,7 +789,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public PlayMode getPlayMode() {
-        return PlayMode.PLAY;
+        return mPlayMode;
     }
 
     @Override
