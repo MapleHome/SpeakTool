@@ -9,13 +9,10 @@ import android.graphics.BitmapFactory;
 import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.busevents.LocalPhotoDirIconLoadedEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.injectmodules.UseFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 
 import de.greenrobot.event.EventBus;
 
-@UseFactory(AsyncDataLoaderFactory.class)
 public class LocalPhotoDirLoader extends ListItemAsyncDataLoader<String, byte[]> {
 
 	@Override

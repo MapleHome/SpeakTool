@@ -10,8 +10,6 @@ import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.busevents.NetPictureThumbnailLoadedEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.injectmodules.UseFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +23,6 @@ import com.speaktool.ui.custom.gif.GifDrawable;
  *
  * @author shaoshuai
  */
-@UseFactory(AsyncDataLoaderFactory.class)
 public class NetPicturesIconAsyncLoader extends
         ListItemAsyncDataLoader<String, PicDataHolder> {
 

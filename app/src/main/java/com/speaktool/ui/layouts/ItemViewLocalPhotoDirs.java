@@ -1,59 +1,42 @@
 package com.speaktool.ui.layouts;
 
-import roboguice.inject.InjectView;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.speaktool.R;
-import com.speaktool.injectmodules.IInject;
-import com.speaktool.injectmodules.Layout;
-import com.speaktool.injectmodules.ViewInjectUtils;
 
-@Layout(R.layout.item_photodir)
-public class ItemViewLocalPhotoDirs extends FrameLayout implements IInject {
-	@InjectView(R.id.ivDirIcon)
-	private ImageView ivDirIcon;
-	@InjectView(R.id.tvDirName)
-	private TextView tvDirName;
-	@InjectView(R.id.tvDirIncludeCounts)
-	private TextView tvDirIncludeCounts;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-	public ItemViewLocalPhotoDirs(Context context) {
-		super(context);
-		init();
-	}
+public class ItemViewLocalPhotoDirs extends FrameLayout {
+    @BindView(R.id.ivDirIcon) ImageView ivDirIcon;
+    @BindView(R.id.tvDirName) TextView tvDirName;
+    @BindView(R.id.tvDirIncludeCounts) TextView tvDirIncludeCounts;
 
-	private void init() {
-		startInject();
-		afterInject();
-	}
+    public ItemViewLocalPhotoDirs(Context context) {
+        super(context);
+        init();
+    }
 
-	@Override
-	public void startInject() {
-		ViewInjectUtils.injectViews(this);
-	}
+    private void init() {
+        View view = View.inflate(getContext(), R.layout.item_photodir, this);
+        ButterKnife.bind(this, view);
+    }
 
-	@Override
-	public void afterInject() {
+    public void setDirIcon(Bitmap bmp) {
+        ivDirIcon.setImageBitmap(bmp);
+    }
 
-	}
+    public void setDirName(String dirName) {
+        tvDirName.setText(dirName);
+    }
 
-	public void setDirIcon(Bitmap bmp) {
-
-		ivDirIcon.setImageBitmap(bmp);
-	}
-
-	public void setDirName(String dirName) {
-		tvDirName.setText(dirName);
-
-	}
-
-	public void setDirIncludeCounts(String includeCounts) {
-		tvDirIncludeCounts.setText(includeCounts);
-
-	}
+    public void setDirIncludeCounts(String includeCounts) {
+        tvDirIncludeCounts.setText(includeCounts);
+    }
 
 }

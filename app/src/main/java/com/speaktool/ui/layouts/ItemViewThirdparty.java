@@ -1,49 +1,37 @@
 package com.speaktool.ui.layouts;
 
-import roboguice.inject.InjectView;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.speaktool.R;
-import com.speaktool.injectmodules.IInject;
-import com.speaktool.injectmodules.Layout;
-import com.speaktool.injectmodules.ViewInjectUtils;
 
-@Layout(R.layout.item_thirdparty)
-public class ItemViewThirdparty extends FrameLayout implements IInject {
-	@InjectView(R.id.ivLogo)
-	private ImageView ivLogo;
-	@InjectView(R.id.tvName)
-	private TextView tvName;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-	public ItemViewThirdparty(Context context) {
-		super(context);
-		init();
-	}
+public class ItemViewThirdparty extends FrameLayout {
+    @BindView(R.id.ivLogo) ImageView ivLogo;
+    @BindView(R.id.tvName) TextView tvName;
 
-	private void init() {
-		startInject();
-		afterInject();
-	}
+    public ItemViewThirdparty(Context context) {
+        super(context);
+        init();
+    }
 
-	@Override
-	public void startInject() {
-		ViewInjectUtils.injectViews(this);
-	}
+    private void init() {
+        View view = View.inflate(getContext(), R.layout.item_thirdparty, this);
+        ButterKnife.bind(this, view);
+    }
 
-	@Override
-	public void afterInject() {
-	}
+    public void setLogo(Bitmap bmp) {
+        ivLogo.setImageBitmap(bmp);
+    }
 
-	public void setLogo(Bitmap bmp) {
-		ivLogo.setImageBitmap(bmp);
-	}
-
-	public void setName(String name) {
-		tvName.setText(name);
-	}
+    public void setName(String name) {
+        tvName.setText(name);
+    }
 
 }

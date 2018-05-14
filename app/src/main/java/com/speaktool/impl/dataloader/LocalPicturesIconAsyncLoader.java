@@ -14,8 +14,6 @@ import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.busevents.LocalPictureThumbnailLoadedEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.injectmodules.UseFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.LocalFileUtils;
 
@@ -27,7 +25,6 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  * 
  */
-@UseFactory(AsyncDataLoaderFactory.class)
 public class LocalPicturesIconAsyncLoader extends ListItemAsyncDataLoader<String, PicDataHolder> {
 	private static final String tag = LocalPicturesIconAsyncLoader.class.getSimpleName();
 
