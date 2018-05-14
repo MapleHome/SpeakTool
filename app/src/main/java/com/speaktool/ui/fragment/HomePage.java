@@ -16,18 +16,18 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.ui.activity.MainActivity;
-import com.speaktool.ui.adapters.RecordsAdapter;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
-import com.speaktool.ui.base.AbsListScrollListener;
-import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.bean.CourseSearchBean;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.service.AsyncDataLoaderFactory;
 import com.speaktool.tasks.TaskLoadRecords;
 import com.speaktool.tasks.TaskLoadRecords.RecordsUi;
 import com.speaktool.tasks.ThreadPoolWrapper;
+import com.speaktool.ui.activity.MainActivity;
+import com.speaktool.ui.adapters.RecordsAdapter;
+import com.speaktool.ui.base.AbsListScrollListener;
+import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.ui.dialogs.ShareDialog;
 import com.speaktool.ui.layouts.ItemViewLocalRecord;
@@ -215,7 +215,7 @@ public class HomePage extends BaseFragment {
                 final String imageUrl = bean.getThumbnailImgPath();
                 if (TextUtils.isEmpty(imageUrl))
                     continue;
-                final ItemViewLocalRecord item = (ItemViewLocalRecord) gridViewAllRecords.findViewWithTag(imageUrl);
+                final ItemViewLocalRecord item = gridViewAllRecords.findViewWithTag(imageUrl);
                 if (item == null)
                     continue;
                 if (mAppIconAsyncLoader == null) {
