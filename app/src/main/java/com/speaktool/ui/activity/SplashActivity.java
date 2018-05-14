@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -30,14 +31,13 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import roboguice.activity.RoboActivity;
 
 /**
  * 欢迎界面
  *
  * @author shaoshuai
  */
-public class SplashActivity extends RoboActivity {
+public class SplashActivity extends FragmentActivity {
     @BindView(R.id.rl_root) RelativeLayout rl_root;// 根布局
     @BindView(R.id.guide_viewpager) ViewPager guide_viewpager;// ViwePager
     @BindView(R.id.ll_point) LinearLayout ll_point;// 相应的点区域
@@ -74,7 +74,7 @@ public class SplashActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        mContext = getApplicationContext();
+        mContext = this;
 
         long startTime = System.currentTimeMillis();
         boolean isFirst = SPUtils.getBool(Const.First_ComeIn, true);

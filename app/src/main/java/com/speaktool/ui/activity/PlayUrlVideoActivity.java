@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.MediaController;
@@ -17,14 +18,13 @@ import com.speaktool.ui.dialogs.ProgressDialogOffer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import roboguice.activity.RoboActivity;
 
 /**
  * Url视频播放
  *
  * @author shaoshuai
  */
-public class PlayUrlVideoActivity extends RoboActivity {
+public class PlayUrlVideoActivity extends FragmentActivity {
     @BindView(R.id.videoView) VideoView videoView;
 
     private VideoView mVideoView;
@@ -35,12 +35,13 @@ public class PlayUrlVideoActivity extends RoboActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /* 设置播放视频时候不需要的部分 *//* 以下代码需要写在setContentView();之前 */
-		/* 去掉title */
+        /* 去掉title */
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-		/* 设置全屏 */
+        /* 设置全屏 */
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		/* 设置屏幕常亮 *//* flag：标记 ； */
+        /* 设置屏幕常亮 *//* flag：标记 ； */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         super.onCreate(savedInstanceState);// inject finish.
         setContentView(R.layout.activity_videoplay);
         ButterKnife.bind(this);
@@ -50,13 +51,10 @@ public class PlayUrlVideoActivity extends RoboActivity {
 
     private void initView() {
         String videoUrl = getIntent().getStringExtra(EXTRA_VIDEO_URL);
-		/* 获取组件对象 */
-        mVideoView = (VideoView) findViewById(R.id.videoView);
-		/* 获取MediaController对象，控制媒体播放 */
+        /* 获取MediaController对象，控制媒体播放 */
         MediaController mc = new MediaController(this);
         mVideoView.setMediaController(mc);
-		/* 设置URI ， 指定数据 */
-        mVideoView.setVideoURI(Uri.parse(videoUrl));
+        mVideoView.setVideoURI(Uri.parse(videoUrl)); // 设置URI ， 指定数据
         mVideoView.setOnPreparedListener(new OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -65,10 +63,8 @@ public class PlayUrlVideoActivity extends RoboActivity {
         });
         mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, getString(R.string.loading));
         mLoadingDialog.show();
-		/* 开始播放视频 */
-        mVideoView.start();
-		/* 请求获取焦点 */
-        mVideoView.requestFocus();
+        mVideoView.start();// 开始播放视频
+        mVideoView.requestFocus();// 请求获取焦点
     }
 
     @Override

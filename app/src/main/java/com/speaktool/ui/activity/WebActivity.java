@@ -1,7 +1,6 @@
 package com.speaktool.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -38,7 +37,6 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
     public static final String EXTRA_URL = "extra_url";
     private ThreadPoolWrapper pool = ThreadPoolWrapper.newThreadPool(1);
 
-    private Context mContext;
     private String title;
     private String url;
 
@@ -46,7 +44,6 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        mContext = getApplicationContext();
         ButterKnife.bind(this);
 
         Intent it = getIntent();
