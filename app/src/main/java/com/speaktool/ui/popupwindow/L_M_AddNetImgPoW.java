@@ -1,14 +1,5 @@
 package com.speaktool.ui.popupwindow;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.speaktool.ui.custom.gif.GifDrawable;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,11 +25,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.ui.adapters.AdapterNetPictures;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.Draw;
-import com.speaktool.ui.base.AbsListScrollListener;
-import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.bean.NetPictureBean;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.bean.SearchCategoryBean;
@@ -49,6 +37,10 @@ import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
 import com.speaktool.tasks.TaskLoadPictureSearchCategory;
 import com.speaktool.tasks.TaskSearchNetPictures;
 import com.speaktool.tasks.TaskSearchNetPictures.SearchNetPicturesCallback;
+import com.speaktool.ui.adapters.AdapterNetPictures;
+import com.speaktool.ui.base.AbsListScrollListener;
+import com.speaktool.ui.base.BasePopupWindow;
+import com.speaktool.ui.custom.gif.GifDrawable;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.ui.layouts.ItemViewNetPicture;
 import com.speaktool.ui.layouts.SearchView;
@@ -57,6 +49,13 @@ import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.NetUtil;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.greenrobot.event.EventBus;
 

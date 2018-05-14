@@ -3,8 +3,6 @@ package com.speaktool.ui.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,8 +21,6 @@ import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
 
 import java.io.File;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * 填写保存信息
