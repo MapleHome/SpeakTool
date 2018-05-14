@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="120dp"
@@ -10,15 +10,15 @@
         android:layout_gravity="center"
         android:background="@drawable/categorylist"
         android:orientation="vertical"
-        android:padding="5dp" >
+        android:padding="5dp">
 
         <ListView
             android:id="@+id/lvTypes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="#00000000"
-            android:listSelector="@drawable/selector_blue_and_transent" >
-        </ListView>
+            android:listSelector="@drawable/selector_blue_and_transent" />
+
     </LinearLayout>
 
 </LinearLayout>

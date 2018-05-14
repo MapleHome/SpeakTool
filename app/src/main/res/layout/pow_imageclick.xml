@@ -5,7 +5,7 @@
     android:background="@drawable/shape_function_bar_bg"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="2dp" >
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/imgtv_delete"

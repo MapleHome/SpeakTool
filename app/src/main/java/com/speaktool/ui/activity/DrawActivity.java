@@ -213,7 +213,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         super.onCreate(savedInstanceState);// inject finish.
-        setContentView(R.layout.activity_draw_yulan);
+        setContentView(R.layout.activity_draw_board);
         mContext = DrawActivity.this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);// 注册EventBus订阅者
@@ -939,22 +939,23 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 return false;
             }
         });
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String msg;
-                getPageRecorder().saveCurrentPageRecord();
-                boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
-                if (!isSuccess) {
-                    msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
-                } else {
-                    msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
-                }
-                dismissLoading();
-                new OneButtonAlertDialog(context(), msg).show();
-            }
-        }).start();
-
+        getPageRecorder().saveCurrentPageRecord();
+        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
+        dismissLoading();
+        if (isSuccess) {
+            new AlertDialog(mContext)
+                    .setTitle("提示")
+                    .setMessage("保存成功！")
+                    .setRightButton("确定", new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DrawActivity.this.finish();
+                        }
+                    }).show();
+        } else {
+            String msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
+            new AlertDialog(mContext).setTitle("提示").setMessage(msg).show();
+        }
     }
 
     /**

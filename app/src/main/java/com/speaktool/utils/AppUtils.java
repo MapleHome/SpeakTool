@@ -28,12 +28,13 @@ public class AppUtils {
 	}
 
 	/** 获取APP包信息 */
-	private static PackageInfo getPackageInfo(Context context) {
+	public static PackageInfo getPackageInfo(Context context) {
 		try {
 			PackageManager pm = context.getPackageManager();
 			// PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
 			// PackageManager.GET_CONFIGURATIONS);
-			PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+			PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_UNINSTALLED_PACKAGES);
+//			PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
 			return pi;
 		} catch (Exception e) {
 			e.printStackTrace();

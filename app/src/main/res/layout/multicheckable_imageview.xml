@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.speaktool.ui.custom.gif.GifImageView
         android:id="@+id/ivImage"
@@ -40,7 +40,7 @@
         android:id="@+id/loadingImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray" >
+        android:background="@android:color/darker_gray">
 
         <ProgressBar
             android:layout_width="30dp"

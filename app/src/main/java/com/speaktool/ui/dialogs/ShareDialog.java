@@ -9,7 +9,6 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import com.speaktool.api.CourseItem;
 import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.RecordUploadBean;
-import com.speaktool.bean.ServerRecordBean;
 import com.speaktool.bean.ThirdParty;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
@@ -39,17 +37,14 @@ import com.speaktool.service.PlayService;
 import com.speaktool.tasks.MyThreadFactory;
 import com.speaktool.tasks.TaskGetThirdpartys;
 import com.speaktool.tasks.TaskGetThirdpartys.TaskGetThirdpartysCallback;
-import com.speaktool.ui.activity.DrawActivity;
 import com.speaktool.ui.activity.MainActivity;
 import com.speaktool.ui.activity.PlayUrlVideoActivity;
 import com.speaktool.ui.activity.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
-import com.speaktool.utils.ZipUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -113,14 +108,14 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         loadingLayout = findViewById(R.id.loadingLayout);// 加载框跟布局
         loadingLayout.setVisibility(View.GONE);
         //
-        ivBack = (ImageView) findViewById(R.id.ivBack);// 返回按钮
-        tvTips = (TextView) findViewById(R.id.tvTips);// 视频标题
-        ivPlay = (ImageView) findViewById(R.id.ivPlay);// 播放按钮
-        ivThumbnail = (ImageView) findViewById(R.id.ivThumbnail);// 视频缩略图
+        ivBack = findViewById(R.id.ivBack);// 返回按钮
+        tvTips = findViewById(R.id.tvTips);// 视频标题
+        ivPlay = findViewById(R.id.ivPlay);// 播放按钮
+        ivThumbnail = findViewById(R.id.ivThumbnail);// 视频缩略图
         // 底部功能
-        ivDeleteVideo = (ImageView) findViewById(R.id.ivDeleteVideo);// 删除
-        ivCopyLink = (ImageView) findViewById(R.id.ivCopyLink);// 复制视频路径
-        ivShare = (ImageView) findViewById(R.id.ivShare);// 分享按钮
+        ivDeleteVideo = findViewById(R.id.ivDeleteVideo);// 删除
+        ivCopyLink = findViewById(R.id.ivCopyLink);// 复制视频路径
+        ivShare = findViewById(R.id.ivShare);// 分享按钮
         //
 
         ivBack.setOnClickListener(this);// 返回
@@ -179,16 +174,14 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         switch (v.getId()) {
             case R.id.ivPlay:// 播放
                 dismiss();
-                if (mItemBean instanceof LocalRecordBean) {
-                    playLocalRecord();// 播放本地视频
-                } else {
-                    playServerRecord();// 播放服务器视频
-                }
+                toPlayVideoPage((LocalRecordBean) mItemBean);
+//                if (mItemBean instanceof LocalRecordBean) {
+//                    playLocalRecord();// 播放本地视频
+//                } else {
+//                    // playServerRecord();// 播放服务器视频
+//                }
                 break;
             case R.id.ivShare:// 分享
-                if (!loginSessionCheck()) {
-                    break;
-                }
                 more();
                 break;
             case R.id.ivDeleteVideo:// 删除
@@ -218,18 +211,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         T.showShort(mContext, "服务器响应错误！");
     }
 
-    /**
-     * 用户是否登陆
-     */
-    private boolean loginSessionCheck() {
-        int state = UserDatabase.getUserLoginState(getContext());
-        if (state == UserBean.STATE_OUT) {
-            dismiss();
-            T.showShort(mContext, "当前用户未登陆！");
-            return false;
-        } else
-            return true;
-    }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
@@ -282,20 +263,19 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
             copyUploadedLink(shareUrl);
         } else {
             // upload then share.
-            if (loginSessionCheck())
-                try {
-                    uploadFileForCopylink();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    T.showShort(mActivityContext, "upload fail!");
-                }
+            try {
+                uploadFileForCopylink();
+            } catch (Exception e) {
+                e.printStackTrace();
+                T.showShort(mActivityContext, "upload fail!");
+            }
         }
     }
 
     /**
      * 上传文件并复制连接
      */
-    private void uploadFileForCopylink() throws Exception {
+    private void uploadFileForCopylink() {
         LocalRecordBean localItem = (LocalRecordBean) mItemBean;
         RecordUploadBean recordUploadBean = RecordFileUtils.getSpklUploadBeanFromDir(localItem.getRecordDir(),
                 mActivityContext);
@@ -320,112 +300,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         T.showShort(mContext, "录像地址已复制到剪贴板！");
     }
 
-    /**
-     * 播放本地视频
-     */
-    private void playLocalRecord() {
-        LocalRecordBean localItem = (LocalRecordBean) mItemBean;
-        Log.e("点击播放按钮", "播放本地视频" + localItem.getRecordDir());
-        Intent playIntent = new Intent(mContext, PlayService.class);
-        playIntent.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PLAY);
-        playIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // 【表格】 /storage/emulated/0/.spktl/records/15215343233
-        playIntent.putExtra(PlayProcess.EXTRA_RECORD_DIR, localItem.getRecordDir());
-        mContext.startService(playIntent);
-    }
-
-    /**
-     * 播放服务器视频
-     */
-    private void playServerRecord() {
-        ServerRecordBean serverItem = (ServerRecordBean) mItemBean;
-        Log.e("点击播放按钮", "播放服务器视频");
-        Log.e("播放服务器视频", serverItem.getRecordTitle() + "路径:" + serverItem.getVideoURL());
-        String zipurlfile = serverItem.getZipURL();
-        if (TextUtils.isEmpty(zipurlfile)) {// 检查 mp4 和 Zip.
-            // 压缩文件url是空,开始检查Video文件url
-            String videoFileUrl = serverItem.getVideoURL();
-            if (TextUtils.isEmpty(videoFileUrl)) {
-                // Video文件url是空，返回播放
-                T.showShort(mContext, "播放失败！");
-                return;
-            }
-            // 播放Video文件
-            toPlayPage(videoFileUrl);// 去播放界面
-            return;
-        }
-        final String zipurlfileReal = Const.SPEEKTOOL_SERVER__URL + zipurlfile;
-        // downloading.
-        final Dialog dia = ProgressDialogOffer.offerDialogAsActivity(mActivityContext, "正在加载");
-        dia.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final File tempzip = new File(Const.TEMP_DIR, "temp.zip");
-                if (tempzip.exists()) {
-                    tempzip.delete();// 删除tempzip
-                }
-                try {
-                    tempzip.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    dia.dismiss();
-                    showPlayFailInfoInUi();
-                    return;
-                }
-                final File tempdir = new File(Const.TEMP_DIR + "temp/");
-                if (tempdir.exists()) {
-                    deleteDir(tempdir);// 删除tempdir
-                }
-                tempdir.mkdirs();
-                //
-                File saveFile =
-//						UniversalHttp.downloadFile(zipurlfileReal, "", tempzip);
-                        null;
-                if (saveFile != null) {
-                    try {
-                        ZipUtils.upZipFile(tempzip, tempdir.getAbsolutePath());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        dia.dismiss();
-                        showPlayFailInfoInUi();
-                        return;
-                    }
-                    LocalRecordBean item = new LocalRecordBean();
-                    item.setDuration(mItemBean.getDuration());
-                    item.setRecordDir(tempdir.getAbsolutePath());
-                    //
-                    dia.dismiss();
-                    // toDrawPage(item);// 去播放界面
-                    toPlayVideoPage(item);
-                } else {
-                    dia.dismiss();
-                    showPlayFailInfoInUi();
-                }
-            }
-        }).start();
-    }
-
-    protected void deleteDir(File dir) {
-        if (dir == null || !dir.exists())
-            return;
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files)
-                f.delete();
-        }
-        dir.delete();
-    }
-
-    private void showPlayFailInfoInUi() {
-        SpeakToolApp.getUiHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                T.showShort(mContext, "播放失败！");
-            }
-        });
-    }
 
     private void showDeleteDialog() {
         new AlertDialog(mActivityContext)
@@ -454,7 +328,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
                 singleExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        deleteLoacalRecord((LocalRecordBean) mItemBean);
+                        deleteLocalRecord((LocalRecordBean) mItemBean);
                         SpeakToolApp.getUiHandler().post(new Runnable() {
                             @Override
                             public void run() {
@@ -476,7 +350,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     /**
      * 删除本地记录
      */
-    private void deleteLoacalRecord(LocalRecordBean localRecord) {
+    private void deleteLocalRecord(LocalRecordBean localRecord) {
         String dirpath = localRecord.getRecordDir();
         File dir = new File(dirpath);
         if (dir == null || !dir.exists())
@@ -506,25 +380,20 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
     // -----------------------------------------------------------------------------------------------
 
     /**
-     * 去播放界面
+     * 播放本地视频
      */
-    private void toPlayPage(String videoFileUrl) {
-        Intent it = new Intent(getContext(), PlayUrlVideoActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayUrlVideoActivity.EXTRA_VIDEO_URL, Const.SPEEKTOOL_SERVER__URL + videoFileUrl);
-        getContext().startActivity(it);
+    private void playLocalRecord() {
+        LocalRecordBean localItem = (LocalRecordBean) mItemBean;
+        Log.e("点击播放按钮", "播放本地视频" + localItem.getRecordDir());
+
+        Intent playIntent = new Intent(mContext, PlayService.class);
+        playIntent.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PLAY);
+        playIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // 【表格】 /storage/emulated/0/.spktl/records/15215343233
+        playIntent.putExtra(PlayProcess.EXTRA_RECORD_DIR, localItem.getRecordDir());
+        mContext.startService(playIntent);
     }
 
-    /**
-     * 新建一个讲讲画板
-     */
-    private void toDrawPage(LocalRecordBean item) {
-        Intent it = new Intent(getContext(), DrawActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(DrawActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
-        it.putExtra(DrawActivity.EXTRA_RECORD_BEAN, item);
-        getContext().startActivity(it);
-    }
 
     /**
      * 去本地播放界面
@@ -535,5 +404,17 @@ public class ShareDialog extends Dialog implements View.OnClickListener, OnDismi
         it.putExtra(PlayVideoActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
         it.putExtra(PlayVideoActivity.EXTRA_RECORD_BEAN, item);
         getContext().startActivity(it);
+    }
+
+
+    protected void deleteDir(File dir) {
+        if (dir == null || !dir.exists())
+            return;
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File f : files)
+                f.delete();
+        }
+        dir.delete();
     }
 }

@@ -13,7 +13,7 @@ import org.acra.annotation.ReportsCrashes;
         mailTo = "maple.shao@everbridge.com",
         resToastText = R.string.crash_toast_text,
         resDialogText = R.string.crash_dialog_text,
-        resDialogIcon = R.drawable.ic_launcher,
+        resDialogIcon = R.mipmap.ic_launcher,
         resDialogTitle = R.string.crash_dialog_title,
         resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
         // resDialogTheme = R.style.AppTheme_Dialog,
@@ -26,18 +26,12 @@ public class SpeakToolApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
-        initPath();
         ACRA.init(this);
+        app = this;
+
+        initPath();
     }
 
-//    @Override
-//    protected void attachBaseContext(Context base) {
-//        super.attachBaseContext(base);
-//
-//        // The following line triggers the initialization of ACRA
-//        ACRA.init(this);
-//    }
 
     public static SpeakToolApp app() {
         return app;

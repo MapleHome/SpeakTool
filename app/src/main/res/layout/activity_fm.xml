@@ -1,13 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/draw_left_bar_bg" >
+        android:background="@color/draw_left_bar_bg">
 
         <!-- 通用——页面顶部条 -->
 
@@ -42,7 +41,6 @@
     <FrameLayout
         android:id="@+id/id_content"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </FrameLayout>
+        android:layout_height="fill_parent"></FrameLayout>
 
 </LinearLayout>

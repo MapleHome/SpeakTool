@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true"><bitmap android:src="@drawable/pop_color_pressed" />
+    <item android:state_pressed="true">
+        <bitmap android:src="@drawable/pop_color_pressed" />
     </item>
-    
-    <item><bitmap android:src="@drawable/pop_color_normal" />
+
+    <item>
+        <bitmap android:src="@drawable/pop_color_normal" />
     </item>
 
 </selector>

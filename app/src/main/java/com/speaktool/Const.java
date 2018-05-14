@@ -26,19 +26,19 @@ public class Const {
     /**
      * 记录保存根路径
      */
-    public static final String RECORD_DIR = SD_PATH + "/.spktl/records/";
+    public static final String RECORD_DIR = SD_PATH + "/spktl/records/";
     /**
      * 临时记录路径
      */
-    public static final String TEMP_DIR = SD_PATH + "/.spktl/tempdir/";
+    public static final String TEMP_DIR = SD_PATH + "/spktl/tempdir/";
     /**
      * 异常错误保存路径
      */
-    public static final String ERR_DIR = SD_PATH + "/.spktl/exception/";
+    public static final String ERR_DIR = SD_PATH + "/spktl/exception/";
     /**
      * 下载路径
      */
-    public static final String DOWNLOAD_DIR = SD_PATH + "/.spktl/download/";
+    public static final String DOWNLOAD_DIR = SD_PATH + "/spktl/download/";
 
     static {
         File baseRecordDir = new File(RECORD_DIR);

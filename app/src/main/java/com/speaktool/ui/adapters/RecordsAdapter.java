@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 
 import com.speaktool.R;
-import com.speaktool.ui.activity.MainActivity;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.ui.base.AbsAdapter;
@@ -28,15 +27,12 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
      */
     private final Bitmap initBmp;
     private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader;
-    private MainActivity mMainActivity;
 
-    public RecordsAdapter(Context ctx, List<CourseItem> datas, AsyncDataLoader<String, Bitmap> appIconAsyncLoader,
-                          MainActivity pMainActivity) {
+    public RecordsAdapter(Context ctx, List<CourseItem> datas, AsyncDataLoader<String, Bitmap> appIconAsyncLoader) {
         super(ctx, datas);
 
         initBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
         mAppIconAsyncLoader = appIconAsyncLoader;
-        mMainActivity = pMainActivity;
     }
 
     public Bitmap getDefBmp() {

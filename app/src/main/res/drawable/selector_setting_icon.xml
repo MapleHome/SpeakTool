@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true"><bitmap android:src="@drawable/setting_seleted" />
+    <item android:state_pressed="true">
+        <bitmap android:src="@drawable/setting_seleted" />
     </item>
-    <item><bitmap android:src="@drawable/setting_normal" />
+    <item>
+        <bitmap android:src="@drawable/setting_normal" />
     </item>
 
 </selector>

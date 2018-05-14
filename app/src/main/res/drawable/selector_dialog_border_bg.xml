@@ -3,21 +3,25 @@
 
     <!-- 直角-带边-变色矩形 -->
     <!-- 默认状态 -->
-    <item android:state_pressed="false"><shape android:shape="rectangle">
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="@color/dialog_bg" />
             <!-- 线的宽度，颜色灰色 -->
             <stroke android:width="0.7dip" android:color="@color/dialog_line" />
-        </shape></item>
+        </shape>
+    </item>
 
     <!-- 选择状态 -->
-    <item android:state_pressed="true"><shape android:shape="rectangle">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
 
             <!-- 填充颜色 -->
             <solid android:color="@color/dialog_sel_bg" />
             <!-- 线的宽度，颜色灰色 -->
             <stroke android:width="0.7dip" android:color="@color/dialog_line" />
-        </shape></item>
+        </shape>
+    </item>
 
 </selector>
