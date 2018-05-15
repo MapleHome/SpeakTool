@@ -10,50 +10,44 @@ import android.widget.Button;
 import com.google.common.base.Preconditions;
 import com.speaktool.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * QQ分享选择对话框
  *
  * @author Maple Shao
  */
-public class QQShareChoiceDialog extends Dialog implements View.OnClickListener {
-    private Button btnShareToQZone;// 分享到QQ空间
-    private Button btnShareToQQ;// 分享到QQ好友
-    private Button btnCancelExit;// 取消
+public class QQShareDialog extends Dialog implements View.OnClickListener {
+    @BindView(R.id.btnShareToQZone) Button btnShareToQZone;// 分享到QQ空间
+    @BindView(R.id.btnShareToQQ) Button btnShareToQQ;// 分享到QQ好友
+    @BindView(R.id.btnCancelExit) Button btnCancelExit;// 取消
 
 
-    public QQShareChoiceDialog(Context context) {
+    public QQShareDialog(Context context) {
         this(context, R.style.dialogTheme);
     }
 
-    public QQShareChoiceDialog(Context context, int theme) {
+    public QQShareDialog(Context context, int theme) {
         super(context, theme);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
-
-        init();
-    }
-
-    private void init() {
         this.setCanceledOnTouchOutside(false);
+        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_qq_sharechoice);
-
-        btnShareToQZone = (Button) findViewById(R.id.btnShareToQZone);
-        btnShareToQQ = (Button) findViewById(R.id.btnShareToQQ);
-        btnCancelExit = (Button) findViewById(R.id.btnCancelExit);
+        ButterKnife.bind(this);
 
         btnShareToQZone.setOnClickListener(this);
         btnShareToQQ.setOnClickListener(this);
         btnCancelExit.setOnClickListener(this);
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onBackPressed() {
         this.dismiss();
-
     }
 
     @Override
@@ -68,6 +62,5 @@ public class QQShareChoiceDialog extends Dialog implements View.OnClickListener 
             this.dismiss();
         }
     }
-
 
 }

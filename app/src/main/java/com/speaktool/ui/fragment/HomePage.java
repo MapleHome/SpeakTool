@@ -29,7 +29,7 @@ import com.speaktool.ui.adapters.RecordsAdapter;
 import com.speaktool.ui.base.AbsListScrollListener;
 import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.ui.dialogs.LoadingDialog;
-import com.speaktool.ui.dialogs.ShareDialog;
+import com.speaktool.ui.dialogs.CourseItemDesDialog;
 import com.speaktool.ui.layouts.ItemViewLocalRecord;
 import com.speaktool.utils.T;
 
@@ -102,7 +102,7 @@ public class HomePage extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseItem course = (CourseItem) parent.getAdapter().getItem(position);
                 // 条目详情框
-                new ShareDialog(mContext, course, mAppIconAsyncLoader).show();
+                new CourseItemDesDialog(mContext, course, mAppIconAsyncLoader).show();
             }
         });
         /** 刷新加载监听 */

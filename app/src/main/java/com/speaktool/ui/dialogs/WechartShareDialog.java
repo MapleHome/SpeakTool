@@ -11,18 +11,18 @@ import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.api.CourseItem;
 
-public class WechartShareChoiceDialog extends Dialog implements View.OnClickListener {
+public class WechartShareDialog extends Dialog implements View.OnClickListener {
     private Button btnShareToWechartMoments;
     private Button btnShareToWechart;
     private Button btnCancelExit;
     private CourseItem mCourseItem;
     private Context mActivityContext;
 
-    public WechartShareChoiceDialog(Context context, CourseItem course) {
+    public WechartShareDialog(Context context, CourseItem course) {
         this(context, R.style.dialogTheme, course);
     }
 
-    public WechartShareChoiceDialog(Context context, int theme, CourseItem course) {
+    public WechartShareDialog(Context context, int theme, CourseItem course) {
         super(context, theme);
         Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;

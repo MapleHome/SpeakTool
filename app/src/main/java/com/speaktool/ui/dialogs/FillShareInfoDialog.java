@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,19 +24,22 @@ import com.speaktool.utils.NetUtil;
 
 import java.lang.ref.WeakReference;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 分享信息
  *
  * @author shaoshuai
  */
-public class FillShareInfoDialog extends Dialog implements View.OnClickListener {
-    private LinearLayout ll_root;// 根视图
-    private ImageView ivShareIcon;// 分享图标
-    private TextView tvShareTitle;// 分享标题
-    private Button btnCancel;// 取消
-    private Button btnOk;// 发表
-    private ImageView ivShareThumb;// 图片
-    private EditText etShareContent;// 编辑框
+public class FillShareInfoDialog extends Dialog {
+    @BindView(R.id.ll_root) LinearLayout ll_root;// 根视图
+    @BindView(R.id.iv_ShareIcon) ImageView ivShareIcon;// 分享图标
+    @BindView(R.id.tvShareTitle) TextView tvShareTitle;// 分享标题
+    @BindView(R.id.btnCancel) Button btnCancel;// 取消
+    @BindView(R.id.btnSend) Button btnOk;// 发表
+    @BindView(R.id.ivShareThumb) ImageView ivShareThumb;// 图片
+    @BindView(R.id.etShareContent) EditText etShareContent;// 编辑框
 
     private String mBaseContent;// 分享文本内容
     private Context mActivityContext;
@@ -57,27 +59,18 @@ public class FillShareInfoDialog extends Dialog implements View.OnClickListener 
         mBaseContent = getContext()
                 .getString(R.string.share_baseContent, course.getRecordTitle(), course.getShareUrl());
         this.setCanceledOnTouchOutside(false);
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_fillshareinfo);
-
-        ll_root = (LinearLayout) findViewById(R.id.ll_root);
-        ivShareIcon = (ImageView) findViewById(R.id.iv_ShareIcon);
-        tvShareTitle = (TextView) findViewById(R.id.tvShareTitle);
-        btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnOk = (Button) findViewById(R.id.btnSend);
-        ivShareThumb = (ImageView) findViewById(R.id.ivShareThumb);
-        etShareContent = (EditText) findViewById(R.id.etShareContent);
+        ButterKnife.bind(this);
 
         resetLayout();
         etShareContent.setText(mBaseContent);
         etShareContent.setSelection(mBaseContent.length());
 
-        btnOk.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
         ivShareThumbRef = new WeakReference<ImageView>(ivShareThumb);
         final String iconUrl = mCourseItem.getThumbnailImgPath();
         if (!TextUtils.isEmpty(iconUrl)) {
@@ -85,14 +78,11 @@ public class FillShareInfoDialog extends Dialog implements View.OnClickListener 
 
                 @Override
                 public void run() {
-
                     Bitmap bmp;
                     if (NetUtil.isNetPath(iconUrl)) {
-                        bmp = BitmapScaleUtil
-                                .decodeSampledBitmapFromUrl(iconUrl, Const.MAX_MEMORY_BMP_CAN_ALLOCATE, "");
+                        bmp = BitmapScaleUtil.decodeSampledBitmapFromUrl(iconUrl, Const.MAX_MEMORY_BMP_CAN_ALLOCATE, "");
                     } else {
                         bmp = BitmapScaleUtil.decodeSampledBitmapFromPath(iconUrl, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
-
                     }
                     if (bmp == null)
                         return;
@@ -105,17 +95,14 @@ public class FillShareInfoDialog extends Dialog implements View.OnClickListener 
                             if (ivThumb != null) {
                                 ivThumb.setImageBitmap(bmpcopy);
                             }
-
                         }
                     });
 
                 }
             }).start();
         }
-        //
         initDataForType();
 
-        super.onCreate(savedInstanceState);
     }
 
     private void resetLayout() {
@@ -158,18 +145,6 @@ public class FillShareInfoDialog extends Dialog implements View.OnClickListener 
     @Override
     public void onBackPressed() {
         this.dismiss();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnSend:
-                dismiss();
-                break;
-            case R.id.btnCancel:
-                dismiss();
-                break;
-        }
     }
 
 

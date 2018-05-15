@@ -13,61 +13,59 @@ import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.dao.RecordCategoriesDatabase;
+import com.speaktool.utils.T;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RenameRecordTypeAlertDialog extends Dialog implements View.OnClickListener {
+    @BindView(R.id.btnCancel) Button btnCancel;
+    @BindView(R.id.btnOk) Button btnOk;
+    @BindView(R.id.etRenameRecordType) EditText etRenameRecordType;
 
-	private Button btnCancel;
-	private Button btnOk;
-	private SearchCategoryBean mRecordType;
-	private EditText etRenameRecordType;
-	private Context mActivityContext;
+    private SearchCategoryBean mRecordType;
+    private Context mActivityContext;
 
-	public RenameRecordTypeAlertDialog(Context context, SearchCategoryBean type) {
-		this(context, R.style.dialogTheme, type);
-	}
+    public RenameRecordTypeAlertDialog(Context context, SearchCategoryBean type) {
+        this(context, R.style.dialogTheme, type);
+    }
 
-	public RenameRecordTypeAlertDialog(Context context, int theme, SearchCategoryBean type) {
-		super(context, theme);
-		Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
-		mActivityContext = context;
-		mRecordType = type;
-		init();
-	}
+    public RenameRecordTypeAlertDialog(Context context, int theme, SearchCategoryBean type) {
+        super(context, theme);
+        setCanceledOnTouchOutside(false);
+        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
+        mActivityContext = context;
+        mRecordType = type;
+    }
 
-	private void init() {
-		this.setCanceledOnTouchOutside(false);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_recordtype_rename_alert);
+        ButterKnife.bind(this);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.dialog_recordtype_rename_alert);
-		btnCancel = (Button) findViewById(R.id.btnCancel);
-		btnCancel.setOnClickListener(this);
-		btnOk = (Button) findViewById(R.id.btnOk);
-		btnOk.setOnClickListener(this);
-		etRenameRecordType = (EditText) findViewById(R.id.etRenameRecordType);
-		super.onCreate(savedInstanceState);
-	}
+        btnCancel.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
+    }
 
-	@Override
-	public void onBackPressed() {
-		this.dismiss();
-	}
+    @Override
+    public void onBackPressed() {
+        this.dismiss();
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (v == btnOk) {
-			String renametype = etRenameRecordType.getText().toString();
-			if (TextUtils.isEmpty(renametype)) {
-				OneButtonAlertDialog dia = new OneButtonAlertDialog(mActivityContext, "输入分类不能为空!");
-				dia.show();
-				return;
-			}
-			mRecordType.setCategoryName(renametype);
-			RecordCategoriesDatabase.updateCategory(mRecordType, getContext());
-			this.dismiss();
-		} else if (v == btnCancel) {
-			this.dismiss();
-		}
-	}
+    @Override
+    public void onClick(View v) {
+        if (v == btnOk) {
+            String renametype = etRenameRecordType.getText().toString();
+            if (TextUtils.isEmpty(renametype)) {
+                T.showShort(mActivityContext, "输入分类不能为空!");
+                return;
+            }
+            mRecordType.setCategoryName(renametype);
+            RecordCategoriesDatabase.updateCategory(mRecordType, getContext());
+            this.dismiss();
+        } else if (v == btnCancel) {
+            this.dismiss();
+        }
+    }
 }

@@ -90,7 +90,6 @@ import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.AsyncDataLoaderFactory;
 import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
-import com.speaktool.ui.dialogs.OneButtonAlertDialog;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
 import com.speaktool.ui.layouts.DrawPage;
@@ -891,8 +890,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             dismissLoading();
             int result = intent.getIntExtra(PlayProcess.EXTRA_MAKE_RESULT, PlayProcess.MAKE_SUECESS);
             if (result == PlayProcess.MAKE_FAIL) {
-                OneButtonAlertDialog dia = new OneButtonAlertDialog(context(), "录音合成失败！请检查存储卡空间");
-                dia.show();
+                T.showShort(mContext, "录音合成失败！请检查存储卡空间");
                 return;
             }
             RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));

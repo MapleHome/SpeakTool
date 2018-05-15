@@ -50,6 +50,7 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_fill_saveinfo);
         firstPage = findViewById(R.id.firstPage);
 
@@ -62,7 +63,6 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
         firstPage.setOkClickListener(this);
         firstPage.setEditTypeTouchListener(this);
 
-        super.onCreate(savedInstanceState);
     }
 
     private void resetLayout() {

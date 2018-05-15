@@ -56,12 +56,12 @@ import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.PlayService;
-import com.speaktool.ui.dialogs.OneButtonAlertDialog;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.layouts.DrawPage;
 import com.speaktool.ui.layouts.VideoPlayControllerView;
 import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.ScreenFitUtil;
+import com.speaktool.utils.T;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -499,9 +499,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
                     dismissLoading();
                     postTaskToUiThread(new Runnable() {
                         public void run() {
-                            OneButtonAlertDialog dia = new OneButtonAlertDialog(context(),
-                                    getString(R.string.save_recordinfo_fail));
-                            dia.show();
+                            T.showShort(context(), getString(R.string.save_recordinfo_fail));
                         }
                     });
                     return;
@@ -610,7 +608,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     @Override
     public void postTaskToUiThread(Runnable task) {
         SpeakToolApp.getUiHandler().post(task);
-
     }
 
     @Override
