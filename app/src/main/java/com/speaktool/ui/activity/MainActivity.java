@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
+import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.SearchCategoryBean;
@@ -30,8 +31,11 @@ import com.speaktool.ui.layouts.ItemViewLocalRecord;
 import com.speaktool.ui.layouts.SearchView;
 import com.speaktool.ui.popupwindow.CategoryPoW;
 import com.speaktool.ui.popupwindow.CategoryPoW.SearchCategoryChangedListener;
+import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.T;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,14 +70,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         initView();
         initData();
         initListener();
-
     }
 
     private void initView() {
-        // 注册EventBus订阅者
         EventBus.getDefault().register(this);
 
-        // 填充视图
         mHomePage = new HomePage();
         loadView(mHomePage);
     }
@@ -128,10 +129,21 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 search();
                 break;
             case R.id.ivSetting:// 设置
-                toUserMGPage(UserFMActivity.INIT_USER_INFO);
+                test();
+//                toUserMGPage(UserFMActivity.INIT_USER_INFO);
                 break;
         }
     }
+
+    private void test() {
+        try {
+            File file = new File(Const.RECORD_DIR, "test.txt");
+            FileIOUtils.writeFile(file, "text88888");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void onEventMainThread(CourseThumbnailLoadedEvent event) {
         ItemViewLocalRecord item = mHomePage.findViewWithTag(event.getKey());

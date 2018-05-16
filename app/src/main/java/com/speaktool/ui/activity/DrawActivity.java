@@ -90,13 +90,12 @@ import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.AsyncDataLoaderFactory;
 import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
-import com.speaktool.ui.dialogs.OneButtonAlertDialog;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
 import com.speaktool.ui.layouts.DrawPage;
 import com.speaktool.ui.layouts.VideoPlayControllerView;
-import com.speaktool.ui.popupwindow.EditClickPopupWindow;
-import com.speaktool.ui.popupwindow.ImageClickPopupWindow;
+import com.speaktool.ui.popupwindow.EditClickPoW;
+import com.speaktool.ui.popupwindow.ImageClickPoW;
 import com.speaktool.ui.popupwindow.L_ClearPoW;
 import com.speaktool.ui.popupwindow.L_EraserWayWitchPoW;
 import com.speaktool.ui.popupwindow.L_HandPenPoW;
@@ -106,7 +105,7 @@ import com.speaktool.ui.popupwindow.L_M_AddSinglePhotosPoW;
 import com.speaktool.ui.popupwindow.L_MorePoW;
 import com.speaktool.ui.popupwindow.L_PencilColorPoW;
 import com.speaktool.ui.popupwindow.R_AddNewPagePoW;
-import com.speaktool.ui.popupwindow.R_PreviwPoW;
+import com.speaktool.ui.popupwindow.R_PreviewPoW;
 import com.speaktool.ui.popupwindow.R_RerecordPoW;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DisplayUtil;
@@ -129,8 +128,8 @@ import de.greenrobot.event.EventBus;
  *
  * @author shaoshuai
  */
-public class DrawActivity extends Activity implements OnClickListener, OnTouchListener,
-        Draw, PickPhotoCallback, OnSeekBarChangeListener {
+public class DrawActivity extends Activity implements OnClickListener, OnTouchListener, Draw,
+        PickPhotoCallback, OnSeekBarChangeListener {
     // 左侧功能条
     @BindView(R.id.ll_left_bar) View layoutLeftBar;// 左侧功能条
     @BindView(R.id.ivHandPen) ImageView ivHandPen;// 手写笔
@@ -160,31 +159,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 常量
     public static final String EXTRA_PLAY_MODE = "play_mode";// 画板模式关键字
     public static final String EXTRA_RECORD_BEAN = "record_bean";// 课程记录关键字
-    /**
-     * 视频控制器延迟
-     */
-    private static final long VIDEO_CONTROLLER_DISMISS_DELAY = 5000;
+    private static final long VIDEO_CONTROLLER_DISMISS_DELAY = 5000;// 视频控制器延迟
 
     private Context mContext;
     private PlayMode mPlayMode;// 当前画板模式
     private int pageWidth;
     private int pageHeight;
-    /**
-     * 【画册】- 画纸集合
-     */
-    private List<Page> pages = new ArrayList<Page>();
-    /**
-     * 当前画纸在画册中的索引
-     */
-    private int currentBoardIndex = 0;
-    /**
-     * 课程目录
-     */
-    private String mRecordDir;
-    /**
-     * JSON脚本播放器
-     */
-    private JsonScriptPlayer mJsonScriptPlayer;
+    private List<Page> pages = new ArrayList<Page>();// 【画册】- 画纸集合
+    private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
+    private int currentBoardIndex = 0; // 当前画纸在画册中的索引
+    private String mRecordDir;// 课程目录
 
     private AsyncDataLoader<String, PicDataHolder> mNetPicturesIconAsyncLoader = AsyncDataLoaderFactory
             .newNetPicturesIconAsyncLoader();
@@ -226,7 +210,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
             //
             LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
-            // 检查是否为空
             Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
             mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
 
@@ -391,7 +374,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 break;
             case R.id.ivPreview:// 预览
                 // 预览
-                R_PreviwPoW previewPow = new R_PreviwPoW(mContext, v, this);
+                R_PreviewPoW previewPow = new R_PreviewPoW(mContext, v, this);
                 previewPow.showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.tvFinish:// 完成
@@ -907,8 +890,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             dismissLoading();
             int result = intent.getIntExtra(PlayProcess.EXTRA_MAKE_RESULT, PlayProcess.MAKE_SUECESS);
             if (result == PlayProcess.MAKE_FAIL) {
-                OneButtonAlertDialog dia = new OneButtonAlertDialog(context(), "录音合成失败！请检查存储卡空间");
-                dia.show();
+                T.showShort(mContext, "录音合成失败！请检查存储卡空间");
                 return;
             }
             RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
@@ -1596,14 +1578,14 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 显示文本编辑功能栏
     @Override
     public void showEditClickPopup(final EditWidget edit) {
-        EditClickPopupWindow popupWindow = new EditClickPopupWindow(mContext, edit);
+        EditClickPoW popupWindow = new EditClickPoW(mContext, edit);
         popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示图片编辑功能栏
     @Override
     public void showImageClickPopup(final ImageWidget imageWidget) {
-        ImageClickPopupWindow popupWindow = new ImageClickPopupWindow(mContext, imageWidget);
+        ImageClickPoW popupWindow = new ImageClickPoW(mContext, imageWidget);
         popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 

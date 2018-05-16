@@ -12,12 +12,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.speaktool.R;
-import com.speaktool.ui.adapters.AdapterColors;
-import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.bean.PaintInfoBean;
 import com.speaktool.impl.paint.DrawPaint;
 import com.speaktool.tasks.TaskLoadPaintColors;
 import com.speaktool.tasks.TaskLoadPaintColors.Callback;
+import com.speaktool.ui.adapters.AdapterColors;
+import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.ui.layouts.StrokeWidthPreview;
 import com.speaktool.utils.DensityUtils;
 
@@ -52,6 +52,7 @@ public class L_PencilColorPoW extends BasePopupWindow implements OnItemClickList
         gridViewColors = (GridView) mRootView.findViewById(R.id.gridViewColors);
         strokeWidthPreview = (StrokeWidthPreview) mRootView.findViewById(R.id.strokeWidthPreview);
         seekBarAdjustStrokeWidth = (SeekBar) mRootView.findViewById(R.id.seekBarAdjustStrokeWidth);
+
         seekBarAdjustStrokeWidth.setOnSeekBarChangeListener(this);
 
         /** dip==progress */

@@ -6,8 +6,6 @@ import android.graphics.Bitmap;
 import com.speaktool.Const;
 import com.speaktool.bean.ThirdParty;
 import com.speaktool.busevents.ThirdpartyLoadEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.injectmodules.UseFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 
 import de.greenrobot.event.EventBus;
@@ -18,7 +16,6 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  * 
  */
-@UseFactory(AsyncDataLoaderFactory.class)
 public class ThirdpartyItemLoader extends
 		ListItemAsyncDataLoader<Object, Bitmap> {
 

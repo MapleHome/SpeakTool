@@ -16,20 +16,10 @@ import com.speaktool.utils.T;
  * 通用的popupWindow
  */
 public abstract class BasePopupWindow {
-    // 元素定义
     protected PopupWindow mPopupWindow;
-    /**
-     * 注入视图
-     */
-    protected View mRootView;
-    /**
-     * 显示底层
-     */
-    protected View mToken;
-    /**
-     * 参照视图
-     */
-    protected View mAnchorView;
+    protected View mRootView;// 注入视图
+    protected View mToken;// 显示底层
+    protected View mAnchorView;// 参照视图
 
     protected Context mContext;
     private WeiZhi mWz = WeiZhi.Bottom;// 默认显示在底部

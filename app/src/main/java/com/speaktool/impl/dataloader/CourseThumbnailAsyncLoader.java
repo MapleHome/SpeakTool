@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.injectmodules.UseFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.NetUtil;
 
@@ -18,7 +16,6 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  * 
  */
-@UseFactory(AsyncDataLoaderFactory.class)
 public class CourseThumbnailAsyncLoader extends
 		ListItemAsyncDataLoader<String, Bitmap> {
 

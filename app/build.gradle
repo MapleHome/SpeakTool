@@ -29,6 +29,8 @@ dependencies {
     // lib
     compile project(path: ':pulltorefresh')
     // other
+    compile 'com.google.code.gson:gson:2.8.2'
+    // compile 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.github.shaoshuai904:iOS_Style_Dialog:1.2'

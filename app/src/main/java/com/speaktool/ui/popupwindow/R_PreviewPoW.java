@@ -17,9 +17,9 @@ import android.widget.PopupWindow.OnDismissListener;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
-import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.impl.player.PlayProcess;
 import com.speaktool.service.PlayService;
+import com.speaktool.ui.base.BasePopupWindow;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
@@ -29,7 +29,7 @@ import com.speaktool.utils.T;
  *
  * @author shaoshuai
  */
-public class R_PreviwPoW extends BasePopupWindow implements OnClickListener, OnDismissListener {
+public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, OnDismissListener {
     private Draw mDraw;
     private Dialog mLoadingDialog;
 
@@ -38,11 +38,11 @@ public class R_PreviwPoW extends BasePopupWindow implements OnClickListener, OnD
         return LayoutInflater.from(mContext).inflate(R.layout.pow_previewclick, null);
     }
 
-    public R_PreviwPoW(Context context, View anchor, Draw draw) {
+    public R_PreviewPoW(Context context, View anchor, Draw draw) {
         this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
     }
 
-    public R_PreviwPoW(Context context, View anchor, int w, int h, Draw draw) {
+    public R_PreviewPoW(Context context, View anchor, int w, int h, Draw draw) {
         super(context, anchor, w, h);
 
         this.setOnDismissListener(this);

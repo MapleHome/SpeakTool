@@ -18,7 +18,6 @@ public class Const {
      * 是否第一次进入标记
      */
     public static final String First_ComeIn = "isFirstComeIn";
-
     /**
      * SD卡路径
      */

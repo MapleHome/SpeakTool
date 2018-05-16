@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.clear.CmdClearPage;
 import com.speaktool.impl.cmd.copy.CmdCopyPage;
 import com.speaktool.impl.cmd.create.CmdActivePage;
@@ -53,67 +55,41 @@ import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.impl.DrawModeManager;
 import com.speaktool.service.PlayService;
-import com.speaktool.ui.dialogs.OneButtonAlertDialog;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.layouts.DrawPage;
 import com.speaktool.ui.layouts.VideoPlayControllerView;
 import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.ScreenFitUtil;
+import com.speaktool.utils.T;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
-import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 
 /**
  * 播放本地视频
  *
  * @author shaoshuai
  */
-@ContentView(R.layout.activity_play_video)
-public class PlayVideoActivity extends RoboActivity implements Draw {
-    // 内容区
-    @InjectView(R.id.drawBoardContainer)
-    private ViewFlipper viewFlipper;// 绘画板容器
-    @InjectView(R.id.viewFlipperOverlay)
-    private View viewFlipperOverlay;// 文本
-    @InjectView(R.id.layoutVideoController)
-    private VideoPlayControllerView layoutVideoController;// 视频播放控制器
+public class PlayVideoActivity extends FragmentActivity implements Draw {
+    @BindView(R.id.drawBoardContainer) ViewFlipper viewFlipper;// 绘画板容器
+    @BindView(R.id.viewFlipperOverlay) View viewFlipperOverlay;// 文本
+    @BindView(R.id.layoutVideoController) VideoPlayControllerView layoutVideoController;// 视频播放控制器
 
     // 常量
     public static final String EXTRA_RECORD_BEAN = "record_bean";
     public static final String EXTRA_PLAY_MODE = "play_mode";
-    /**
-     * 视频控制器延迟
-     */
-    private static final long Video_CONTROLLER_DISMISS_DELAY = 5000;
-    private Context mContext;
-    /**
-     * 界面集合
-     */
-    private List<Page> pages = new ArrayList<Page>();
-    /**
-     * 添加音乐集合
-     */
-    private final List<MusicBean> globalMusics = Lists.newArrayList();
-    /**
-     * 当前界面索引
-     */
-    private int currentBoardIndex = 0;
-    /**
-     * 课程目录
-     */
-    private String mRecordDir;
-    /**
-     * JSON脚本播放器
-     */
-    private JsonScriptPlayer mJsonScriptPlayer;
+    private static final long Video_CONTROLLER_DISMISS_DELAY = 5000;// 视频控制器延迟
+    private final List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
+    private List<Page> pages = new ArrayList<Page>();// 界面集合
+    private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
+    private int currentBoardIndex = 0;// 当前界面索引
+    private String mRecordDir;// 课程目录
     private PlayMode mPlayMode;
 
     private int pageWidth;
@@ -123,16 +99,16 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(null);
-        mContext = this;
-        // 注册EventBus订阅者
-        EventBus.getDefault().register(this);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         super.onCreate(savedInstanceState);// inject finish.
+        setContentView(R.layout.activity_play_video);
+        ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         mPlayMode = (PlayMode) getIntent().getSerializableExtra(EXTRA_PLAY_MODE);
-
         if (mPlayMode == PlayMode.PLAY) {
-
             layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
             //
             LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
@@ -523,9 +499,7 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
                     dismissLoading();
                     postTaskToUiThread(new Runnable() {
                         public void run() {
-                            OneButtonAlertDialog dia = new OneButtonAlertDialog(context(),
-                                    getString(R.string.save_recordinfo_fail));
-                            dia.show();
+                            T.showShort(context(), getString(R.string.save_recordinfo_fail));
                         }
                     });
                     return;
@@ -634,7 +608,6 @@ public class PlayVideoActivity extends RoboActivity implements Draw {
     @Override
     public void postTaskToUiThread(Runnable task) {
         SpeakToolApp.getUiHandler().post(task);
-
     }
 
     @Override
