@@ -38,14 +38,10 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
 
     public FillSaveInfoDialog(Context context, int theme, Draw draw) {
         super(context, theme);
+        setCanceledOnTouchOutside(false);
         Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
         mDraw = draw;
-        init();
-    }
-
-    private void init() {
-        this.setCanceledOnTouchOutside(false);
     }
 
     @Override
@@ -62,7 +58,6 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
         firstPage.setCancelClickListener(this);
         firstPage.setOkClickListener(this);
         firstPage.setEditTypeTouchListener(this);
-
     }
 
     private void resetLayout() {
@@ -138,7 +133,6 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
         info.setPublicPublish(isPublicPublish);
 
         mDraw.saveRecord(info);
-
     }
 
     /**

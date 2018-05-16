@@ -70,14 +70,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         initView();
         initData();
         initListener();
-
     }
 
     private void initView() {
-        // 注册EventBus订阅者
         EventBus.getDefault().register(this);
 
-        // 填充视图
         mHomePage = new HomePage();
         loadView(mHomePage);
     }

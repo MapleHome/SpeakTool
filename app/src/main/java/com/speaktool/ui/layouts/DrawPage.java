@@ -63,14 +63,8 @@ import de.greenrobot.event.EventBus;
  */
 @SuppressWarnings({"deprecation", "rawtypes"})
 public class DrawPage extends AbsoluteLayout implements Page {
-    /**
-     * 背景类型
-     */
-    private Page_BG backgroundType;
-    /**
-     * 画板纸张ID
-     */
-    private int id = -1;
+    private Page_BG backgroundType;// 背景类型
+    private int id = -1;// 画板纸张ID
 
     private int screenWidth;
     private int screenHeight;
@@ -81,18 +75,9 @@ public class DrawPage extends AbsoluteLayout implements Page {
     private int mPlayBoardWidth;
     private final List<PenShape_> penShapes = new ArrayList<PenShape_>();
 
-    /**
-     * 最大可撤销次数
-     */
-    private final static int MAX_UNDO_SIZE = 100;
-    /**
-     * 操作撤销集合
-     */
-    private Stack<ICmd> cmdsUndo = new Stack<ICmd>();
-    /**
-     * 操作返回集合
-     */
-    private Stack<ICmd> cmdsRedo = new Stack<ICmd>();
+    private final static int MAX_UNDO_SIZE = 100;// 最大可撤销次数
+    private Stack<ICmd> cmdsUndo = new Stack<ICmd>();// 操作撤销集合
+    private Stack<ICmd> cmdsRedo = new Stack<ICmd>();// 操作返回集合
 
     private FocusedView mFocusedView;
     private Draw draw;
