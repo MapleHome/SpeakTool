@@ -27,8 +27,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -47,12 +45,10 @@ import com.speaktool.bean.ActivePageData;
 import com.speaktool.bean.ClearPageData;
 import com.speaktool.bean.CopyPageData;
 import com.speaktool.bean.CreatePageData;
-import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.bean.RecordUploadBean;
-import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.busevents.DisableEraserEvent;
 import com.speaktool.busevents.DisableRedoEvent;
@@ -61,7 +57,6 @@ import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.busevents.EnableEraserEvent;
 import com.speaktool.busevents.EnableRedoEvent;
 import com.speaktool.busevents.EnableUndoEvent;
-import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.busevents.RecordPausingEvent;
 import com.speaktool.busevents.RecordRunningEvent;
 import com.speaktool.busevents.RecordTimeChangedEvent;
@@ -79,7 +74,6 @@ import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.modes.DrawModeEraser;
 import com.speaktool.impl.modes.DrawModePath;
 import com.speaktool.impl.paint.DrawPaint;
-import com.speaktool.impl.player.JsonScriptPlayer;
 import com.speaktool.impl.player.PlayProcess;
 import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
@@ -93,7 +87,6 @@ import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
 import com.speaktool.ui.layouts.DrawPage;
-import com.speaktool.ui.layouts.VideoPlayControllerView;
 import com.speaktool.ui.popupwindow.EditClickPoW;
 import com.speaktool.ui.popupwindow.ImageClickPoW;
 import com.speaktool.ui.popupwindow.L_ClearPoW;
@@ -111,7 +104,6 @@ import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DisplayUtil;
 import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.RecordFileUtils;
-import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
 import java.io.File;
@@ -129,7 +121,7 @@ import de.greenrobot.event.EventBus;
  * @author shaoshuai
  */
 public class DrawActivity extends Activity implements OnClickListener, OnTouchListener, Draw,
-        PickPhotoCallback, OnSeekBarChangeListener {
+        PickPhotoCallback {
     // 左侧功能条
     @BindView(R.id.ll_left_bar) View layoutLeftBar;// 左侧功能条
     @BindView(R.id.ivHandPen) ImageView ivHandPen;// 手写笔
@@ -143,7 +135,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 内容区
     @BindView(R.id.drawBoardContainer) ViewFlipper viewFlipper;// 绘画板容器
     @BindView(R.id.viewFlipperOverlay) View viewFlipperOverlay;// 文本
-    @BindView(R.id.layoutVideoController) VideoPlayControllerView layoutVideoController;// 视频播放控制器
     // 底部功能条
     @BindView(R.id.ll_right_bar) View layoutBottom;// 底部功能条
     @BindView(R.id.ivRecord) ImageView ivRecord;// 录制
@@ -156,17 +147,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @BindView(R.id.ivPreview) ImageView ivPreview;// 预览
     @BindView(R.id.tvFinish) TextView tvFinish;// 完成
 
-    // 常量
-    public static final String EXTRA_PLAY_MODE = "play_mode";// 画板模式关键字
-    public static final String EXTRA_RECORD_BEAN = "record_bean";// 课程记录关键字
-    private static final long VIDEO_CONTROLLER_DISMISS_DELAY = 5000;// 视频控制器延迟
 
     private Context mContext;
-    private PlayMode mPlayMode;// 当前画板模式
     private int pageWidth;
     private int pageHeight;
     private List<Page> pages = new ArrayList<Page>();// 【画册】- 画纸集合
-    private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
     private String mRecordDir;// 课程目录
 
@@ -174,21 +159,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             .newNetPicturesIconAsyncLoader();
     private AsyncDataLoader<String, PicDataHolder> mLocalPicturesIconAsyncLoader = AsyncDataLoaderFactory
             .newLocalPicturesIconAsyncLoader();
-
-    private Dialog mLoadingDialog;
-
-    public void showLoading(String msg, OnKeyListener onKeyListener) {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, msg);
-        mLoadingDialog.setOnKeyListener(onKeyListener);
-        mLoadingDialog.show();
-    }
-
-    public void dismissLoading() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.dismiss();
-            mLoadingDialog = null;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,55 +173,27 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         EventBus.getDefault().register(this);// 注册EventBus订阅者
         Preconditions.checkNotNull(tvFinish);
         //
-        mPlayMode = (PlayMode) getIntent().getSerializableExtra(EXTRA_PLAY_MODE);
-        if (mPlayMode == PlayMode.PLAY) {// 播放
-            layoutLeftBar.setVisibility(View.GONE);
-            layoutBottom.setVisibility(View.GONE);
-            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
-            //
-            LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
-            Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
-            mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
-
-            ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-            pageWidth = currentScreen.w;
-            pageHeight = currentScreen.h;
-            // 设置播放器大小
-            LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
-            lp.width = pageWidth;
-            layoutVideoController.setLayoutParams(lp);
-            //
-            LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
-            lp2.width = pageWidth;
-            lp2.height = pageHeight;
-            viewFlipperOverlay.setLayoutParams(lp2);
-            //
-            initListener();
-            initPage();
-            DrawModeManager.getIns().setDrawMode(new DrawModePath());
-            mJsonScriptPlayer.play();
-            //
-        } else {// 绘制
-            if (android.os.Build.VERSION.SDK_INT >= 18) {
+        // 绘制
+        if (android.os.Build.VERSION.SDK_INT >= 18) {
 //                mIBISPenController = new IBISPenController(this);
 //                mDigitalPenController = new DigitalPenController(this);
-                ivHandPen.setEnabled(true);// 设置可用
-            } else {
-                ivHandPen.setEnabled(false);// 设置不可用
-                T.showShort(mContext, "当前系统不支持蓝牙！手写笔不可用。");
-            }
-            mMakeReleaseScriptResultReceiver = new MakeReleaseScriptResultReceiver();
-            IntentFilter filter = new IntentFilter(PlayProcess.ACTION_MAKE_RESULT);
-            this.registerReceiver(mMakeReleaseScriptResultReceiver, filter);
-            // 初始化画板纸张的宽高
-            Point screenSize = DisplayUtil.getScreenSize(getApplicationContext());
-            pageWidth = LayoutParams.MATCH_PARENT;
-            pageHeight = screenSize.y;
-
-            initListener();
-            initPage();
-            DrawModeManager.getIns().setDrawMode(new DrawModePath());
+            ivHandPen.setEnabled(true);// 设置可用
+        } else {
+            ivHandPen.setEnabled(false);// 设置不可用
+            T.showShort(mContext, "当前系统不支持蓝牙！手写笔不可用。");
         }
+        mMakeReleaseScriptResultReceiver = new MakeReleaseScriptResultReceiver();
+        IntentFilter filter = new IntentFilter(PlayProcess.ACTION_MAKE_RESULT);
+        this.registerReceiver(mMakeReleaseScriptResultReceiver, filter);
+        // 初始化画板纸张的宽高
+        Point screenSize = DisplayUtil.getScreenSize(getApplicationContext());
+        pageWidth = LayoutParams.MATCH_PARENT;
+        pageHeight = screenSize.y;
+
+        initListener();
+        initPage();
+        DrawModeManager.getIns().setDrawMode(new DrawModePath());
+
     }
 
     private void initListener() {
@@ -280,9 +222,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         ivRedo.setOnTouchListener(this);// 返回
         ivMore.setOnTouchListener(this);// 添加
         ivMore.setColorFilter(Color.WHITE);
-        // 播放器监听
-        layoutVideoController.setPlayPauseClickListener(this);// 播放暂停
-        layoutVideoController.setSeekListener(this); // 播放进度改变监听
     }
 
     private void initPage() {
@@ -380,21 +319,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             case R.id.tvFinish:// 完成
                 onExitDraw();
                 break;
-            // -----------------------------------------------------
-            case R.id.ivPlayPause:// 播放暂停
-                if (mJsonScriptPlayer.isPlayComplete()) {
-                    mJsonScriptPlayer.rePlay();
-                    layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
-                    break;
-                }
-                if (mJsonScriptPlayer.isPlaying()) {
-                    mJsonScriptPlayer.pause();
-                    layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-                } else {
-                    mJsonScriptPlayer.goOn();
-                    layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
-                }
-                break;
         }
     }
 
@@ -486,33 +410,27 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 实现接口 - 绘制完成
     @Override
     public void onExitDraw() {
-        if (mPlayMode == PlayMode.MAKE) {
-            if (getPageRecorder().isHaveRecordForAll()) {
-                this.pauseRecord();
-                SaveRecordAlertDialog savedia = new SaveRecordAlertDialog(DrawActivity.this, this);
-                savedia.show();
-            } else {// no record.
-                if (isUserHaveOperationInSomeBoard()) {
-                    new AlertDialog(this)
-                            .setTitle("提示")
-                            .setMessage("是否退出？退出后之前所有操作都会被清空！")
-                            .setLeftButton("取消", null)
-                            .setRightButton("退出", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    exitDrawWithoutSave();
-                                }
-                            })
-                            .show();
-                } else {
-                    getPageRecorder().deleteRecordDir();
-                    this.finish();
-                }
+        if (getPageRecorder().isHaveRecordForAll()) {
+            this.pauseRecord();
+            SaveRecordAlertDialog savedia = new SaveRecordAlertDialog(DrawActivity.this, this);
+            savedia.show();
+        } else {// no record.
+            if (isUserHaveOperationInSomeBoard()) {
+                new AlertDialog(this)
+                        .setTitle("提示")
+                        .setMessage("是否退出？退出后之前所有操作都会被清空！")
+                        .setLeftButton("取消", null)
+                        .setRightButton("退出", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                exitDrawWithoutSave();
+                            }
+                        })
+                        .show();
+            } else {
+                getPageRecorder().deleteRecordDir();
+                this.finish();
             }
-
-        } else {// play/preview mode.
-            mJsonScriptPlayer.exitPlayer();
-            finish();
         }
     }
 
@@ -710,48 +628,48 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // =====================操作命令--结束=======================================
     // =====================视频播放器--开始=======================================
 
-    private Runnable hideVideoControllerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
-        }
-    };
+//    private Runnable hideVideoControllerRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+//        }
+//    };
 
     @Override
     public void showVideoController() {
-        if (layoutVideoController.getVisibility() == View.VISIBLE) {
-            layoutVideoController.setVisibility(View.INVISIBLE);
-            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
-            return;
-        }
-        layoutVideoController.setVisibility(View.VISIBLE);
-        layoutVideoController.postDelayed(hideVideoControllerRunnable, VIDEO_CONTROLLER_DISMISS_DELAY);
+//        if (layoutVideoController.getVisibility() == View.VISIBLE) {
+//            layoutVideoController.setVisibility(View.INVISIBLE);
+//            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
+//            return;
+//        }
+//        layoutVideoController.setVisibility(View.VISIBLE);
+//        layoutVideoController.postDelayed(hideVideoControllerRunnable, 5000);
 
     }
 
     @Override
     public void onPlayComplete() {
-        postTaskToUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-
-                int p = JsonScriptPlayer.MAX_PROGRESS;
-                String totalstr = FormatUtils.getFormatTimeSimple(p);
-                layoutVideoController.setProgress(p);
-                layoutVideoController.setProgressText(totalstr);
-            }
-        });
+//        postTaskToUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
+//
+//                int p = JsonScriptPlayer.MAX_PROGRESS;
+//                String totalstr = FormatUtils.getFormatTimeSimple(p);
+//                layoutVideoController.setProgress(p);
+//                layoutVideoController.setProgressText(totalstr);
+//            }
+//        });
     }
 
     @Override
     public void onPlayStart() {
-        postTaskToUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
-            }
-        });
+//        postTaskToUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
+//            }
+//        });
     }
 
     // =====================视频播放器--结束=======================================
@@ -958,6 +876,21 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     }
 
+    private Dialog mLoadingDialog;
+
+    public void showLoading(String msg, OnKeyListener onKeyListener) {
+        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, msg);
+        mLoadingDialog.setOnKeyListener(onKeyListener);
+        mLoadingDialog.show();
+    }
+
+    public void dismissLoading() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+            mLoadingDialog = null;
+        }
+    }
+
     /**
      * 上传文件
      */
@@ -991,14 +924,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     protected void onStop() {
-        if (getPlayMode() == PlayMode.MAKE) {
-            pauseRecord();
-        } else {// play.
-            if (mJsonScriptPlayer.isPlaying()) {
-                mJsonScriptPlayer.pause();
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-            }
-        }
+        pauseRecord();
         super.onStop();
     }
 
@@ -1120,29 +1046,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     public void onEventMainThread(RecordTimeChangedEvent event) {
-        if (mPlayMode != PlayMode.MAKE)
-            return;
         tvTime.setText(FormatUtils.getFormatTimeSimple(event.getNow()));
-    }
-
-    public void onEventMainThread(PlayTimeChangedEvent event) {
-        if (mPlayMode == PlayMode.MAKE)
-            return;
-        long now = event.getNow();
-        long total = event.getCloseTime();
-        float per = (float) now / (float) total;
-        int p = (int) (per * (float) JsonScriptPlayer.MAX_PROGRESS);
-
-        // GLogger.e(tag, "p:" + p);
-        String nowstr = FormatUtils.getFormatTimeSimple(now);
-        String totalstr = FormatUtils.getFormatTimeSimple(total);
-        if (nowstr.equals(totalstr)) {
-            p = JsonScriptPlayer.MAX_PROGRESS;
-        }
-        layoutVideoController.setProgress(p);
-        layoutVideoController.setProgressText(nowstr);
-        layoutVideoController.setTotalDuration(totalstr);
-
     }
 
     public void onEventMainThread(RecordRunningEvent event) {
@@ -1527,7 +1431,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public PlayMode getPlayMode() {
-        return mPlayMode;
+        return PlayMode.MAKE;
     }
 
     @Override
@@ -1543,21 +1447,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @Override
     public int makePageHeight() {
         return pageHeight;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        mJsonScriptPlayer.seekTo(seekBar.getProgress());
     }
 
     @Override

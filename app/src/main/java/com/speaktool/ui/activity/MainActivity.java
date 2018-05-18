@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
@@ -285,7 +284,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      */
     private void make() {
         Intent it = new Intent(this, DrawActivity.class);
-        it.putExtra(DrawActivity.EXTRA_PLAY_MODE, PlayMode.MAKE);
         startActivity(it);
     }
 
