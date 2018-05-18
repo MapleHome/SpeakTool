@@ -50,17 +50,13 @@ import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
-import com.speaktool.busevents.DisableEraserEvent;
-import com.speaktool.busevents.DisableRedoEvent;
-import com.speaktool.busevents.DisableUndoEvent;
 import com.speaktool.busevents.DrawModeChangedEvent;
-import com.speaktool.busevents.EnableEraserEvent;
-import com.speaktool.busevents.EnableRedoEvent;
-import com.speaktool.busevents.EnableUndoEvent;
-import com.speaktool.busevents.RecordPausingEvent;
-import com.speaktool.busevents.RecordRunningEvent;
+import com.speaktool.busevents.EraserEvent;
+import com.speaktool.busevents.RecordRunEvent;
 import com.speaktool.busevents.RecordTimeChangedEvent;
+import com.speaktool.busevents.RedoEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
+import com.speaktool.busevents.UndoEvent;
 import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.clear.CmdClearPage;
 import com.speaktool.impl.cmd.copy.CmdCopyPage;
@@ -1007,38 +1003,36 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     // =====================top pop=======================================
     @Subscribe
-    public void onEventMainThread(EnableEraserEvent event) {
-        ivEraser.setEnabled(true);
-        ivEraser.setColorFilter(null);
-    }
-    @Subscribe
-    public void onEventMainThread(DisableEraserEvent event) {
-        ivEraser.setEnabled(false);
-        ivEraser.setColorFilter(Color.GRAY);
-    }
-
-    //
-    @Subscribe
-    public void onEventMainThread(EnableRedoEvent event) {
-        ivRedo.setEnabled(true);
-        ivRedo.setColorFilter(null);
-    }
-    @Subscribe
-    public void onEventMainThread(DisableRedoEvent event) {
-        ivRedo.setEnabled(false);
-        ivRedo.setColorFilter(Color.GRAY);
+    public void onEventMainThread(EraserEvent event) {
+        if (event.enable) {
+            ivEraser.setEnabled(true);
+            ivEraser.setColorFilter(null);
+        } else {
+            ivEraser.setEnabled(false);
+            ivEraser.setColorFilter(Color.GRAY);
+        }
     }
 
-    //
     @Subscribe
-    public void onEventMainThread(EnableUndoEvent event) {
-        ivUndo.setEnabled(true);
-        ivUndo.setColorFilter(null);
+    public void onEventMainThread(RedoEvent event) {
+        if (event.enable) {
+            ivRedo.setEnabled(true);
+            ivRedo.setColorFilter(null);
+        } else {
+            ivRedo.setEnabled(false);
+            ivRedo.setColorFilter(Color.GRAY);
+        }
     }
+
     @Subscribe
-    public void onEventMainThread(DisableUndoEvent event) {
-        ivUndo.setEnabled(false);
-        ivUndo.setColorFilter(Color.GRAY);
+    public void onEventMainThread(UndoEvent event) {
+        if (event.enable) {
+            ivUndo.setEnabled(true);
+            ivUndo.setColorFilter(null);
+        } else {
+            ivUndo.setEnabled(false);
+            ivUndo.setColorFilter(Color.GRAY);
+        }
     }
 
     //
@@ -1049,24 +1043,26 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         normalPreUi(preMode);
         selectNowUi(nowMode);
     }
+
     @Subscribe
     public void onEventMainThread(RecordTimeChangedEvent event) {
         tvTime.setText(FormatUtils.getFormatTimeSimple(event.getNow()));
     }
+
     @Subscribe
-    public void onEventMainThread(RecordRunningEvent event) {
-        // 更换为：记录状态
-        int barRecordingColor = getResources().getColor(R.color.bar_recording_background);
-        layoutLeftBar.setBackgroundColor(barRecordingColor);
-        layoutBottom.setBackgroundColor(barRecordingColor);
-        ivRecord.setImageResource(R.drawable.draw_recording_selected);
-    }
-    @Subscribe
-    public void onEventMainThread(RecordPausingEvent event) {
-        // 更换成：记录暂停状态
-        layoutLeftBar.setBackgroundColor(getResources().getColor(R.color.draw_left_bar_bg));
-        layoutBottom.setBackgroundColor(getResources().getColor(R.color.draw_right_bar_bg));
-        ivRecord.setImageResource(R.drawable.draw_recording_normal);
+    public void onEventMainThread(RecordRunEvent event) {
+        if (event.isRun) {
+            // 更换为：记录状态
+            int barRecordingColor = getResources().getColor(R.color.bar_recording_background);
+            layoutLeftBar.setBackgroundColor(barRecordingColor);
+            layoutBottom.setBackgroundColor(barRecordingColor);
+            ivRecord.setImageResource(R.drawable.draw_recording_selected);
+        } else {
+            // 更换成：记录暂停状态
+            layoutLeftBar.setBackgroundColor(getResources().getColor(R.color.draw_left_bar_bg));
+            layoutBottom.setBackgroundColor(getResources().getColor(R.color.draw_right_bar_bg));
+            ivRecord.setImageResource(R.drawable.draw_recording_normal);
+        }
     }
 
     // =====================插入音频=======================================
