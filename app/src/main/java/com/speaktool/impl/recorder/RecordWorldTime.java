@@ -7,7 +7,8 @@ import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.busevents.RecordTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 public class RecordWorldTime {
 	private long now = ICmd.TIME_DELETE_FLAG;// millsec.

@@ -13,7 +13,9 @@ import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.ui.base.BasePopupWindow;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 
 /**
  * 文本编辑框
@@ -101,6 +103,7 @@ public class EditClickPoW extends BasePopupWindow implements OnClickListener {
         }
     }
 
+    @Subscribe
     public void onEventMainThread(CloseEditPopupWindowEvent event) {
         onDestory();
     }

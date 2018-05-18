@@ -47,6 +47,8 @@ import com.speaktool.utils.DisplayUtil;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * 【画纸】- 画板纸张界面

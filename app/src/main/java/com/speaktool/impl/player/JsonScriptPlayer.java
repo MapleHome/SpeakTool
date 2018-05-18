@@ -26,7 +26,8 @@ import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.utils.RecordFileUtils;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * JSON脚本播放器

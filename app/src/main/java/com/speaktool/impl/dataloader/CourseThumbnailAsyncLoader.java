@@ -8,7 +8,8 @@ import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.NetUtil;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 课程记录缩略图 异步加载

@@ -3,7 +3,8 @@ package com.speaktool.impl.recorder;
 import com.speaktool.busevents.RecordPausingEvent;
 import com.speaktool.busevents.RecordRunningEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 记录器上下文

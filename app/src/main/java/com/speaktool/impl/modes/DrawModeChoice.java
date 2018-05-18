@@ -8,7 +8,8 @@ import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 绘画模式——选择

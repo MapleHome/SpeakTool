@@ -13,7 +13,9 @@ import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.ui.base.BasePopupWindow;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 
 /**
  * 图片编辑框
@@ -96,6 +98,7 @@ public class ImageClickPoW extends BasePopupWindow implements OnClickListener {
         }
     }
 
+    @Subscribe
     public void onEventMainThread(CloseEditPopupWindowEvent event) {
         onDestory();
     }

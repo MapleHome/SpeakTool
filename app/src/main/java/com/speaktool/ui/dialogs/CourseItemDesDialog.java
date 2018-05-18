@@ -29,12 +29,13 @@ import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.FileUtil;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 /**
  * 分享

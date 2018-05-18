@@ -50,6 +50,9 @@ import com.speaktool.utils.NetUtil;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -57,7 +60,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * 顶部功能栏——更多功能——添加图片——网络图片
@@ -488,6 +490,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         return BitmapFactory.decodeResource(SpeakToolApp.app().getResources(), R.drawable.error);
     }
 
+    @Subscribe
     public void onEventMainThread(NetPictureThumbnailLoadedEvent event) {
         String key = event.getKey();
         ItemViewNetPicture item = (ItemViewNetPicture) mNetPicsGrid.findViewWithTag(key);

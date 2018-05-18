@@ -43,9 +43,10 @@ import com.speaktool.utils.T;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
 import com.speaktool.ui.custom.gif.GifDrawable;
 import com.speaktool.ui.custom.gif.GifImageView;
+
+import org.greenrobot.eventbus.EventBus;
 
 @SuppressWarnings("deprecation")
 public class OuterImage extends GifImageView implements ImageWidget, FocusedView, OnClickListener {

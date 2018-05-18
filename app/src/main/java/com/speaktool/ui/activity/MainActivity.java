@@ -33,13 +33,15 @@ import com.speaktool.ui.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /**
  * 主界面
@@ -64,6 +66,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         mContext = this;
 
         initView();
@@ -72,8 +75,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
-
         mHomePage = new HomePage();
         loadView(mHomePage);
     }
@@ -143,7 +144,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         }
     }
 
-
+    @Subscribe
     public void onEventMainThread(CourseThumbnailLoadedEvent event) {
         ItemViewLocalRecord item = mHomePage.findViewWithTag(event.getKey());
         if (item != null)
@@ -151,6 +152,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     }
 
+    @Subscribe
     public void onEventMainThread(RefreshCourseListEvent event) {
         mHomePage.refreshIndexPage();
     }

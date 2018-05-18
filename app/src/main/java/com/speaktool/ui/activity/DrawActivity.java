@@ -106,6 +106,9 @@ import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +116,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /**
  * 画板【是一个画册性质，有多张画纸组成】
@@ -396,6 +398,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         void onActivityResult(int requestCode, int resultCode, Intent data);
     }
 
+    @Subscribe
     public void onEventMainThread(HandpenStateEvent e) {
         if (e.state == HandpenStateEvent.STATE_CONNECTED) {
             ivHandPen.setImageResource(R.drawable.handpen_enable);
@@ -1003,52 +1006,54 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     // =====================top pop=======================================
-
+    @Subscribe
     public void onEventMainThread(EnableEraserEvent event) {
         ivEraser.setEnabled(true);
         ivEraser.setColorFilter(null);
     }
-
+    @Subscribe
     public void onEventMainThread(DisableEraserEvent event) {
         ivEraser.setEnabled(false);
         ivEraser.setColorFilter(Color.GRAY);
     }
 
     //
+    @Subscribe
     public void onEventMainThread(EnableRedoEvent event) {
         ivRedo.setEnabled(true);
         ivRedo.setColorFilter(null);
     }
-
+    @Subscribe
     public void onEventMainThread(DisableRedoEvent event) {
         ivRedo.setEnabled(false);
         ivRedo.setColorFilter(Color.GRAY);
     }
 
     //
-
+    @Subscribe
     public void onEventMainThread(EnableUndoEvent event) {
         ivUndo.setEnabled(true);
         ivUndo.setColorFilter(null);
     }
-
+    @Subscribe
     public void onEventMainThread(DisableUndoEvent event) {
         ivUndo.setEnabled(false);
         ivUndo.setColorFilter(Color.GRAY);
     }
 
     //
+    @Subscribe
     public void onEventMainThread(DrawModeChangedEvent event) {
         DrawModeCode preMode = event.getPreMode();
         DrawModeCode nowMode = event.getNowMode();
         normalPreUi(preMode);
         selectNowUi(nowMode);
     }
-
+    @Subscribe
     public void onEventMainThread(RecordTimeChangedEvent event) {
         tvTime.setText(FormatUtils.getFormatTimeSimple(event.getNow()));
     }
-
+    @Subscribe
     public void onEventMainThread(RecordRunningEvent event) {
         // 更换为：记录状态
         int barRecordingColor = getResources().getColor(R.color.bar_recording_background);
@@ -1056,7 +1061,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         layoutBottom.setBackgroundColor(barRecordingColor);
         ivRecord.setImageResource(R.drawable.draw_recording_selected);
     }
-
+    @Subscribe
     public void onEventMainThread(RecordPausingEvent event) {
         // 更换成：记录暂停状态
         layoutLeftBar.setBackgroundColor(getResources().getColor(R.color.draw_left_bar_bg));

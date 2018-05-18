@@ -17,7 +17,8 @@ import com.speaktool.busevents.LocalPictureThumbnailLoadedEvent;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.LocalFileUtils;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 本地图片异步加载

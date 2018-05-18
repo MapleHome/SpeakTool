@@ -20,7 +20,8 @@ import com.speaktool.impl.shapes.Point_;
 import com.speaktool.impl.paint.DrawPaint;
 import com.speaktool.impl.paint.EraserPaint;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 用于绘制路径或点。

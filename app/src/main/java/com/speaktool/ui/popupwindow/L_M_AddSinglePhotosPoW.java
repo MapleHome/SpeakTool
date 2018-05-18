@@ -41,11 +41,13 @@ import com.speaktool.ui.layouts.ItemViewLocalPhotoDirs;
 import com.speaktool.ui.layouts.MulticheckableView;
 import com.speaktool.utils.BitmapScaleUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * 左侧功能栏——更多——添加图片——挑选单张照片
@@ -221,6 +223,7 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
         return BitmapFactory.decodeResource(SpeakToolApp.app().getResources(), R.drawable.ic_launcher);
     }
 
+    @Subscribe
     public void onEventMainThread(LocalPhotoDirIconLoadedEvent event) {
         String key = event.getKey();
         ItemViewLocalPhotoDirs itemview = (ItemViewLocalPhotoDirs) listViewPhotoDirs.findViewWithTag(key);
@@ -343,6 +346,7 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
         return BitmapFactory.decodeResource(SpeakToolApp.app().getResources(), R.drawable.error);
     }
 
+    @Subscribe
     public void onEventMainThread(final LocalPictureThumbnailLoadedEvent event) {
         String key = event.getKey();
         final MulticheckableView item = (MulticheckableView) gridViewPhotos.findViewWithTag(key);
