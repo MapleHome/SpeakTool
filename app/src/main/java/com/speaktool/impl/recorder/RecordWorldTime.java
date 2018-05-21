@@ -68,7 +68,6 @@ public class RecordWorldTime {
 				now += 10;
 				if (now % 1000 == 0)
 					postEvent();
-
 			}
 		}, 100, 10);
 		isTicking = true;

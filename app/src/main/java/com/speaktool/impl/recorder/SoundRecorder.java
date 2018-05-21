@@ -55,7 +55,6 @@ public class SoundRecorder {
 	}
 
 	public static void resetRefreshUiTime(long time) {
-
 		refreshUiTime.setNowTime(time);
 	}
 
@@ -64,7 +63,6 @@ public class SoundRecorder {
 			return ICmd.TIME_DELETE_FLAG;
 		}
 		return refreshUiTime.now();
-
 	}
 
 	public void destroy() {
@@ -73,7 +71,6 @@ public class SoundRecorder {
 		mRecorder = null;
 		refreshUiTime.pause();
 		logicTime.pause();
-
 	}
 
 	public static long getCurrentTime() {
@@ -84,13 +81,11 @@ public class SoundRecorder {
 
 	public static void closeWorldTimer() {// do at drawactivity finish.
 		if (refreshUiTime != null) {
-
 			refreshUiTime.stop();
 			refreshUiTime = null;
 		}
 		//
 		if (logicTime != null) {
-
 			logicTime.stop();
 			logicTime = null;
 		}

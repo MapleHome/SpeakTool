@@ -33,13 +33,11 @@ public class RecordCategoriesDatabase {
      * @param isNeedAllType
      * @return
      */
-    public static List<SearchCategoryBean> getLocalCategories(Context context,
-                                                              boolean isNeedAllType) {
-        final DatabaseHelper helper = getHelper(context);
+    public static List<SearchCategoryBean> getLocalCategories(Context context, boolean isNeedAllType) {
+        DatabaseHelper helper = getHelper(context);
         List<SearchCategoryBean> uploads = null;
         try {
-            final Dao<SearchCategoryBean, String> dao = helper
-                    .getRecordTypeDao();
+            Dao<SearchCategoryBean, String> dao = helper.getRecordTypeDao();
             uploads = dao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,8 +63,7 @@ public class RecordCategoriesDatabase {
      * @param context
      */
     public static void addCategory(SearchCategoryBean type, Context context) {
-
-        final DatabaseHelper helper = getHelper(context);
+        DatabaseHelper helper = getHelper(context);
         try {
             Dao<SearchCategoryBean, String> dao = helper.getRecordTypeDao();
             int affect = dao.create(type);
@@ -87,8 +84,7 @@ public class RecordCategoriesDatabase {
      * @param context
      */
     public static void updateCategory(SearchCategoryBean type, Context context) {
-
-        final DatabaseHelper helper = getHelper(context);
+        DatabaseHelper helper = getHelper(context);
         try {
             Dao<SearchCategoryBean, String> dao = helper.getRecordTypeDao();
             dao.createOrUpdate(type);
@@ -108,8 +104,7 @@ public class RecordCategoriesDatabase {
      * @param context
      */
     public static void deleteCategory(SearchCategoryBean type, Context context) {
-
-        final DatabaseHelper helper = getHelper(context);
+        DatabaseHelper helper = getHelper(context);
         try {
             Dao<SearchCategoryBean, String> dao = helper.getRecordTypeDao();
             int affect = dao.delete(type);
@@ -122,16 +117,12 @@ public class RecordCategoriesDatabase {
         }
     }
 
-    public static boolean isCategoryExist(SearchCategoryBean type,
-                                          Context context) {
-
-        final DatabaseHelper helper = getHelper(context);
+    public static boolean isCategoryExist(SearchCategoryBean type, Context context) {
+        DatabaseHelper helper = getHelper(context);
         List<SearchCategoryBean> uploads = null;
         try {
-            final Dao<SearchCategoryBean, String> dao = helper
-                    .getRecordTypeDao();
-            uploads = dao.queryForEq(SearchCategoryBean.FIELD_TYPE_NAME,
-                    type.getCategoryName());
+            Dao<SearchCategoryBean, String> dao = helper.getRecordTypeDao();
+            uploads = dao.queryForEq(SearchCategoryBean.FIELD_TYPE_NAME, type.getCategoryName());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -145,6 +136,5 @@ public class RecordCategoriesDatabase {
 
     private static void postEvent() {
         EventBus.getDefault().post(new RecordTypeChangedEvent());
-
     }
 }

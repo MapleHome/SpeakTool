@@ -314,7 +314,6 @@ public class DrawPage extends AbsoluteLayout implements Page {
         if (cmdsUndo.isEmpty()) {
             postEvent(new UndoEvent(false));
             return;
-
         }
     }
 
@@ -344,8 +343,6 @@ public class DrawPage extends AbsoluteLayout implements Page {
         postEvent(new UndoEvent(true));
         if (cmdsRedo.isEmpty()) {
             postEvent(new RedoEvent(false));
-            return;
-
         }
     }
 
@@ -353,17 +350,9 @@ public class DrawPage extends AbsoluteLayout implements Page {
     @Override
     public void updateUndoRedoState() {
         // 操作返回
-        if (cmdsRedo.isEmpty()) {// 返回集合为空
-            postEvent(new RedoEvent(false));// 禁用操作返回
-        } else {
-            postEvent(new RedoEvent(true));// 启用操作返回
-        }
+        postEvent(new RedoEvent(!cmdsRedo.isEmpty()));
         // 操作撤销
-        if (cmdsUndo.isEmpty()) {// 撤销集合为空
-            postEvent(new UndoEvent(false));// 禁用操作撤销
-        } else {
-            postEvent(new UndoEvent(true));// 启用操作撤销
-        }
+        postEvent(new UndoEvent(!cmdsUndo.isEmpty()));
     }
 
     // 实现接口 - 清除笔记
@@ -453,8 +442,8 @@ public class DrawPage extends AbsoluteLayout implements Page {
             Bitmap srcbmp = gifd.getCurrentFrame();
             float cW = srcbmp.getWidth();
             float cH = srcbmp.getHeight();
-            float pW = DrawPage.this.getWidth();
-            float pH = DrawPage.this.getHeight();
+            float pW = this.getWidth();
+            float pH = this.getHeight();
             float factorY = pH / cH;
             img.setScaleX(factorY);
             img.setScaleY(factorY);
@@ -501,8 +490,8 @@ public class DrawPage extends AbsoluteLayout implements Page {
             //
             float cW = srcbmp.getWidth();
             float cH = srcbmp.getHeight();
-            float pW = DrawPage.this.getWidth();
-            float pH = DrawPage.this.getHeight();
+            float pW = this.getWidth();
+            float pH = this.getHeight();
             float factorY = pH / cH;
 
             img.setScaleX(factorY);

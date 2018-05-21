@@ -149,7 +149,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private Context mContext;
     private int pageWidth;
     private int pageHeight;
-    private List<Page> pages = new ArrayList<Page>();// 【画册】- 画纸集合
+    private List<Page> pages = new ArrayList<>();// 【画册】- 画纸集合
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
     private String mRecordDir;// 课程目录
 
@@ -550,9 +550,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 实现接口 - 创建画板纸张
     @Override
     public void createPageImpl(Page_BG backgroundType, int position, int pageId) {
-        DrawPage board = new DrawPage(getApplicationContext(), backgroundType, this, pageId);
+        DrawPage board = new DrawPage(this, backgroundType, this, pageId);
         pages.add(position, board);// 在指定位置添加纸张
-
     }
 
     // 实现接口 -
