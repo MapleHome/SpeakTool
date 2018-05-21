@@ -8,8 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="NoteTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="FullScreenTheme" parent="@style/AppTheme">
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- Pow弹出位置 -->

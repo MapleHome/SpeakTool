@@ -129,8 +129,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 search();
                 break;
             case R.id.ivSetting:// 设置
-                test();
-//                toUserMGPage(UserFMActivity.INIT_USER_INFO);
+//                test();
+                toUserMGPage(UserFMActivity.INIT_USER_INFO);
                 break;
         }
     }
@@ -149,7 +149,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         ItemViewLocalRecord item = mHomePage.findViewWithTag(event.getKey());
         if (item != null)
             item.setThumbnail(event.getIcon());
-
     }
 
     @Subscribe

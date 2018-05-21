@@ -30,7 +30,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
@@ -118,8 +117,7 @@ import butterknife.ButterKnife;
  *
  * @author shaoshuai
  */
-public class DrawActivity extends Activity implements OnClickListener, OnTouchListener, Draw,
-        PickPhotoCallback {
+public class DrawActivity extends Activity implements OnClickListener, OnTouchListener, Draw, PickPhotoCallback {
     // 左侧功能条
     @BindView(R.id.ll_left_bar) View layoutLeftBar;// 左侧功能条
     @BindView(R.id.ivHandPen) ImageView ivHandPen;// 手写笔
@@ -145,7 +143,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @BindView(R.id.ivPreview) ImageView ivPreview;// 预览
     @BindView(R.id.tvFinish) TextView tvFinish;// 完成
 
-
     private Context mContext;
     private int pageWidth;
     private int pageHeight;
@@ -160,21 +157,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(null);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        super.onCreate(savedInstanceState);// inject finish.
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_board);
-        mContext = DrawActivity.this;
+        mContext = this;
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);// 注册EventBus订阅者
-        Preconditions.checkNotNull(tvFinish);
-        //
+        EventBus.getDefault().register(this);
+
         // 绘制
         if (android.os.Build.VERSION.SDK_INT >= 18) {
-//                mIBISPenController = new IBISPenController(this);
-//                mDigitalPenController = new DigitalPenController(this);
+            // mIBISPenController = new IBISPenController(this);
+            // mDigitalPenController = new DigitalPenController(this);
             ivHandPen.setEnabled(true);// 设置可用
         } else {
             ivHandPen.setEnabled(false);// 设置不可用

@@ -22,7 +22,6 @@
         <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,39 +32,34 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activity.UserFMActivity"
-            android:screenOrientation="portrait" />
-        <!--  用户界面  -->
-        <activity android:name=".ui.activity.WebActivity" />
-        <!--  网页 -->
-        <!--  编辑界面  -->
-        <activity
             android:name=".ui.activity.DrawActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:launchMode="standard"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-        <!--  本地视频播放界面 -->
+            android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".ui.activity.PlayVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-        <!--  Url视频播放界面 -->
+            android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".ui.activity.PlayUrlVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".ui.activity.UserFMActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.WebActivity" />
+
         <!--  ******************************** 服务  ************************************* -->
+
         <service
             android:name=".service.PlayService"
             android:enabled="true"
             android:exported="false"
             android:process=":play" />
+
     </application>
 
 </manifest>
