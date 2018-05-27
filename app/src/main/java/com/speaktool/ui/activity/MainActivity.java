@@ -56,6 +56,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private HomePage mHomePage;
     private Context mContext;
+    SearchCategoryBean allSearchBean;
     public SearchCategoryBean mCurSearchType;
     public String mCurSearchKeyWords = null;
 
@@ -81,7 +82,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private void initData() {
         // 搜索框
-        setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
+        allSearchBean = new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL);
+        setSearchView(allSearchBean, null);
     }
 
     /**
@@ -119,7 +121,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 make();
                 break;
             case R.id.iv_back:// 返回
-                setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
+                setSearchView(allSearchBean, null);
                 mHomePage.refreshIndexPage();
                 break;
             case R.id.layDropdownHandle:// 分类下拉框

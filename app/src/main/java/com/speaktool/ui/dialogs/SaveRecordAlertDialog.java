@@ -62,8 +62,7 @@ public class SaveRecordAlertDialog extends Dialog implements View.OnClickListene
         if (v == btnSaveVideo) {
             // mDraw.saveRecord(null);
             this.dismiss();
-            FillSaveInfoDialog filldia = new FillSaveInfoDialog(mActivityContext, mDraw);
-            filldia.show();
+            new FillSaveInfoDialog(mActivityContext, mDraw).show();
         } else if (v == btnNotSaveVideo) {
             this.dismiss();
             mDraw.exitDrawWithoutSave();

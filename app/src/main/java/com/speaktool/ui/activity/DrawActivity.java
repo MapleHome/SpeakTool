@@ -403,8 +403,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void onExitDraw() {
         if (getPageRecorder().isHaveRecordForAll()) {
             this.pauseRecord();
-            SaveRecordAlertDialog savedia = new SaveRecordAlertDialog(DrawActivity.this, this);
-            savedia.show();
+            new SaveRecordAlertDialog(this, this).show();
         } else {// no record.
             if (isUserHaveOperationInSomeBoard()) {
                 new AlertDialog(this)

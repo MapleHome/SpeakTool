@@ -11,14 +11,16 @@ public class ScriptData {
 	//
 	private int inputScreenWidth;
 	private int inputScreenHeight;
-
 	private int density;
 
 	private String wbEventsString;
-
 	private List<Html5ImageInfoBean> resources;
-
 	private Html5SoundInfoBean sound;
+
+
+
+
+
 
 	public int getInputRate() {
 		return inputRate;
