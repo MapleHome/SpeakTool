@@ -48,10 +48,7 @@ public class HomePage extends BaseFragment {
 
     private MainActivity mActivity;
     private LoadingDialog mLoadingDialog;
-    /**
-     * 搜索记录
-     */
-    private List<CourseItem> mCurrentData = Lists.newArrayList();
+    private List<CourseItem> mCurrentData = Lists.newArrayList();// 搜索记录
     private RecordsAdapter mAdapterAllRecords;
 
     private static final int GRID_PAGE_SIZE = 20;// 网格页面大小
@@ -94,26 +91,21 @@ public class HomePage extends BaseFragment {
 
     @Override
     public void initListener() {
-        // 课程记录
         gridViewAllRecords.setOnScrollListener(mAllListOnScrollListener);
-        // 课程记录-条目点击
         gridViewAllRecords.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseItem course = (CourseItem) parent.getAdapter().getItem(position);
-                // 条目详情框
                 new CourseItemDesDialog(mContext, course, mAppIconAsyncLoader).show();
             }
         });
-        /** 刷新加载监听 */
+        // 刷新加载监听
         gridViewAllRecords.setOnRefreshListener(new OnRefreshListener2<GridView>() {
-            // 下拉刷新
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
                 refreshIndexPage();
             }
 
-            // 上拉加载
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
                 if (!mIsHaveMoreData) {

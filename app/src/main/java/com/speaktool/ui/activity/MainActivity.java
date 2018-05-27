@@ -195,7 +195,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);// 解除注册EventBus订阅者
+        EventBus.getDefault().unregister(this);
         singleExecutor.shutdownNow();
         super.onDestroy();
     }
@@ -250,7 +250,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 SearchCategoryBean befCategory = searchView.getCategory();
                 if (!befCategory.equals(categoryNew)) {
                     setSearchView(categoryNew, "");
-                    // 通过EventBus订阅者发送消息
                     EventBus.getDefault().post(new RefreshCourseListEvent());
                 }
             }
@@ -261,8 +260,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 popupWindow = null;
             }
         });
-        singleExecutor.execute(new TaskLoadRecordCategories(new RecordTypeLoadListener() {
+        popupWindow.showPopupWindow(WeiZhi.Bottom);
 
+        singleExecutor.execute(new TaskLoadRecordCategories(new RecordTypeLoadListener() {
             @Override
             public void onRecordTypeLoaded(List<SearchCategoryBean> result) {
                 if (popupWindow != null) {
@@ -270,7 +270,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 }
             }
         }, true));
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 
     /**
@@ -295,7 +294,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      */
     private void toUserMGPage(int viewIndex) {
         Intent intent = new Intent(mContext, UserFMActivity.class);
-        intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, viewIndex);// 默认加载界面
-        startActivity(intent);// 开启目标Activity
+        intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, viewIndex);
+        startActivity(intent);
     }
 }
