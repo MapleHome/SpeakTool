@@ -27,9 +27,10 @@ import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.utils.BitmapScaleUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /**
  * 用户信息界面

@@ -18,29 +18,20 @@
         android:gravity="center_vertical">
 
         <!-- 绘画板容器 -->
-
         <ViewFlipper
             android:id="@+id/drawBoardContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent" />
-        <!-- 音乐插入窗口 -->
 
+        <!-- 音乐插入窗口 -->
         <TextView
             android:id="@+id/viewFlipperOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:visibility="gone" />
-        <!-- 视频播放控制器 -->
 
-        <com.speaktool.ui.layouts.VideoPlayControllerView
-            android:id="@+id/layoutVideoController"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/drawBoardContainer"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <include

@@ -1,15 +1,5 @@
 package com.speaktool.impl.recorder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +15,16 @@ import com.speaktool.utils.JsonUtil;
 import com.speaktool.utils.MD5Util;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 画纸页面记录器
@@ -267,8 +267,6 @@ public class PageRecorder {
         scriptData.setWbEvents(cmdList);
         //
         String cmdjson = JsonUtil.toJson(scriptData);
-        if (TextUtils.isEmpty(cmdjson))
-            return RecordError.SUCCESS;
         try {
             BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cmdFile, true)));
             bufw.write(cmdjson + "\n");

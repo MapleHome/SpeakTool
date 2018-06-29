@@ -43,8 +43,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 				TableUtils.createTable(connectionSource, dataClass);
 			}
 			// 初始化记录类型。
-			String[] nativeTypes = mContext.getResources().getStringArray(
-					R.array.native_recordTypes);
+			String[] nativeTypes = mContext.getResources().getStringArray(R.array.native_recordTypes);
 			if (nativeTypes == null || nativeTypes.length == 0)
 				return;
 			SearchCategoryBean type = null;

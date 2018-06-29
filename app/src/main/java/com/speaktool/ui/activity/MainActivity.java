@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
@@ -34,13 +33,15 @@ import com.speaktool.ui.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /**
  * 主界面
@@ -55,6 +56,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private HomePage mHomePage;
     private Context mContext;
+    SearchCategoryBean allSearchBean;
     public SearchCategoryBean mCurSearchType;
     public String mCurSearchKeyWords = null;
 
@@ -65,6 +67,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         mContext = this;
 
         initView();
@@ -73,15 +76,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
-
         mHomePage = new HomePage();
         loadView(mHomePage);
     }
 
     private void initData() {
         // 搜索框
-        setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
+        allSearchBean = new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL);
+        setSearchView(allSearchBean, null);
     }
 
     /**
@@ -119,7 +121,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 make();
                 break;
             case R.id.iv_back:// 返回
-                setSearchView(new SearchCategoryBean(0, "全部分类", SearchCategoryBean.CID_ALL), null);
+                setSearchView(allSearchBean, null);
                 mHomePage.refreshIndexPage();
                 break;
             case R.id.layDropdownHandle:// 分类下拉框
@@ -129,8 +131,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 search();
                 break;
             case R.id.ivSetting:// 设置
-                test();
-//                toUserMGPage(UserFMActivity.INIT_USER_INFO);
+//                test();
+                toUserMGPage(UserFMActivity.INIT_USER_INFO);
                 break;
         }
     }
@@ -144,14 +146,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         }
     }
 
-
+    @Subscribe
     public void onEventMainThread(CourseThumbnailLoadedEvent event) {
         ItemViewLocalRecord item = mHomePage.findViewWithTag(event.getKey());
         if (item != null)
             item.setThumbnail(event.getIcon());
-
     }
 
+    @Subscribe
     public void onEventMainThread(RefreshCourseListEvent event) {
         mHomePage.refreshIndexPage();
     }
@@ -193,7 +195,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);// 解除注册EventBus订阅者
+        EventBus.getDefault().unregister(this);
         singleExecutor.shutdownNow();
         super.onDestroy();
     }
@@ -248,7 +250,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 SearchCategoryBean befCategory = searchView.getCategory();
                 if (!befCategory.equals(categoryNew)) {
                     setSearchView(categoryNew, "");
-                    // 通过EventBus订阅者发送消息
                     EventBus.getDefault().post(new RefreshCourseListEvent());
                 }
             }
@@ -259,8 +260,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 popupWindow = null;
             }
         });
-        singleExecutor.execute(new TaskLoadRecordCategories(new RecordTypeLoadListener() {
+        popupWindow.showPopupWindow(WeiZhi.Bottom);
 
+        singleExecutor.execute(new TaskLoadRecordCategories(new RecordTypeLoadListener() {
             @Override
             public void onRecordTypeLoaded(List<SearchCategoryBean> result) {
                 if (popupWindow != null) {
@@ -268,7 +270,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 }
             }
         }, true));
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 
     /**
@@ -285,7 +286,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      */
     private void make() {
         Intent it = new Intent(this, DrawActivity.class);
-        it.putExtra(DrawActivity.EXTRA_PLAY_MODE, PlayMode.MAKE);
         startActivity(it);
     }
 
@@ -294,7 +294,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      */
     private void toUserMGPage(int viewIndex) {
         Intent intent = new Intent(mContext, UserFMActivity.class);
-        intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, viewIndex);// 默认加载界面
-        startActivity(intent);// 开启目标Activity
+        intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, viewIndex);
+        startActivity(intent);
     }
 }

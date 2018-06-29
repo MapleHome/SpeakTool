@@ -14,7 +14,8 @@ import com.speaktool.SpeakToolApp;
 import com.speaktool.bean.MusicBean;
 import com.speaktool.busevents.MusicStateChangedEvent;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 public class SoundPlayer {
 	private static final String tag = SoundPlayer.class.getSimpleName();

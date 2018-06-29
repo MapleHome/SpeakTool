@@ -70,16 +70,14 @@ public class JsonScriptParser {
 	public JsonScriptParser(Context ctx) {
 		super();
 		mContext = ctx.getApplicationContext();
-
 	}
 
 	private void initScreenInfo(File f) throws Exception {
 		Preconditions.checkNotNull(f, "screenInfo文件为空.");// 检查非空
-		Preconditions.checkArgument(f.exists(), "screenInfoFile 不存在t.");// 检查参数
+		Preconditions.checkArgument(f.exists(), "screenInfoFile 不存在.");// 检查参数
 		Preconditions.checkArgument(f.isFile(), "screenInfoFile 不是文件.");
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(f)));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
 		String json = reader.readLine();
 		reader.close();
 
@@ -98,15 +96,13 @@ public class JsonScriptParser {
 		int screenWidth = screenSize.x;
 		int screenHeight = screenSize.y;
 		//
-		Point size = ScreenFitUtil.getKeepRatioScaledSize(inputRatioHW,
-				screenWidth, screenHeight);
+		Point size = ScreenFitUtil.getKeepRatioScaledSize(inputRatioHW, screenWidth, screenHeight);
 
 		ScreenInfoBean currentScreenInfo = new ScreenInfoBean();
 		currentScreenInfo.w = size.x;
 		currentScreenInfo.h = size.y;
 		currentScreenInfo.density = DisplayUtil.getScreenDensity(mContext);
 		ScreenFitUtil.setCurrentDeviceInfo(currentScreenInfo);
-
 	}
 
 	/**
@@ -132,65 +128,46 @@ public class JsonScriptParser {
 					JSONObject data = cmdJson.getJSONObject("data");
 					String datatype = data.getString("type");
 					if (datatype.equals("text")) {
-						CmdCreateEdit cmd = JsonUtil.fromJon(
-								cmdJson.toString(), CmdCreateEdit.class);
+						CmdCreateEdit cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreateEdit.class);
 						EditCommonData cdata = cmd.getData();
 
 						PositionData pos = cdata.getPosition();
-						pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos
-								.getX()));
-						pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos
-								.getY()));
+						pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
+						pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
 						//
-						cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata
-								.getFontSize()));
+						cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
 						cmds.add(cmd);
 					} else if (datatype.equals("image")) {
-						CmdCreateImage cmd = JsonUtil.fromJon(
-								cmdJson.toString(), CmdCreateImage.class);
+						CmdCreateImage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreateImage.class);
 						ImageCommonData cdata = cmd.getData();
 
 						PositionData pos = cdata.getPosition();
-						pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos
-								.getX()));
-						pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos
-								.getY()));
+						pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
+						pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
 						//
 						cmds.add(cmd);
-					} else if (datatype.equals("pen")
-							|| datatype.equals("eraser")) {// create pen.
-						CmdCreatePen cmd = JsonUtil.fromJon(cmdJson.toString(),
-								CmdCreatePen.class);
+					} else if (datatype.equals("pen") || datatype.equals("eraser")) {// create pen.
+						CmdCreatePen cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreatePen.class);
 						CreatePenData cdata = cmd.getData();
 
-						cdata.setStrokeWidth(ScreenFitUtil
-								.mapStokeWidthtoCurrentScreen(cdata
-										.getStrokeWidth()));
+						cdata.setStrokeWidth(ScreenFitUtil.mapStokeWidthtoCurrentScreen(cdata.getStrokeWidth()));
 						PositionData maxXY = cdata.getMaxXY();
-						maxXY.setX(ScreenFitUtil.mapXtoCurrentScreenSize(maxXY
-								.getX()));
-						maxXY.setY(ScreenFitUtil.mapYtoCurrentScreenSize(maxXY
-								.getY()));
+						maxXY.setX(ScreenFitUtil.mapXtoCurrentScreenSize(maxXY.getX()));
+						maxXY.setY(ScreenFitUtil.mapYtoCurrentScreenSize(maxXY.getY()));
 						PositionData minXY = cdata.getMinXY();
-						minXY.setX(ScreenFitUtil.mapXtoCurrentScreenSize(minXY
-								.getX()));
-						minXY.setY(ScreenFitUtil.mapYtoCurrentScreenSize(minXY
-								.getY()));
+						minXY.setX(ScreenFitUtil.mapXtoCurrentScreenSize(minXY.getX()));
+						minXY.setY(ScreenFitUtil.mapYtoCurrentScreenSize(minXY.getY()));
 						//
 						List<MoveData> points = cdata.getPoints();
 						for (MoveData mv : points) {
-							mv.setX(ScreenFitUtil.mapXtoCurrentScreenSize(mv
-									.getX()));
-							mv.setY(ScreenFitUtil.mapYtoCurrentScreenSize(mv
-									.getY()));
+							mv.setX(ScreenFitUtil.mapXtoCurrentScreenSize(mv.getX()));
+							mv.setY(ScreenFitUtil.mapYtoCurrentScreenSize(mv.getY()));
 						}
 						//
 						cmds.add(cmd);
 					}
 				} else if (cmdType.equals(ICmd.TYPE_DELETE_SHAPE)) {
-					CmdDeleteEdit cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdDeleteEdit.class);// just use DeleteShapeData.so
-													// can like this.
+					CmdDeleteEdit cmd = JsonUtil.fromJon(cmdJson.toString(), CmdDeleteEdit.class);
 					cmds.add(cmd);
 				} else if (cmdType.equals(ICmd.TYPE_TRANSFORM_SHAPE)) {
 					JSONObject data = cmdJson.getJSONObject("data");
@@ -207,28 +184,22 @@ public class JsonScriptParser {
 							// cmds.add(cmd);
 					}
 				} else if (cmdType.equals(ICmd.TYPE_CREATE_PAGE)) {
-					CmdCreatePage cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdCreatePage.class);
+					CmdCreatePage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreatePage.class);
 					cmds.add(cmd);
 				} else if (cmdType.equals(ICmd.TYPE_SET_ACTIVE_PAGE)) {
-					CmdActivePage cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdActivePage.class);
+					CmdActivePage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdActivePage.class);
 					cmds.add(cmd);
 				} else if (cmdType.equals(ICmd.TYPE_COPY_PAGE)) {
-					CmdCopyPage cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdCopyPage.class);
+					CmdCopyPage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCopyPage.class);
 					cmds.add(cmd);
 				} else if (cmdType.equals(ICmd.TYPE_CLEAR_PAGE)) {
-					CmdClearPage cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdClearPage.class);
+					CmdClearPage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdClearPage.class);
 					cmds.add(cmd);
 				} else if (cmdType.equals(ICmd.TYPE_DELETE_PAGE)) {
-					CmdDeletePage cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdDeletePage.class);
+					CmdDeletePage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdDeletePage.class);
 					cmds.add(cmd);
 				} else if (cmdType.equals(ICmd.TYPE_CHANGE_PAGE_BACKGROUND)) {
-					CmdChangePageBackground cmd = JsonUtil.fromJon(
-							cmdJson.toString(), CmdChangePageBackground.class);
+					CmdChangePageBackground cmd = JsonUtil.fromJon(cmdJson.toString(), CmdChangePageBackground.class);
 					cmds.add(cmd);
 				}
 			}
@@ -298,12 +269,10 @@ public class JsonScriptParser {
 				JSONObject seqFirst = data.getJSONArray("sequence")
 						.getJSONObject(0);
 				if (seqFirst.has("x")) {// move.
-					CmdMoveEdit cmd = JsonUtil.fromJon(cmdJson.toString(),
-							CmdMoveEdit.class);
+					CmdMoveEdit cmd = JsonUtil.fromJon(cmdJson.toString(), CmdMoveEdit.class);
 					ChangeEditData<MoveData> cdata = cmd.getData();
 
-					cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata
-							.getFontSize()));
+					cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
 					PositionData pos = cdata.getPosition();
 					pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
 					pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
@@ -319,8 +288,7 @@ public class JsonScriptParser {
 
 				}
 			} else {// no seq.
-				CmdChangeEditNoSeq cmd = JsonUtil.fromJon(cmdJson.toString(),
-						CmdChangeEditNoSeq.class);
+				CmdChangeEditNoSeq cmd = JsonUtil.fromJon(cmdJson.toString(), CmdChangeEditNoSeq.class);
 				EditCommonData cdata = cmd.getData();
 
 				PositionData pos = cdata.getPosition();

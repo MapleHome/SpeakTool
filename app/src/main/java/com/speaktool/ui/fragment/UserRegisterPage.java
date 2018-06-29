@@ -16,9 +16,10 @@ import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.utils.T;
 import com.speaktool.utils.UserInfoValidateUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /**
  * 用户注册界面

@@ -41,9 +41,10 @@ import com.speaktool.impl.DrawModeManager;
 import com.speaktool.utils.DensityUtils;
 import com.speaktool.tasks.MyColors;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 
 @SuppressWarnings("deprecation")
 public class WordEdit extends EditText implements OnEditorActionListener, FocusedView, EditWidget {

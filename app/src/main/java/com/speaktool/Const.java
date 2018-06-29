@@ -10,34 +10,17 @@ import java.io.File;
  * @author shaoshuai
  */
 public class Const {
-    /**
-     * 在欢迎页面至少停留时间
-     */
+    //在欢迎页面至少停留时间
     public static final long SplashMinTime = 2000;
-    /**
-     * 是否第一次进入标记
-     */
+    // 是否第一次进入标记
     public static final String First_ComeIn = "isFirstComeIn";
-    /**
-     * SD卡路径
-     */
+
+    // SD卡路径
     public static final String SD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
-    /**
-     * 记录保存根路径
-     */
-    public static final String RECORD_DIR = SD_PATH + "/spktl/records/";
-    /**
-     * 临时记录路径
-     */
-    public static final String TEMP_DIR = SD_PATH + "/spktl/tempdir/";
-    /**
-     * 异常错误保存路径
-     */
-    public static final String ERR_DIR = SD_PATH + "/spktl/exception/";
-    /**
-     * 下载路径
-     */
-    public static final String DOWNLOAD_DIR = SD_PATH + "/spktl/download/";
+    public static final String RECORD_DIR = SD_PATH + "/spktl/records/";// 记录保存根路径
+    public static final String TEMP_DIR = SD_PATH + "/spktl/tempdir/";// 临时记录路径
+    public static final String ERR_DIR = SD_PATH + "/spktl/exception/";// 异常错误保存路径
+    public static final String DOWNLOAD_DIR = SD_PATH + "/spktl/download/";// 下载路径
 
     static {
         File baseRecordDir = new File(RECORD_DIR);
@@ -56,19 +39,13 @@ public class Const {
             downloadDir.mkdirs();
     }
 
-    public static final String CMD_FILE_SUFFIX = ".json";
+    public static final String CMD_FILE_SUFFIX = ".txt";
     public static final String SOUND_FILE_SUFFIX = ".amr";
     public static final String REALEASE_SOUND_FILE_TYPE = "mp3";
     public static final String UN_RECORD_FILE_FLAG = "#";
     // 发布文件
-    /**
-     * 文件特征信息
-     */
-    public static final String INFO_FILE_NAME = "info.properties";
-    /**
-     * 操作文本
-     */
-    public static final String RELEASE_JSON_SCRIPT_NAME = "release.json";
+    public static final String INFO_FILE_NAME = "info.txt";// 文件特征信息
+    public static final String RELEASE_JSON_SCRIPT_NAME = "release.txt";// 操作文本
     public static final String RELEASE_SOUND_NAME = "release.mp3";
     public static final String IMAGE_SUFFIX = ".jpg";
     public static final String GIF_SUFFIX = ".gif";
@@ -77,17 +54,11 @@ public class Const {
     public static final int SCRIPT_VERSION = 1;
     public static final int SCRIPT_INPUT_RATE = 60;
 
-    /**
-     * 讲讲服务器地址
-     */
+    // 讲讲服务器地址
     public static final String SPEEKTOOL_SERVER__URL = "http://www.speaktool.com/";
-    /**
-     * 讲讲服务器API地址
-     */
+    // 讲讲服务器API地址
     public static final String SPEEKTOOL_SERVER_API_URL = "http://www.speaktool.com/api/";
-    /**
-     * 讲讲论坛地址
-     */
+    // 讲讲论坛地址
     public static final String SPEEKTOOL_BBS_URL = "http://bbs.speaktool.com:8080/";
 
 

@@ -21,9 +21,9 @@ import java.util.List;
  * @author shaoshuai
  */
 public class CategoryPoW extends BasePopupWindow implements OnItemClickListener {
-
     private ListView lvTypes;// 类型列表
     private AdapterSearchRecordTypes mAdapterSearchSpinnerTypes;
+    private SearchCategoryChangedListener mSearchCategoryChangedListener;
 
     @Override
     public View getContentView() {
@@ -38,7 +38,7 @@ public class CategoryPoW extends BasePopupWindow implements OnItemClickListener 
         super(context, token, anchor, w, h);
         mSearchCategoryChangedListener = lsn;
 
-        lvTypes = (ListView) mRootView.findViewById(R.id.lvTypes);
+        lvTypes = mRootView.findViewById(R.id.lvTypes);
 
         mAdapterSearchSpinnerTypes = new AdapterSearchRecordTypes(context, null);
         lvTypes.setAdapter(mAdapterSearchSpinnerTypes);
@@ -46,23 +46,21 @@ public class CategoryPoW extends BasePopupWindow implements OnItemClickListener 
         lvTypes.setOnItemClickListener(this);
     }
 
-    public void refreshCategoryList(final List<SearchCategoryBean> datas) {
-        mAdapterSearchSpinnerTypes.refresh(datas);
+    public interface SearchCategoryChangedListener {
+        void onSearchCategoryChanged(SearchCategoryBean categoryNew);
     }
 
-    private SearchCategoryChangedListener mSearchCategoryChangedListener;
-
-    public static interface SearchCategoryChangedListener {
-        void onSearchCategoryChanged(SearchCategoryBean categoryNew);
+    public void refreshCategoryList(final List<SearchCategoryBean> datas) {
+        mAdapterSearchSpinnerTypes.refresh(datas);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         SearchCategoryBean category = (SearchCategoryBean) parent.getAdapter().getItem(position);
-
         if (mSearchCategoryChangedListener != null) {
             mSearchCategoryChangedListener.onSearchCategoryChanged(category);
         }
         this.dismiss();
     }
+
 }

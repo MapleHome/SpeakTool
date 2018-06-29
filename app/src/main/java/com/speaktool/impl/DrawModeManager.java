@@ -8,7 +8,8 @@ import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.impl.modes.DrawModeChoice;
 import com.speaktool.impl.modes.DrawModeCode;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 绘画状态管理者

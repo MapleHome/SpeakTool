@@ -63,13 +63,15 @@ import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /**
  * 播放本地视频
@@ -540,7 +542,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     }
 
     // =====================top pop=======================================
-
+    @Subscribe
     public void onEventMainThread(PlayTimeChangedEvent event) {
 
         long now = event.getNow();

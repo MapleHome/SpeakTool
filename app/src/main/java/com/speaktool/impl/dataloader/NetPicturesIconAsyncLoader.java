@@ -15,8 +15,9 @@ import com.speaktool.utils.BitmapScaleUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import de.greenrobot.event.EventBus;
 import com.speaktool.ui.custom.gif.GifDrawable;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 网络图片 异步加载

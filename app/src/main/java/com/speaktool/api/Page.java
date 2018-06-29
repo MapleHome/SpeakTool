@@ -17,22 +17,10 @@ import com.speaktool.impl.shapes.ViewShape_;
 public interface Page {
 
     enum Page_BG {
-        /**
-         * 白色背景
-         */
-        White,
-        /**
-         * 线条背景
-         */
-        Line,
-        /**
-         * 网格背景
-         */
-        Grid,
-        /**
-         * 坐标背景
-         */
-        Cor;
+        White,  // 白色背景
+        Line,   // 线条背景
+        Grid,   // 网格背景
+        Cor     // 坐标背景
     }
 
     /**

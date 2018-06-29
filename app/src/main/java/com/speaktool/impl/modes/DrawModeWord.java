@@ -10,7 +10,8 @@ import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.impl.DrawModeManager;
 import com.speaktool.ui.layouts.WordEdit;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 绘画模式——文字

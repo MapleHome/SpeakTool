@@ -22,12 +22,9 @@ import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
 import com.speaktool.bean.ImageCommonData;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.busevents.DisableEraserEvent;
-import com.speaktool.busevents.DisableRedoEvent;
-import com.speaktool.busevents.DisableUndoEvent;
-import com.speaktool.busevents.EnableEraserEvent;
-import com.speaktool.busevents.EnableRedoEvent;
-import com.speaktool.busevents.EnableUndoEvent;
+import com.speaktool.busevents.EraserEvent;
+import com.speaktool.busevents.RedoEvent;
+import com.speaktool.busevents.UndoEvent;
 import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.create.CmdCreateImage;
@@ -47,6 +44,8 @@ import com.speaktool.utils.DisplayUtil;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * 【画纸】- 画板纸张界面
@@ -255,7 +253,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
         allShapeViews.put(shape.getShapeID(), shape);
 
         penShapes.add(shape);
-        postEvent(new EnableEraserEvent());
+        postEvent(new EraserEvent(true));
     }
 
     @Override
@@ -266,7 +264,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     private void removePenShape(PenShape_ shape) {
         penShapes.remove(shape);
         if (penShapes.isEmpty()) {
-            postEvent(new DisableEraserEvent());
+            postEvent(new EraserEvent(false));
         }
     }
 
@@ -294,7 +292,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     @Override
     public void undo() {
         if (cmdsUndo.isEmpty()) {
-            postEvent(new DisableUndoEvent());
+            postEvent(new UndoEvent(false));
             return;
         }
         ICmd cmd = cmdsUndo.pop();
@@ -312,11 +310,10 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
         draw.getPageRecorder().record(inverseCmd, this.getPageID());
         cmdsRedo.push(cmd);
-        postEvent(new EnableRedoEvent());
+        postEvent(new RedoEvent(true));
         if (cmdsUndo.isEmpty()) {
-            postEvent(new DisableUndoEvent());
+            postEvent(new UndoEvent(false));
             return;
-
         }
     }
 
@@ -324,7 +321,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     @Override
     public void redo() {
         if (cmdsRedo.isEmpty()) {
-            postEvent(new DisableRedoEvent());
+            postEvent(new RedoEvent(false));
             return;
         }
         ICmd cmd = cmdsRedo.pop();
@@ -343,11 +340,9 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
         draw.getPageRecorder().record(copy, this.getPageID());
         addUndoCmd(cmd);
-        postEvent(new EnableUndoEvent());
+        postEvent(new UndoEvent(true));
         if (cmdsRedo.isEmpty()) {
-            postEvent(new DisableRedoEvent());
-            return;
-
+            postEvent(new RedoEvent(false));
         }
     }
 
@@ -355,17 +350,9 @@ public class DrawPage extends AbsoluteLayout implements Page {
     @Override
     public void updateUndoRedoState() {
         // 操作返回
-        if (cmdsRedo.isEmpty()) {// 返回集合为空
-            postEvent(new DisableRedoEvent());// 禁用操作返回
-        } else {
-            postEvent(new EnableRedoEvent());// 启用操作返回
-        }
+        postEvent(new RedoEvent(!cmdsRedo.isEmpty()));
         // 操作撤销
-        if (cmdsUndo.isEmpty()) {// 撤销集合为空
-            postEvent(new DisableUndoEvent());// 禁用操作撤销
-        } else {
-            postEvent(new EnableUndoEvent());// 启用操作撤销
-        }
+        postEvent(new UndoEvent(!cmdsUndo.isEmpty()));
     }
 
     // 实现接口 - 清除笔记
@@ -393,7 +380,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
                 itRedo.remove();
             }
         }
-        postEvent(new DisableEraserEvent());
+        postEvent(new EraserEvent(false));
         updateUndoRedoState();
         invalidate();
     }
@@ -412,7 +399,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
         cmdsUndo.clear();
         cmdsRedo.clear();
-        postEvent(new DisableEraserEvent());
+        postEvent(new EraserEvent(false));
         updateUndoRedoState();
 
         invalidate();
@@ -455,8 +442,8 @@ public class DrawPage extends AbsoluteLayout implements Page {
             Bitmap srcbmp = gifd.getCurrentFrame();
             float cW = srcbmp.getWidth();
             float cH = srcbmp.getHeight();
-            float pW = DrawPage.this.getWidth();
-            float pH = DrawPage.this.getHeight();
+            float pW = this.getWidth();
+            float pH = this.getHeight();
             float factorY = pH / cH;
             img.setScaleX(factorY);
             img.setScaleY(factorY);
@@ -503,8 +490,8 @@ public class DrawPage extends AbsoluteLayout implements Page {
             //
             float cW = srcbmp.getWidth();
             float cH = srcbmp.getHeight();
-            float pW = DrawPage.this.getWidth();
-            float pH = DrawPage.this.getHeight();
+            float pW = this.getWidth();
+            float pH = this.getHeight();
             float factorY = pH / cH;
 
             img.setScaleX(factorY);
@@ -575,8 +562,8 @@ public class DrawPage extends AbsoluteLayout implements Page {
             addUndoCmd(cmd);
         cmdsRedo.clear();
         //
-        postEvent(new DisableRedoEvent());
-        postEvent(new EnableUndoEvent());
+        postEvent(new RedoEvent(false));
+        postEvent(new UndoEvent(true));
     }
 
     @Override

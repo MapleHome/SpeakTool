@@ -142,11 +142,11 @@ public class PlayProcess {
      * @param item
      */
     private static void toDrawPager(final Context context, LocalRecordBean item) {
-        Intent it = new Intent(context, DrawActivity.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(DrawActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
-        it.putExtra(DrawActivity.EXTRA_RECORD_BEAN, item);
-        context.startActivity(it);
+//        Intent it = new Intent(context, DrawActivity.class);
+//        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        it.putExtra(DrawActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
+//        it.putExtra(DrawActivity.EXTRA_RECORD_BEAN, item);
+//        context.startActivity(it);
     }
 
     private static void stopPlayProcess(Context context) {

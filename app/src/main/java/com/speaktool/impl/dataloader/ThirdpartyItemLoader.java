@@ -8,7 +8,8 @@ import com.speaktool.bean.ThirdParty;
 import com.speaktool.busevents.ThirdpartyLoadEvent;
 import com.speaktool.utils.BitmapScaleUtil;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 第三方条目 加载
