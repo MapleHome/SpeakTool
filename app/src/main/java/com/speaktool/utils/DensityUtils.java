@@ -6,7 +6,6 @@ import android.util.TypedValue;
 /**
  * Created by Maple on 2018/3/10.
  */
-
 public class DensityUtils {
 
     public static int dp2px(Context context, float dpVal) {

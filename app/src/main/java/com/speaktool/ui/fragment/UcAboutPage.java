@@ -44,7 +44,8 @@ public class UcAboutPage extends BaseFragment implements OnClickListener {
         mActivity.setTitle(FRAGMENT_NAME);
         // 版本号
         PackageInfo packageInfo = AppUtils.getPackageInfo(mContext);
-        tv_version.setText("For Android V " + packageInfo.versionName + " - " + packageInfo.versionCode);
+        if (packageInfo != null)
+            tv_version.setText("For Android V " + packageInfo.versionName + " - " + packageInfo.versionCode);
     }
 
     @Override
