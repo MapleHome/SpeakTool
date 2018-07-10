@@ -287,6 +287,8 @@ public class PageRecorder {
     }
 
     /**
+     * 保存info.txt
+     * <p>
      * 设置记录信息
      *
      * @param info

@@ -309,8 +309,9 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
 
     private static boolean isHaveReleaseScript(File dir) {
         File mJsonFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
-        File soundfile = new File(dir, Const.RELEASE_SOUND_NAME);
-        return mJsonFile.exists() && soundfile.exists();
+//        File soundfile = new File(dir, Const.RELEASE_SOUND_NAME);
+        return mJsonFile.exists();
+//        && soundfile.exists();
     }
 
     private static boolean setInfo(LocalRecordBean item, File dir) {

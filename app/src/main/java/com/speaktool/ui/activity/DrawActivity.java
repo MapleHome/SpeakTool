@@ -77,6 +77,7 @@ import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.AsyncDataLoaderFactory;
+import com.speaktool.service.PlayService;
 import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
@@ -98,6 +99,7 @@ import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DisplayUtil;
 import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.RecordFileUtils;
+import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
@@ -799,7 +801,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 T.showShort(mContext, "录音合成失败！请检查存储卡空间");
                 return;
             }
-            RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
+//            RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
             /** make success. */
             isRecordsChanged = true;
             // EventBus.getDefault().post(new RefreshCourseListEvent());
@@ -827,8 +829,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 return false;
             }
         });
-        getPageRecorder().saveCurrentPageRecord();
-        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
+        getPageRecorder().saveCurrentPageRecord();//save release.txt
+        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
+        toStartPlayService();
         dismissLoading();
         if (isSuccess) {
             new AlertDialog(mContext)
@@ -844,6 +847,19 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             String msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
             new AlertDialog(mContext).setTitle("提示").setMessage(msg).show();
         }
+
+    }
+
+    /**
+     * 开启播放服务
+     */
+    private void toStartPlayService() {
+        Intent it = new Intent(context(), PlayService.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_MAKE_RELEASE_SCRIPT);
+        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, getRecordDir());
+        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
+        context().startService(it);
     }
 
     /**

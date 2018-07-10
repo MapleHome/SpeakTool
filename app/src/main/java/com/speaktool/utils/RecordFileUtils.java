@@ -525,30 +525,13 @@ public class RecordFileUtils {
         if (dir == null || !dir.exists())
             return;
         File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files)
-                f.delete();
-        }
-        dir.delete();
-    }
-
-    /**
-     * 删除未发布文件
-     *
-     * @param dir
-     */
-    public static void deleteNonReleaseFiles(File dir) {
-        if (dir == null || !dir.exists())
-            return;
-        File[] files = dir.listFiles();
         if (files == null || files.length < 1)
             return;
-        for (File f : files) {
-            if (!isReleaseFile(f.getName())) {
-                f.delete();
-            }
-        }
+//        for (File f : files)
+//            f.delete();
+//        dir.delete();
     }
+
 
     /**
      * 是否是发布文件
@@ -697,13 +680,11 @@ public class RecordFileUtils {
         List<File> jsonFiles = RecordFileUtils.getAllCmdFilesSortByTime(dir);
         if (jsonFiles == null || jsonFiles.isEmpty())
             return;
-        final JsonScriptParser parser = new JsonScriptParser(context);
-        int sz = jsonFiles.size();
-
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
             jpgNames = Lists.newLinkedList();
         }
+
         final Html5SoundInfoBean sound = getScriptSound(dir, -1);
 
         File realeaseJsonScript = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
@@ -720,8 +701,9 @@ public class RecordFileUtils {
         List<ICmd> filteredCmds = Lists.newArrayList();
         Map<Integer, Boolean> transformCmd = Maps.newHashMap();
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < jsonFiles.size(); i++) {
             File jsonf = jsonFiles.get(i);
+            JsonScriptParser parser = new JsonScriptParser(context);
             List<ICmd> pageCmds = parser.jsonFileToCmds(jsonf.getAbsolutePath());
             if (pageCmds == null || pageCmds.isEmpty())
                 continue;

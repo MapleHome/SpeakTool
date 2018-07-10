@@ -6,11 +6,9 @@ import android.view.View;
 
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.service.PlayService;
-import com.speaktool.ui.activity.DrawActivity;
 import com.speaktool.utils.RecordFileUtils;
 
 import java.io.File;
