@@ -28,4 +28,13 @@ public class ScreenInfoBean implements Serializable {
 		this.density = density;
 	}
 
+
+	@Override
+	public String toString() {
+		return "ScreenInfoBean{" +
+				"w=" + w +
+				", h=" + h +
+				", density=" + density +
+				'}';
+	}
 }

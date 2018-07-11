@@ -2,12 +2,10 @@ package com.speaktool.ui.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -47,6 +45,7 @@ import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.bean.RecordUploadBean;
+import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.busevents.EraserEvent;
@@ -68,7 +67,6 @@ import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.modes.DrawModeEraser;
 import com.speaktool.impl.modes.DrawModePath;
 import com.speaktool.impl.paint.DrawPaint;
-import com.speaktool.impl.player.PlayProcess;
 import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecordError;
@@ -77,7 +75,6 @@ import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.service.PlayService;
 import com.speaktool.ui.base.BasePopupWindow.WeiZhi;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.dialogs.SaveRecordAlertDialog;
@@ -173,9 +170,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             ivHandPen.setEnabled(false);// 设置不可用
             T.showShort(mContext, "当前系统不支持蓝牙！手写笔不可用。");
         }
-        mMakeReleaseScriptResultReceiver = new MakeReleaseScriptResultReceiver();
-        IntentFilter filter = new IntentFilter(PlayProcess.ACTION_MAKE_RESULT);
-        this.registerReceiver(mMakeReleaseScriptResultReceiver, filter);
         // 初始化画板纸张的宽高
         Point screenSize = DisplayUtil.getScreenSize(getApplicationContext());
         pageWidth = LayoutParams.MATCH_PARENT;
@@ -690,10 +684,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 //            mDigitalPenController.destroy();
 //            mDigitalPenController = null;
 //        }
-
-        if (mMakeReleaseScriptResultReceiver != null) {
-            this.unregisterReceiver(mMakeReleaseScriptResultReceiver);
-        }
         // 反注册EventBus订阅者
         EventBus.getDefault().unregister(this);
         resetPageId();
@@ -703,10 +693,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         //
         if (getPlayMode() == PlayMode.MAKE)
             SoundRecorder.closeWorldTimer();
-
-        if (isRecordsChanged) {
-            EventBus.getDefault().post(new RefreshCourseListEvent());
-        }
         SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
@@ -786,39 +772,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
     }
 
-    private MakeReleaseScriptResultReceiver mMakeReleaseScriptResultReceiver;
-    private boolean isRecordsChanged = false;
-
-    /**
-     * 发行脚本结果广播接收者
-     */
-    private class MakeReleaseScriptResultReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            dismissLoading();
-            int result = intent.getIntExtra(PlayProcess.EXTRA_MAKE_RESULT, PlayProcess.MAKE_SUECESS);
-            if (result == PlayProcess.MAKE_FAIL) {
-                T.showShort(mContext, "录音合成失败！请检查存储卡空间");
-                return;
-            }
-//            RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
-            /** make success. */
-            isRecordsChanged = true;
-            // EventBus.getDefault().post(new RefreshCourseListEvent());
-            if (mCurrentRecordUploadBean.isPublicPublish()) {
-                // 无需判断是否登陆，直接上传，如果没有登陆则使用匿名UID
-                uploadFile();
-            } else {
-                finish();
-            }
-        }
-    }
-
-    private RecordUploadBean mCurrentRecordUploadBean;
-
     @Override
     public void saveRecord(final RecordUploadBean recordUploadBean) {
-        mCurrentRecordUploadBean = recordUploadBean;
         showLoading("保存中，请稍侯...", new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -831,7 +786,22 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         });
         getPageRecorder().saveCurrentPageRecord();//save release.txt
         boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
-        toStartPlayService();
+        try {
+            // 汇总release.txt文件
+            ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
+            String dirPath = getRecordDir();
+            RecordFileUtils.makeReleaseScript(new File(dirPath), mContext, info);
+            // RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
+            EventBus.getDefault().post(new RefreshCourseListEvent());
+            // 生成上传压缩包
+            RecordUploadBean uploadBean = RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir(), mContext);
+            if (uploadBean == null) {
+                T.showShort(mContext, "上传内容为空！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         dismissLoading();
         if (isSuccess) {
             new AlertDialog(mContext)
@@ -848,18 +818,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             new AlertDialog(mContext).setTitle("提示").setMessage(msg).show();
         }
 
-    }
-
-    /**
-     * 开启播放服务
-     */
-    private void toStartPlayService() {
-        Intent it = new Intent(context(), PlayService.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_MAKE_RELEASE_SCRIPT);
-        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, getRecordDir());
-        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
-        context().startService(it);
     }
 
     /**
@@ -895,18 +853,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
     }
 
-    /**
-     * 上传文件
-     */
-    private void uploadFile() {
-        RecordUploadBean recordUploadBean = RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir(),
-                getApplicationContext());
-        if (recordUploadBean == null) {
-            T.showShort(mContext, "上传内容为空！");
-            return;
-        }
-        finish();
-    }
 
     @Override
     public void deleteRecord() {
@@ -1323,29 +1269,18 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public void onPhotoPicked(final String imgPath) {
-        new Thread(new Runnable() {
+        SpeakToolApp.getUiHandler().post(new Runnable() {
 
             @Override
             public void run() {
-                final String ret = copyImgToRecordDir(imgPath);
+                String ret = copyImgToRecordDir(imgPath);
                 if (ret != null) {
-                    SpeakToolApp.getUiHandler().post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            getCurrentBoard().addImg(ret);
-                        }
-                    });
+                    getCurrentBoard().addImg(ret);
                 } else {
-                    SpeakToolApp.getUiHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            T.showShort(mContext, "图片添加失败！");
-                        }
-                    });
+                    T.showShort(mContext, "图片添加失败！");
                 }
             }
-        }).start();
+        });
     }
 
     /**
