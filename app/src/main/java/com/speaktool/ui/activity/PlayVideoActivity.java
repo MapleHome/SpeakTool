@@ -85,15 +85,14 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     // 常量
     public static final String EXTRA_RECORD_BEAN = "record_bean";
-    public static final String EXTRA_PLAY_MODE = "play_mode";
     private static final long Video_CONTROLLER_DISMISS_DELAY = 5000;// 视频控制器延迟
     private final List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
     private List<Page> pages = new ArrayList<Page>();// 界面集合
     private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
     private int currentBoardIndex = 0;// 当前界面索引
     private String mRecordDir;// 课程目录
-    private PlayMode mPlayMode;
 
+    LocalRecordBean rec;
     private int pageWidth;
     private int pageHeight;
 
@@ -101,7 +100,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(null);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         super.onCreate(savedInstanceState);// inject finish.
@@ -109,34 +107,30 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
-        mPlayMode = (PlayMode) getIntent().getSerializableExtra(EXTRA_PLAY_MODE);
-        if (mPlayMode == PlayMode.PLAY) {
-            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
-            //
-            LocalRecordBean rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
-            // 检查是否为空
-            Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
-            mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
+        rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
+        // 检查是否为空
+        Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
+        mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
 
-            ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-            pageWidth = currentScreen.w;
-            pageHeight = currentScreen.h;
-            // 设置播放器大小
-            LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
-            lp.width = pageWidth;
-            layoutVideoController.setLayoutParams(lp);
-            //
-            LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
-            lp2.width = pageWidth;
-            lp2.height = pageHeight;
-            viewFlipperOverlay.setLayoutParams(lp2);
-            //
-            initListener();
+        layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+        ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
+        pageWidth = currentScreen.w;
+        pageHeight = currentScreen.h;
+        // 设置播放器大小
+        LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
+        lp.width = pageWidth;
+        layoutVideoController.setLayoutParams(lp);
+        //
+        LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
+        lp2.width = pageWidth;
+        lp2.height = pageHeight;
+        viewFlipperOverlay.setLayoutParams(lp2);
+        //
+        initListener();
 
-            DrawModeManager.getIns().setDrawMode(new DrawModePath());
-            mJsonScriptPlayer.play();
-            //
-        }
+        DrawModeManager.getIns().setDrawMode(new DrawModePath());
+        mJsonScriptPlayer.play();
+
     }
 
     private void initListener() {
@@ -188,12 +182,11 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
      */
     @Override
     public void onExitDraw() {
-        if (mPlayMode == PlayMode.MAKE) {
-        } else {// play/preview mode.
-            mJsonScriptPlayer.exitPlayer();
-            finish();
-            killPlayProcess();// must do.
-        }
+        // play/preview mode.
+        mJsonScriptPlayer.exitPlayer();
+        finish();
+        killPlayProcess();// must do.
+
     }
 
     // 上一页
@@ -767,7 +760,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public PlayMode getPlayMode() {
-        return mPlayMode;
+        return PlayMode.PLAY;
     }
 
     @Override

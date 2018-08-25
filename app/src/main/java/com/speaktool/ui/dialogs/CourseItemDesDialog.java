@@ -133,7 +133,6 @@ public class CourseItemDesDialog extends Dialog {
 
         Intent it = new Intent(getContext(), PlayVideoActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayVideoActivity.EXTRA_PLAY_MODE, PlayMode.PLAY);
         it.putExtra(PlayVideoActivity.EXTRA_RECORD_BEAN, mItemBean);
         getContext().startActivity(it);
     }
