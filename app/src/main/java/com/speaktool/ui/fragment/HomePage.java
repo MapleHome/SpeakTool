@@ -28,8 +28,8 @@ import com.speaktool.ui.activity.MainActivity;
 import com.speaktool.ui.adapters.RecordsAdapter;
 import com.speaktool.ui.base.AbsListScrollListener;
 import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.ui.dialogs.CourseItemDesDialog;
+import com.speaktool.ui.dialogs.LoadingDialog;
 import com.speaktool.ui.layouts.ItemViewLocalRecord;
 import com.speaktool.utils.T;
 
@@ -51,10 +51,6 @@ public class HomePage extends BaseFragment {
     private List<CourseItem> mCurrentData = Lists.newArrayList();// 搜索记录
     private RecordsAdapter mAdapterAllRecords;
 
-    private static final int GRID_PAGE_SIZE = 20;// 网格页面大小
-    private int mPageNumber = 1;
-
-    private boolean mIsHaveMoreData = true;
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
     private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader = AsyncDataLoaderFactory
             .newCourseThumbnailAsyncLoader();
@@ -83,10 +79,8 @@ public class HomePage extends BaseFragment {
 
     public void refreshIndexPage() {
         mCurrentData.clear();
-        mPageNumber = 1;
-        mIsHaveMoreData = true;
         // 加载本地记录
-        searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords, true);
+        searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords);
     }
 
     @Override
@@ -108,12 +102,12 @@ public class HomePage extends BaseFragment {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-                if (!mIsHaveMoreData) {
-                    T.showShort(mContext, "没有更多数据了");
-                    gridViewAllRecords.onRefreshComplete();
-                    return;
-                }
-                searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords, true);
+//                if (!mIsHaveMoreData) {
+                T.showShort(mContext, "没有更多数据了");
+//                    gridViewAllRecords.onRefreshComplete();
+//                    return;
+//                }
+//                searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords, true);
             }
         });
     }
@@ -121,34 +115,26 @@ public class HomePage extends BaseFragment {
     /**
      * 搜索课程记录
      */
-    public void searchRecords(SearchCategoryBean mSearchType, String mSearchKeywords, boolean isNeedLoadLocalRecord) {
+    public void searchRecords(SearchCategoryBean mSearchType, String mSearchKeywords) {
         mLoadingDialog.show("正在加载...");
 
         mActivity.setSearchView(mSearchType, mSearchKeywords);
 
         CourseSearchBean info = new CourseSearchBean();
         info.setUid("UID");
-        info.setPageSize(GRID_PAGE_SIZE);// 页大小
-        info.setPageNumber(mPageNumber);// 第几页
+        info.setPageSize(20);// 页大小
+        info.setPageNumber(1);// 第几页
         info.setCategory(mSearchType);// 搜索类型
         info.setKeywords(mSearchKeywords);// 关键字
 
         mCurrentData.clear();
-        singleExecutor.execute(new TaskLoadRecords(indexRecordsUi, info, isNeedLoadLocalRecord, mCurrentData));
+        singleExecutor.execute(new TaskLoadRecords(indexRecordsUi, info, mCurrentData));
     }
 
     private RecordsUi indexRecordsUi = new RecordsUi() {
 
         @Override
         public void onRecordsLoaded(List<CourseItem> datas) {
-            mPageNumber++;
-            refreshIndexAdp(datas);
-            gridViewAllRecords.onRefreshComplete();
-        }
-
-        @Override
-        public void onNoMoreData(List<CourseItem> datas) {
-            mIsHaveMoreData = false;
             refreshIndexAdp(datas);
             gridViewAllRecords.onRefreshComplete();
         }
@@ -160,12 +146,6 @@ public class HomePage extends BaseFragment {
             T.showShort(mContext, "服务器链接失败！请检查网络");
         }
 
-        @Override
-        public void onNotLogin(List<CourseItem> datas) {
-            refreshIndexAdp(datas);
-            gridViewAllRecords.onRefreshComplete();
-
-        }
     };
 
     private void refreshIndexAdp(List<CourseItem> datas) {

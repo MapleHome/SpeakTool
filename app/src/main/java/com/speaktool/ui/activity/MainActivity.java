@@ -238,7 +238,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             return;
         }
 
-        mHomePage.searchRecords(type, keywords, true);
+        mHomePage.searchRecords(type, keywords);
     }
 
     private CategoryPoW popupWindow;
