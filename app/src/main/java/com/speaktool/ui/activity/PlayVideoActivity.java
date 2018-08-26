@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -59,7 +59,6 @@ import com.speaktool.service.PlayService;
 import com.speaktool.ui.dialogs.ProgressDialogOffer;
 import com.speaktool.ui.layouts.DrawPage;
 import com.speaktool.ui.layouts.VideoPlayControllerView;
-import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
@@ -81,11 +80,11 @@ import butterknife.ButterKnife;
 public class PlayVideoActivity extends FragmentActivity implements Draw {
     @BindView(R.id.drawBoardContainer) ViewFlipper viewFlipper;// 绘画板容器
     @BindView(R.id.viewFlipperOverlay) View viewFlipperOverlay;// 文本
+    @BindView(R.id.ivPlayPause) ImageView ivPlayPause;// 播放暂停
     @BindView(R.id.layoutVideoController) VideoPlayControllerView layoutVideoController;// 视频播放控制器
 
     // 常量
     public static final String EXTRA_RECORD_BEAN = "record_bean";
-    private static final long Video_CONTROLLER_DISMISS_DELAY = 5000;// 视频控制器延迟
     private final List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
     private List<Page> pages = new ArrayList<Page>();// 界面集合
     private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
@@ -112,7 +111,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
         mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
 
-        layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+        ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
         ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
         pageWidth = currentScreen.w;
         pageHeight = currentScreen.h;
@@ -135,7 +134,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     private void initListener() {
         // 播放暂停
-        layoutVideoController.setPlayPauseClickListener(new OnClickListener() {
+        ivPlayPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -143,15 +142,15 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
                         Log.e("本地视频播放", "点击暂停");
                         if (mJsonScriptPlayer.isPlayComplete()) {
                             mJsonScriptPlayer.rePlay();
-                            layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
+                            ivPlayPause.setImageResource(android.R.drawable.ic_media_pause);
                             break;
                         }
                         if (mJsonScriptPlayer.isPlaying()) {
                             mJsonScriptPlayer.pause();
-                            layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
+                            ivPlayPause.setImageResource(android.R.drawable.ic_media_play);
                         } else {
                             mJsonScriptPlayer.goOn();
-                            layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
+                            ivPlayPause.setImageResource(android.R.drawable.ic_media_pause);
                         }
                         break;
                 }
@@ -163,6 +162,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mJsonScriptPlayer.seekTo(seekBar.getProgress());
+                ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
             }
 
             @Override
@@ -182,11 +182,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
      */
     @Override
     public void onExitDraw() {
-        // play/preview mode.
         mJsonScriptPlayer.exitPlayer();
         finish();
         killPlayProcess();// must do.
-
     }
 
     // 上一页
@@ -216,7 +214,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     // TODO NIHAO
     private int createPageSendcmd(Page_BG backgroundType, int position, int pageId) {
         createPageImpl(backgroundType, position, pageId);
-        //
         CmdCreatePage cmd = new CmdCreatePage();
         cmd.setTime(getPageRecorder().recordTimeNow());
         CreatePageData data = new CreatePageData();
@@ -230,9 +227,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public void createPageImpl(Page_BG backgroundType, int position, int pageId) {
-        DrawPage board = new DrawPage(getApplicationContext(), backgroundType, this, pageId);
+        DrawPage board = new DrawPage(this, backgroundType, this, pageId);
         pages.add(position, board);
-
     }
 
     @Override
@@ -244,7 +240,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         //
         setActivePageSendcmd(id);
         copyPageSendcmd(srcPageId, id, option);
-
     }
 
     /**
@@ -266,7 +261,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         cmd.setTime(getPageRecorder().recordTimeNow());
         cmd.setData(data);
         getCurrentBoard().sendCommand(cmd, true);
-
     }
 
     @Override
@@ -310,20 +304,19 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     private Runnable hideVideoControllerRunnable = new Runnable() {
         @Override
         public void run() {
-            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+            ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
         }
     };
 
     @Override
     public void showVideoController() {
-        if (layoutVideoController.getVisibility() == View.VISIBLE) {
-            layoutVideoController.setVisibility(View.INVISIBLE);
+        if (ivPlayPause.getVisibility() == View.VISIBLE) {
+            ivPlayPause.setVisibility(View.INVISIBLE);
             layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
             return;
         }
-        layoutVideoController.setVisibility(View.VISIBLE);
-        layoutVideoController.postDelayed(hideVideoControllerRunnable, Video_CONTROLLER_DISMISS_DELAY);
-
+        ivPlayPause.setVisibility(View.VISIBLE);
+        layoutVideoController.postDelayed(hideVideoControllerRunnable, 1000);
     }
 
     @Override
@@ -331,24 +324,18 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         postTaskToUiThread(new Runnable() {
             @Override
             public void run() {
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-
+                // 播放完成，更新UI
+                ivPlayPause.setImageResource(android.R.drawable.ic_media_play);
                 int p = JsonScriptPlayer.MAX_PROGRESS;
-                String totalstr = FormatUtils.getFormatTimeSimple(p);
                 layoutVideoController.setProgress(p);
-                layoutVideoController.setProgressText(totalstr);
+                layoutVideoController.setProgressText(p);
             }
         });
     }
 
     @Override
     public void onPlayStart() {
-        postTaskToUiThread(new Runnable() {
-            @Override
-            public void run() {
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
-            }
-        });
+        ivPlayPause.setImageResource(android.R.drawable.ic_media_pause);
     }
 
     // =====================视频播放器--结束=======================================
@@ -358,25 +345,17 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         viewFlipper.removeAllViews();
         pages.clear();
         currentBoardIndex = 0;
-        resetPageId();
+        pageID = 0;
         DrawPage.resetShapeId(this);
 
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {// when use
-        // camera.
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     protected void onDestroy() {
-        // 反注册EventBus订阅者
         EventBus.getDefault().unregister(this);
-        resetPageId();
+        pageID = 0;
         DrawPage.resetShapeId(this);
-        //
 
         killPlayProcess();
         if (isRecordsChanged) {
@@ -386,7 +365,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         super.onDestroy();
     }
 
-    private final void killPlayProcess() {
+    private void killPlayProcess() {
         PlayService.killServiceProcess(this);
     }
 
@@ -400,7 +379,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     @Override
     public void setActivePageSendcmd(int id) {
         Page bd = getPageFromId(id);
-        int position = getPagePostion(bd);
+        int position = pages.indexOf(bd);
 
         if (position < 0 || position >= pages.size())
             return;
@@ -429,16 +408,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         return null;
     }
 
-    /**
-     * 获取指定界面在集合中的索引
-     *
-     * @param bd 指定界面
-     * @return 界面在集合中对应的索引值
-     */
-    private int getPagePostion(Page bd) {
-        return pages.indexOf(bd);// 搜索指定的对象，并返回整个 List 中第一个匹配项的从零开始的索引。
-    }
-
     @Override
     public void setActivePageImpl(int pageId) {
         Page befpage = getCurrentBoard();
@@ -448,20 +417,17 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         //
         Page bd = getPageFromId(pageId);
         bd.redrawBufferBitmap();
-        int position = getPagePostion(bd);
+        int position = pages.indexOf(bd);
         //
         viewFlipper.removeAllViews();
         viewFlipper.addView(bd.view());
-
         viewFlipper.setDisplayedChild(0);
 
         currentBoardIndex = position;
         //
         getCurrentBoard().updateUndoRedoState();
-        //
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
 
-        Log.e("lich", "setActivePageImpl 完成");
     }
 
     public void newEmptyBoardClick() {
@@ -484,7 +450,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public void saveRecord(final RecordUploadBean recordUploadBean) {
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -500,9 +465,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
                     return;
                 }
                 toStartPlayService();
-
             }
-
         }).start();
 
     }
@@ -518,18 +481,13 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     @Override
     public void preChangePage(final Runnable successRunnable) {
         showLoading("正在加载", null);
-
     }
 
     @Override
     protected void onStop() {
-        if (getPlayMode() == PlayMode.MAKE) {
-
-        } else {// play.
-            if (mJsonScriptPlayer.isPlaying()) {
-                mJsonScriptPlayer.pause();
-                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-            }
+        if (mJsonScriptPlayer.isPlaying()) {
+            mJsonScriptPlayer.pause();
+            ivPlayPause.setImageResource(android.R.drawable.ic_media_play);
         }
         super.onStop();
     }
@@ -537,28 +495,20 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     // =====================top pop=======================================
     @Subscribe
     public void onEventMainThread(PlayTimeChangedEvent event) {
+        // 更新播放进度条
+        long now = event.getNow();//  当前进度
+        long total = event.getCloseTime(); // 总时长
+        int p = (int) (((float) now / (float) total) * JsonScriptPlayer.MAX_PROGRESS);
 
-        long now = event.getNow();
-        long total = event.getCloseTime();
-        float per = (float) now / (float) total;
-        int p = (int) (per * (float) JsonScriptPlayer.MAX_PROGRESS);
-
-        // GLogger.e(tag, "p:" + p);
-        String nowstr = FormatUtils.getFormatTimeSimple(now);
-        String totalstr = FormatUtils.getFormatTimeSimple(total);
-        if (nowstr.equals(totalstr)) {
-            p = JsonScriptPlayer.MAX_PROGRESS;
-        }
         layoutVideoController.setProgress(p);
-        layoutVideoController.setProgressText(nowstr);
-        layoutVideoController.setTotalDuration(totalstr);
-
+        layoutVideoController.setProgressText(now);
+        layoutVideoController.setTotalDuration(total);
     }
 
     @Override
     public Page deletePageImpl(int pageId) {
         Page bd = getPageFromId(pageId);
-        int position = getPagePostion(bd);
+        int position = pages.indexOf(bd);
 
         if (position < 0 || position >= pages.size())
             return null;
@@ -568,7 +518,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         } else {
             bd = pages.get(position);
         }
-        currentBoardIndex = getPagePostion(bd);
+        currentBoardIndex = pages.indexOf(bd);
         return bd;
         // setActivePageImpl(bd.getPageID());
     }
@@ -594,10 +544,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     @Override
     public int makePageId() {
         return ++pageID;
-    }
-
-    private void resetPageId() {
-        pageID = 0;
     }
 
     @Override

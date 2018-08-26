@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.speaktool.R;
+import com.speaktool.utils.FormatUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
  * @author Maple Shao
  */
 public class VideoPlayControllerView extends FrameLayout {
-    @BindView(R.id.ivPlayPause) ImageView ivPlayPause;// 播放暂停
     @BindView(R.id.tvProgress) TextView tvProgress;// 开始时间
     @BindView(R.id.pbProgress) SeekBar pbProgress;// 进度条
     @BindView(R.id.tvTotalDuration) TextView tvTotalDuration;// 总时间
@@ -30,21 +29,32 @@ public class VideoPlayControllerView extends FrameLayout {
         init();
     }
 
+    public VideoPlayControllerView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
     public VideoPlayControllerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public VideoPlayControllerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
 
     private void init() {
         View view = View.inflate(getContext(), R.layout.videoplay_controller_layout_new, this);
         ButterKnife.bind(this, view);
+
+        setMaxProgress(1000);
     }
 
+    public void setProgressText(long progress) {
+        String curPro = FormatUtils.getFormatTimeSimple(progress);
+        tvProgress.setText(curPro);
+    }
+
+    public void setTotalDuration(long totalDurationText) {
+        String totalPro = FormatUtils.getFormatTimeSimple(totalDurationText);
+        tvTotalDuration.setText(totalPro);
+    }
 
     /**
      * 更新进度
@@ -55,25 +65,8 @@ public class VideoPlayControllerView extends FrameLayout {
         pbProgress.setProgress(progress);
     }
 
-    public void setProgressText(String progress) {
-        tvProgress.setText(progress);
-    }
-
-    public void setTotalDuration(String totalDurationText) {
-        tvTotalDuration.setText(totalDurationText);
-    }
-
-    public void setPlayPauseIcon(int resid) {
-        ivPlayPause.setImageResource(resid);
-    }
-
-    /**
-     * 播放暂停监听
-     *
-     * @param l
-     */
-    public void setPlayPauseClickListener(OnClickListener l) {
-        ivPlayPause.setOnClickListener(l);
+    public void setMaxProgress(int maxProgress) {
+        pbProgress.setMax(maxProgress);
     }
 
     /**

@@ -42,12 +42,12 @@ public class JsonScriptPlayer {
 
     private File recordDir;
     private File mJsonFile;
-    private int mPlayDuration;
+    private int mPlayDuration;// 音频总时长
 
     private volatile boolean isExit = false;
     private volatile boolean isRequestStopPlayThread = false;
     private volatile boolean isSounFinish = true;
-    private volatile boolean isPlayComplete = false;
+    private volatile boolean isPlayComplete = false;// 是否播放完
     private volatile boolean isUserPlaying = false;
 
     public JsonScriptPlayer(LocalRecordBean rec, Draw draw) {
@@ -65,9 +65,8 @@ public class JsonScriptPlayer {
         parser = new JsonScriptParser(draw.context(), RecordFileUtils.getScreenInfoFile(recordDir));
         //
         mJsonFile = new File(recordDir, Const.RELEASE_JSON_SCRIPT_NAME);// 内容文件
-        File soundfile = new File(recordDir, Const.RELEASE_SOUND_NAME);// 录音文件
-        if (!mJsonFile.exists() || !soundfile.exists()) {
-            throw new IllegalArgumentException("播放文件不存在！");
+        if (!mJsonFile.exists()) {
+            throw new IllegalArgumentException("脚本文件不存在！");
         }
 
         mSoundPlayer = new MediaPlayer();
@@ -78,13 +77,20 @@ public class JsonScriptPlayer {
                 isSounFinish = true;
             }
         });
-        try {
-            mSoundPlayer.setDataSource(soundfile.getAbsolutePath());
-            mSoundPlayer.prepare();
-            mPlayDuration = mSoundPlayer.getDuration();
-        } catch (Exception e) {
-            e.printStackTrace();
+        File soundfile = new File(recordDir, Const.RELEASE_SOUND_NAME);// 录音文件
+        if (soundfile.exists()) {
+            try {
+                mSoundPlayer.setDataSource(soundfile.getAbsolutePath());
+                mSoundPlayer.prepare();
+                mPlayDuration = mSoundPlayer.getDuration();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new IllegalArgumentException("播放文件不存在！");
         }
+
+
         startCmdPlayThread();
         startRefreshProgressUi();
     }
@@ -173,7 +179,7 @@ public class JsonScriptPlayer {
                     if (isRequestStopPlayThread)
                         return;
                     // sound cannot delete when rerecord.
-                    if (cmdOrgTime < seekPosition) {// seek>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    if (cmdOrgTime < seekPosition) {// seek
                         cd.setTime(ICmd.TIME_DELETE_FLAG);
                         ICmd copy = cd.copy();
                         if (copy != null) {
@@ -208,10 +214,8 @@ public class JsonScriptPlayer {
                     }// while end.
                     cd.run(draw, null);
                     cd.setTime(cmdOrgTime);// 还原时间。
-                }//
-                /***
-                 * for end,all cmd finish.
-                 */
+                }
+                //for end,all cmd finish.
                 draw.postTaskToUiThread(new Runnable() {// 所有CMD完成后刷新
                     @Override
                     public void run() {
@@ -324,9 +328,7 @@ public class JsonScriptPlayer {
     public static final int MAX_PROGRESS = 1000;
 
     public void seekTo(final long position) {
-        /**
-         * seekforward or seekback.
-         */
+        //seekforward or seekback.
         isRequestStopPlayThread = true;
         final int positionTimeMills = (int) (((float) position / MAX_PROGRESS) * mPlayDuration);
         if (position > 0) {// seek.
@@ -346,6 +348,7 @@ public class JsonScriptPlayer {
         });
     }
 
+    // 是否播放完成
     public boolean isPlayComplete() {
         return isPlayComplete;
     }
