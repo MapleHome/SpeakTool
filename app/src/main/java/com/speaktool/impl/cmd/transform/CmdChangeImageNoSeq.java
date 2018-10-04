@@ -6,7 +6,7 @@ import com.speaktool.api.Page;
 import com.speaktool.bean.ImageCommonData;
 import com.speaktool.impl.cmd.CmdBase;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.ui.layouts.OuterImage;
+import com.speaktool.view.layouts.OuterImage;
 
 public class CmdChangeImageNoSeq extends CmdBase<ImageCommonData> {
 

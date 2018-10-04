@@ -3,7 +3,7 @@ package com.speaktool.impl.dataloader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.speaktool.ui.custom.gif.GifDrawable;
+import com.speaktool.view.gif.GifDrawable;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;

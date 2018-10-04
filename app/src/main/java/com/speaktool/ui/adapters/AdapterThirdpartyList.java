@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.speaktool.R;
 import com.speaktool.bean.ThirdParty;
 import com.speaktool.ui.base.AbsAdapter;
-import com.speaktool.ui.layouts.ItemViewThirdparty;
+import com.speaktool.view.layouts.ItemViewThirdparty;
 import com.speaktool.utils.BitmapScaleUtil;
 
 import java.util.List;

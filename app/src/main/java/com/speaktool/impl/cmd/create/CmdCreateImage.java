@@ -6,7 +6,7 @@ import com.speaktool.bean.DeleteShapeData;
 import com.speaktool.bean.ImageCommonData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.delete.CmdDeleteImage;
-import com.speaktool.ui.layouts.OuterImage;
+import com.speaktool.view.layouts.OuterImage;
 
 /**
  * 创建图片

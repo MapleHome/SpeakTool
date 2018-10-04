@@ -6,7 +6,7 @@ import com.speaktool.bean.DeleteShapeData;
 import com.speaktool.bean.EditCommonData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.delete.CmdDeleteEdit;
-import com.speaktool.ui.layouts.WordEdit;
+import com.speaktool.view.layouts.WordEdit;
 
 /**
  * 创建编辑框

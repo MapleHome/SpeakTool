@@ -22,7 +22,7 @@
             android:src="@drawable/selector_back_icon" />
     </LinearLayout>
 
-    <com.speaktool.ui.layouts.MyProgress
+    <com.speaktool.view.layouts.MyProgress
         android:id="@+id/loadProgress"
         android:layout_width="match_parent"
         android:layout_height="5dp" />

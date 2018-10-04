@@ -11,7 +11,7 @@ import com.speaktool.bean.ChangeEditData;
 import com.speaktool.bean.EditCommonData;
 import com.speaktool.bean.MoveData;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.ui.layouts.WordEdit;
+import com.speaktool.view.layouts.WordEdit;
 
 /**
  * 移动编辑框

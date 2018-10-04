@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.google.common.collect.Lists;
 import com.speaktool.ui.base.AbsAdapter;
-import com.speaktool.ui.layouts.MulticheckableView;
+import com.speaktool.view.layouts.MulticheckableView;
 
 import java.util.List;
 

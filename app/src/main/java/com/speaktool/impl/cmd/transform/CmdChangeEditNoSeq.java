@@ -6,7 +6,7 @@ import com.speaktool.api.Page;
 import com.speaktool.bean.EditCommonData;
 import com.speaktool.impl.cmd.CmdBase;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.ui.layouts.WordEdit;
+import com.speaktool.view.layouts.WordEdit;
 
 public class CmdChangeEditNoSeq extends CmdBase<EditCommonData> {
 

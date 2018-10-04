@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.ui.base.AbsAdapter;
-import com.speaktool.ui.layouts.ItemViewRecordType;
+import com.speaktool.view.layouts.ItemViewRecordType;
 
 import java.util.List;
 

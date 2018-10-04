@@ -11,7 +11,7 @@ import com.speaktool.R;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.ui.base.AbsAdapter;
-import com.speaktool.ui.layouts.ItemViewLocalRecord;
+import com.speaktool.view.layouts.ItemViewLocalRecord;
 import com.speaktool.utils.DeviceUtils;
 
 import java.util.List;

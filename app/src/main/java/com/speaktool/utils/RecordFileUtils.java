@@ -273,7 +273,11 @@ public class RecordFileUtils {
         return null;
     }
 
+    /**
+     * 获取所有CMD文件，并按时间排序
+     */
     public static List<File> getAllCmdFilesSortByTime(File dir) {
+        // 获取所有cmd文件
         File[] files = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -287,8 +291,8 @@ public class RecordFileUtils {
         });
         if (files == null)
             return null;
-        //
         List<File> filelist = Arrays.asList(files);
+        // 按时间排序
         Collections.sort(filelist, new Comparator<File>() {
             @Override
             public int compare(File lhs, File rhs) {
@@ -569,7 +573,7 @@ public class RecordFileUtils {
         if (jsonFiles == null || jsonFiles.isEmpty())
             return;
         final JsonScriptParser parser = new JsonScriptParser(context);
-        int sz = jsonFiles.size();
+
         // final ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
@@ -578,12 +582,12 @@ public class RecordFileUtils {
 
         final Html5SoundInfoBean sound = getScriptSound(dir, pageId);
 
-        File realeaseJsonScript = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
-        if (realeaseJsonScript.exists())
-            realeaseJsonScript.delete();
-        realeaseJsonScript.createNewFile();
+        File releaseFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
+        if (releaseFile.exists())
+            releaseFile.delete();
+        releaseFile.createNewFile();
 
-        FileOutputStream ous = new FileOutputStream(realeaseJsonScript, true);
+        FileOutputStream ous = new FileOutputStream(releaseFile, true);
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ous), 10240);
 
         writer.write("{\"wbEvents\":[");
@@ -592,7 +596,7 @@ public class RecordFileUtils {
         List<ICmd> filteredCmds = Lists.newArrayList();
         Map<Integer, Boolean> transformCmd = Maps.newHashMap();
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < jsonFiles.size(); i++) {
             File jsonf = jsonFiles.get(i);
             List<ICmd> pageCmds = parser.jsonFileToCmds(jsonf.getAbsolutePath());
             if (pageCmds == null || pageCmds.isEmpty())
@@ -722,13 +726,10 @@ public class RecordFileUtils {
                             filteredCmds.add(0, copy != null ? copy : cmd);
                         } else
                             Log.e(tag, "repeat cmd");
-
                     } else {// not transform.
-
                         cmd.setTime(ICmd.TIME_DELETE_FLAG);
                         ICmd copy = cmd.copy();
                         filteredCmds.add(0, copy != null ? copy : cmd);
-
                     }
                 }// for cmds end.
                 delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,

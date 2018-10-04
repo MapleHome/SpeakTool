@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> <!--创建和删除权限-->
+    <!--<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> &lt;!&ndash;创建和删除权限&ndash;&gt;-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- ble -->
@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.welcome.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,29 +28,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.Home.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.activity.DrawActivity"
+            android:name=".ui.Draw.DrawActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.activity.PlayVideoActivity"
+            android:name=".ui.Player.PlayVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:launchMode="standard"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.activity.PlayUrlVideoActivity"
+            android:name=".ui.Player.PlayUrlVideoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.activity.UserFMActivity"
+            android:name=".ui.Setting.UserFMActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.WebActivity" />
+        <activity android:name=".ui.Setting.WebActivity" />
 
         <!--  ******************************** 服务  ************************************* -->
 

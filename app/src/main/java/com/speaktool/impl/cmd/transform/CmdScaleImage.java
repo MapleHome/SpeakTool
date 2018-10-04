@@ -10,7 +10,7 @@ import com.speaktool.bean.ChangeImageData;
 import com.speaktool.bean.ImageCommonData;
 import com.speaktool.bean.ScaleData;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.ui.layouts.OuterImage;
+import com.speaktool.view.layouts.OuterImage;
 
 /**
  * 缩放图片
