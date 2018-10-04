@@ -40,7 +40,6 @@ public class JsonScriptPlayer {
     private Draw draw;
     private MediaPlayer mSoundPlayer;
 
-    private File recordDir;
     private File mJsonFile;
     private int mPlayDuration;// 音频总时长
 
@@ -51,20 +50,15 @@ public class JsonScriptPlayer {
     private volatile boolean isUserPlaying = false;
 
     public JsonScriptPlayer(LocalRecordBean rec, Draw draw) {
-        super();
-        Preconditions.checkNotNull(draw, "draw 不能为空.");
-        Preconditions.checkNotNull(rec, "rec 不能为空.");
-        String recordDirPath = rec.getRecordDir();
-        Preconditions.checkArgument(!TextUtils.isEmpty(recordDirPath), "记录目录不能为空.");
-        this.recordDir = new File(recordDirPath);
-        Preconditions.checkArgument(recordDir.isDirectory() && recordDir.exists(), "recordDir is not correct.");
-        draw.setRecordDir(recordDirPath);
-
         this.draw = draw;
+        String recordDirPath = rec.getRecordDir();
+
+        draw.setRecordDir(recordDirPath);
+        File recordDir = new File(recordDirPath);
 
         parser = new JsonScriptParser(draw.context(), RecordFileUtils.getScreenInfoFile(recordDir));
-        //
-        mJsonFile = new File(recordDir, Const.RELEASE_JSON_SCRIPT_NAME);// 内容文件
+        // 内容文件 release.txt
+        mJsonFile = new File(recordDir, Const.RELEASE_JSON_SCRIPT_NAME);
         if (!mJsonFile.exists()) {
             throw new IllegalArgumentException("脚本文件不存在！");
         }
@@ -77,7 +71,8 @@ public class JsonScriptPlayer {
                 isSounFinish = true;
             }
         });
-        File soundfile = new File(recordDir, Const.RELEASE_SOUND_NAME);// 录音文件
+        // 录音文件 release.mp3
+        File soundfile = new File(recordDir, Const.RELEASE_SOUND_NAME);
         if (soundfile.exists()) {
             try {
                 mSoundPlayer.setDataSource(soundfile.getAbsolutePath());

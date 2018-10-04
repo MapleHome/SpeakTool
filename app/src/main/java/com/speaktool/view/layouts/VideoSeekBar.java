@@ -19,28 +19,28 @@ import butterknife.ButterKnife;
  *
  * @author Maple Shao
  */
-public class VideoPlayControllerView extends FrameLayout {
+public class VideoSeekBar extends FrameLayout {
     @BindView(R.id.tvProgress) TextView tvProgress;// 开始时间
     @BindView(R.id.pbProgress) SeekBar pbProgress;// 进度条
     @BindView(R.id.tvTotalDuration) TextView tvTotalDuration;// 总时间
 
-    public VideoPlayControllerView(Context context) {
+    public VideoSeekBar(Context context) {
         super(context);
         init();
     }
 
-    public VideoPlayControllerView(Context context, AttributeSet attrs) {
+    public VideoSeekBar(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public VideoPlayControllerView(Context context, AttributeSet attrs, int defStyle) {
+    public VideoSeekBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
 
     private void init() {
-        View view = View.inflate(getContext(), R.layout.videoplay_controller_layout_new, this);
+        View view = View.inflate(getContext(), R.layout.view_video_seekbar, this);
         ButterKnife.bind(this, view);
 
         setMaxProgress(1000);

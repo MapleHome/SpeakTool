@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@android:color/black">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@android:color/black">
 
     <TextView
         android:id="@+id/tvProgress"
@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
         android:text="00:24"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
     <SeekBar
         android:id="@+id/pbProgress"
@@ -25,7 +25,7 @@
         android:layout_marginRight="2dp"
         android:layout_toLeftOf="@+id/tvTotalDuration"
         android:layout_toRightOf="@+id/tvProgress"
-        android:indeterminateOnly="false"/>
+        android:indeterminateOnly="false" />
 
     <TextView
         android:id="@+id/tvTotalDuration"
@@ -35,7 +35,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
         android:text="00:24"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
 
 </RelativeLayout>

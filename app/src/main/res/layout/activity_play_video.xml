@@ -30,7 +30,7 @@
         android:scaleType="centerInside"
         android:src="@android:drawable/ic_media_pause"/>
 
-    <com.speaktool.view.layouts.VideoPlayControllerView
+    <com.speaktool.view.layouts.VideoSeekBar
         android:id="@+id/layoutVideoController"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

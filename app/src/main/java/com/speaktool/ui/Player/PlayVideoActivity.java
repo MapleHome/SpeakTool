@@ -58,7 +58,7 @@ import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.PlayService;
 import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.view.layouts.DrawPage;
-import com.speaktool.view.layouts.VideoPlayControllerView;
+import com.speaktool.view.layouts.VideoSeekBar;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 
@@ -78,14 +78,15 @@ import butterknife.ButterKnife;
  * @author shaoshuai
  */
 public class PlayVideoActivity extends FragmentActivity implements Draw {
+    public static final String EXTRA_RECORD_BEAN = "record_bean";
+
     @BindView(R.id.drawBoardContainer) ViewFlipper viewFlipper;// 绘画板容器
     @BindView(R.id.viewFlipperOverlay) View viewFlipperOverlay;// 文本
     @BindView(R.id.ivPlayPause) ImageView ivPlayPause;// 播放暂停
-    @BindView(R.id.layoutVideoController) VideoPlayControllerView layoutVideoController;// 视频播放控制器
+    @BindView(R.id.layoutVideoController) VideoSeekBar vSeekBar;// 视频播放控制器
 
     // 常量
-    public static final String EXTRA_RECORD_BEAN = "record_bean";
-    private final List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
+    private List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
     private List<Page> pages = new ArrayList<Page>();// 界面集合
     private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
     private int currentBoardIndex = 0;// 当前界面索引
@@ -116,9 +117,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         pageWidth = currentScreen.w;
         pageHeight = currentScreen.h;
         // 设置播放器大小
-        LayoutParams lp = (LayoutParams) layoutVideoController.getLayoutParams();
+        LayoutParams lp = (LayoutParams) vSeekBar.getLayoutParams();
         lp.width = pageWidth;
-        layoutVideoController.setLayoutParams(lp);
+        vSeekBar.setLayoutParams(lp);
         //
         LayoutParams lp2 = (LayoutParams) viewFlipperOverlay.getLayoutParams();
         lp2.width = pageWidth;
@@ -157,7 +158,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
             }
         });
         // 播放进度改变监听
-        layoutVideoController.setSeekListener(new OnSeekBarChangeListener() {
+        vSeekBar.setSeekListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -312,11 +313,11 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     public void showVideoController() {
         if (ivPlayPause.getVisibility() == View.VISIBLE) {
             ivPlayPause.setVisibility(View.INVISIBLE);
-            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
+            vSeekBar.removeCallbacks(hideVideoControllerRunnable);
             return;
         }
         ivPlayPause.setVisibility(View.VISIBLE);
-        layoutVideoController.postDelayed(hideVideoControllerRunnable, 1000);
+        vSeekBar.postDelayed(hideVideoControllerRunnable, 1000);
     }
 
     @Override
@@ -327,8 +328,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
                 // 播放完成，更新UI
                 ivPlayPause.setImageResource(android.R.drawable.ic_media_play);
                 int p = JsonScriptPlayer.MAX_PROGRESS;
-                layoutVideoController.setProgress(p);
-                layoutVideoController.setProgressText(p);
+                vSeekBar.setProgress(p);
+                vSeekBar.setProgressText(p);
             }
         });
     }
@@ -500,9 +501,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         long total = event.getCloseTime(); // 总时长
         int p = (int) (((float) now / (float) total) * JsonScriptPlayer.MAX_PROGRESS);
 
-        layoutVideoController.setProgress(p);
-        layoutVideoController.setProgressText(now);
-        layoutVideoController.setTotalDuration(total);
+        vSeekBar.setProgress(p);
+        vSeekBar.setProgressText(now);
+        vSeekBar.setTotalDuration(total);
     }
 
     @Override
