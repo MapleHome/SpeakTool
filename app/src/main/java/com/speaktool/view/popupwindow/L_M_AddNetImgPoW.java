@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,10 +19,10 @@ import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
 import com.google.common.collect.Lists;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
-import com.handmark.pulltorefresh.library.PullToRefreshGridView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
@@ -39,15 +40,15 @@ import com.speaktool.tasks.TaskSearchNetPictures;
 import com.speaktool.tasks.TaskSearchNetPictures.SearchNetPicturesCallback;
 import com.speaktool.ui.adapters.AdapterNetPictures;
 import com.speaktool.ui.base.AbsListScrollListener;
-import com.speaktool.view.gif.GifDrawable;
-import com.speaktool.view.dialogs.LoadingDialog;
-import com.speaktool.view.layouts.ItemViewNetPicture;
-import com.speaktool.view.layouts.SearchView;
-import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.NetUtil;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
+import com.speaktool.view.dialogs.LoadingDialog;
+import com.speaktool.view.gif.GifDrawable;
+import com.speaktool.view.layouts.ItemViewNetPicture;
+import com.speaktool.view.layouts.SearchView;
+import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,9 +67,10 @@ import java.util.concurrent.Executors;
  * @author shaoshuai
  */
 public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener, OnDismissListener, OnItemClickListener,
-        OnRefreshListener2<GridView>, NetImageLoadListener, SearchCategoryChangedListener {
+        NetImageLoadListener, SearchCategoryChangedListener {
     private SearchView mSearchView;
-    private PullToRefreshGridView mNetPicsGrid;
+    private SmartRefreshLayout layContent;
+    private GridView mNetPicsGrid;
     private ImageView netImagePreview;
 
     private Draw mDraw;
@@ -96,13 +98,30 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         mLoadingDialog = new LoadingDialog(mContext);
 
         mSearchView = (SearchView) mRootView.findViewById(R.id.searchView);
+        layContent = mRootView.findViewById(R.id.layContent);
         netImagePreview = (ImageView) mRootView.findViewById(R.id.netImagePreview);
-        mNetPicsGrid = (PullToRefreshGridView) mRootView.findViewById(R.id.listNetImage);
+        mNetPicsGrid = (GridView) mRootView.findViewById(R.id.listNetImage);
 
         // mNetPicsGrid.getRefreshableView().setColumnWidth(mRootView.getWidth()/6);
-        mNetPicsGrid.setMode(Mode.BOTH);
-        mNetPicsGrid.setOnRefreshListener(this);
+//        mNetPicsGrid.setMode(Mode.BOTH);
+//        mNetPicsGrid.setOnRefreshListener(this);
         mNetPicsGrid.setOnScrollListener(netpicGridAbsListScrollListener);
+        layContent.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refresh();
+            }
+        }).setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                if (!isHaveMore) {
+                    layContent.finishLoadMore();
+                    T.showShort(mContext, "没有更多数据了");
+                    return;
+                }
+                dosearch(mCurrentSearchKey, mCurrentSearchIndex);
+            }
+        });
 
         SearchCategoryBean defCategory = TaskLoadPictureSearchCategory.getDefCategory(mContext);
         mSearchView.setCategory(defCategory);
@@ -260,7 +279,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
 
     private void refresh() {
         if (TextUtils.isEmpty(mCurrentSearchKey)) {
-            mNetPicsGrid.onRefreshComplete();
+            layContent.finishRefresh();
             return;
         }
         mCurrentSearchIndex = 0;
@@ -273,7 +292,8 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
 
         @Override
         public void onSuccess(List<NetPictureBean> result) {
-            mNetPicsGrid.onRefreshComplete();
+            layContent.finishLoadMore();
+            layContent.finishRefresh();
             mLoadingDialog.dismiss();
             //
             if (result.isEmpty()) {
@@ -291,8 +311,8 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
             SpeakToolApp.getUiHandler().post(new Runnable() {
                 @Override
                 public void run() {
-                    int first = mNetPicsGrid.getRefreshableView().getFirstVisiblePosition();
-                    int last = mNetPicsGrid.getRefreshableView().getLastVisiblePosition();
+                    int first = mNetPicsGrid.getFirstVisiblePosition();
+                    int last = mNetPicsGrid.getLastVisiblePosition();
                     netpicGridAbsListScrollListener.setVisibleItems(first, last);
                     netpicGridAbsListScrollListener.whenIdle();
                 }
@@ -301,14 +321,14 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
 
         @Override
         public void onFail() {
-            mNetPicsGrid.onRefreshComplete();
+            layContent.finishRefresh();
             mLoadingDialog.dismiss();
             T.showShort(mContext, "服务器链接失败！请检查网络");
         }
 
         @Override
         public void onConnectFail() {
-            mNetPicsGrid.onRefreshComplete();
+            layContent.finishRefresh();
             mLoadingDialog.dismiss();
             T.showShort(mContext, "服务器链接失败！请检查网络");
         }
@@ -316,11 +336,11 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
 
     private void dosearch(String encodedKey, int startIndex) {
         if (TextUtils.isEmpty(encodedKey)) {
-            mNetPicsGrid.onRefreshComplete();
+            layContent.finishRefresh();
             return;
         }
         if (!NetUtil.isHaveNet(mContext)) {
-            mNetPicsGrid.onRefreshComplete();
+            layContent.finishRefresh();
             T.showShort(mContext, "网络不可用！");
             return;
         }
@@ -451,21 +471,6 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
                 mLoadingDialog.dismiss();
             }
         }).start();
-    }
-
-    @Override
-    public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
-        refresh();
-    }
-
-    @Override
-    public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {// 加载更多
-        if (!isHaveMore) {
-            mNetPicsGrid.onRefreshComplete();
-            T.showShort(mContext, "没有更多数据了");
-            return;
-        }
-        dosearch(mCurrentSearchKey, mCurrentSearchIndex);
     }
 
     @Override
