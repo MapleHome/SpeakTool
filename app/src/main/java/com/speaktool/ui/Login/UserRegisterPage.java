@@ -65,7 +65,6 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
             case R.id.btnFinish:// 完成
                 doFinishClick();
                 break;
-
             default:
                 break;
         }

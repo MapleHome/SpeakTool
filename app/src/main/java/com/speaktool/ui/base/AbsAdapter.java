@@ -3,18 +3,23 @@ package com.speaktool.ui.base;
 import android.content.Context;
 import android.widget.BaseAdapter;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base Adapter
+ *
+ * @author maple
+ * @time 2018/10/11
+ */
 public abstract class AbsAdapter<T> extends BaseAdapter {
     protected Context mContext;
     protected List<T> mDatas;
 
-    public AbsAdapter(Context ctx, List<T> datas) {
-        mContext = ctx.getApplicationContext();
+    public AbsAdapter(Context context, List<T> datas) {
+        mContext = context;
         if (datas == null)
-            mDatas = Lists.newArrayList();
+            mDatas = new ArrayList<>();
         else
             mDatas = datas;
     }
@@ -34,42 +39,42 @@ public abstract class AbsAdapter<T> extends BaseAdapter {
         return position;
     }
 
-    public final void add(T t) {
+    public void add(T t) {
         if (t == null)
             return;
         mDatas.add(t);
         this.notifyDataSetChanged();
     }
 
-    public final void remove(int index) {
+    public void remove(int index) {
         if (index < 0 || index >= mDatas.size())
             return;
         mDatas.remove(index);
         this.notifyDataSetChanged();
     }
 
-    public final void remove(T data) {
+    public void remove(T data) {
         if (data == null)
             return;
         mDatas.remove(data);
         this.notifyDataSetChanged();
     }
 
-    public final void clear() {
+    public void clear() {
         mDatas.clear();
         this.notifyDataSetChanged();
     }
 
-    public final void refresh(List<T> datas) {
+    public void refresh(List<T> datas) {
         if (datas == null)
-            mDatas = Lists.newArrayList();
+            mDatas = new ArrayList<>();
         else
             mDatas = datas;
         this.notifyDataSetChanged();
     }
 
     // 测试此列表是否包含指定的对象。
-    public final boolean contains(T t) {
+    public boolean contains(T t) {
         return mDatas.contains(t);
     }
 }

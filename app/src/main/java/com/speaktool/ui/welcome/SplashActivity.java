@@ -103,9 +103,10 @@ public class SplashActivity extends FragmentActivity {
         guide_dot_iv[1] = findViewById(R.id.guide_dot2_iv);
         guide_dot_iv[2] = findViewById(R.id.guide_dot3_iv);
         // 初始化页面
-        View guideView1 = LayoutInflater.from(this).inflate(R.layout.activity_splash_view1, null);
-        View guideView2 = LayoutInflater.from(this).inflate(R.layout.activity_splash_view2, null);
-        View guideView3 = LayoutInflater.from(this).inflate(R.layout.activity_splash_view3, null);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View guideView1 = inflater.inflate(R.layout.activity_splash_view1, null);
+        View guideView2 = inflater.inflate(R.layout.activity_splash_view2, null);
+        View guideView3 = inflater.inflate(R.layout.activity_splash_view3, null);
         // 按钮点击
         guideView3.findViewById(R.id.guide_start_btn).setOnClickListener(new OnClickListener() {
             @Override

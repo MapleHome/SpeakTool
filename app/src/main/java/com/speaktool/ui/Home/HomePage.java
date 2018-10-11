@@ -12,9 +12,7 @@ import android.widget.GridView;
 import com.google.common.collect.Lists;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
@@ -49,7 +47,7 @@ public class HomePage extends BaseFragment {
 
     private MainActivity mActivity;
     private List<CourseItem> mCurrentData = Lists.newArrayList();// 搜索记录
-    private RecordsAdapter mAdapterAllRecords;
+    private RecordsAdapter recordsAdapter;
 
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
     private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader = AsyncDataLoaderFactory
@@ -67,11 +65,12 @@ public class HomePage extends BaseFragment {
     @Override
     public void initData(Bundle savedInstanceState) {
         // 记录列表
-        mAdapterAllRecords = new RecordsAdapter(mContext, null, mAppIconAsyncLoader);
-        gv_records.setAdapter(mAdapterAllRecords);
+        recordsAdapter = new RecordsAdapter(mContext, null, mAppIconAsyncLoader);
+        gv_records.setAdapter(recordsAdapter);
 
-        srl_refreshLayout.setRefreshHeader(new ClassicsHeader(mContext));
-        srl_refreshLayout.setRefreshFooter(new ClassicsFooter(mContext));
+        srl_refreshLayout.setRefreshHeader(new ClassicsHeader(mContext))
+                .setEnableLoadMore(false);
+
         // 默认设置
         refreshIndexPage();
     }
@@ -85,19 +84,12 @@ public class HomePage extends BaseFragment {
     @Override
     public void initListener() {
         // 刷新加载监听
-        srl_refreshLayout
-                .setOnRefreshListener(new OnRefreshListener() {
-                    @Override
-                    public void onRefresh(RefreshLayout refreshlayout) {
-                        refreshIndexPage();
-                    }
-                })
-                .setOnLoadMoreListener(new OnLoadMoreListener() {
-                    @Override
-                    public void onLoadMore(RefreshLayout refreshlayout) {
-                        searchRecords(mActivity.mCurSearchType, mActivity.mCurSearchKeyWords);
-                    }
-                });
+        srl_refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshIndexPage();
+            }
+        });
         gv_records.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -111,7 +103,6 @@ public class HomePage extends BaseFragment {
      * 搜索课程记录
      */
     public void searchRecords(SearchCategoryBean mSearchType, String mSearchKeywords) {
-
         mActivity.setSearchView(mSearchType, mSearchKeywords);
 
         CourseSearchBean info = new CourseSearchBean();
@@ -146,9 +137,8 @@ public class HomePage extends BaseFragment {
             // tvSearchEmpty.setVisibility(View.VISIBLE);
             // tvSearchEmpty.setProgressbarVisibility(View.GONE);
         }
-        mAdapterAllRecords.refresh(datas);
-        srl_refreshLayout.finishRefresh();
-        srl_refreshLayout.finishLoadMore();
+        recordsAdapter.refresh(datas);
+        srl_refreshLayout.finishRefresh(2000);
         //
         SpeakToolApp.getUiHandler().post(new Runnable() {
 
@@ -203,7 +193,7 @@ public class HomePage extends BaseFragment {
     };
 
     private Bitmap getDefBmp() {
-        return mAdapterAllRecords.getDefBmp();
+        return recordsAdapter.getDefBmp();
     }
 
     public ItemViewLocalRecord findViewWithTag(String key) {

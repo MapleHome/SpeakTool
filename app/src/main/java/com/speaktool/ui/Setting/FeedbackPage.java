@@ -24,7 +24,6 @@ public class FeedbackPage extends BaseFragment {
     @BindView(R.id.et_fb_contact) EditText et_fb_contact;// 联系方式
     @BindView(R.id.bt_fb_submit) Button bt_fb_submit;// 提交
 
-    public static final String FRAGMENT_NAME = "意见反馈";
     private UserFMActivity mActivity;
 
     @Override
@@ -37,7 +36,7 @@ public class FeedbackPage extends BaseFragment {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("意见反馈");
     }
 
     @Override

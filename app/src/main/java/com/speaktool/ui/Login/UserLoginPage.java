@@ -3,7 +3,6 @@ package com.speaktool.ui.Login;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,13 +16,14 @@ import com.speaktool.utils.UserInfoValidateUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 用户登陆界面
  *
  * @author shaoshuai
  */
-public class UserLoginPage extends BaseFragment implements OnClickListener {
+public class UserLoginPage extends BaseFragment {
     @BindView(R.id.etAccount) EditText etAccount;// 账户
     @BindView(R.id.etPwd) EditText etPwd;// 密码
 
@@ -54,45 +54,20 @@ public class UserLoginPage extends BaseFragment implements OnClickListener {
 
     @Override
     public void initListener() {
-        btnRegister.setOnClickListener(this);// 注册
-        btnLogin.setOnClickListener(this);// 登陆
-
-        layTencentLogin.setOnClickListener(this);// 腾讯微博
-        laySinaLogin.setOnClickListener(this);// 新浪微博
-        layQQLogin.setOnClickListener(this);// QQ
-        layMore.setOnClickListener(this);// 更多
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnRegister:// 注册
-                mActivity.replacePage(new UserRegisterPage());// 跳转到注册
-                break;
-            case R.id.btnLogin:// 登陆
-                doLoginClick();
-                break;
-            case R.id.layTencentLogin:// 腾讯微博
 
-                break;
-            case R.id.laySinaLogin:// 新浪微博
-
-                break;
-            case R.id.layQQLogin:// QQ
-
-                break;
-            case R.id.layMore:// 更多
-
-                break;
-            default:
-                break;
-        }
+    @OnClick(R.id.btnRegister)
+    public void toRegisterPage() {
+        // 跳转到注册
+        mActivity.replacePage(new UserRegisterPage());
     }
 
     /**
      * 登陆界面-登陆
      */
-    private void doLoginClick() {
+    @OnClick(R.id.btnLogin)
+    public void doLoginClick() {
         String account = etAccount.getText().toString().trim();// 账户
         String pwd = etPwd.getText().toString().trim();// 密码
 
@@ -108,7 +83,6 @@ public class UserLoginPage extends BaseFragment implements OnClickListener {
         final UserBean userBean = new UserBean();
         userBean.setAccount(account);
         userBean.setPassword(pwd);
-
 
         fm.popBackStack();// 退出当前页面
     }

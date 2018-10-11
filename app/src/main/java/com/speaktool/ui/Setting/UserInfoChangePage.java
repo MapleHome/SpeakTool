@@ -69,7 +69,6 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
 
     @BindView(R.id.bt_save_info) Button bt_save_info;// 保存信息
 
-    public static final String FRAGMENT_NAME = "个人信息修改";
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;// 捕获图片
     private static final int REQUEST_CODE_PICK_IMAGE = 2;// 挑选图片
     private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
@@ -92,7 +91,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("个人信息修改");
 
         mLoadingDialog = new LoadingDialog(mActivity);
         session = UserDatabase.getUserLocalSession(mContext);
