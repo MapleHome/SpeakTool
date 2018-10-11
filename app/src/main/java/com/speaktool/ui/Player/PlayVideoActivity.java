@@ -22,8 +22,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
@@ -56,11 +54,11 @@ import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.PlayService;
+import com.speaktool.utils.ScreenFitUtil;
+import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.layouts.VideoSeekBar;
-import com.speaktool.utils.ScreenFitUtil;
-import com.speaktool.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,7 +84,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     @BindView(R.id.layoutVideoController) VideoSeekBar vSeekBar;// 视频播放控制器
 
     // 常量
-    private List<MusicBean> globalMusics = Lists.newArrayList();// 添加音乐集合
+    private List<MusicBean> globalMusics = new ArrayList<>();// 添加音乐集合
     private List<Page> pages = new ArrayList<Page>();// 界面集合
     private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
     private int currentBoardIndex = 0;// 当前界面索引
@@ -109,7 +107,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
         rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
         // 检查是否为空
-        Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
+//        Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
         mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
 
         ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器

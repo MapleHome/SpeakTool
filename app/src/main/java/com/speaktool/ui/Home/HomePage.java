@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-import com.google.common.collect.Lists;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -31,6 +30,7 @@ import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.CourseItemDesDialog;
 import com.speaktool.view.layouts.ItemViewLocalRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,7 +46,7 @@ public class HomePage extends BaseFragment {
     @BindView(R.id.gv_records) GridView gv_records;// 所有记录
 
     private MainActivity mActivity;
-    private List<CourseItem> mCurrentData = Lists.newArrayList();// 搜索记录
+    private List<CourseItem> mCurrentData = new ArrayList<>();// 搜索记录
     private RecordsAdapter recordsAdapter;
 
     private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);

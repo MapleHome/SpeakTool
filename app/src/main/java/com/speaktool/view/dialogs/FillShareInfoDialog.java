@@ -1,6 +1,5 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
@@ -48,12 +46,10 @@ public class FillShareInfoDialog extends Dialog {
 
     public FillShareInfoDialog(Context context, CourseItem course) {
         this(context, R.style.dialogTheme, course);
-
     }
 
     public FillShareInfoDialog(Context context, int theme, CourseItem course) {
         super(context, theme);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
         mCourseItem = course;
         mBaseContent = getContext()

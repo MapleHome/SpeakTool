@@ -1,13 +1,11 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 
@@ -34,7 +32,6 @@ public class SaveRecordAlertDialog extends Dialog implements View.OnClickListene
     public SaveRecordAlertDialog(Context context, int theme, Draw draw) {
         super(context, theme);
         setCanceledOnTouchOutside(false);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
         mDraw = draw;
     }

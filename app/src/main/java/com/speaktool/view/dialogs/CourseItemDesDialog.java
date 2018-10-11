@@ -1,6 +1,5 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.common.base.Preconditions;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
@@ -63,7 +61,6 @@ public class CourseItemDesDialog extends Dialog {
     public CourseItemDesDialog(Context context, int theme, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
         super(context, theme);
         mContext = context;
-        Preconditions.checkArgument(context instanceof Activity, "在Dialog中Context必须是Activity.");
         mActivityContext = (MainActivity) context;
 
         mItemBean = (LocalRecordBean) itembean;

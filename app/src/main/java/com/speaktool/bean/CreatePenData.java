@@ -1,8 +1,8 @@
 package com.speaktool.bean;
 
-import com.google.common.collect.Lists;
 import com.speaktool.utils.FormatUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePenData {
@@ -90,7 +90,7 @@ public class CreatePenData {
         if (points == null)
             return copy;
 
-        List<MoveData> pointsNew = Lists.newArrayList();
+        List<MoveData> pointsNew = new ArrayList<>();
         for (int i = 0; i < points.size(); i++) {
             MoveData p = points.get(i);
             pointsNew.add(new MoveData(0, p.getX(), p.getY()));

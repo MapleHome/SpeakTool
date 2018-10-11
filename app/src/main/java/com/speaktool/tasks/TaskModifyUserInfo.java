@@ -2,7 +2,6 @@ package com.speaktool.tasks;
 
 import android.text.TextUtils;
 
-import com.google.common.collect.Maps;
 import com.speaktool.bean.UserBean;
 
 import org.json.JSONException;
@@ -10,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
@@ -38,7 +38,7 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
     @Override
     public Void doBackground() {
 
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         params.put("uid", userBean.getId());
         params.put("realName", userBean.getNickName());
         params.put("intro", userBean.getIntroduce());
@@ -46,7 +46,7 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
         if (!TextUtils.isEmpty(userBean.getPortraitPath())) {
             File photo = new File(userBean.getPortraitPath());
             if (photo.exists()) {
-                paramsFile = Maps.newHashMap();
+                paramsFile = new HashMap<>();
                 paramsFile.put("photo", photo);
             }
         }

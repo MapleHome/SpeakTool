@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.google.common.collect.Lists;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.api.FocusedView;
@@ -30,6 +29,7 @@ import com.speaktool.bean.EditCommonData;
 import com.speaktool.bean.MoveData;
 import com.speaktool.bean.PositionData;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.create.CmdCreateEdit;
 import com.speaktool.impl.cmd.delete.CmdDeleteEdit;
 import com.speaktool.impl.cmd.transform.CmdChangeEditNoSeq;
@@ -37,12 +37,12 @@ import com.speaktool.impl.cmd.transform.CmdMoveEdit;
 import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ViewShape_;
-import com.speaktool.impl.DrawModeManager;
-import com.speaktool.utils.DensityUtils;
 import com.speaktool.tasks.MyColors;
+import com.speaktool.utils.DensityUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -75,8 +75,8 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
 
     private void init() {
         /*
-		 * this.setPivotX(0); this.setPivotY(0);
-		 */
+         * this.setPivotX(0); this.setPivotY(0);
+         */
         this.setOnEditorActionListener(this);
         this.setImeOptions(EditorInfo.IME_ACTION_UNSPECIFIED | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 
@@ -187,7 +187,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
                 cmdMove.setTime(draw.getPageRecorder().recordTimeNow());
                 saveOldData();
                 cmdMove.setOlddata(olddata);
-                sequence = Lists.newArrayList();
+                sequence = new ArrayList<>();
                 sequence.add(new MoveData(draw.getPageRecorder().recordTimeNow() - cmdMove.getTime(), getZZpivotX(lp.x),
                         getZZpivotY(lp.y)));
 

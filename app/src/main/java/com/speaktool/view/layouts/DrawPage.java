@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 
-import com.google.common.collect.Maps;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Draw.PlayMode;
@@ -38,16 +37,17 @@ import com.speaktool.impl.shapes.PenShape_;
 import com.speaktool.impl.shapes.Point_;
 import com.speaktool.impl.shapes.Shape_;
 import com.speaktool.impl.shapes.ViewShape_;
-import com.speaktool.view.gif.GifDrawable;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DisplayUtil;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
+import com.speaktool.view.gif.GifDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -571,7 +571,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
         return id;
     }
 
-    private Map<Integer, Shape_> allShapeViews = Maps.newHashMap();
+    private Map<Integer, Shape_> allShapeViews = new HashMap<>();
 
     @Override
     public void deleteShape(int id) {

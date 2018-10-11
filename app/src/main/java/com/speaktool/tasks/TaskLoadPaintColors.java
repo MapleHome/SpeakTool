@@ -1,10 +1,10 @@
 package com.speaktool.tasks;
 
-import com.google.common.collect.Lists;
 import com.speaktool.R;
 import com.speaktool.bean.PaintInfoBean;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
@@ -38,7 +38,7 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
     public Void doBackground() {
         synchronized (lock) {
             if (datas == null) {
-                datas = Lists.newArrayList();
+                datas = new ArrayList<>();
                 for (int[] one : colors) {
                     PaintInfoBean item = new PaintInfoBean();
                     item.setColor(one[0]);

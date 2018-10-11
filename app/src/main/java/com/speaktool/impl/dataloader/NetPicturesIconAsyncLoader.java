@@ -6,18 +6,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.bean.PicDataHolder;
 import com.speaktool.busevents.NetPictureThumbnailLoadedEvent;
 import com.speaktool.utils.BitmapScaleUtil;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import com.speaktool.view.gif.GifDrawable;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * 网络图片 异步加载
@@ -47,7 +45,7 @@ public class NetPicturesIconAsyncLoader extends
 
     @Override
     protected PicDataHolder getDataLogic(String key, Object... args) {
-        Preconditions.checkNotNull(key);
+//        Preconditions.checkNotNull(key);
         try {
 
             if (isGif(key)) {

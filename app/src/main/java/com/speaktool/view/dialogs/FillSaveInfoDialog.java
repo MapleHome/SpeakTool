@@ -1,6 +1,5 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,15 +9,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.RecordUploadBean;
-import com.speaktool.view.layouts.FillSaveRecordInfoEditPage;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
+import com.speaktool.view.layouts.FillSaveRecordInfoEditPage;
 
 import java.io.File;
 
@@ -39,7 +37,6 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
     public FillSaveInfoDialog(Context context, int theme, Draw draw) {
         super(context, theme);
         setCanceledOnTouchOutside(false);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
         mDraw = draw;
     }

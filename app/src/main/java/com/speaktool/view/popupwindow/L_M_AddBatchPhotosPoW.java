@@ -5,11 +5,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.google.common.collect.Lists;
 import com.speaktool.R;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.view.layouts.MulticheckableView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +58,7 @@ public class L_M_AddBatchPhotosPoW extends L_M_AddSinglePhotosPoW {
     private void onOkClicked() {
         if (mAdapterPhotos.getCheckedList().isEmpty())
             return;
-        List<String> checkedImage = Lists.newArrayList();
+        List<String> checkedImage = new ArrayList<>();
         for (int i = 0; i < mAdapterPhotos.getCheckedList().size(); i++) {
             int position = mAdapterPhotos.getCheckedList().get(i);
             checkedImage.add((String) mAdapterPhotos.getItem(position));

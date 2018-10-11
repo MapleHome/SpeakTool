@@ -27,7 +27,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.google.common.collect.Lists;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
@@ -75,10 +74,16 @@ import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
+import com.speaktool.utils.BitmapScaleUtil;
+import com.speaktool.utils.DisplayUtil;
+import com.speaktool.utils.FormatUtils;
+import com.speaktool.utils.RecordFileUtils;
+import com.speaktool.utils.ScreenFitUtil;
+import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.view.dialogs.SaveRecordAlertDialog;
 import com.speaktool.view.layouts.DrawPage;
+import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
 import com.speaktool.view.popupwindow.EditClickPoW;
 import com.speaktool.view.popupwindow.ImageClickPoW;
 import com.speaktool.view.popupwindow.L_ClearPoW;
@@ -92,12 +97,6 @@ import com.speaktool.view.popupwindow.L_PencilColorPoW;
 import com.speaktool.view.popupwindow.R_AddNewPagePoW;
 import com.speaktool.view.popupwindow.R_PreviewPoW;
 import com.speaktool.view.popupwindow.R_RerecordPoW;
-import com.speaktool.utils.BitmapScaleUtil;
-import com.speaktool.utils.DisplayUtil;
-import com.speaktool.utils.FormatUtils;
-import com.speaktool.utils.RecordFileUtils;
-import com.speaktool.utils.ScreenFitUtil;
-import com.speaktool.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -1308,10 +1307,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             @Override
             public void run() {
                 int size = multiPickImgPaths.size();
-                final List<String> images = Lists.newArrayList();
+                List<String> images = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
                     String imgPath = multiPickImgPaths.get(i);
-                    final String ret = copyImgToRecordDir(imgPath);
+                    String ret = copyImgToRecordDir(imgPath);
                     if (ret != null) {
                         images.add(ret);
                     } else {

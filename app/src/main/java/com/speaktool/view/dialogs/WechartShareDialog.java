@@ -1,13 +1,11 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.api.CourseItem;
 
@@ -24,7 +22,6 @@ public class WechartShareDialog extends Dialog implements View.OnClickListener {
 
     public WechartShareDialog(Context context, int theme, CourseItem course) {
         super(context, theme);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
         mCourseItem = course;
         init();

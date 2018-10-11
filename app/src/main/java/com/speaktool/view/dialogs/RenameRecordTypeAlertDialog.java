@@ -1,6 +1,5 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.utils.T;
@@ -33,7 +31,6 @@ public class RenameRecordTypeAlertDialog extends Dialog implements View.OnClickL
     public RenameRecordTypeAlertDialog(Context context, int theme, SearchCategoryBean type) {
         super(context, theme);
         setCanceledOnTouchOutside(false);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
         mActivityContext = context;
         mRecordType = type;
     }

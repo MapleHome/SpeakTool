@@ -4,12 +4,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.SystemClock;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.speaktool.Const;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.LocalRecordBean;
@@ -21,6 +17,8 @@ import com.speaktool.utils.RecordFileUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -243,8 +241,8 @@ public class JsonScriptPlayer {
     private static List<ICmd> getSeekedCmds(List<ICmd> orgCmds, int seekPosition) {
         if (seekPosition <= 0)
             return orgCmds;
-        List<ICmd> filteredCmds = Lists.newArrayList();
-        Map<Integer, Boolean> transformCmd = Maps.newHashMap();
+        List<ICmd> filteredCmds = new ArrayList<>();
+        Map<Integer, Boolean> transformCmd = new HashMap<>();
         for (int j = orgCmds.size() - 1; j >= 0; j--) {
             ICmd cmd = orgCmds.get(j);
             if (cmd.getTime() <= seekPosition) {// unrecord.

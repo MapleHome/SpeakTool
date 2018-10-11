@@ -1,13 +1,11 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.R;
 
 import butterknife.BindView;
@@ -31,7 +29,6 @@ public class QQShareDialog extends Dialog implements View.OnClickListener {
     public QQShareDialog(Context context, int theme) {
         super(context, theme);
         this.setCanceledOnTouchOutside(false);
-        Preconditions.checkArgument(context instanceof Activity, "context must be Activity in Dialog.");
     }
 
     @Override

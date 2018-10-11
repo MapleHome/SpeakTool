@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout.LayoutParams;
 
-import com.google.common.collect.Lists;
 import com.speaktool.api.Draw;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
@@ -27,6 +26,7 @@ import com.speaktool.bean.PositionData;
 import com.speaktool.bean.ScaleData;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.impl.DefViewTransformer;
+import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.cmd.create.CmdCreateImage;
 import com.speaktool.impl.cmd.delete.CmdDeleteImage;
 import com.speaktool.impl.cmd.transform.CmdChangeImageNoSeq;
@@ -35,18 +35,16 @@ import com.speaktool.impl.cmd.transform.CmdScaleImage;
 import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.impl.shapes.ViewShape_;
-import com.speaktool.impl.DrawModeManager;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
-
-import java.io.File;
-import java.util.ArrayList;
-
 import com.speaktool.view.gif.GifDrawable;
 import com.speaktool.view.gif.GifImageView;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
+import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class OuterImage extends GifImageView implements ImageWidget, FocusedView, OnClickListener {
@@ -352,7 +350,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
                 cmdMove.setTime(draw.getPageRecorder().recordTimeNow());
                 saveOldData();
                 cmdMove.setOlddata(olddata);
-                sequence = Lists.newArrayList();
+                sequence = new ArrayList<>();
                 sequence.add(new MoveData(draw.getPageRecorder().recordTimeNow() - cmdMove.getTime(), getZZpivotX(lp.x),
                         getZZpivotY(lp.y)));
                 break;
@@ -369,7 +367,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
                 cmdScale.setTime(draw.getPageRecorder().recordTimeNow());
                 saveOldData();
                 cmdScale.setOlddata(olddata);
-                sequenceScale = Lists.newArrayList();
+                sequenceScale = new ArrayList<>();
                 sequenceScale.add(new ScaleData(draw.getPageRecorder().recordTimeNow() - cmdScale.getTime(), this
                         .getScaleX(), (int) this.getRotation(), getZZpivotX(lp.x), getZZpivotY(lp.y)));
                 // 2,rotation.

@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
-import com.google.common.collect.Lists;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -56,6 +55,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -363,7 +363,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
     }
 
     private boolean isHaveMore = true;
-    private List<NetPictureBean> oldData = Lists.newArrayList();
+    private List<NetPictureBean> oldData = new ArrayList<>();
 
     private void addImgFail() {
         SpeakToolApp.getUiHandler().post(new Runnable() {

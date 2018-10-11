@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 
-import com.google.common.base.Preconditions;
 import com.speaktool.Const;
 import com.speaktool.busevents.LocalPhotoDirIconLoadedEvent;
 import com.speaktool.utils.BitmapScaleUtil;
@@ -23,13 +22,8 @@ public class LocalPhotoDirLoader extends ListItemAsyncDataLoader<String, byte[]>
 
     @Override
     protected byte[] getDataLogic(String key, Object... args) {
-        Preconditions.checkNotNull(key);
         try {
-
-            Bitmap bmp = null;
-
-            bmp = BitmapScaleUtil.decodeSampledBitmapFromPath(key, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
-
+            Bitmap bmp = BitmapScaleUtil.decodeSampledBitmapFromPath(key, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
             if (bmp == null)
                 return null;
 

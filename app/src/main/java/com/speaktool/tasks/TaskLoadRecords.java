@@ -1,7 +1,5 @@
 package com.speaktool.tasks;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.speaktool.Const;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.CourseSearchBean;
@@ -13,6 +11,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -48,7 +47,7 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
      * @param baseCourses
      */
     public TaskLoadRecords(RecordsUi listener, CourseSearchBean searchBean, List<CourseItem> baseCourses) {
-        Preconditions.checkNotNull(baseCourses, "baseCourses 不能为空.");
+//        Preconditions.checkNotNull(baseCourses, "baseCourses 不能为空.");
 
         mListener = new WeakReference<RecordsUi>(listener);
         mCourseSearchBean = searchBean;
@@ -105,7 +104,7 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
         });
         if (files == null)
             return null;
-        List<CourseItem> recs = Lists.newArrayList();
+        List<CourseItem> recs = new ArrayList<>();
         for (File dir : files) {
             LocalRecordBean item = new LocalRecordBean();
             // release.txt 和 release.mp3 是否存在

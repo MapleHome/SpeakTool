@@ -7,8 +7,6 @@ import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.speaktool.Const;
 import com.speaktool.bean.Html5ImageInfoBean;
 import com.speaktool.bean.Html5SoundInfoBean;
@@ -27,9 +25,12 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -570,7 +571,7 @@ public class RecordFileUtils {
         // final ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
-            jpgNames = Lists.newLinkedList();
+            jpgNames = new LinkedList<>();
         }
 
         final Html5SoundInfoBean sound = getScriptSound(dir, pageId);
@@ -586,8 +587,8 @@ public class RecordFileUtils {
         writer.write("{\"wbEvents\":[");
         boolean isFirstCmd = true;
         long delta = 0;
-        List<ICmd> filteredCmds = Lists.newArrayList();
-        Map<Integer, Boolean> transformCmd = Maps.newHashMap();
+        List<ICmd> filteredCmds = new ArrayList<>();
+        Map<Integer, Boolean> transformCmd = new HashMap<>();
 
         for (int i = 0; i < jsonFiles.size(); i++) {
             File jsonf = jsonFiles.get(i);
@@ -679,7 +680,7 @@ public class RecordFileUtils {
             return;
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
-            jpgNames = Lists.newLinkedList();
+            jpgNames = new LinkedList<>();
         }
 
         final Html5SoundInfoBean sound = getScriptSound(dir, -1);
@@ -695,8 +696,8 @@ public class RecordFileUtils {
         writer.write("{\"wbEvents\":[");
         boolean isFirstCmd = true;
         long delta = 0;
-        List<ICmd> filteredCmds = Lists.newArrayList();
-        Map<Integer, Boolean> transformCmd = Maps.newHashMap();
+        List<ICmd> filteredCmds = new ArrayList<>();
+        Map<Integer, Boolean> transformCmd = new HashMap<>();
 
         for (int i = 0; i < jsonFiles.size(); i++) {
             File jsonf = jsonFiles.get(i);
@@ -871,7 +872,7 @@ public class RecordFileUtils {
         if (jpgNames == null || jpgNames.length <= 0)
             return null;
         Log.e(tag, "jpgNames:" + jpgNames.toString());
-        List<Html5ImageInfoBean> jpgBeans = Lists.newLinkedList();
+        List<Html5ImageInfoBean> jpgBeans = new LinkedList<>();
         Html5ImageInfoBean bean = null;
         for (String jpgName : jpgNames) {
             bean = new Html5ImageInfoBean();
