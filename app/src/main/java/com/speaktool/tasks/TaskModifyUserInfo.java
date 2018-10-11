@@ -1,22 +1,20 @@
 package com.speaktool.tasks;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.Map;
+import android.text.TextUtils;
+
+import com.google.common.collect.Maps;
+import com.speaktool.bean.UserBean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.text.TextUtils;
-
-import com.google.common.collect.Maps;
-import com.speaktool.SpeakToolApp;
-import com.speaktool.bean.UserBean;
-import com.speaktool.dao.UserDatabase;
+import java.io.File;
+import java.lang.ref.WeakReference;
+import java.util.Map;
 
 public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
 
-    public  interface ModifyUserInfoCallback {
+    public interface ModifyUserInfoCallback {
         void onConnectFail();
 
         void onResponseFail();
@@ -73,7 +71,6 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
             JSONObject response = new JSONObject(result);
             int resultcode = response.getInt("result");
             if (resultcode == 0) {
-                UserDatabase.saveUserLocalSession(userBean, SpeakToolApp.app());
                 //
                 uiHandler.post(new Runnable() {
                     @Override

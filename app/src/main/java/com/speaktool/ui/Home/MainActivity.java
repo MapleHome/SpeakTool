@@ -21,25 +21,21 @@ import com.speaktool.R;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.tasks.TaskLoadRecordCategories;
-import com.speaktool.tasks.TaskLoadRecordCategories.RecordTypeLoadListener;
-import com.speaktool.tasks.ThreadPoolWrapper;
-import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.ui.Draw.DrawActivity;
-import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
-import com.speaktool.view.layouts.ItemViewLocalRecord;
-import com.speaktool.view.layouts.SearchView;
-import com.speaktool.view.popupwindow.CategoryPoW;
-import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
+import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.T;
+import com.speaktool.view.layouts.ItemViewLocalRecord;
+import com.speaktool.view.layouts.SearchView;
+import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
+import com.speaktool.view.popupwindow.CategoryPoW;
+import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +57,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     public SearchCategoryBean mCurSearchType;
     public String mCurSearchKeyWords = null;
 
-    private ThreadPoolWrapper singleExecutor = ThreadPoolWrapper.newThreadPool(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +192,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        singleExecutor.shutdownNow();
         super.onDestroy();
     }
 
@@ -207,10 +201,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
         mHomePage = new HomePage();
         replacePage(mHomePage);
-
     }
 
     /**
@@ -262,15 +254,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             }
         });
         popupWindow.showPopupWindow(WeiZhi.Bottom);
-
-        singleExecutor.execute(new TaskLoadRecordCategories(new RecordTypeLoadListener() {
-            @Override
-            public void onRecordTypeLoaded(List<SearchCategoryBean> result) {
-                if (popupWindow != null) {
-                    popupWindow.refreshCategoryList(result);
-                }
-            }
-        }, true));
     }
 
     /**

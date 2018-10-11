@@ -12,11 +12,11 @@ import android.widget.EditText;
 import com.google.common.base.Preconditions;
 import com.speaktool.R;
 import com.speaktool.bean.SearchCategoryBean;
-import com.speaktool.dao.RecordCategoriesDatabase;
 import com.speaktool.utils.T;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class RenameRecordTypeAlertDialog extends Dialog implements View.OnClickListener {
     @BindView(R.id.btnCancel) Button btnCancel;
@@ -62,7 +62,6 @@ public class RenameRecordTypeAlertDialog extends Dialog implements View.OnClickL
                 return;
             }
             mRecordType.setCategoryName(renametype);
-            RecordCategoriesDatabase.updateCategory(mRecordType, getContext());
             this.dismiss();
         } else if (v == btnCancel) {
             this.dismiss();

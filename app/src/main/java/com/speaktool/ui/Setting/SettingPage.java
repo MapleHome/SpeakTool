@@ -18,13 +18,12 @@ import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.dao.UserDatabase;
 import com.speaktool.tasks.TaskGetNetImage;
 import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
 import com.speaktool.ui.Login.UserLoginPage;
 import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.utils.BitmapScaleUtil;
+import com.speaktool.view.dialogs.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -68,9 +67,17 @@ public class SettingPage extends BaseFragment implements OnClickListener {
         mActivity.setTitle("设置");
 
         mLoadingDialog = new LoadingDialog(mActivity);
-        if (UserDatabase.getUserLoginState(mContext) == UserBean.STATE_IN) {
+        if (false) {
             isLogin = true;
-            UserBean session = UserDatabase.getUserLocalSession(mContext);
+            UserBean session = new UserBean();
+            session.setId("7b2d5a11803b4363977bf8923dbd36a6");
+            session.setNickName("小可爱");
+            String portraitUrl = Const.SPEEKTOOL_SERVER__URL + "userPhoto/7b2d5a11803b4363977bf8923dbd36a6.jpg";
+            session.setPortraitPath(portraitUrl);
+            session.setIntroduce("更改赫兹日龙");
+            session.setEmail("939078792@qq.com");
+
+//            UserBean session = UserDatabase.getUserLocalSession(mContext);
             setPortrait(session.getPortraitPath());// 设置头像
             user_name.setText(session.getNickName());// 用户名
             bt_logout.setVisibility(View.VISIBLE);// 注销按钮

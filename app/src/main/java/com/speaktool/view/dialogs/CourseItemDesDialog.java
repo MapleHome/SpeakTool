@@ -19,9 +19,7 @@ import com.speaktool.SpeakToolApp;
 import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.dao.UserDatabase;
 import com.speaktool.ui.Home.MainActivity;
 import com.speaktool.ui.Player.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
@@ -139,7 +137,6 @@ public class CourseItemDesDialog extends Dialog {
     @OnClick(R.id.ivShare)
     public void more() {
         T.showShort(mContext, "click more！");
-        UserBean session = UserDatabase.getUserLocalSession(mActivityContext);
     }
 
     @OnClick(R.id.ivCopyLink)

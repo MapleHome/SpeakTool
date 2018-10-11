@@ -23,21 +23,19 @@ import com.maple.msdialog.ActionSheetDialog;
 import com.maple.msdialog.AlertEditDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.api.PhotoImporter;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
-import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
 import com.speaktool.bean.UserBean;
-import com.speaktool.dao.UserDatabase;
 import com.speaktool.tasks.TaskGetNetImage;
 import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
 import com.speaktool.tasks.TaskModifyUserInfo;
 import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
-import com.speaktool.view.dialogs.LoadingDialog;
-import com.speaktool.view.popupwindow.L_M_AddSinglePhotosPoW;
+import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.T;
+import com.speaktool.view.dialogs.LoadingDialog;
+import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
+import com.speaktool.view.popupwindow.L_M_AddSinglePhotosPoW;
 
 import java.io.File;
 import java.util.Calendar;
@@ -94,14 +92,12 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
         mActivity.setTitle("个人信息修改");
 
         mLoadingDialog = new LoadingDialog(mActivity);
-        session = UserDatabase.getUserLocalSession(mContext);
+        session = null;
+//        session = UserDatabase.getUserLocalSession(mContext);
         if (session != null) {
             setPortrait(session.getPortraitPath());// 设置头像
             tv_name.setText(session.getNickName());// 用户名
             tv_introduce.setText(session.getIntroduce());// 个性签名
-
-            // 性别
-            // 生日
             tv_mail.setText(session.getEmail()); // 邮箱
         }
 

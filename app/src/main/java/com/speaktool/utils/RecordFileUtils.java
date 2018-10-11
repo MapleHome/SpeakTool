@@ -16,8 +16,6 @@ import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.TransformShapeData;
-import com.speaktool.bean.UserBean;
-import com.speaktool.dao.UserDatabase;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.player.JsonScriptParser;
 
@@ -85,11 +83,6 @@ public class RecordFileUtils {
             }
         }
         String uid = "weirenling";
-        if (UserDatabase.getUserLoginState(mContext) == UserBean.STATE_OUT) {
-            // TODO 获取SP中保存的用户
-        } else {
-            uid = UserDatabase.getUserLocalSession(mContext).getId();
-        }
         final RecordUploadBean recordUploadBean = new RecordUploadBean();
         recordUploadBean.setZipFilePath(zip.getAbsolutePath());
         recordUploadBean.setCourseType(RecordUploadBean.COURSE_TYPE_SCRIPT);// 脚本类型
