@@ -26,25 +26,11 @@ public class ItemViewNetPicture extends FrameLayout {
         super.onMeasure(sidelen, sidelen);
     }
 
-    public Bitmap getThumbBitmap() {
-        Drawable d = ivGif.getDrawable();
-        if (d != null && d instanceof BitmapDrawable) {
-            return ((BitmapDrawable) d).getBitmap();
-        } else {
-            return null;
-        }
-    }
-
     public ItemViewNetPicture(Context context) {
         super(context);
-        init();
-    }
-
-    private void init() {
         View view = View.inflate(getContext(), R.layout.item_netpic, this);
         ButterKnife.bind(this, view);
     }
-
 
     @Override
     protected void onDetachedFromWindow() {

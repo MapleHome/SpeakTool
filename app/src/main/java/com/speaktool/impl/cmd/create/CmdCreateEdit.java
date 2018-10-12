@@ -27,8 +27,8 @@ public class CmdCreateEdit extends CmdCreateShape<EditCommonData> {
 			@Override
 			public void run() {
 				Page page = draw.getCurrentBoard();
-				WordEdit edit = new WordEdit(draw.context(), draw, data
-						.getShapeID());
+				WordEdit edit = new WordEdit(draw.context(), draw,
+						data.getShapeID());
 
 				WordEdit.inflateDataToAttrs(data, edit);
 

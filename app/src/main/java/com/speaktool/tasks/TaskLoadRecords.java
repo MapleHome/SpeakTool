@@ -8,7 +8,6 @@ import com.speaktool.utils.RecordFileUtils;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

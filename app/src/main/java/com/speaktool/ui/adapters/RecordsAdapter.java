@@ -42,19 +42,16 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
         else
             lp.height = h;
         item.setLayoutParams(lp);
-        //
         CourseItem bean = (CourseItem) getItem(position);
-        if (bean == null) {
-            return item;
+        if (bean != null) {
+            item.setTitle(bean.getRecordTitle());
+
+            String imagePath = bean.getThumbnailImgPath();
+            Glide.with(mContext)
+                    .load(new File(imagePath))
+                    .into(item.getImageView());
+            item.setTag(imagePath);
         }
-
-        String imagePath = bean.getThumbnailImgPath();
-        Glide.with(mContext)
-                .load(new File(imagePath))
-                .into(item.getImageView());
-        item.setTitle(bean.getRecordTitle());
-        item.setTag(imagePath);
-
         return item;
     }
 

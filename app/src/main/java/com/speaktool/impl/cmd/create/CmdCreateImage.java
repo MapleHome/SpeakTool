@@ -29,8 +29,8 @@ public class CmdCreateImage extends CmdCreateShape<ImageCommonData> {
 			@Override
 			public void run() {
 				Page page = draw.getCurrentBoard();
-				OuterImage img = new OuterImage(draw.context(), draw, data
-						.getShapeID());
+				OuterImage img = new OuterImage(draw.context(), draw,
+						data.getShapeID());
 				OuterImage.inflateDataToAttrs(data, img);
 				page.draw(img);
 				page.saveShape(img);

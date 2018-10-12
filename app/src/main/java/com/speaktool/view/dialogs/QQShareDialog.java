@@ -21,13 +21,8 @@ public class QQShareDialog extends Dialog implements View.OnClickListener {
     @BindView(R.id.btnShareToQQ) Button btnShareToQQ;// 分享到QQ好友
     @BindView(R.id.btnCancelExit) Button btnCancelExit;// 取消
 
-
     public QQShareDialog(Context context) {
-        this(context, R.style.dialogTheme);
-    }
-
-    public QQShareDialog(Context context, int theme) {
-        super(context, theme);
+        super(context, R.style.dialogTheme);
         this.setCanceledOnTouchOutside(false);
     }
 

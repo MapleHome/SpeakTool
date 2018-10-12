@@ -17,7 +17,6 @@ import com.speaktool.SpeakToolApp;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.ui.Home.MainActivity;
 import com.speaktool.ui.Player.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.FileUtil;
@@ -48,19 +47,11 @@ public class CourseItemDesDialog extends Dialog {
     @BindView(R.id.ivDeleteVideo) ImageView ivDeleteVideo;// 删除
     // 其他
     private Context mContext;
-    private MainActivity mActivityContext;
     private LocalRecordBean mItemBean;// 课程记录条目
 
-
     public CourseItemDesDialog(Context context, CourseItem itembean) {
-        this(context, R.style.dialogTheme, itembean);
-    }
-
-    public CourseItemDesDialog(Context context, int theme, CourseItem itembean) {
-        super(context, theme);
+        super(context, R.style.dialogTheme);
         mContext = context;
-        mActivityContext = (MainActivity) context;
-
         mItemBean = (LocalRecordBean) itembean;
 
         this.setCanceledOnTouchOutside(false);
@@ -82,10 +73,10 @@ public class CourseItemDesDialog extends Dialog {
 
     private void resetLayout() {
         // 调整dialog背景大小
-        int width = DeviceUtils.getScreenWidth(mActivityContext);
-        int height = DeviceUtils.getScreenHeight(mActivityContext);
-        if (DeviceUtils.isPad(mActivityContext)) {// 平板
-            if (DeviceUtils.isHengPing(mActivityContext)) {// 横屏
+        int width = DeviceUtils.getScreenWidth(mContext);
+        int height = DeviceUtils.getScreenHeight(mContext);
+        if (DeviceUtils.isPad(mContext)) {// 平板
+            if (DeviceUtils.isHengPing(mContext)) {// 横屏
                 width = (int) (width * 0.5);
                 height = (int) (height * 0.5);
             } else {// 竖屏
@@ -93,7 +84,7 @@ public class CourseItemDesDialog extends Dialog {
                 height = (int) (height * 0.5);
             }
         } else {// 手机
-            if (DeviceUtils.isHengPing(mActivityContext)) {// 横屏
+            if (DeviceUtils.isHengPing(mContext)) {// 横屏
                 width = (int) (width * 0.5);
                 height = (int) (height * 0.85);
             } else {// 竖屏
@@ -145,7 +136,7 @@ public class CourseItemDesDialog extends Dialog {
 
     @OnClick(R.id.ivDeleteVideo)
     public void showDeleteDialog() {
-        new AlertDialog(mActivityContext)
+        new AlertDialog(mContext)
                 .setTitle("提示")
                 .setMessage("请问是否确定删除录像？")
                 .setRightButton("确定", new View.OnClickListener() {
@@ -172,7 +163,7 @@ public class CourseItemDesDialog extends Dialog {
     }
 
     private void afterDeleteSuccess() {
-        new AlertDialog(mActivityContext)
+        new AlertDialog(mContext)
                 .setTitle("提示")
                 .setMessage("课程删除成功！")
                 .setRightButton("确定", new View.OnClickListener() {

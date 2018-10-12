@@ -14,7 +14,7 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
     }
 
     private static List<PaintInfoBean> datas;
-    private static final Object lock = new Object();
+    private static Object lock = new Object();
 
     private final static int[][] colors = {
             {MyColors.BLACK, R.drawable.black, R.drawable.black_seleted},
@@ -27,7 +27,7 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
             {MyColors.DARK_BLUE, R.drawable.darkblue, R.drawable.darkblue_seleted}
     };
 
-    private final WeakReference<Callback> mListener;
+    private WeakReference<Callback> mListener;
 
     public TaskLoadPaintColors(Callback listener) {
         super();

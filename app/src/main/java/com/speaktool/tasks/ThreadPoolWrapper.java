@@ -4,10 +4,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class ThreadPoolWrapper {
-    private final BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque<Runnable>();
     private static final int THREAD_SLEEP_TIME = 500;
     private volatile boolean isShutdown = false;
     private final int threadMounts;
+    private final BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque<Runnable>();
 
     private ThreadPoolWrapper(int threadMounts) {
         this.threadMounts = threadMounts;

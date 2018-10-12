@@ -25,12 +25,9 @@ public class SaveRecordAlertDialog extends Dialog implements View.OnClickListene
     private Context mActivityContext;
     private Draw mDraw;
 
-    public SaveRecordAlertDialog(Context context, Draw draw) {
-        this(context, R.style.dialogThemeFullScreen, draw);
-    }
 
-    public SaveRecordAlertDialog(Context context, int theme, Draw draw) {
-        super(context, theme);
+    public SaveRecordAlertDialog(Context context, Draw draw) {
+        super(context, R.style.dialogThemeFullScreen);
         setCanceledOnTouchOutside(false);
         mActivityContext = context;
         mDraw = draw;
@@ -46,7 +43,6 @@ public class SaveRecordAlertDialog extends Dialog implements View.OnClickListene
         btnSaveVideo.setOnClickListener(this);
         btnNotSaveVideo.setOnClickListener(this);
         btnCancelExit.setOnClickListener(this);
-
     }
 
     @Override

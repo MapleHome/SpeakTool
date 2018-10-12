@@ -25,14 +25,12 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
         void onSuccess(List<NetPictureBean> ret);
     }
 
-    private static final String SEARCH_URL = "http://pic.sogou.com/pics";
+    private static String SEARCH_URL = "http://pic.sogou.com/pics";
     private final WeakReference<SearchNetPicturesCallback> mListener;
     private String searchKey;
     private int startIndex;
 
-    public TaskSearchNetPictures(SearchNetPicturesCallback listener,
-                                 String searchKey, int startIndex) {
-
+    public TaskSearchNetPictures(SearchNetPicturesCallback listener, String searchKey, int startIndex) {
         mListener = new WeakReference<SearchNetPicturesCallback>(listener);
         this.searchKey = searchKey;
         this.startIndex = startIndex;

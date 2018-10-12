@@ -11,13 +11,11 @@ import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.busevents.CourseThumbnailLoadedEvent;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.T;
-import com.speaktool.view.layouts.ItemViewLocalRecord;
 import com.speaktool.view.layouts.SearchView;
 
 import org.greenrobot.eventbus.EventBus;

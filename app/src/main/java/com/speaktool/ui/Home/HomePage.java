@@ -69,7 +69,7 @@ public class HomePage extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseItem course = (CourseItem) parent.getAdapter().getItem(position);
-                new CourseItemDesDialog(mContext, course).show();
+                new CourseItemDesDialog(getActivity(), course).show();
             }
         });
     }

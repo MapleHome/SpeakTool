@@ -1,8 +1,6 @@
 package com.speaktool.view.popupwindow;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -27,7 +25,6 @@ import com.speaktool.SpeakToolApp;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.NetPictureBean;
 import com.speaktool.bean.SearchCategoryBean;
-import com.speaktool.busevents.NetPictureThumbnailLoadedEvent;
 import com.speaktool.tasks.MyThreadFactory;
 import com.speaktool.tasks.TaskSearchNetPictures;
 import com.speaktool.tasks.TaskSearchNetPictures.SearchNetPicturesCallback;
@@ -36,12 +33,10 @@ import com.speaktool.utils.NetUtil;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.LoadingDialog;
-import com.speaktool.view.layouts.ItemViewNetPicture;
 import com.speaktool.view.layouts.SearchView;
 import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -338,21 +333,4 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         }
     }
 
-    private Bitmap getErrorBmp() {
-        return BitmapFactory.decodeResource(SpeakToolApp.app().getResources(), R.drawable.error);
-    }
-
-    @Subscribe
-    public void onEventMainThread(NetPictureThumbnailLoadedEvent event) {
-        String key = event.getKey();
-        ItemViewNetPicture item = (ItemViewNetPicture) mNetPicsGrid.findViewWithTag(key);
-        //
-        if (item != null) {
-            if (event.isError()) {
-                item.setImage(new BitmapDrawable(getErrorBmp()));
-                return;
-            }
-            item.setImage(event.getIcon());
-        }
-    }
 }
