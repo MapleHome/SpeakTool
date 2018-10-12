@@ -2,9 +2,7 @@ package com.speaktool.view.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,15 +10,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.speaktool.Const;
+import com.bumptech.glide.Glide;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
 import com.speaktool.api.CourseItem;
-import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DeviceUtils;
-import com.speaktool.utils.NetUtil;
 
-import java.lang.ref.WeakReference;
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +37,6 @@ public class FillShareInfoDialog extends Dialog {
     private String mBaseContent;// 分享文本内容
     private Context mActivityContext;
     private CourseItem mCourseItem;
-    private WeakReference<ImageView> ivShareThumbRef;
 
     public FillShareInfoDialog(Context context, CourseItem course) {
         this(context, R.style.dialogTheme, course);
@@ -67,36 +61,11 @@ public class FillShareInfoDialog extends Dialog {
         etShareContent.setText(mBaseContent);
         etShareContent.setSelection(mBaseContent.length());
 
-        ivShareThumbRef = new WeakReference<ImageView>(ivShareThumb);
-        final String iconUrl = mCourseItem.getThumbnailImgPath();
-        if (!TextUtils.isEmpty(iconUrl)) {
-            new Thread(new Runnable() {
+        String iconUrl = mCourseItem.getThumbnailImgPath();
+        Glide.with(mActivityContext)
+                .load(new File(iconUrl))
+                .into(ivShareThumb);
 
-                @Override
-                public void run() {
-                    Bitmap bmp;
-                    if (NetUtil.isNetPath(iconUrl)) {
-                        bmp = BitmapScaleUtil.decodeSampledBitmapFromUrl(iconUrl, Const.MAX_MEMORY_BMP_CAN_ALLOCATE, "");
-                    } else {
-                        bmp = BitmapScaleUtil.decodeSampledBitmapFromPath(iconUrl, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
-                    }
-                    if (bmp == null)
-                        return;
-                    final Bitmap bmpcopy = bmp;
-                    SpeakToolApp.getUiHandler().post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            ImageView ivThumb = ivShareThumbRef.get();
-                            if (ivThumb != null) {
-                                ivThumb.setImageBitmap(bmpcopy);
-                            }
-                        }
-                    });
-
-                }
-            }).start();
-        }
         initDataForType();
 
     }

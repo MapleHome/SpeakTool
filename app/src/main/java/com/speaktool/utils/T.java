@@ -3,10 +3,11 @@ package com.speaktool.utils;
 import android.content.Context;
 import android.widget.Toast;
 
-/**
- * Created by Maple on 2018/3/10.
- */
 
+/**
+ * @author maple
+ * @time 2018/3/10.
+ */
 public class T {
     private T() {
         /* cannot be instantiated */

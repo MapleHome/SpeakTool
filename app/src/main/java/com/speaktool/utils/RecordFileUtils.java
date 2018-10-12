@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.speaktool.Const;
 import com.speaktool.bean.Html5ImageInfoBean;
 import com.speaktool.bean.Html5SoundInfoBean;
@@ -620,7 +621,7 @@ public class RecordFileUtils {
                 delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,
                         Const.SOUND_FILE_SUFFIX));
                 //
-                String line = JsonUtil.toJson(filteredCmds);
+                String line = new Gson().toJson(filteredCmds);
                 line = line.substring(1, line.length() - 1);
                 if (!isFirstCmd)
                     writer.write(",");
@@ -634,7 +635,7 @@ public class RecordFileUtils {
                 for (ICmd cmd : pageCmds) {
                     cmd.setTime(cmd.getTime() - delta);
                 }
-                String line = JsonUtil.toJson(pageCmds);
+                String line = new Gson().toJson(pageCmds);
                 line = line.substring(1, line.length() - 1);
                 if (!isFirstCmd)
                     writer.write(",");
@@ -646,9 +647,9 @@ public class RecordFileUtils {
         }// for files end.
         writer.write("]");
         writer.write(",");
-        writer.write("\"sound\":" + JsonUtil.toJson(sound));
+        writer.write("\"sound\":" + new Gson().toJson(sound));
         writer.write(",");
-        writer.write("\"resources\":" + JsonUtil.toJson(jpgNames));
+        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");
         writer.write("\"inputScreenWidth\":" + info.w);
         writer.write(",");
@@ -729,7 +730,7 @@ public class RecordFileUtils {
                 delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,
                         Const.SOUND_FILE_SUFFIX));
                 //
-                String line = JsonUtil.toJson(filteredCmds);
+                String line = new Gson().toJson(filteredCmds);
                 line = line.substring(1, line.length() - 1);
                 if (!isFirstCmd)
                     writer.write(",");
@@ -743,7 +744,7 @@ public class RecordFileUtils {
                 for (ICmd cmd : pageCmds) {
                     cmd.setTime(cmd.getTime() - delta);
                 }
-                String line = JsonUtil.toJson(pageCmds);
+                String line = new Gson().toJson(pageCmds);
                 line = line.substring(1, line.length() - 1);
 
                 if (!isFirstCmd)
@@ -755,9 +756,9 @@ public class RecordFileUtils {
         }// for files end.
         writer.write("]");
         writer.write(",");
-        writer.write("\"sound\":" + JsonUtil.toJson(sound));
+        writer.write("\"sound\":" + new Gson().toJson(sound));
         writer.write(",");
-        writer.write("\"resources\":" + JsonUtil.toJson(jpgNames));
+        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");
         writer.write("\"inputScreenWidth\":" + info.w);
         writer.write(",");

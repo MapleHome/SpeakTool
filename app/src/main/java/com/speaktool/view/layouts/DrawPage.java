@@ -434,7 +434,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     private void addGif(String gifName) {
         try {
             String imagpath = String.format("%s%s%s", draw.getRecordDir(), File.separator, gifName);
-            final OuterImage img = new OuterImage(this.getContext(), draw, this.makeShapeId());
+            OuterImage img = new OuterImage(this.getContext(), draw, this.makeShapeId());
             GifDrawable gifd = new GifDrawable(imagpath);
 
             img.setResourceID(gifName);
@@ -483,7 +483,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
     private void addStaticPic(String resName) {
         try {
-            final OuterImage img = new OuterImage(this.getContext(), draw, this.makeShapeId());
+            OuterImage img = new OuterImage(this.getContext(), draw, this.makeShapeId());
             img.setResourceID(resName);
             BitmapDrawable bd = (BitmapDrawable) img.getDrawable();
             Bitmap srcbmp = bd.getBitmap();

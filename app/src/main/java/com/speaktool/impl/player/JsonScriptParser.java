@@ -3,6 +3,7 @@ package com.speaktool.impl.player;
 import android.content.Context;
 import android.graphics.Point;
 
+import com.google.gson.Gson;
 import com.speaktool.bean.ChangeEditData;
 import com.speaktool.bean.ChangeImageData;
 import com.speaktool.bean.CreatePenData;
@@ -29,7 +30,6 @@ import com.speaktool.impl.cmd.transform.CmdMoveEdit;
 import com.speaktool.impl.cmd.transform.CmdMoveImage;
 import com.speaktool.impl.cmd.transform.CmdScaleImage;
 import com.speaktool.utils.DisplayUtil;
-import com.speaktool.utils.JsonUtil;
 import com.speaktool.utils.ScreenFitUtil;
 
 import org.json.JSONArray;
@@ -126,7 +126,7 @@ public class JsonScriptParser {
                     JSONObject data = cmdJson.getJSONObject("data");
                     String datatype = data.getString("type");
                     if (datatype.equals("text")) {
-                        CmdCreateEdit cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreateEdit.class);
+                        CmdCreateEdit cmd = new Gson().fromJson(cmdJson.toString(), CmdCreateEdit.class);
                         EditCommonData cdata = cmd.getData();
 
                         PositionData pos = cdata.getPosition();
@@ -136,7 +136,7 @@ public class JsonScriptParser {
                         cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
                         cmds.add(cmd);
                     } else if (datatype.equals("image")) {
-                        CmdCreateImage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreateImage.class);
+                        CmdCreateImage cmd = new Gson().fromJson(cmdJson.toString(), CmdCreateImage.class);
                         ImageCommonData cdata = cmd.getData();
 
                         PositionData pos = cdata.getPosition();
@@ -145,7 +145,7 @@ public class JsonScriptParser {
                         //
                         cmds.add(cmd);
                     } else if (datatype.equals("pen") || datatype.equals("eraser")) {// create pen.
-                        CmdCreatePen cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreatePen.class);
+                        CmdCreatePen cmd = new Gson().fromJson(cmdJson.toString(), CmdCreatePen.class);
                         CreatePenData cdata = cmd.getData();
 
                         cdata.setStrokeWidth(ScreenFitUtil.mapStokeWidthtoCurrentScreen(cdata.getStrokeWidth()));
@@ -165,7 +165,7 @@ public class JsonScriptParser {
                         cmds.add(cmd);
                     }
                 } else if (cmdType.equals(ICmd.TYPE_DELETE_SHAPE)) {
-                    CmdDeleteEdit cmd = JsonUtil.fromJon(cmdJson.toString(), CmdDeleteEdit.class);
+                    CmdDeleteEdit cmd = new Gson().fromJson(cmdJson.toString(), CmdDeleteEdit.class);
                     cmds.add(cmd);
                 } else if (cmdType.equals(ICmd.TYPE_TRANSFORM_SHAPE)) {
                     JSONObject data = cmdJson.getJSONObject("data");
@@ -182,22 +182,22 @@ public class JsonScriptParser {
                         // cmds.add(cmd);
                     }
                 } else if (cmdType.equals(ICmd.TYPE_CREATE_PAGE)) {
-                    CmdCreatePage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCreatePage.class);
+                    CmdCreatePage cmd = new Gson().fromJson(cmdJson.toString(), CmdCreatePage.class);
                     cmds.add(cmd);
                 } else if (cmdType.equals(ICmd.TYPE_SET_ACTIVE_PAGE)) {
-                    CmdActivePage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdActivePage.class);
+                    CmdActivePage cmd = new Gson().fromJson(cmdJson.toString(), CmdActivePage.class);
                     cmds.add(cmd);
                 } else if (cmdType.equals(ICmd.TYPE_COPY_PAGE)) {
-                    CmdCopyPage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdCopyPage.class);
+                    CmdCopyPage cmd = new Gson().fromJson(cmdJson.toString(), CmdCopyPage.class);
                     cmds.add(cmd);
                 } else if (cmdType.equals(ICmd.TYPE_CLEAR_PAGE)) {
-                    CmdClearPage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdClearPage.class);
+                    CmdClearPage cmd = new Gson().fromJson(cmdJson.toString(), CmdClearPage.class);
                     cmds.add(cmd);
                 } else if (cmdType.equals(ICmd.TYPE_DELETE_PAGE)) {
-                    CmdDeletePage cmd = JsonUtil.fromJon(cmdJson.toString(), CmdDeletePage.class);
+                    CmdDeletePage cmd = new Gson().fromJson(cmdJson.toString(), CmdDeletePage.class);
                     cmds.add(cmd);
                 } else if (cmdType.equals(ICmd.TYPE_CHANGE_PAGE_BACKGROUND)) {
-                    CmdChangePageBackground cmd = JsonUtil.fromJon(cmdJson.toString(), CmdChangePageBackground.class);
+                    CmdChangePageBackground cmd = new Gson().fromJson(cmdJson.toString(), CmdChangePageBackground.class);
                     cmds.add(cmd);
                 }
             }
@@ -214,8 +214,7 @@ public class JsonScriptParser {
                 JSONObject seqFirst = data.getJSONArray("sequence")
                         .getJSONObject(0);
                 if (!seqFirst.has("s")) {// move.
-                    CmdMoveImage cmd = JsonUtil.fromJon(cmdJson.toString(),
-                            CmdMoveImage.class);
+                    CmdMoveImage cmd = new Gson().fromJson(cmdJson.toString(), CmdMoveImage.class);
                     ChangeImageData<MoveData> cdata = cmd.getData();
 
                     PositionData pos = cdata.getPosition();
@@ -229,8 +228,7 @@ public class JsonScriptParser {
                     return cmd;
 
                 } else {// scale or rotation.
-                    CmdScaleImage cmd = JsonUtil.fromJon(cmdJson.toString(),
-                            CmdScaleImage.class);
+                    CmdScaleImage cmd = new Gson().fromJson(cmdJson.toString(), CmdScaleImage.class);
                     ChangeImageData<ScaleData> cdata = cmd.getData();
 
                     PositionData pos = cdata.getPosition();
@@ -245,8 +243,7 @@ public class JsonScriptParser {
                     return cmd;
                 }
             } else {// no seq.
-                CmdChangeImageNoSeq cmd = JsonUtil.fromJon(cmdJson.toString(),
-                        CmdChangeImageNoSeq.class);
+                CmdChangeImageNoSeq cmd = new Gson().fromJson(cmdJson.toString(), CmdChangeImageNoSeq.class);
                 ImageCommonData cdata = cmd.getData();
 
                 PositionData pos = cdata.getPosition();
@@ -264,10 +261,9 @@ public class JsonScriptParser {
 
         try {
             if (data.has("sequence")) {
-                JSONObject seqFirst = data.getJSONArray("sequence")
-                        .getJSONObject(0);
+                JSONObject seqFirst = data.getJSONArray("sequence").getJSONObject(0);
                 if (seqFirst.has("x")) {// move.
-                    CmdMoveEdit cmd = JsonUtil.fromJon(cmdJson.toString(), CmdMoveEdit.class);
+                    CmdMoveEdit cmd = new Gson().fromJson(cmdJson.toString(), CmdMoveEdit.class);
                     ChangeEditData<MoveData> cdata = cmd.getData();
 
                     cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
@@ -286,7 +282,7 @@ public class JsonScriptParser {
 
                 }
             } else {// no seq.
-                CmdChangeEditNoSeq cmd = JsonUtil.fromJon(cmdJson.toString(), CmdChangeEditNoSeq.class);
+                CmdChangeEditNoSeq cmd = new Gson().fromJson(cmdJson.toString(), CmdChangeEditNoSeq.class);
                 EditCommonData cdata = cmd.getData();
 
                 PositionData pos = cdata.getPosition();
@@ -310,8 +306,7 @@ public class JsonScriptParser {
             if (!f.isFile())
                 return null;
             List<ICmd> totalCmds = new ArrayList<ICmd>();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(f)));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 totalCmds.addAll(jsonToCmds(line));
@@ -332,8 +327,7 @@ public class JsonScriptParser {
      * @param readlines    读取行
      * @return 操作命令集合
      */
-    public List<ICmd> jsonFileToCmds(String jsonFilePath, int startLine,
-                                     int readlines) {
+    public List<ICmd> jsonFileToCmds(String jsonFilePath, int startLine, int readlines) {
         try {
             File f = new File(jsonFilePath);
             if (!f.exists())
@@ -341,14 +335,11 @@ public class JsonScriptParser {
             if (!f.isFile())
                 return null;
             List<ICmd> totalCmds = new ArrayList<ICmd>();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(f)));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
             for (int i = 0; i < startLine; i++)
                 reader.readLine();
-
             String line = null;
             while ((line = reader.readLine()) != null && readlines > 0) {
-
                 totalCmds.addAll(jsonToCmds(line));
                 readlines -= 1;
             }
