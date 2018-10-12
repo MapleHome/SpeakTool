@@ -11,7 +11,7 @@ import android.os.Looper;
  * @author shaoshuai
  */
 public abstract class BaseRunnable<Progress, Result> implements Runnable, IRunnable<Progress, Result> {
-    protected final Handler uiHandler = new Handler();
+    protected Handler uiHandler = new Handler();
 
     public BaseRunnable() {
         super();

@@ -31,7 +31,6 @@ public abstract class AbsListScrollListener implements OnScrollListener {
     }
 
     public final void setVisibleItems(int first, int last) {
-
         mfirstVisibleItem = first;
         mlastvisibleItem = last;
     }

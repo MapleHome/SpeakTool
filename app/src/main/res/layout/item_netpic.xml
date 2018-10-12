@@ -14,7 +14,7 @@
         android:indeterminateDuration="1000"
         android:indeterminateOnly="true" />
 
-    <com.speaktool.ui.custom.gif.GifImageView
+    <com.speaktool.view.gif.GifImageView
         android:id="@+id/ivGif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -5,7 +5,7 @@
     android:background="@android:color/darker_gray"
     android:orientation="vertical">
 
-    <com.speaktool.ui.custom.gif.GifImageView
+    <com.speaktool.view.gif.GifImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

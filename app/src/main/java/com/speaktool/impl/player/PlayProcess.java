@@ -6,12 +6,11 @@ import android.view.View;
 
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.service.PlayService;
-import com.speaktool.ui.activity.DrawActivity;
 import com.speaktool.utils.RecordFileUtils;
+import com.speaktool.utils.ScreenFitUtil;
 
 import java.io.File;
 
@@ -107,27 +106,16 @@ public class PlayProcess {
 
             }).start();
         } else if (ACTION_MAKE_RELEASE_SCRIPT.equals(action)) {
-            final ScreenInfoBean info = (ScreenInfoBean) intent.getSerializableExtra(EXTRA_SCREEN_INFO);
             final String dirPath = intent.getStringExtra(EXTRA_RECORD_DIR);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
+                        ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
                         RecordFileUtils.makeReleaseScript(new File(dirPath), context, info);
-
-                        Intent makeResultIntent = new Intent(ACTION_MAKE_RESULT);
-                        makeResultIntent.putExtra(EXTRA_MAKE_RESULT, MAKE_SUECESS);
-                        context.sendBroadcast(makeResultIntent);
-
                         stopPlayProcess(context);
-
                     } catch (Exception e) {
                         e.printStackTrace();
-                        // loading.dismiss();
-                        Intent makeResultIntent = new Intent(ACTION_MAKE_RESULT);
-                        makeResultIntent.putExtra(EXTRA_MAKE_RESULT, MAKE_FAIL);
-                        context.sendBroadcast(makeResultIntent);
-                        //
                         stopPlayProcess(context);
                     }
                 }

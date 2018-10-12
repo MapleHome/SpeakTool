@@ -34,22 +34,7 @@ public class DisplayUtil {
      * @return
      */
     public static int getScreenDensity(Context context) {
-        return (int) context.getResources().getDisplayMetrics().densityDpi;
-    }
-
-    /**
-     * 获取屏幕大小dp
-     *
-     * @param context
-     * @return
-     */
-    public static Point getScreenSizeDip(Context context) {
-
-        Point p = getScreenSize(context);
-        p.x = (int) DensityUtils.px2dp(context, p.x);
-        p.y = (int) DensityUtils.px2dp(context, p.y);
-        return p;
-
+        return context.getResources().getDisplayMetrics().densityDpi;
     }
 
     /**

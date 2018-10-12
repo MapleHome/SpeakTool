@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.speaktool.Const;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.LocalRecordBean;
@@ -11,7 +12,6 @@ import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.utils.JsonUtil;
 import com.speaktool.utils.MD5Util;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
@@ -266,7 +266,7 @@ public class PageRecorder {
         scriptData.setVersion(1);
         scriptData.setWbEvents(cmdList);
         //
-        String cmdjson = JsonUtil.toJson(scriptData);
+        String cmdjson = new Gson().toJson(scriptData);
         try {
             BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cmdFile, true)));
             bufw.write(cmdjson + "\n");
@@ -287,6 +287,8 @@ public class PageRecorder {
     }
 
     /**
+     * 保存info.txt
+     * <p>
      * 设置记录信息
      *
      * @param info

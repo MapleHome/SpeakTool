@@ -5,7 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by Maple on 2018/4/7.
+ * @author maple
+ * @time 2018/4/7
  */
 public class FileIOUtils {
 

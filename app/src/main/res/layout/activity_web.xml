@@ -39,7 +39,7 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-    <com.speaktool.ui.layouts.MyProgress
+    <com.speaktool.view.layouts.MyProgress
         android:id="@+id/mp_ProgressBar"
         android:layout_width="match_parent"
         android:layout_height="5dp" />

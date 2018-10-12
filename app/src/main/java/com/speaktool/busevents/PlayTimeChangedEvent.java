@@ -2,29 +2,26 @@ package com.speaktool.busevents;
 
 /**
  * 播放时间改变事件
- * 
+ *
  * @author shaoshuai
- * 
  */
 public class PlayTimeChangedEvent {
+    private final long now;
+    private final long closeTime;
 
-	private final long now;
+    public PlayTimeChangedEvent(long now, long closeTime) {
+        super();
+        this.now = now;
+        this.closeTime = closeTime;
+    }
 
-	private final long closeTime;
+    public long getNow() {
+        return now;
+    }
 
-	public PlayTimeChangedEvent(long now, long closeTime) {
-		super();
-		this.now = now;
-		this.closeTime = closeTime;
-	}
+    public long getCloseTime() {
 
-	public long getNow() {
-		return now;
-	}
-
-	public long getCloseTime() {
-
-		return closeTime;
-	}
+        return closeTime;
+    }
 
 }

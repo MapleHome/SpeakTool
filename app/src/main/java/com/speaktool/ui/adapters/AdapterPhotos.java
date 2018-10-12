@@ -5,14 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
-import com.google.common.collect.Lists;
 import com.speaktool.ui.base.AbsAdapter;
-import com.speaktool.ui.layouts.MulticheckableView;
+import com.speaktool.view.layouts.MulticheckableView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterPhotos extends AbsAdapter<String> {
-    private List<Integer> mCheckedItemIndexs = Lists.newArrayList();
+    private List<Integer> mCheckedItemIndexs = new ArrayList<>();
 
     public AdapterPhotos(Context ctx, List<String> datas) {
         super(ctx, datas);

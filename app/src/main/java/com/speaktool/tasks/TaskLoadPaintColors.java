@@ -1,10 +1,10 @@
 package com.speaktool.tasks;
 
-import com.google.common.collect.Lists;
 import com.speaktool.R;
 import com.speaktool.bean.PaintInfoBean;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
@@ -14,7 +14,7 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
     }
 
     private static List<PaintInfoBean> datas;
-    private static final Object lock = new Object();
+    private static Object lock = new Object();
 
     private final static int[][] colors = {
             {MyColors.BLACK, R.drawable.black, R.drawable.black_seleted},
@@ -27,7 +27,7 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
             {MyColors.DARK_BLUE, R.drawable.darkblue, R.drawable.darkblue_seleted}
     };
 
-    private final WeakReference<Callback> mListener;
+    private WeakReference<Callback> mListener;
 
     public TaskLoadPaintColors(Callback listener) {
         super();
@@ -38,14 +38,13 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
     public Void doBackground() {
         synchronized (lock) {
             if (datas == null) {
-                datas = Lists.newArrayList();
+                datas = new ArrayList<>();
                 for (int[] one : colors) {
                     PaintInfoBean item = new PaintInfoBean();
                     item.setColor(one[0]);
                     item.setIconResId(one[1]);
                     item.setIconResIdSelected(one[2]);
                     datas.add(item);
-
                 }
             }
         }// synchronized
@@ -58,7 +57,6 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
                 if (null != listener) {
                     listener.onLoaded(datas);
                 }
-
             }
         });
 

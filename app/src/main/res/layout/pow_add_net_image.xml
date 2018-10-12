@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="500dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/shape_pow_bg"
         android:orientation="vertical"
         android:padding="5dp">
 
-        <com.speaktool.ui.layouts.SearchView
+        <com.speaktool.view.layouts.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,14 +18,14 @@
             android:paddingBottom="5dp"
             android:paddingTop="5dp" />
 
-        <RelativeLayout
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/layContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp">
 
-            <com.handmark.pulltorefresh.library.PullToRefreshGridView
+            <GridView
                 android:id="@+id/listNetImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/darker_gray" />
-        </RelativeLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
 
 </LinearLayout>

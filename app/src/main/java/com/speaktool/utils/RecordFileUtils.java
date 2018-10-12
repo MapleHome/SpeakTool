@@ -7,8 +7,7 @@ import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import com.speaktool.Const;
 import com.speaktool.bean.Html5ImageInfoBean;
 import com.speaktool.bean.Html5SoundInfoBean;
@@ -16,8 +15,6 @@ import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.TransformShapeData;
-import com.speaktool.bean.UserBean;
-import com.speaktool.dao.UserDatabase;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.player.JsonScriptParser;
 
@@ -29,9 +26,12 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -85,11 +85,6 @@ public class RecordFileUtils {
             }
         }
         String uid = "weirenling";
-        if (UserDatabase.getUserLoginState(mContext) == UserBean.STATE_OUT) {
-            // TODO 获取SP中保存的用户
-        } else {
-            uid = UserDatabase.getUserLocalSession(mContext).getId();
-        }
         final RecordUploadBean recordUploadBean = new RecordUploadBean();
         recordUploadBean.setZipFilePath(zip.getAbsolutePath());
         recordUploadBean.setCourseType(RecordUploadBean.COURSE_TYPE_SCRIPT);// 脚本类型
@@ -273,7 +268,11 @@ public class RecordFileUtils {
         return null;
     }
 
+    /**
+     * 获取所有CMD文件，并按时间排序
+     */
     public static List<File> getAllCmdFilesSortByTime(File dir) {
+        // 获取所有cmd文件
         File[] files = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -287,8 +286,8 @@ public class RecordFileUtils {
         });
         if (files == null)
             return null;
-        //
         List<File> filelist = Arrays.asList(files);
+        // 按时间排序
         Collections.sort(filelist, new Comparator<File>() {
             @Override
             public int compare(File lhs, File rhs) {
@@ -525,30 +524,13 @@ public class RecordFileUtils {
         if (dir == null || !dir.exists())
             return;
         File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files)
-                f.delete();
-        }
-        dir.delete();
-    }
-
-    /**
-     * 删除未发布文件
-     *
-     * @param dir
-     */
-    public static void deleteNonReleaseFiles(File dir) {
-        if (dir == null || !dir.exists())
-            return;
-        File[] files = dir.listFiles();
         if (files == null || files.length < 1)
             return;
-        for (File f : files) {
-            if (!isReleaseFile(f.getName())) {
-                f.delete();
-            }
-        }
+//        for (File f : files)
+//            f.delete();
+//        dir.delete();
     }
+
 
     /**
      * 是否是发布文件
@@ -586,30 +568,30 @@ public class RecordFileUtils {
         if (jsonFiles == null || jsonFiles.isEmpty())
             return;
         final JsonScriptParser parser = new JsonScriptParser(context);
-        int sz = jsonFiles.size();
+
         // final ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
-            jpgNames = Lists.newLinkedList();
+            jpgNames = new LinkedList<>();
         }
 
         final Html5SoundInfoBean sound = getScriptSound(dir, pageId);
 
-        File realeaseJsonScript = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
-        if (realeaseJsonScript.exists())
-            realeaseJsonScript.delete();
-        realeaseJsonScript.createNewFile();
+        File releaseFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
+        if (releaseFile.exists())
+            releaseFile.delete();
+        releaseFile.createNewFile();
 
-        FileOutputStream ous = new FileOutputStream(realeaseJsonScript, true);
+        FileOutputStream ous = new FileOutputStream(releaseFile, true);
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ous), 10240);
 
         writer.write("{\"wbEvents\":[");
         boolean isFirstCmd = true;
         long delta = 0;
-        List<ICmd> filteredCmds = Lists.newArrayList();
-        Map<Integer, Boolean> transformCmd = Maps.newHashMap();
+        List<ICmd> filteredCmds = new ArrayList<>();
+        Map<Integer, Boolean> transformCmd = new HashMap<>();
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < jsonFiles.size(); i++) {
             File jsonf = jsonFiles.get(i);
             List<ICmd> pageCmds = parser.jsonFileToCmds(jsonf.getAbsolutePath());
             if (pageCmds == null || pageCmds.isEmpty())
@@ -639,7 +621,7 @@ public class RecordFileUtils {
                 delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,
                         Const.SOUND_FILE_SUFFIX));
                 //
-                String line = JsonUtil.toJson(filteredCmds);
+                String line = new Gson().toJson(filteredCmds);
                 line = line.substring(1, line.length() - 1);
                 if (!isFirstCmd)
                     writer.write(",");
@@ -653,7 +635,7 @@ public class RecordFileUtils {
                 for (ICmd cmd : pageCmds) {
                     cmd.setTime(cmd.getTime() - delta);
                 }
-                String line = JsonUtil.toJson(pageCmds);
+                String line = new Gson().toJson(pageCmds);
                 line = line.substring(1, line.length() - 1);
                 if (!isFirstCmd)
                     writer.write(",");
@@ -665,9 +647,9 @@ public class RecordFileUtils {
         }// for files end.
         writer.write("]");
         writer.write(",");
-        writer.write("\"sound\":" + JsonUtil.toJson(sound));
+        writer.write("\"sound\":" + new Gson().toJson(sound));
         writer.write(",");
-        writer.write("\"resources\":" + JsonUtil.toJson(jpgNames));
+        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");
         writer.write("\"inputScreenWidth\":" + info.w);
         writer.write(",");
@@ -697,13 +679,11 @@ public class RecordFileUtils {
         List<File> jsonFiles = RecordFileUtils.getAllCmdFilesSortByTime(dir);
         if (jsonFiles == null || jsonFiles.isEmpty())
             return;
-        final JsonScriptParser parser = new JsonScriptParser(context);
-        int sz = jsonFiles.size();
-
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
-            jpgNames = Lists.newLinkedList();
+            jpgNames = new LinkedList<>();
         }
+
         final Html5SoundInfoBean sound = getScriptSound(dir, -1);
 
         File realeaseJsonScript = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
@@ -717,11 +697,12 @@ public class RecordFileUtils {
         writer.write("{\"wbEvents\":[");
         boolean isFirstCmd = true;
         long delta = 0;
-        List<ICmd> filteredCmds = Lists.newArrayList();
-        Map<Integer, Boolean> transformCmd = Maps.newHashMap();
+        List<ICmd> filteredCmds = new ArrayList<>();
+        Map<Integer, Boolean> transformCmd = new HashMap<>();
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < jsonFiles.size(); i++) {
             File jsonf = jsonFiles.get(i);
+            JsonScriptParser parser = new JsonScriptParser(context);
             List<ICmd> pageCmds = parser.jsonFileToCmds(jsonf.getAbsolutePath());
             if (pageCmds == null || pageCmds.isEmpty())
                 continue;
@@ -740,19 +721,16 @@ public class RecordFileUtils {
                             filteredCmds.add(0, copy != null ? copy : cmd);
                         } else
                             Log.e(tag, "repeat cmd");
-
                     } else {// not transform.
-
                         cmd.setTime(ICmd.TIME_DELETE_FLAG);
                         ICmd copy = cmd.copy();
                         filteredCmds.add(0, copy != null ? copy : cmd);
-
                     }
                 }// for cmds end.
                 delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,
                         Const.SOUND_FILE_SUFFIX));
                 //
-                String line = JsonUtil.toJson(filteredCmds);
+                String line = new Gson().toJson(filteredCmds);
                 line = line.substring(1, line.length() - 1);
                 if (!isFirstCmd)
                     writer.write(",");
@@ -766,7 +744,7 @@ public class RecordFileUtils {
                 for (ICmd cmd : pageCmds) {
                     cmd.setTime(cmd.getTime() - delta);
                 }
-                String line = JsonUtil.toJson(pageCmds);
+                String line = new Gson().toJson(pageCmds);
                 line = line.substring(1, line.length() - 1);
 
                 if (!isFirstCmd)
@@ -778,9 +756,9 @@ public class RecordFileUtils {
         }// for files end.
         writer.write("]");
         writer.write(",");
-        writer.write("\"sound\":" + JsonUtil.toJson(sound));
+        writer.write("\"sound\":" + new Gson().toJson(sound));
         writer.write(",");
-        writer.write("\"resources\":" + JsonUtil.toJson(jpgNames));
+        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");
         writer.write("\"inputScreenWidth\":" + info.w);
         writer.write(",");
@@ -895,7 +873,7 @@ public class RecordFileUtils {
         if (jpgNames == null || jpgNames.length <= 0)
             return null;
         Log.e(tag, "jpgNames:" + jpgNames.toString());
-        List<Html5ImageInfoBean> jpgBeans = Lists.newLinkedList();
+        List<Html5ImageInfoBean> jpgBeans = new LinkedList<>();
         Html5ImageInfoBean bean = null;
         for (String jpgName : jpgNames) {
             bean = new Html5ImageInfoBean();

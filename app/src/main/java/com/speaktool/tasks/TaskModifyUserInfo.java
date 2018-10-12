@@ -1,22 +1,19 @@
 package com.speaktool.tasks;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.Map;
+import android.text.TextUtils;
+
+import com.speaktool.bean.UserBean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.text.TextUtils;
-
-import com.google.common.collect.Maps;
-import com.speaktool.SpeakToolApp;
-import com.speaktool.bean.UserBean;
-import com.speaktool.dao.UserDatabase;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
 
-    public  interface ModifyUserInfoCallback {
+    public interface ModifyUserInfoCallback {
         void onConnectFail();
 
         void onResponseFail();
@@ -24,11 +21,11 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
         void onSuccess();
     }
 
-    private final WeakReference<ModifyUserInfoCallback> mListener;
+    private ModifyUserInfoCallback mListener;
     private UserBean userBean;
 
     public TaskModifyUserInfo(ModifyUserInfoCallback listener, UserBean user) {
-        mListener = new WeakReference<ModifyUserInfoCallback>(listener);
+        mListener = listener;
         this.userBean = user;
     }
 
@@ -40,7 +37,7 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
     @Override
     public Void doBackground() {
 
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         params.put("uid", userBean.getId());
         params.put("realName", userBean.getNickName());
         params.put("intro", userBean.getIntroduce());
@@ -48,7 +45,7 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
         if (!TextUtils.isEmpty(userBean.getPortraitPath())) {
             File photo = new File(userBean.getPortraitPath());
             if (photo.exists()) {
-                paramsFile = Maps.newHashMap();
+                paramsFile = new HashMap<>();
                 paramsFile.put("photo", photo);
             }
         }
@@ -57,55 +54,20 @@ public class TaskModifyUserInfo extends BaseRunnable<Integer, Void> {
 //				UniversalHttp.post(Const.USER_MODIFY_URL, params, paramsFile);
                 null;
         if (TextUtils.isEmpty(result)) {
-            uiHandler.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    ModifyUserInfoCallback listener = mListener.get();
-                    if (null != listener) {
-                        listener.onConnectFail();
-                    }
-                }
-            });
+            mListener.onConnectFail();
             return null;
         }
         try {
             JSONObject response = new JSONObject(result);
             int resultcode = response.getInt("result");
             if (resultcode == 0) {
-                UserDatabase.saveUserLocalSession(userBean, SpeakToolApp.app());
-                //
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ModifyUserInfoCallback listener = mListener.get();
-                        if (null != listener) {
-                            listener.onSuccess();
-                        }
-                    }
-                });
+                mListener.onSuccess();
             } else {//
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ModifyUserInfoCallback listener = mListener.get();
-                        if (null != listener) {
-                            listener.onResponseFail();
-                        }
-                    }
-                });
+                mListener.onResponseFail();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    ModifyUserInfoCallback listener = mListener.get();
-                    if (null != listener) {
-                        listener.onResponseFail();
-                    }
-                }
-            });
+            mListener.onResponseFail();
         }
         return null;
     }

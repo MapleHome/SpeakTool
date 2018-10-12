@@ -1,39 +1,36 @@
 package com.speaktool.tasks;
 
-import java.lang.ref.WeakReference;
-import java.util.List;
-import java.util.Map;
+import android.text.TextUtils;
+
+import com.speaktool.bean.NetPictureBean;
+import com.speaktool.utils.BitmapScaleUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.text.TextUtils;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.speaktool.bean.NetPictureBean;
-import com.speaktool.utils.BitmapScaleUtil;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
 
-    public  interface SearchNetPicturesCallback {
+    public interface SearchNetPicturesCallback {
         void onConnectFail();
 
         void onFail();
 
         void onSuccess(List<NetPictureBean> ret);
-
     }
 
-    private static final String SEARCH_URL = "http://pic.sogou.com/pics";
+    private static String SEARCH_URL = "http://pic.sogou.com/pics";
     private final WeakReference<SearchNetPicturesCallback> mListener;
     private String searchKey;
     private int startIndex;
 
-    public TaskSearchNetPictures(SearchNetPicturesCallback listener,
-                                 String searchKey, int startIndex) {
-
+    public TaskSearchNetPictures(SearchNetPicturesCallback listener, String searchKey, int startIndex) {
         mListener = new WeakReference<SearchNetPicturesCallback>(listener);
         this.searchKey = searchKey;
         this.startIndex = startIndex;
@@ -48,7 +45,7 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
     @Override
     public Void doBackground() {
 
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, String> params = new HashMap<>();
         params.put("query", searchKey);
         params.put("start", startIndex + "");
         params.put("reqType", "ajax");
@@ -64,21 +61,16 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
                     if (null != listener) {
                         listener.onConnectFail();
                     }
-
                 }
             });
-
             return null;
-
         }
         try {
 
             JSONObject response = new JSONObject(result);
-
-            final List<NetPictureBean> ret = Lists.newArrayList();
+            final List<NetPictureBean> ret = new ArrayList<>();
             String totalItems = response.getString("totalItems");
             if ("0".equals(totalItems)) {
-
                 uiHandler.post(new Runnable() {
 
                     @Override
@@ -87,7 +79,6 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
                         if (null != listener) {
                             listener.onSuccess(ret);
                         }
-
                     }
                 });
                 return null;
@@ -103,7 +94,6 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
                         if (null != listener) {
                             listener.onSuccess(ret);
                         }
-
                     }
                 });
                 return null;
@@ -129,7 +119,6 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
                     if (null != listener) {
                         listener.onSuccess(ret);
                     }
-
                 }
             });
 
@@ -143,7 +132,6 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
                     if (null != listener) {
                         listener.onFail();
                     }
-
                 }
             });
         }

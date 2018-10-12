@@ -7,7 +7,6 @@ package com.speaktool.bean;
  * 
  */
 public class PaintInfoBean {
-
 	private int color;// 颜色
 	private int iconResId;// 默认背景
 	private int iconResIdSelected;// 选中背景

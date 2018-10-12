@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadFactory;
 
 public class MyThreadFactory implements ThreadFactory {
 
-    private final String mThreadName;
+    private String mThreadName;
 
     public MyThreadFactory(String threadName) {
         mThreadName = threadName;

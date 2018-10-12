@@ -5,8 +5,8 @@ import android.graphics.Paint;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
 import com.speaktool.bean.PaintInfoBean;
-import com.speaktool.utils.DensityUtils;
 import com.speaktool.tasks.MyColors;
+import com.speaktool.utils.DensityUtils;
 
 /**
  * 绘画笔
@@ -14,12 +14,9 @@ import com.speaktool.tasks.MyColors;
  * @author Maple Shao
  */
 public class DrawPaint {
-    /**
-     * 默认笔迹宽度（dip）
-     */
-    private static final float DEFAULT_STROKE_WIDTH = 1.5f;
+    private static final float DEFAULT_STROKE_WIDTH = 1.5f; //默认笔迹宽度（dip）
 
-    private final Paint mDrawPaint = new Paint();
+    private Paint mDrawPaint = new Paint();
     private static PaintInfoBean globalPaintInfo;
 
     static {
