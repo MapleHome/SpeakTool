@@ -23,7 +23,6 @@ public class TaskSearchNetPictures extends BaseRunnable<Integer, Void> {
         void onFail();
 
         void onSuccess(List<NetPictureBean> ret);
-
     }
 
     private static final String SEARCH_URL = "http://pic.sogou.com/pics";

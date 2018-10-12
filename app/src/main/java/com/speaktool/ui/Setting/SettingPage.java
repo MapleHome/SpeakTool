@@ -1,10 +1,7 @@
 package com.speaktool.ui.Setting;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.util.LruCache;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +15,8 @@ import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.tasks.TaskGetNetImage;
-import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
 import com.speaktool.ui.Login.UserLoginPage;
 import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.view.dialogs.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -78,7 +72,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
             session.setEmail("939078792@qq.com");
 
 //            UserBean session = UserDatabase.getUserLocalSession(mContext);
-            setPortrait(session.getPortraitPath());// 设置头像
+//            setPortrait(session.getPortraitPath());// 设置头像
             user_name.setText(session.getNickName());// 用户名
             bt_logout.setVisibility(View.VISIBLE);// 注销按钮
             // session.getIntroduce()// 简介
@@ -153,45 +147,6 @@ public class SettingPage extends BaseFragment implements OnClickListener {
         initData(getArguments());
         EventBus.getDefault().post(new RefreshCourseListEvent());
         fm.popBackStack();// 退出当前页面
-
-    }
-
-    private String portraitPath;// 头像路径
-    private static LruCache<String, Bitmap> portraitCache = new LruCache<String, Bitmap>(1024 * 500) {
-        @Override
-        protected int sizeOf(String key, Bitmap value) {
-            return value.getHeight() * value.getRowBytes();
-        }
-    };
-
-    /**
-     * 设置头像路径
-     */
-    public void setPortrait(final String imagepath) {
-        if (TextUtils.isEmpty(imagepath))
-            return;
-        portraitPath = imagepath;
-        Bitmap cache = portraitCache.get(imagepath);
-        if (cache != null) {
-            ib_userPortrait.setImageBitmap(cache);
-            return;
-        }
-        if (portraitPath.startsWith("http://")) {
-            new Thread(new TaskGetNetImage(new NetImageLoadListener() {
-                @Override
-                public void onNetImageLoaded(Bitmap result) {
-                    if (result != null) {
-                        ib_userPortrait.setImageBitmap(result);
-                        portraitCache.put(imagepath, result);
-                    }
-                }
-            }, portraitPath)).start();
-
-        } else {
-            Bitmap bp = BitmapScaleUtil.decodeSampledBitmapFromPath(portraitPath, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
-            ib_userPortrait.setImageBitmap(bp);
-            portraitCache.put(imagepath, bp);
-        }
     }
 
     /**

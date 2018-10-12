@@ -22,29 +22,20 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.NetPictureBean;
-import com.speaktool.bean.PicDataHolder;
 import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.busevents.NetPictureThumbnailLoadedEvent;
 import com.speaktool.tasks.MyThreadFactory;
-import com.speaktool.tasks.TaskGetNetImage;
-import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
-import com.speaktool.tasks.TaskLoadPictureSearchCategory;
 import com.speaktool.tasks.TaskSearchNetPictures;
 import com.speaktool.tasks.TaskSearchNetPictures.SearchNetPicturesCallback;
 import com.speaktool.ui.adapters.AdapterNetPictures;
-import com.speaktool.ui.base.AbsListScrollListener;
-import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.NetUtil;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.LoadingDialog;
-import com.speaktool.view.gif.GifDrawable;
 import com.speaktool.view.layouts.ItemViewNetPicture;
 import com.speaktool.view.layouts.SearchView;
 import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
@@ -52,7 +43,6 @@ import com.speaktool.view.popupwindow.CategoryPoW.SearchCategoryChangedListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -66,8 +56,8 @@ import java.util.concurrent.Executors;
  *
  * @author shaoshuai
  */
-public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener, OnDismissListener, OnItemClickListener,
-        NetImageLoadListener, SearchCategoryChangedListener {
+public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener,
+        OnDismissListener, OnItemClickListener, SearchCategoryChangedListener {
     private SearchView mSearchView;
     private SmartRefreshLayout layContent;
     private GridView mNetPicsGrid;
@@ -77,7 +67,6 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
     private ExecutorService singleExecutor = Executors
             .newSingleThreadExecutor(new MyThreadFactory("getNetImageThread"));
     private AdapterNetPictures mAdapterNetPictures;
-    private AsyncDataLoader<String, PicDataHolder> mDataLoader;
     private LoadingDialog mLoadingDialog;
 
     @Override
@@ -85,15 +74,13 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         return LayoutInflater.from(mContext).inflate(R.layout.pow_add_net_image, null);
     }
 
-    public L_M_AddNetImgPoW(Context context, View view, Draw draw, AsyncDataLoader<String, PicDataHolder> loader) {
-        this(context, view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw, loader);
+    public L_M_AddNetImgPoW(Context context, View view, Draw draw) {
+        this(context, view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
     }
 
-    public L_M_AddNetImgPoW(Context context, View view, int w, int h, Draw draw,
-                            AsyncDataLoader<String, PicDataHolder> loader) {
+    public L_M_AddNetImgPoW(Context context, View view, int w, int h, Draw draw) {
         super(context, view, w, h);
         mDraw = draw;
-        mDataLoader = loader;
         EventBus.getDefault().register(this);
         mLoadingDialog = new LoadingDialog(mContext);
 
@@ -105,7 +92,6 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         // mNetPicsGrid.getRefreshableView().setColumnWidth(mRootView.getWidth()/6);
 //        mNetPicsGrid.setMode(Mode.BOTH);
 //        mNetPicsGrid.setOnRefreshListener(this);
-        mNetPicsGrid.setOnScrollListener(netpicGridAbsListScrollListener);
         layContent.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -123,8 +109,8 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
             }
         });
 
-        SearchCategoryBean defCategory = TaskLoadPictureSearchCategory.getDefCategory(mContext);
-        mSearchView.setCategory(defCategory);
+        SearchCategoryBean type = new SearchCategoryBean("网络搜索", SearchCategoryBean.CID_BAIDU_SEARCH);
+        mSearchView.setCategory(type);
         //
         mNetPicsGrid.setEmptyView(makeEmptyView("还没有图片，请重新搜索。"));
 
@@ -136,7 +122,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         mSearchView.setSearchClickListener(this);
         netImagePreview.setOnClickListener(this);
         this.setOnDismissListener(this);
-        switchUi(defCategory.getCategoryId());
+        switchUi(type.getCategoryId());
     }
 
     @Override
@@ -172,47 +158,6 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         }
     }
 
-    private AbsListScrollListener netpicGridAbsListScrollListener = new AbsListScrollListener() {
-        @Override
-        public void whenIdle() {
-            for (int i = mfirstVisibleItem; i <= mlastvisibleItem; i++) {
-                NetPictureBean bean = (NetPictureBean) mAdapterNetPictures.getItem(i);
-                final String imageUrl = bean.thumbUrl;
-                if (TextUtils.isEmpty(imageUrl))
-                    continue;
-                final ItemViewNetPicture item = (ItemViewNetPicture) mNetPicsGrid.findViewWithTag(imageUrl);
-                if (item == null)
-                    continue;
-                if (mDataLoader == null) {
-                    return;
-                }
-                final PicDataHolder cache = mDataLoader.load(imageUrl, item.getWidth(), item.getHeight());
-                //
-                if (cache != null) {
-                    if (BitmapScaleUtil.isGif(imageUrl)) {
-                        GifDrawable gifd;
-                        try {
-                            gifd = new GifDrawable(cache.gif);
-                            item.setImage(gifd);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            item.setImage(new BitmapDrawable(getErrorBmp()));
-                        }
-                    } else {// bmp.
-                        Bitmap bpScaled = BitmapFactory.decodeByteArray(cache.bpScaled, 0, cache.bpScaled.length);
-                        item.setImage(new BitmapDrawable(bpScaled));
-                    }
-                } else {
-                    item.setLoading();
-                }
-            }
-        }
-
-        @Override
-        public void whenFling() {
-            mDataLoader.cancelAll();
-        }
-    };
 
     private void switchUi(int id) {
         switch (id) {
@@ -258,8 +203,9 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
     }
 
     private void picUrlSearch(String inputUrl) {
-        mLoadingDialog.show();
-        singleExecutor.execute(new TaskGetNetImage(this, inputUrl));
+//        mLoadingDialog.show();
+//        singleExecutor.execute(new TaskGetNetImage(this, inputUrl));
+//        netImagePreview.setImageBitmap(result);
     }
 
     private void baiduSearch(String inputKeyword) {
@@ -308,15 +254,15 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
             oldData.addAll(result);
             mAdapterNetPictures.refresh(oldData);
             //
-            SpeakToolApp.getUiHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    int first = mNetPicsGrid.getFirstVisiblePosition();
-                    int last = mNetPicsGrid.getLastVisiblePosition();
-                    netpicGridAbsListScrollListener.setVisibleItems(first, last);
-                    netpicGridAbsListScrollListener.whenIdle();
-                }
-            });
+//            SpeakToolApp.getUiHandler().post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    int first = mNetPicsGrid.getFirstVisiblePosition();
+//                    int last = mNetPicsGrid.getLastVisiblePosition();
+//                    netpicGridAbsListScrollListener.setVisibleItems(first, last);
+//                    netpicGridAbsListScrollListener.whenIdle();
+//                }
+//            });
         }
 
         @Override
@@ -349,8 +295,12 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
     }
 
     private void switchVisibilityPopDropdown(View anchor) {
+        List<SearchCategoryBean> ret = new ArrayList<>();
+        ret.add(new SearchCategoryBean("网络搜索", SearchCategoryBean.CID_BAIDU_SEARCH));
+        ret.add(new SearchCategoryBean("网址搜索", SearchCategoryBean.CID_PIC_URL));
+
         CategoryPoW pp = new CategoryPoW(mContext, mAnchorView, anchor, this);
-        pp.refreshCategoryList(TaskLoadPictureSearchCategory.getCategories(mContext));
+        pp.refreshCategoryList(ret);
         pp.showPopupWindow(WeiZhi.Bottom);
     }
 
@@ -358,128 +308,26 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
     public void onDismiss() {
         EventBus.getDefault().unregister(this);
         singleExecutor.shutdownNow();
-        mDataLoader = null;
-
     }
 
     private boolean isHaveMore = true;
     private List<NetPictureBean> oldData = new ArrayList<>();
 
-    private void addImgFail() {
-        SpeakToolApp.getUiHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                T.showShort(mContext, "图片添加失败！");
-            }
-        });
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        final NetPictureBean bean = (NetPictureBean) parent.getAdapter().getItem(position);
-        if (bean == null)
-            return;
-        mLoadingDialog.show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (BitmapScaleUtil.isGif(bean.picUrl)) {// gif.
-                    PicDataHolder cache = mDataLoader.getCache(bean.picUrl);
-                    if (cache != null) {// cache.
-                        try {
-                            final String gifName = RecordFileUtils.copyGifToRecordDir(cache.gif, mDraw.getRecordDir());
-                            SpeakToolApp.getUiHandler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mDraw.getCurrentBoard().addImg(gifName);
-                                }
-                            });
-                        } catch (Exception e) {
-                            addImgFail();
-                            e.printStackTrace();
-                        }
-                    } else {// download.
-                        try {
-                            byte[] buf =
-//									UniversalHttp.downloadFile(bean.picUrl, "http://img4.duitang.com");// gif.
-                                    null;
-                            if (buf != null) {
-                                final String gifName = RecordFileUtils.copyGifToRecordDir(buf, mDraw.getRecordDir());
-                                SpeakToolApp.getUiHandler().post(new Runnable() {
+        NetPictureBean bean = (NetPictureBean) parent.getAdapter().getItem(position);
 
-                                    @Override
-                                    public void run() {
-                                        // stub
-                                        mDraw.getCurrentBoard().addImg(gifName);
-                                    }
-                                });
-                            } else {
-                                addImgFail();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            addImgFail();
-                        }
-                    }
-                } else {// bitmap.
-                    PicDataHolder cache = mDataLoader.getCache(bean.picUrl);
-                    if (cache != null) {
-                        final String resName = RecordFileUtils.copyBitmapToRecordDir(cache.bpScaled,
-                                mDraw.getRecordDir());
-                        SpeakToolApp.getUiHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mDraw.getCurrentBoard().addImg(resName);
-                            }
-                        });
-                    } else {// download bmp.
-                        Bitmap bmpScaled = BitmapScaleUtil.decodeSampledBitmapFromUrl(bean.picUrl,
-                                Const.MAX_MEMORY_BMP_CAN_ALLOCATE, "http://img4.duitang.com");
+        // gif
+//        bean.picUrl
+//        String gifName = RecordFileUtils.copyGifToRecordDir(cache.gif, mDraw.getRecordDir());
+//        mDraw.getCurrentBoard().addImg(gifName);
+        // bitmap.
+//        Bitmap bmpScaled = BitmapScaleUtil.decodeSampledBitmapFromUrl(bean.picUrl,
+//                Const.MAX_MEMORY_BMP_CAN_ALLOCATE, "http://img4.duitang.com");
+//        String resName = RecordFileUtils.copyBitmapToRecordDir(bmpScaled, mDraw.getRecordDir());
+//        mDraw.getCurrentBoard().addImg(resName);
 
-                        if (bmpScaled != null) {
-                            final String resName = RecordFileUtils.copyBitmapToRecordDir(bmpScaled,
-                                    mDraw.getRecordDir());
-                            SpeakToolApp.getUiHandler().post(new Runnable() {
 
-                                @Override
-                                public void run() {
-                                    mDraw.getCurrentBoard().addImg(resName);
-                                }
-                            });
-                        } else {// if downoad fail,we use its thumbpic.
-
-                            ItemViewNetPicture itemview = (ItemViewNetPicture) view;
-                            Bitmap thumb = itemview.getThumbBitmap();
-                            if (thumb != null) {
-
-                                final String resName = RecordFileUtils.copyBitmapToRecordDir(thumb,
-                                        mDraw.getRecordDir());
-                                SpeakToolApp.getUiHandler().post(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        // stub
-                                        mDraw.getCurrentBoard().addImg(resName);
-                                    }
-                                });
-                            } else {
-                                addImgFail();
-                            }
-                        }
-                    }
-                }
-                mLoadingDialog.dismiss();
-            }
-        }).start();
-    }
-
-    @Override
-    public void onNetImageLoaded(Bitmap result) {
-        mLoadingDialog.dismiss();
-        if (result != null)
-            netImagePreview.setImageBitmap(result);
-        else
-            T.showShort(mContext, "服务器链接失败！请检查网络");
     }
 
     @Override

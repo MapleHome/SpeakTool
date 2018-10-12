@@ -45,7 +45,6 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
                     item.setIconResId(one[1]);
                     item.setIconResIdSelected(one[2]);
                     datas.add(item);
-
                 }
             }
         }// synchronized
@@ -58,7 +57,6 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
                 if (null != listener) {
                     listener.onLoaded(datas);
                 }
-
             }
         });
 

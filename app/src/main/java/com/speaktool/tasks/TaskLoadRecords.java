@@ -2,9 +2,7 @@ package com.speaktool.tasks;
 
 import com.speaktool.Const;
 import com.speaktool.api.CourseItem;
-import com.speaktool.bean.CourseSearchBean;
 import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.SearchCategoryBean;
 import com.speaktool.utils.RecordFileUtils;
 
 import java.io.File;
@@ -23,36 +21,14 @@ import java.util.Properties;
  * @author shaoshuai
  */
 public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
+    private RecordsUi mListener;
 
-    private WeakReference<RecordsUi> mListener;
-    private CourseSearchBean mCourseSearchBean;
-    private List<CourseItem> baseCourses;
-
-    /**
-     * 记录UI接口
-     */
     public interface RecordsUi {
-
         void onRecordsLoaded(List<CourseItem> datas);
-
-        void onFail(List<CourseItem> datas);
-
     }
 
-    /**
-     * 加载课程记录
-     *
-     * @param listener
-     * @param searchBean
-     * @param baseCourses
-     */
-    public TaskLoadRecords(RecordsUi listener, CourseSearchBean searchBean, List<CourseItem> baseCourses) {
-//        Preconditions.checkNotNull(baseCourses, "baseCourses 不能为空.");
-
-        mListener = new WeakReference<RecordsUi>(listener);
-        mCourseSearchBean = searchBean;
-        this.baseCourses = baseCourses;
-
+    public TaskLoadRecords(RecordsUi listener) {
+        mListener = listener;
     }
 
     @Override
@@ -63,40 +39,22 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
     @Override
     public void onPostExecute(List<CourseItem> result) {
         super.onPostExecute(result);
+        mListener.onRecordsLoaded(result);
     }
 
     @Override
     public List<CourseItem> doBackground() {
-        // 加载本地记录
-        List<CourseItem> locRecs = getLocalRecords(mCourseSearchBean);
-        if (locRecs != null) {
-            baseCourses.addAll(locRecs);
-        }
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                RecordsUi listener = mListener.get();
-                if (null != listener) {
-                    listener.onRecordsLoaded(baseCourses);
-                }
-            }
-        });
-
-        return baseCourses;
+        return getLocalRecords();
     }
 
     /**
      * 获取本地课程记录
-     *
-     * @param searchBean
-     * @return
      */
-    private List<CourseItem> getLocalRecords(CourseSearchBean searchBean) {
+    private List<CourseItem> getLocalRecords() {
         File basedir = new File(Const.RECORD_DIR);// 本地保存记录的根目录
         if (!basedir.exists())
             return null;
         File[] files = basedir.listFiles(new FileFilter() {
-
             @Override
             public boolean accept(File pathname) {
                 return pathname.isDirectory();
@@ -119,18 +77,7 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
             // 解析info.txt文件信息
             boolean ret = setInfo(item, dir);
             if (ret) {
-                String title = item.getRecordTitle();
-                if (title == null)
-                    title = "";
-                String keywords = searchBean.getKeywords();
-                if (searchBean.getCategory().getCategoryId() == SearchCategoryBean.CID_ALL) {
-                    if (keywords == null || title.contains(keywords))
-                        recs.add(item);
-                } else {
-                    if (searchBean.getCategory().getCategoryName().equals(item.getType())
-                            && (keywords == null || title.contains(keywords)))
-                        recs.add(item);
-                }
+                recs.add(item);
             } else {
                 RecordFileUtils.deleteDirectory(dir);
                 continue;

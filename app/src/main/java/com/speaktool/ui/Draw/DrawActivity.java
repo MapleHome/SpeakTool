@@ -31,7 +31,6 @@ import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
@@ -42,7 +41,6 @@ import com.speaktool.bean.CopyPageData;
 import com.speaktool.bean.CreatePageData;
 import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
-import com.speaktool.bean.PicDataHolder;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
@@ -73,7 +71,6 @@ import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.service.AsyncDataLoaderFactory;
 import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.DisplayUtil;
 import com.speaktool.utils.FormatUtils;
@@ -147,10 +144,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
     private String mRecordDir;// 课程目录
 
-    private AsyncDataLoader<String, PicDataHolder> mNetPicturesIconAsyncLoader = AsyncDataLoaderFactory
-            .newNetPicturesIconAsyncLoader();
-    private AsyncDataLoader<String, PicDataHolder> mLocalPicturesIconAsyncLoader = AsyncDataLoaderFactory
-            .newLocalPicturesIconAsyncLoader();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -687,8 +680,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         EventBus.getDefault().unregister(this);
         resetPageId();
         DrawPage.resetShapeId(this);
-        mNetPicturesIconAsyncLoader.destroy();
-        mLocalPicturesIconAsyncLoader.destroy();
         //
         if (getPlayMode() == PlayMode.MAKE)
             SoundRecorder.closeWorldTimer();
@@ -1178,7 +1169,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 显示获取网路图片窗口
     @Override
     public void getImageFromNet(View anchor, PickPhotoCallback callback) {
-        L_M_AddNetImgPoW popupWindow = new L_M_AddNetImgPoW(mContext, anchor, this, mNetPicturesIconAsyncLoader);
+        L_M_AddNetImgPoW popupWindow = new L_M_AddNetImgPoW(mContext, anchor, this);
         popupWindow.showPopupWindow(WeiZhi.Bottom);
     }
 

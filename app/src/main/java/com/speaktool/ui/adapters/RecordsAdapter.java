@@ -1,19 +1,17 @@
 package com.speaktool.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 
-import com.speaktool.R;
-import com.speaktool.api.AsyncDataLoader;
+import com.bumptech.glide.Glide;
 import com.speaktool.api.CourseItem;
 import com.speaktool.ui.base.AbsAdapter;
-import com.speaktool.view.layouts.ItemViewLocalRecord;
 import com.speaktool.utils.DeviceUtils;
+import com.speaktool.view.layouts.ItemViewLocalRecord;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -22,21 +20,9 @@ import java.util.List;
  * @author shaoshuai
  */
 public class RecordsAdapter extends AbsAdapter<CourseItem> {
-    /**
-     * 默认记录缩略图
-     */
-    private final Bitmap initBmp;
-    private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader;
 
-    public RecordsAdapter(Context ctx, List<CourseItem> datas, AsyncDataLoader<String, Bitmap> appIconAsyncLoader) {
+    public RecordsAdapter(Context ctx, List<CourseItem> datas) {
         super(ctx, datas);
-
-        initBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
-        mAppIconAsyncLoader = appIconAsyncLoader;
-    }
-
-    public Bitmap getDefBmp() {
-        return initBmp;
     }
 
     @Override
@@ -44,7 +30,7 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
         if (convertView == null) {
             convertView = new ItemViewLocalRecord(mContext);
         }
-        final ItemViewLocalRecord item = (ItemViewLocalRecord) convertView;
+        ItemViewLocalRecord item = (ItemViewLocalRecord) convertView;
         // 重置高度
         int h = parent.getRootView().getWidth() / 3;
         if (DeviceUtils.isHengPing(mContext)) {// 横屏
@@ -61,15 +47,11 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
         if (bean == null) {
             return item;
         }
-        final String imagePath = bean.getThumbnailImgPath();
-        item.setUploadingState(false);
-        // item.setUploadingState(false);
-        Bitmap cache = mAppIconAsyncLoader.getCache(imagePath);
-        if (cache == null) {
-            item.setThumbnail(getDefBmp());
-        } else {
-            item.setThumbnail(cache);
-        }
+
+        String imagePath = bean.getThumbnailImgPath();
+        Glide.with(mContext)
+                .load(new File(imagePath))
+                .into(item.getImageView());
         item.setTitle(bean.getRecordTitle());
         item.setTag(imagePath);
 

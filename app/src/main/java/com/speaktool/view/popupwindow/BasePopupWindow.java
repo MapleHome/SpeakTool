@@ -12,6 +12,8 @@ import com.speaktool.R;
 import com.speaktool.utils.DensityUtils;
 import com.speaktool.utils.T;
 
+import butterknife.ButterKnife;
+
 /**
  * 通用的popupWindow
  */
@@ -31,22 +33,18 @@ public abstract class BasePopupWindow {
 
     // 多了一个token 适用于PopupWindow 上弹出 popupWindow
     public BasePopupWindow(Context context, View token, View anchor, int w, int h) {
-        // w 为窗口宽、h 为窗口高
-        initView(context, token, anchor, w, h);
-    }
-
-    /**
-     * 获取注入的View
-     */
-    public abstract View getContentView();
-
-    private void initView(Context context, View token, View anchor, int w, int h) {
         mContext = context;
         mToken = token;
         mAnchorView = anchor;
-
         // 内容视图
         mRootView = getContentView();
+        // w 为窗口宽、h 为窗口高
+        initView(w, h);
+    }
+
+    public abstract View getContentView();
+
+    private void initView(int w, int h) {
         // 创建PopupWindow
         mPopupWindow = new PopupWindow(mRootView, w, h);// 默认占满全屏
         mPopupWindow.setBackgroundDrawable(new ColorDrawable());// 设置popupWindow弹出窗体的背景

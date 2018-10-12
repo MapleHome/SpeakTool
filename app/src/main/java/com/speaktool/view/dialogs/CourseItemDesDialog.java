@@ -4,17 +4,16 @@ import android.app.Dialog;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
 import com.speaktool.SpeakToolApp;
-import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
@@ -51,20 +50,18 @@ public class CourseItemDesDialog extends Dialog {
     private Context mContext;
     private MainActivity mActivityContext;
     private LocalRecordBean mItemBean;// 课程记录条目
-    private AsyncDataLoader<String, Bitmap> mAppIconAsyncLoader;
 
 
-    public CourseItemDesDialog(Context context, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
-        this(context, R.style.dialogTheme, itembean, loader);
+    public CourseItemDesDialog(Context context, CourseItem itembean) {
+        this(context, R.style.dialogTheme, itembean);
     }
 
-    public CourseItemDesDialog(Context context, int theme, CourseItem itembean, AsyncDataLoader<String, Bitmap> loader) {
+    public CourseItemDesDialog(Context context, int theme, CourseItem itembean) {
         super(context, theme);
         mContext = context;
         mActivityContext = (MainActivity) context;
 
         mItemBean = (LocalRecordBean) itembean;
-        mAppIconAsyncLoader = loader;
 
         this.setCanceledOnTouchOutside(false);
     }
@@ -78,11 +75,9 @@ public class CourseItemDesDialog extends Dialog {
         resetLayout();
 
         tvTips.setText(mItemBean.getRecordTitle());// 设置标题
-        Bitmap cache = mAppIconAsyncLoader.load(mItemBean.getThumbnailImgPath());
-        // 缩略图路径：/storage/emulated/0/.spktl/records/15215343233/15215391310.jpg
-        if (cache != null) {
-            ivThumbnail.setImageBitmap(cache);// 设置缩略图
-        }
+        Glide.with(mContext)
+                .load(new File(mItemBean.getThumbnailImgPath()))
+                .into(ivThumbnail);
     }
 
     private void resetLayout() {

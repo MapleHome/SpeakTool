@@ -37,7 +37,8 @@ public class L_PencilColorPoW extends BasePopupWindow implements OnItemClickList
 
     @Override
     public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_selectcolorclick, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.pow_selectcolorclick, null);
+        return view;
     }
 
     public L_PencilColorPoW(Context context, View anchor) {
@@ -63,7 +64,6 @@ public class L_PencilColorPoW extends BasePopupWindow implements OnItemClickList
         gridViewColors.setAdapter(adapter);
         // 填充颜色
         new Thread(new TaskLoadPaintColors(new Callback() {
-
             @Override
             public void onLoaded(List<PaintInfoBean> colors) {
                 adapter.refresh(colors);

@@ -59,7 +59,6 @@ public class ItemViewLocalRecord extends FrameLayout {
     public void setProgress(int progress) {
         uploadProgressLay.setVisibility(View.VISIBLE);
         progressBarUploadProgress.setProgress(progress);
-
     }
 
     public void setUploadingState(boolean isUploading) {

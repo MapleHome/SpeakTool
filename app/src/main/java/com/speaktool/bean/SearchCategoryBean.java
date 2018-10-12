@@ -6,16 +6,12 @@ package com.speaktool.bean;
  * @author shaoshuai
  */
 public class SearchCategoryBean {
-    public static final String FIELD_ID = "id";
-    public static final String FIELD_TYPE_NAME = "categoryName";
-    //
     public static final int CID_BAIDU_SEARCH = 1;
     public static final int CID_PIC_URL = 2;
     //
     public static final int CID_ALL = -11;
     public static final int CID_USER_DEFINE = 22;
 
-    private int id;
     private String categoryName;
     private int categoryId = CID_USER_DEFINE;
 
@@ -23,9 +19,8 @@ public class SearchCategoryBean {
         super();
     }
 
-    public SearchCategoryBean(int id, String categoryName, int categoryId) {
+    public SearchCategoryBean(String categoryName, int categoryId) {
         super();
-        this.id = id;
         this.categoryName = categoryName;
         this.categoryId = categoryId;
     }
@@ -36,10 +31,6 @@ public class SearchCategoryBean {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getCategoryName() {

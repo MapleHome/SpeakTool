@@ -1,10 +1,6 @@
 package com.speaktool.view.popupwindow;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,30 +18,12 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
-import com.speaktool.api.AsyncDataLoader;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.bean.LocalPhotoDirBean;
-import com.speaktool.bean.PicDataHolder;
-import com.speaktool.busevents.LocalPhotoDirIconLoadedEvent;
-import com.speaktool.busevents.LocalPictureThumbnailLoadedEvent;
-import com.speaktool.service.AsyncDataLoaderFactory;
-import com.speaktool.tasks.TaskLoadLocalPhotos;
-import com.speaktool.tasks.TaskLoadLocalPhotos.LoadLocalPhotosCallback;
 import com.speaktool.ui.adapters.AdapterPhotoDirs;
 import com.speaktool.ui.adapters.AdapterPhotos;
-import com.speaktool.ui.base.AbsListScrollListener;
-import com.speaktool.view.gif.GifDrawable;
-import com.speaktool.view.layouts.ItemViewLocalPhotoDirs;
-import com.speaktool.view.layouts.MulticheckableView;
-import com.speaktool.utils.BitmapScaleUtil;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.List;
 
 
 /**
@@ -53,8 +31,8 @@ import java.util.List;
  *
  * @author shaoshuai
  */
-public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickListener, OnDismissListener,
-        OnTouchListener {
+public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickListener,
+        OnDismissListener, OnTouchListener {
     private ViewFlipper viewFlipperPhotos;
 
     protected PickPhotoCallback mDraw;
@@ -71,11 +49,6 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
     private static final int FIRST_PAGE = 0;
     private static final int SECOND_PAGE = 1;
 
-    private WeakReference<AdapterPhotoDirs> mAdapterPhotoDirsRef;
-    private AsyncDataLoader<String, PicDataHolder> mDataLoader;
-    private final AsyncDataLoader<String, byte[]> mLocalPhotoDirLoader = AsyncDataLoaderFactory
-            .newLocalPhotoDirLoader();
-
     @Override
     public View getContentView() {
         return LayoutInflater.from(mContext).inflate(R.layout.pow_pickphotos, null);
@@ -90,8 +63,6 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
         EventBus.getDefault().register(this);
 
         mDraw = draw;
-        // mDataLoader = loader;
-        mDataLoader = AsyncDataLoaderFactory.newLocalPicturesIconAsyncLoader();
 
         viewFlipperPhotos = (ViewFlipper) mRootView.findViewById(R.id.viewFlipperPhotos);
         listViewPhotoDirs = (ListView) mRootView.findViewById(R.id.listViewPhotoDirs);
@@ -108,7 +79,6 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
         initAnim(anchor.getContext());
 
         AdapterPhotoDirs mAdapterPhotoDirs = new AdapterPhotoDirs(mContext, null);
-        mAdapterPhotoDirsRef = new WeakReference<AdapterPhotoDirs>(mAdapterPhotoDirs);
         listViewPhotoDirs.setAdapter(mAdapterPhotoDirs);
 
         mAdapterPhotos = new AdapterPhotos(anchor.getContext(), null);
@@ -116,121 +86,14 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
 
         this.setOnDismissListener(this);
         listViewPhotoDirs.setOnItemClickListener(listItemClickListener);
-        listViewPhotoDirs.setOnScrollListener(listOnScrollListener);
         gridViewPhotos.setOnItemClickListener(getOnGridItemClickListener());
-        gridViewPhotos.setOnScrollListener(gridAbsListScrollListener);
         llBack.setOnClickListener(this);
         llBack.setOnTouchListener(this);
         tvSecondPageFinish.setOnClickListener(this);
         tvSecondPageFinish.setOnTouchListener(this);
-        //
-        loadDirs();
+
     }
 
-    private AbsListScrollListener gridAbsListScrollListener = new AbsListScrollListener() {
-
-        @Override
-        public void whenIdle() {
-            for (int i = mfirstVisibleItem; i <= mlastvisibleItem; i++) {
-                final String imageUrl = (String) mAdapterPhotos.getItem(i);
-                if (TextUtils.isEmpty(imageUrl))
-                    continue;
-                final MulticheckableView item = (MulticheckableView) gridViewPhotos.findViewWithTag(imageUrl);
-                if (item == null)
-                    continue;
-                final PicDataHolder cache = mDataLoader.load(imageUrl, item.getWidth(), item.getHeight());
-                if (cache != null) {
-                    if (BitmapScaleUtil.isGif(imageUrl)) {
-                        GifDrawable gifd;
-                        try {
-                            gifd = new GifDrawable(cache.gif);
-                            item.setImage(gifd);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            item.setImage(new BitmapDrawable(getErrorBmp()));
-                        }
-                    } else {// bmp.
-                        Bitmap bpScaled = BitmapFactory.decodeByteArray(cache.bpScaled, 0, cache.bpScaled.length);
-                        item.setImage(new BitmapDrawable(bpScaled));
-                    }
-                } else {
-                    item.setLoading();
-                }
-            }
-        }
-
-        @Override
-        public void whenFling() {
-            mDataLoader.cancelAll();
-        }
-    };
-
-    private LoadLocalPhotosCallback mLoadLocalPhotosCallback = new LoadLocalPhotosCallback() {
-        @Override
-        public void onFinish(List<LocalPhotoDirBean> dirs) {
-            AdapterPhotoDirs adp = mAdapterPhotoDirsRef.get();
-            if (adp != null) {
-                adp.refresh(dirs);
-                SpeakToolApp.getUiHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int first = listViewPhotoDirs.getFirstVisiblePosition();
-                        int last = listViewPhotoDirs.getLastVisiblePosition();
-                        listOnScrollListener.setVisibleItems(first, last);
-                        listOnScrollListener.whenIdle();
-                    }
-                });
-            }
-        }
-    };
-
-    private void loadDirs() {
-        new Thread(new TaskLoadLocalPhotos(mLoadLocalPhotosCallback)).start();
-    }
-
-    private AbsListScrollListener listOnScrollListener = new AbsListScrollListener() {
-
-        @Override
-        public void whenFling() {
-            mLocalPhotoDirLoader.cancelAll();
-        }
-
-        @Override
-        public void whenIdle() {
-            AdapterPhotoDirs adp = mAdapterPhotoDirsRef.get();
-            if (adp == null)
-                return;
-            for (int i = mfirstVisibleItem; i <= mlastvisibleItem; i++) {
-                LocalPhotoDirBean bean = (LocalPhotoDirBean) adp.getItem(i);
-                String iconpath = bean.getDirIconPath();
-                ItemViewLocalPhotoDirs itemview = (ItemViewLocalPhotoDirs) listViewPhotoDirs.findViewWithTag(iconpath);
-                if (itemview == null)
-                    continue;
-                byte[] iconbytesCache = mLocalPhotoDirLoader.load(iconpath);
-                if (iconbytesCache != null) {
-                    Bitmap bpScaled = BitmapFactory.decodeByteArray(iconbytesCache, 0, iconbytesCache.length);
-                    itemview.setDirIcon(bpScaled);
-                } else {// no cache.
-                    // ignore.
-                    itemview.setDirIcon(getDefBmp());
-                }
-            }// for.
-        }
-    };
-
-    private Bitmap getDefBmp() {
-        return BitmapFactory.decodeResource(SpeakToolApp.app().getResources(), R.drawable.ic_launcher);
-    }
-
-    @Subscribe
-    public void onEventMainThread(LocalPhotoDirIconLoadedEvent event) {
-        String key = event.getKey();
-        ItemViewLocalPhotoDirs itemview = (ItemViewLocalPhotoDirs) listViewPhotoDirs.findViewWithTag(key);
-        if (itemview == null)
-            return;
-        //
-        itemview.setDirIcon(event.getIcon());
-    }
 
     private Animation intoAnim_in;
     private Animation intoAnim_out;
@@ -279,17 +142,6 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
             tvSecondPageTitle.setText(item.getDirName());
             mAdapterPhotos = new AdapterPhotos(mContext, item.getImagePathList());
             gridViewPhotos.setAdapter(mAdapterPhotos);
-
-            SpeakToolApp.getUiHandler().post(new Runnable() {
-
-                @Override
-                public void run() {
-                    int first = gridViewPhotos.getFirstVisiblePosition();
-                    int last = gridViewPhotos.getLastVisiblePosition();
-                    gridAbsListScrollListener.setVisibleItems(first, last);
-                    gridAbsListScrollListener.whenIdle();
-                }
-            });
         }
     };
 
@@ -306,8 +158,6 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
     @Override
     public void onDismiss() {
         EventBus.getDefault().unregister(this);
-        mLocalPhotoDirLoader.destroy();
-        mDataLoader.destroy();
     }
 
     @Override
@@ -341,20 +191,4 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
         }
     }
 
-    private Bitmap getErrorBmp() {
-        return BitmapFactory.decodeResource(SpeakToolApp.app().getResources(), R.drawable.error);
-    }
-
-    @Subscribe
-    public void onEventMainThread(final LocalPictureThumbnailLoadedEvent event) {
-        String key = event.getKey();
-        final MulticheckableView item = (MulticheckableView) gridViewPhotos.findViewWithTag(key);
-        if (item != null) {
-            if (event.isError()) {
-                item.setImage(new BitmapDrawable(getErrorBmp()));
-                return;
-            }
-            item.setImage(event.getIcon());
-        }
-    }
 }

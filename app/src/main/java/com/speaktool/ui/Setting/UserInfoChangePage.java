@@ -3,12 +3,10 @@ package com.speaktool.ui.Setting;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +24,9 @@ import com.speaktool.R;
 import com.speaktool.api.PhotoImporter;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.bean.UserBean;
-import com.speaktool.tasks.TaskGetNetImage;
-import com.speaktool.tasks.TaskGetNetImage.NetImageLoadListener;
 import com.speaktool.tasks.TaskModifyUserInfo;
 import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
 import com.speaktool.ui.base.BaseFragment;
-import com.speaktool.utils.BitmapScaleUtil;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
@@ -95,7 +90,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
         session = null;
 //        session = UserDatabase.getUserLocalSession(mContext);
         if (session != null) {
-            setPortrait(session.getPortraitPath());// 设置头像
+//            setPortrait(session.getPortraitPath());// 设置头像
             tv_name.setText(session.getNickName());// 用户名
             tv_introduce.setText(session.getIntroduce());// 个性签名
             tv_mail.setText(session.getEmail()); // 邮箱
@@ -198,7 +193,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
 
         @Override
         public void onPhotoPicked(String imgPath) {
-            setPortrait(imgPath);
+//            setPortrait(imgPath);
         }
     };
 
@@ -356,7 +351,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private void saveModifyInfo() {
         mLoadingDialog.show("正在保存...");
         // TODO 判空
-        session.setPortraitPath(portraitPath);// 头像地址
+//        session.setPortraitPath(portraitPath);// 头像地址
         session.setNickName(tv_name.getText().toString().trim());// 昵称
         session.setIntroduce(tv_introduce.getText().toString().trim());// 自我介绍
         // 性别
@@ -383,45 +378,6 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
                 T.showShort(mContext, "服务器链接失败！请检查网络");
             }
         }, session)).start();
-    }
-
-    private String portraitPath;// 头像路径
-
-    private static LruCache<String, Bitmap> portraitCache = new LruCache<String, Bitmap>(1024 * 500) {
-        @Override
-        protected int sizeOf(String key, Bitmap value) {
-            return value.getHeight() * value.getRowBytes();
-        }
-    };
-
-    /**
-     * 设置头像路径
-     */
-    public void setPortrait(final String imagepath) {
-        if (TextUtils.isEmpty(imagepath))
-            return;
-        portraitPath = imagepath;
-        Bitmap cache = portraitCache.get(imagepath);
-        if (cache != null) {
-            iv_portrait.setImageBitmap(cache);
-            return;
-        }
-        if (portraitPath.startsWith("http://")) {
-            new Thread(new TaskGetNetImage(new NetImageLoadListener() {
-                @Override
-                public void onNetImageLoaded(Bitmap result) {
-                    if (result != null) {
-                        iv_portrait.setImageBitmap(result);
-                        portraitCache.put(imagepath, result);
-                    }
-                }
-            }, portraitPath)).start();
-
-        } else {
-            Bitmap bp = BitmapScaleUtil.decodeSampledBitmapFromPath(portraitPath, Const.MAX_MEMORY_BMP_CAN_ALLOCATE);
-            iv_portrait.setImageBitmap(bp);
-            portraitCache.put(imagepath, bp);
-        }
     }
 
 }
