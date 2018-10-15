@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 /**
  * Fragment基类
  *
- * @author shaoshuai
+ * @author maple
  */
-
 public abstract class BaseFragment extends Fragment {
     public View view;
     public Context mContext;
@@ -26,9 +25,6 @@ public abstract class BaseFragment extends Fragment {
         this.fm = getFragmentManager();
     }
 
-    /**
-     * 构建UI
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = initView(inflater);
@@ -36,9 +32,6 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    /**
-     * 数据填充UI的操作
-     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         initData(savedInstanceState);

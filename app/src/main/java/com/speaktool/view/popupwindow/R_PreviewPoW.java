@@ -18,7 +18,7 @@ import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.impl.player.PlayProcess;
-import com.speaktool.service.PlayService;
+import com.speaktool.ui.Player.PlayService;
 import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;

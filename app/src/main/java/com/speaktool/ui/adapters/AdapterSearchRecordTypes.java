@@ -29,7 +29,7 @@ public class AdapterSearchRecordTypes extends AbsAdapter<SearchCategoryBean> {
         }
 
         String typename = ((SearchCategoryBean) getItem(position)).getCategoryName();
-        TextView tv = (TextView) convertView.findViewById(R.id.tvType);
+        TextView tv = convertView.findViewById(R.id.tvType);
         if (typename != null) {
             tv.setText(typename);
         }

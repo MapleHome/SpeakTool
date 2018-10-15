@@ -8,7 +8,7 @@ import com.maple.msdialog.AlertDialog;
 import com.speaktool.SpeakToolApp;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.service.PlayService;
+import com.speaktool.ui.Player.PlayService;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 

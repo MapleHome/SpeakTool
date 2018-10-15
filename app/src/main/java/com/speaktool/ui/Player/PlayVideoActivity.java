@@ -53,7 +53,6 @@ import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.service.PlayService;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.ProgressDialogOffer;

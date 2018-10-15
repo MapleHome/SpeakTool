@@ -56,7 +56,7 @@
         <!--  ******************************** 服务  ************************************* -->
 
         <service
-            android:name=".service.PlayService"
+            android:name=".ui.Player.PlayService"
             android:enabled="true"
             android:exported="false"
             android:process=":play" />
