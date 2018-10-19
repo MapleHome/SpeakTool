@@ -3,7 +3,7 @@ package com.speaktool.impl.paint;
 import android.graphics.Paint;
 
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.bean.PaintInfoBean;
 import com.speaktool.tasks.MyColors;
 import com.speaktool.utils.DensityUtils;
@@ -24,7 +24,7 @@ public class DrawPaint {
         globalPaintInfo.setColor(MyColors.BLACK);
         globalPaintInfo.setIconResId(R.drawable.black);
         globalPaintInfo.setIconResIdSelected(R.drawable.black_seleted);
-        globalPaintInfo.setStrokeWidth(DensityUtils.dp2px(SpeakToolApp.app(), DEFAULT_STROKE_WIDTH));
+        globalPaintInfo.setStrokeWidth(DensityUtils.dp2px(SpeakApp.app(), DEFAULT_STROKE_WIDTH));
     }
 
     public DrawPaint() {

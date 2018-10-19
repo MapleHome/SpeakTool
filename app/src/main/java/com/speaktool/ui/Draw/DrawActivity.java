@@ -30,7 +30,7 @@ import android.widget.ViewFlipper;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
@@ -1075,7 +1075,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public void postTaskToUiThread(Runnable task) {
-        SpeakToolApp.getUiHandler().post(task);
+        SpeakApp.getUiHandler().post(task);
     }
 
     @Override
@@ -1259,7 +1259,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public void onPhotoPicked(final String imgPath) {
-        SpeakToolApp.getUiHandler().post(new Runnable() {
+        SpeakApp.getUiHandler().post(new Runnable() {
 
             @Override
             public void run() {
@@ -1305,7 +1305,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                     if (ret != null) {
                         images.add(ret);
                     } else {
-                        SpeakToolApp.getUiHandler().post(new Runnable() {
+                        SpeakApp.getUiHandler().post(new Runnable() {
                             @Override
                             public void run() {
                                 T.showShort(mContext, "图片添加失败！");
@@ -1333,7 +1333,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             setActivePageSendcmd(batchImportFirstPageId);
             return;
         }
-        SpeakToolApp.getUiHandler().post(new Runnable() {
+        SpeakApp.getUiHandler().post(new Runnable() {
             @Override
             public void run() {
                 getCurrentBoard().addImg(images.remove(0));
@@ -1382,7 +1382,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public void removeAllHandlerTasks() {
-        SpeakToolApp.getUiHandler().removeCallbacksAndMessages(null);
+        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
     }
 
     @Override

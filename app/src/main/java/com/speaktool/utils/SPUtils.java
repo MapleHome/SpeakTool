@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 
 public class SPUtils {
-	private static Context sContext = SpeakToolApp.app();
+	private static Context sContext = SpeakApp.app();
 	private static final String PREF_NAME = "prefer.xml";
 
 	public static void putInt(String key, int value) {

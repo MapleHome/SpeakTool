@@ -10,7 +10,7 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.widget.Toast;
 
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.bean.MusicBean;
 import com.speaktool.busevents.MusicStateChangedEvent;
 
@@ -72,7 +72,7 @@ public class SoundPlayer {
 
 			@Override
 			public boolean onError(MediaPlayer mp, int what, int extra) {
-				Toast.makeText(SpeakToolApp.app(), "播放失败！", 0).show();
+				Toast.makeText(SpeakApp.app(), "播放失败！", 0).show();
 				return false;// false OnCompletionListener will be called.
 			}
 		});
@@ -81,7 +81,7 @@ public class SoundPlayer {
 			mMediaPlayer.setDataSource(mMusicBean.getPath());
 			mMediaPlayer.prepareAsync();
 		} catch (Exception e) {
-			Toast.makeText(SpeakToolApp.app(), "播放失败！", 0).show();
+			Toast.makeText(SpeakApp.app(), "播放失败！", 0).show();
 			e.printStackTrace();
 			stop();
 		}
@@ -116,7 +116,7 @@ public class SoundPlayer {
 
 	public void playSwitchClick() {
 		if (mMusicBean == null) {
-			Toast.makeText(SpeakToolApp.app(), "未设置音乐！", 0).show();
+			Toast.makeText(SpeakApp.app(), "未设置音乐！", 0).show();
 			return;
 		}
 		if (mMediaPlayer == null) {

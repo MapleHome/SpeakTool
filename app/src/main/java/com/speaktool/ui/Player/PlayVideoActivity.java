@@ -24,7 +24,7 @@ import android.widget.ViewFlipper;
 
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
@@ -546,7 +546,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public void postTaskToUiThread(Runnable task) {
-        SpeakToolApp.getUiHandler().post(task);
+        SpeakApp.getUiHandler().post(task);
     }
 
     @Override
@@ -724,7 +724,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public void removeAllHandlerTasks() {
-        SpeakToolApp.getUiHandler().removeCallbacksAndMessages(null);
+        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.maple.msdialog.AlertDialog;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.ui.Player.PlayService;
@@ -86,7 +86,7 @@ public class PlayProcess {
                         Intent makeResultIntent = new Intent(ACTION_PREVIEW_RESULT);
 
                         context.sendBroadcast(makeResultIntent);
-                        SpeakToolApp.getUiHandler().post(new Runnable() {
+                        SpeakApp.getUiHandler().post(new Runnable() {
 
                             @Override
                             public void run() {

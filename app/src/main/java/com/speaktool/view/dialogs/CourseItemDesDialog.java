@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
@@ -154,7 +154,7 @@ public class CourseItemDesDialog extends Dialog {
         File dir = new File(mItemBean.getRecordDir());
         FileUtil.deleteDir(dir);
 
-        SpeakToolApp.getUiHandler().post(new Runnable() {
+        SpeakApp.getUiHandler().post(new Runnable() {
             @Override
             public void run() {
                 afterDeleteSuccess();

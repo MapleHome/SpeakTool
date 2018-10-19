@@ -50,7 +50,8 @@ public class HomePage extends BaseFragment {
         recordsAdapter = new RecordsAdapter(mContext, null);
         gv_records.setAdapter(recordsAdapter);
 
-        srl_refreshLayout.setRefreshHeader(new ClassicsHeader(mContext))
+        srl_refreshLayout
+                .setRefreshHeader(new ClassicsHeader(mContext))
                 .setEnableLoadMore(false);
 
         // 默认设置

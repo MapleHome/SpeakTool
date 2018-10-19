@@ -19,8 +19,8 @@ import org.acra.annotation.ReportsCrashes;
         // resDialogTheme = R.style.AppTheme_Dialog,
         resDialogOkToast = R.string.crash_dialog_ok_toast
 )
-public class SpeakToolApp extends Application {
-    private static SpeakToolApp app;
+public class SpeakApp extends Application {
+    private static SpeakApp app;
     private static Handler sHandler = new Handler();
 
     @Override
@@ -33,7 +33,7 @@ public class SpeakToolApp extends Application {
     }
 
 
-    public static SpeakToolApp app() {
+    public static SpeakApp app() {
         return app;
     }
 

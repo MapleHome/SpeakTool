@@ -21,7 +21,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.NetPictureBean;
 import com.speaktool.bean.SearchCategoryBean;
@@ -139,7 +139,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
                             final String resname = RecordFileUtils.copyBitmapToRecordDir(bd.getBitmap(),
                                     mDraw.getRecordDir());
 
-                            SpeakToolApp.getUiHandler().post(new Runnable() {
+                            SpeakApp.getUiHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
                                     mDraw.getCurrentBoard().addImg(resname);
@@ -249,7 +249,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
             oldData.addAll(result);
             mAdapterNetPictures.refresh(oldData);
             //
-//            SpeakToolApp.getUiHandler().post(new Runnable() {
+//            SpeakApp.getUiHandler().post(new Runnable() {
 //                @Override
 //                public void run() {
 //                    int first = mNetPicsGrid.getFirstVisiblePosition();
