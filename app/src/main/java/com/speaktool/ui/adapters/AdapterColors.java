@@ -7,7 +7,7 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.speaktool.bean.PaintInfoBean;
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 
 import java.util.List;
 

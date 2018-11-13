@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.speaktool.R;
 import com.speaktool.bean.LocalPhotoDirBean;
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 import com.speaktool.view.layouts.ItemViewLocalPhotoDirs;
 
 import java.util.List;

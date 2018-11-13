@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 
 import com.speaktool.bean.NetPictureBean;
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 import com.speaktool.view.layouts.ItemViewNetPicture;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 import com.speaktool.view.layouts.MulticheckableView;
 
 import java.util.ArrayList;

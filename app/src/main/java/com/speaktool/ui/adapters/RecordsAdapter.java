@@ -7,7 +7,7 @@ import android.widget.AbsListView.LayoutParams;
 
 import com.bumptech.glide.Glide;
 import com.speaktool.api.CourseItem;
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.view.layouts.ItemViewLocalRecord;
 
@@ -42,6 +42,8 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
         else
             lp.height = h;
         item.setLayoutParams(lp);
+
+
         CourseItem bean = (CourseItem) getItem(position);
         if (bean != null) {
             item.setTitle(bean.getRecordTitle());

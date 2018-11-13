@@ -16,7 +16,7 @@ import com.speaktool.R;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Login.UserLoginPage;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.view.dialogs.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;

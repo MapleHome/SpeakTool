@@ -17,7 +17,7 @@ import com.speaktool.tasks.TaskLoadRecords;
 import com.speaktool.tasks.TaskLoadRecords.RecordsUi;
 import com.speaktool.tasks.ThreadPoolWrapper;
 import com.speaktool.ui.adapters.RecordsAdapter;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.view.dialogs.CourseItemDesDialog;
 
 import java.util.List;

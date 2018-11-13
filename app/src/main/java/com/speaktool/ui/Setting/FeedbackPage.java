@@ -8,8 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.speaktool.R;
-import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

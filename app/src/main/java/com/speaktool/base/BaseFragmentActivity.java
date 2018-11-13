@@ -1,4 +1,4 @@
-package com.speaktool.ui.base;
+package com.speaktool.base;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;

@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.speaktool.R;
 import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.view.dialogs.LoadingDialog;

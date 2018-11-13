@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.speaktool.R;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.utils.AppUtils;
 
 import butterknife.BindView;

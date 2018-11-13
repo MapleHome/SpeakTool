@@ -26,7 +26,7 @@ import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.bean.UserBean;
 import com.speaktool.tasks.TaskModifyUserInfo;
 import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;

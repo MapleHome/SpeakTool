@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.speaktool.R;
 import com.speaktool.bean.SearchCategoryBean;
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 
 import java.util.List;
 
