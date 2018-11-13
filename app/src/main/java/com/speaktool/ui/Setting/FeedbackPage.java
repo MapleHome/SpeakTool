@@ -37,10 +37,7 @@ public class FeedbackPage extends BaseFragment {
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
         mActivity.setTitle("意见反馈");
-    }
 
-    @Override
-    public void initListener() {
         // 提交反馈
         bt_fb_submit.setOnClickListener(new OnClickListener() {
             @Override

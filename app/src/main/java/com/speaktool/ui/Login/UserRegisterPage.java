@@ -52,10 +52,6 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
         mActivity.setTitle(FRAGMENT_NAME);
         //
         mLoadingDialog = new LoadingDialog(mActivity);
-    }
-
-    @Override
-    public void initListener() {
         btnFinish.setOnClickListener(this);// 完成
     }
 

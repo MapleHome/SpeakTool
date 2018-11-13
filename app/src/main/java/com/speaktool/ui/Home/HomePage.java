@@ -56,10 +56,7 @@ public class HomePage extends BaseFragment {
 
         // 默认设置
         refreshIndexPage();
-    }
 
-    @Override
-    public void initListener() {
         srl_refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

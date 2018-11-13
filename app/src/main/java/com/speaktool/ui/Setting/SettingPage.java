@@ -82,10 +82,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
             user_name.setText("登陆");// 用户名
             bt_logout.setVisibility(View.GONE);// 隐藏注销按钮
         }
-    }
 
-    @Override
-    public void initListener() {
         ib_userPortrait.setOnClickListener(this);// 头像
         user_name.setOnClickListener(this);// 用户名
 

@@ -34,10 +34,6 @@ import butterknife.OnClick;
  * @author shaoshuai
  */
 public class MainActivity extends FragmentActivity {
-    @BindView(R.id.tvMakeVideo) TextView tvMakeVideo;// 新建按钮
-    @BindView(R.id.searchView) SearchView searchView;// 整个搜索框
-    @BindView(R.id.ivSetting) ImageView ivSetting;// 设置按钮
-
     private HomePage mHomePage;
     private Context mContext;
 
@@ -60,13 +56,13 @@ public class MainActivity extends FragmentActivity {
     }
 
     @OnClick(R.id.tvMakeVideo)
-    public void make() {
+    void make() {
         Intent it = new Intent(this, DrawActivity.class);
         startActivity(it);
     }
 
     @OnClick(R.id.ivSetting)
-    public void toUserMGPage() {
+    void toUserMGPage() {
         Intent intent = new Intent(this, UserFMActivity.class);
         intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
         startActivity(intent);

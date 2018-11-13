@@ -35,7 +35,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         initData(savedInstanceState);
-        initListener();
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -49,9 +48,5 @@ public abstract class BaseFragment extends Fragment {
      */
     public abstract void initData(Bundle savedInstanceState);
 
-    /**
-     * onActivityCreated方法处理监听
-     */
-    public abstract void initListener();
 
 }

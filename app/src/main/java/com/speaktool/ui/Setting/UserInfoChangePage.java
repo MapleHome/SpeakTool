@@ -95,10 +95,9 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
             tv_introduce.setText(session.getIntroduce());// 个性签名
             tv_mail.setText(session.getEmail()); // 邮箱
         }
-
+        initListener();
     }
 
-    @Override
     public void initListener() {
         rl_portrait_area.setOnClickListener(this);// 头像
         rl_name_area.setOnClickListener(this);// 用户名

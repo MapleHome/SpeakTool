@@ -44,10 +44,7 @@ public class AboutPage extends BaseFragment implements OnClickListener {
         PackageInfo packageInfo = AppUtils.getPackageInfo(mContext);
         if (packageInfo != null)
             tv_version.setText("For Android V " + packageInfo.versionName + " - " + packageInfo.versionCode);
-    }
-
-    @Override
-    public void initListener() {
+        // initListener
         ll_check_update.setOnClickListener(this);// 检查更新
         ll_service_tel.setOnClickListener(this);
     }

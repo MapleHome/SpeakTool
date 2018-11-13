@@ -52,11 +52,6 @@ public class UserLoginPage extends BaseFragment {
         mActivity.setTitle(FRAGMENT_NAME);
     }
 
-    @Override
-    public void initListener() {
-    }
-
-
     @OnClick(R.id.btnRegister)
     public void toRegisterPage() {
         // 跳转到注册
