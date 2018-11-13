@@ -55,6 +55,7 @@ import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
+import com.speaktool.utils.record.RecordFileAnalytic;
 import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.layouts.VideoSeekBar;
@@ -452,7 +453,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
             @Override
             public void run() {
                 getPageRecorder().saveCurrentPageRecord();
-                final boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
+                boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
+//                final boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
                 if (!isSuccess) {
                     dismissLoading();
                     postTaskToUiThread(new Runnable() {

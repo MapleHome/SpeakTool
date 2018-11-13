@@ -12,11 +12,11 @@ import com.speaktool.Const;
 import com.speaktool.bean.Html5ImageInfoBean;
 import com.speaktool.bean.Html5SoundInfoBean;
 import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.TransformShapeData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.player.JsonScriptParser;
+import com.speaktool.utils.record.RecordFileAnalytic;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,10 +54,7 @@ public class RecordFileUtils {
         File[] uploadFiles = dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                if (RecordFileUtils.isReleaseFile(filename))
-                    return true;
-                else
-                    return false;
+                return isReleaseFile(filename);
             }
         });
         return uploadFiles;
@@ -67,12 +64,11 @@ public class RecordFileUtils {
      * 从本地目录中获取spk上传单元
      *
      * @param dirpath
-     * @param mContext
      * @return
      */
-    public static RecordUploadBean getSpklUploadBeanFromDir(String dirpath, Context mContext) {
+    public static File getSpklUploadBeanFromDir(String dirpath) {
         File dir = new File(dirpath);// 目录文件
-        final File zip = new File(dir, "record.zip");// 压缩文件
+        File zip = new File(dir, "record.zip");// 压缩文件
         if (!zip.exists()) {
             File[] recordfiles = getUploadFiles(dir);
             try {
@@ -81,57 +77,10 @@ public class RecordFileUtils {
                 ZipUtils.zipFiles(Arrays.asList(recordfiles), zip);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
+
             }
         }
-        String uid = "weirenling";
-        final RecordUploadBean recordUploadBean = new RecordUploadBean();
-        recordUploadBean.setZipFilePath(zip.getAbsolutePath());
-        recordUploadBean.setCourseType(RecordUploadBean.COURSE_TYPE_SCRIPT);// 脚本类型
-        recordUploadBean.setUid(uid);// 设置用户ID
-        // 解析 课程对应的info.properties文件
-        File infofile = new File(dir, Const.INFO_FILE_NAME);
-        if (!infofile.exists()) {
-            return null;
-        }
-        Properties p = new Properties();
-        FileInputStream ins;
-        try {
-            ins = new FileInputStream(infofile);
-            p.load(ins);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        String title = p.getProperty(LocalRecordBean.TITLE);
-        String thumbnailName = p.getProperty(LocalRecordBean.THUMBNAIL_NAME);
-        String tab = p.getProperty(LocalRecordBean.TAB);
-        String categoryName = p.getProperty(LocalRecordBean.CATEGORY_NAME);
-        String introduce = p.getProperty(LocalRecordBean.INTRODUCE);
-        // String shareUrl = p.getProperty(LocalRecordBean.SHARE_URL);
-        String courseId = p.getProperty(LocalRecordBean.COURSE_ID);
-        int makeWindowWidth = Integer.valueOf(p.getProperty(LocalRecordBean.MAKE_WINDOW_WIDTH));
-        int makeWindowHeight = Integer.valueOf(p.getProperty(LocalRecordBean.MAKE_WINDOW_HEIGHT));
-        try {
-            ins.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        recordUploadBean.setTitle(title);
-        String imagepath = String.format("%s%s%s", dir, File.separator, thumbnailName);
-        recordUploadBean.setThumbNailPath(imagepath);
-        recordUploadBean.setTab(tab);
-        recordUploadBean.setType(categoryName);
-        recordUploadBean.setIntroduce(introduce);
-        long duration = RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
-        recordUploadBean.setDuration(duration);
-        recordUploadBean.setMakeWindowWidth(makeWindowWidth);
-        recordUploadBean.setMakeWindowHeight(makeWindowHeight);
-        recordUploadBean.setCourseId(courseId);
-        recordUploadBean.setRecordDir(dirpath);
-        recordUploadBean.setUploadUrl(Const.COURSE_UPLOAD_URL);
-        Log.e("", "" + recordUploadBean.toString());
-        return recordUploadBean;
+        return zip;
     }
 
     /**
@@ -856,7 +805,7 @@ public class RecordFileUtils {
         try {
             FileInputStream ins = new FileInputStream(infofile);
             p.load(ins);
-            thumbnailName = p.getProperty(LocalRecordBean.THUMBNAIL_NAME);
+            thumbnailName = p.getProperty(RecordFileAnalytic.THUMBNAIL_NAME);
             ins.close();
         } catch (Exception e) {
             e.printStackTrace();

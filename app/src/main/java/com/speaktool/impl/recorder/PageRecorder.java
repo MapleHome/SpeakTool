@@ -286,58 +286,58 @@ public class PageRecorder {
         return SoundRecorder.getCurrentTime();
     }
 
-    /**
-     * 保存info.txt
-     * <p>
-     * 设置记录信息
-     *
-     * @param info
-     * @return
-     */
-    public boolean setRecordInfos(RecordUploadBean info) {
-        try {
-            // logicTime.stop();
-            Properties p = new Properties();
-            String title = info.getTitle();
-            if (TextUtils.isEmpty(title))
-                title = " ";
-            p.put(LocalRecordBean.TITLE, title);
-            String thumnailName = info.getThumbNailName();
-            if (TextUtils.isEmpty(thumnailName))
-                thumnailName = "unknown";
-            p.put(LocalRecordBean.THUMBNAIL_NAME, thumnailName);
-            String tab = info.getTab();
-            if (TextUtils.isEmpty(tab))
-                tab = " ";
-            p.put(LocalRecordBean.TAB, tab);
-            String categoryName = info.getType();
-            if (TextUtils.isEmpty(categoryName))
-                categoryName = " ";
-            p.put(LocalRecordBean.CATEGORY_NAME, categoryName);
-            String introduce = info.getIntroduce();
-            if (TextUtils.isEmpty(introduce))
-                introduce = " ";
-            p.put(LocalRecordBean.INTRODUCE, introduce);
-            //
-            ScreenInfoBean screen = ScreenFitUtil.getCurrentDeviceInfo();
-            p.put(LocalRecordBean.MAKE_WINDOW_WIDTH, screen.w + "");
-            p.put(LocalRecordBean.MAKE_WINDOW_HEIGHT, screen.h + "");
-            //
-            p.put(LocalRecordBean.COURSE_ID, MD5Util.getUUID());
-            // shareUrl.
-            File infofile = new File(dir, Const.INFO_FILE_NAME);
-            if (!infofile.exists())
-                infofile.createNewFile();
-            FileOutputStream os = new FileOutputStream(infofile);
-            p.store(os, null);
-            os.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("PageRecorder", "设置记录信息时错误.请检查SD卡\n" + e.getMessage());
-            return false;
-        }
-    }
+//    /**
+//     * 保存info.txt
+//     * <p>
+//     * 设置记录信息
+//     *
+//     * @param info
+//     * @return
+//     */
+//    public boolean setRecordInfos(RecordUploadBean info) {}
+//        try {
+//            // logicTime.stop();
+//            Properties p = new Properties();
+//            String title = info.getTitle();
+//            if (TextUtils.isEmpty(title))
+//                title = " ";
+//            p.put(LocalRecordBean.TITLE, title);
+//            String thumnailName = info.getThumbNailName();
+//            if (TextUtils.isEmpty(thumnailName))
+//                thumnailName = "unknown";
+//            p.put(LocalRecordBean.THUMBNAIL_NAME, thumnailName);
+//            String tab = info.getTab();
+//            if (TextUtils.isEmpty(tab))
+//                tab = " ";
+//            p.put(LocalRecordBean.TAB, tab);
+//            String categoryName = info.getType();
+//            if (TextUtils.isEmpty(categoryName))
+//                categoryName = " ";
+//            p.put(LocalRecordBean.CATEGORY_NAME, categoryName);
+//            String introduce = info.getIntroduce();
+//            if (TextUtils.isEmpty(introduce))
+//                introduce = " ";
+//            p.put(LocalRecordBean.INTRODUCE, introduce);
+//            //
+//            ScreenInfoBean screen = ScreenFitUtil.getCurrentDeviceInfo();
+//            p.put(LocalRecordBean.MAKE_WINDOW_WIDTH, screen.w + "");
+//            p.put(LocalRecordBean.MAKE_WINDOW_HEIGHT, screen.h + "");
+//            //
+//            p.put(LocalRecordBean.COURSE_ID, MD5Util.getUUID());
+//            // shareUrl.
+//            File infofile = new File(dir, Const.INFO_FILE_NAME);
+//            if (!infofile.exists())
+//                infofile.createNewFile();
+//            FileOutputStream os = new FileOutputStream(infofile);
+//            p.store(os, null);
+//            os.close();
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.e("PageRecorder", "设置记录信息时错误.请检查SD卡\n" + e.getMessage());
+//            return false;
+//        }
+//    }
 
     /**
      * 删除记录目录
@@ -361,6 +361,10 @@ public class PageRecorder {
      */
     public String getRecordDir() {
         return dir.getAbsolutePath();
+    }
+
+    public File getDir() {
+        return dir;
     }
 
     public boolean isSdcardExist() {

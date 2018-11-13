@@ -13,17 +13,6 @@ import com.speaktool.api.CourseItem;
 public class LocalRecordBean implements Serializable, CourseItem {
 	private static final long serialVersionUID = 3846767521452450072L;
 
-	public static final String TITLE = "title";
-	public static final String THUMBNAIL_NAME = "thumnailName";
-	public static final String TAB = "tab";
-	public static final String CATEGORY_NAME = "categoryName";
-	public static final String INTRODUCE = "introduce";
-	public static final String SHARE_URL = "shareUrl";
-	public static final String COURSE_ID = "courseId";
-	//
-	public static final String MAKE_WINDOW_WIDTH = "makeWindowWidth";
-	public static final String MAKE_WINDOW_HEIGHT = "makeWindowHeight";
-
 	private String recordTitle;
 	private String recordDir;
 	private long createTime;

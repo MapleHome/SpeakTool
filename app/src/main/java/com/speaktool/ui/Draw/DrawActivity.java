@@ -77,6 +77,7 @@ import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
+import com.speaktool.utils.record.RecordFileAnalytic;
 import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.view.dialogs.SaveRecordAlertDialog;
 import com.speaktool.view.layouts.DrawPage;
@@ -775,7 +776,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             }
         });
         getPageRecorder().saveCurrentPageRecord();//save release.txt
-        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
+        boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
+//        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
         try {
             // 汇总release.txt文件
             ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
@@ -783,10 +785,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             RecordFileUtils.makeReleaseScript(new File(dirPath), mContext, info);
             // RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
             // 生成上传压缩包
-            RecordUploadBean uploadBean = RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir(), mContext);
-            if (uploadBean == null) {
-                T.showShort(mContext, "上传内容为空！");
-            }
+            RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir());
         } catch (Exception e) {
             e.printStackTrace();
         }

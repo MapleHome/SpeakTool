@@ -4,15 +4,14 @@ import com.speaktool.Const;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.utils.RecordFileUtils;
+import com.speaktool.utils.record.RecordFileAnalytic;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * 加载记录任务
@@ -63,7 +62,8 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
             return null;
         List<CourseItem> recs = new ArrayList<>();
         for (File dir : files) {
-            LocalRecordBean item = new LocalRecordBean();
+            // 解析info.txt文件信息
+            LocalRecordBean item = RecordFileAnalytic.analyticInfoFile(dir);
             // release.txt 和 release.mp3 是否存在
             File mJsonFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
             File audioFile = new File(dir, Const.RELEASE_SOUND_NAME);
@@ -73,9 +73,7 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
                 RecordFileUtils.deleteDirectory(dir);
                 continue;
             }
-            // 解析info.txt文件信息
-            boolean ret = setInfo(item, dir);
-            if (ret) {
+            if (item != null) {
                 recs.add(item);
             } else {
                 RecordFileUtils.deleteDirectory(dir);
@@ -92,45 +90,6 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
             }
         });
         return recs;
-    }
-
-    // 解析info文件
-    private boolean setInfo(LocalRecordBean item, File dir) {
-        File infofile = new File(dir, Const.INFO_FILE_NAME);
-        if (!infofile.exists()) {
-            return false;
-        }
-        try {
-            Properties p = new Properties();
-            FileInputStream ins = new FileInputStream(infofile);
-            p.load(ins);
-            String title = p.getProperty(LocalRecordBean.TITLE);
-            String thumbnailName = p.getProperty(LocalRecordBean.THUMBNAIL_NAME);
-            String tab = p.getProperty(LocalRecordBean.TAB);
-            String categoryName = p.getProperty(LocalRecordBean.CATEGORY_NAME);
-            String introduce = p.getProperty(LocalRecordBean.INTRODUCE);
-            String shareUrl = p.getProperty(LocalRecordBean.SHARE_URL);
-            String courseId = p.getProperty(LocalRecordBean.COURSE_ID);
-            ins.close();
-
-            String thumbnailImgPath = String.format("%s%s%s", dir.getAbsolutePath(), File.separator, thumbnailName);
-            //
-            item.setRecordTitle(title != null ? title : "unknown");
-            item.setThumbnailImgPath(thumbnailImgPath != null ? thumbnailImgPath : "");
-            item.setTab(tab != null ? tab : "");
-            item.setType(categoryName != null ? categoryName : "");
-            item.setIntroduce(introduce != null ? introduce : "");
-            item.setShareUrl(shareUrl);
-            item.setCourseId(courseId != null ? courseId : "");
-            item.setCreateTime(infofile.lastModified());
-            // 设置录音时间
-            long duration = RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
-            item.setDuration(Long.valueOf(duration));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
 }
