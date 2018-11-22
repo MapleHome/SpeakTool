@@ -78,7 +78,7 @@ import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 import com.speaktool.utils.record.RecordFileAnalytic;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
+import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.dialogs.SaveRecordAlertDialog;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
@@ -830,7 +830,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private Dialog mLoadingDialog;
 
     public void showLoading(String msg, OnKeyListener onKeyListener) {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, msg);
+        mLoadingDialog = new LoadingDialog(this, msg);
         mLoadingDialog.setOnKeyListener(onKeyListener);
         mLoadingDialog.show();
     }
@@ -841,7 +841,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             mLoadingDialog = null;
         }
     }
-
 
     @Override
     public void deleteRecord() {

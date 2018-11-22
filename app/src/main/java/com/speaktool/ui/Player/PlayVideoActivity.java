@@ -56,7 +56,7 @@ import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
 import com.speaktool.utils.record.RecordFileAnalytic;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
+import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.layouts.VideoSeekBar;
 
@@ -680,7 +680,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     }
 
     private void showLoading(String msg, OnKeyListener onKeyListener) {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, msg);
+        mLoadingDialog = new LoadingDialog(this, msg);
         mLoadingDialog.setOnKeyListener(onKeyListener);
         mLoadingDialog.show();
     }

@@ -14,7 +14,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.speaktool.R;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
+import com.speaktool.view.dialogs.LoadingDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +61,7 @@ public class PlayUrlVideoActivity extends FragmentActivity {
                 mLoadingDialog.dismiss();
             }
         });
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, getString(R.string.loading));
+        mLoadingDialog = new LoadingDialog(this, getString(R.string.loading));
         mLoadingDialog.show();
         mVideoView.start();// 开始播放视频
         mVideoView.requestFocus();// 请求获取焦点

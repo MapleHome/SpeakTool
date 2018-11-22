@@ -19,9 +19,9 @@ import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.impl.player.PlayProcess;
 import com.speaktool.ui.Player.PlayService;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
+import com.speaktool.view.dialogs.LoadingDialog;
 
 /**
  * 右侧功能栏——预览界面
@@ -102,7 +102,7 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
     }
 
     private void showLoading() {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(mDraw.context(), "正在加载");
+        mLoadingDialog = new LoadingDialog(mDraw.context(), "正在加载");
         mLoadingDialog.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
