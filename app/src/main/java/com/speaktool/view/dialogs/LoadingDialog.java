@@ -1,6 +1,5 @@
 package com.speaktool.view.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -9,8 +8,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.speaktool.R;
+import com.speaktool.utils.T;
 
-import junit.framework.Assert;
 
 /**
  * 加载Dialog
@@ -32,7 +31,7 @@ public class LoadingDialog extends Dialog {
     public LoadingDialog(Context context, boolean isShowAsFloatWindow, String msg) {
         super(context, R.style.CustomProgressDialog);
         if (!isShowAsFloatWindow) {
-            Assert.assertTrue("context must be Activity in Dialog.", context instanceof Activity);
+            T.showShort(context, "context must be Activity in Dialog.");
         } else {
             getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         }
