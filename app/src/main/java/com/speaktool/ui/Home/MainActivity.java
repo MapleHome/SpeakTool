@@ -3,11 +3,9 @@ package com.speaktool.ui.Home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.KeyEvent;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
@@ -16,7 +14,6 @@ import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.utils.FileIOUtils;
 import com.speaktool.utils.T;
-import com.speaktool.view.layouts.SearchView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,7 +21,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.io.IOException;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
