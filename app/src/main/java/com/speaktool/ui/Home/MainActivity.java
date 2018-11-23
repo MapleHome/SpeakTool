@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     @OnClick(R.id.ivSetting)
-    void toUserMGPage() {
+    void toSettingGPage() {
         Intent intent = new Intent(this, UserFMActivity.class);
         intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
         startActivity(intent);

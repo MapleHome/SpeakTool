@@ -15,9 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:padding="5.0dip">
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/guide_dot1_iv"

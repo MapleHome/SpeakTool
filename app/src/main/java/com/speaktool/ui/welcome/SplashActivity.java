@@ -8,9 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +27,9 @@ import com.speaktool.utils.permission.PermissionListener;
 
 import java.util.ArrayList;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -108,7 +108,7 @@ public class SplashActivity extends FragmentActivity {
         View guideView2 = inflater.inflate(R.layout.activity_splash_view2, null);
         View guideView3 = inflater.inflate(R.layout.activity_splash_view3, null);
         // 按钮点击
-        guideView3.findViewById(R.id.guide_start_btn).setOnClickListener(new OnClickListener() {
+        guideView3.findViewById(R.id.tv_start).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 enterHome();
@@ -122,7 +122,7 @@ public class SplashActivity extends FragmentActivity {
 
         guideViewPagerAdapter = new SplashPageAdapter(guideViews);
         guide_viewpager.setAdapter(guideViewPagerAdapter);
-        guide_viewpager.setOnPageChangeListener(pageChangeListener);
+        guide_viewpager.addOnPageChangeListener(pageChangeListener);
     }
 
     private void initData() {
@@ -186,9 +186,9 @@ public class SplashActivity extends FragmentActivity {
      * 进入主界面
      */
     protected void enterHome() {
-        finish();
         SPUtils.putBool(Const.First_ComeIn, false);// 不再是第一次了
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

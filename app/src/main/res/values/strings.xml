@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">讲讲</string>
+
+    <string name="splash_page_1_title">讲微课</string>
+    <string name="splash_page_1_des">边写边讲，轻松制作微课\n史上最简单的微课创作工具</string>
+    <string name="splash_page_2_title">讲生活</string>
+    <string name="splash_page_2_des">记录你的生活，表达你的思想\n从图文时代进入动画时代！</string>
+    <string name="splash_page_3_title">讲新闻</string>
+    <string name="splash_page_3_des">一样的新闻，不一样的演绎\n把你的讲述分享到朋友圈，让你的微信更拉风！</string>
+    <string name="splash_page_3_start">开始体验\"讲讲\"吧</string>
+
+
     <string name="deletepage_last">已经是最后一页了</string>
     <string name="saveRecord_empty_title">标题不能为空</string>
     <string name="recordType_exist">目录已经存在</string>
