@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author shaoshuai
  */
-public class PickFontColorsPoW extends BasePopupWindow implements OnItemClickListener, Callback {
+public class PickFontColorsPoW extends BasePopupWindow implements OnItemClickListener {
     private GridView gridViewColors;
     private AdapterColors adapter;
 
@@ -47,7 +47,12 @@ public class PickFontColorsPoW extends BasePopupWindow implements OnItemClickLis
         adapter = new AdapterColors(mContext, null);
         gridViewColors.setAdapter(adapter);
 
-        new Thread(new TaskLoadPaintColors(this)).start();
+        new Thread(new TaskLoadPaintColors(new Callback() {
+            @Override
+            public void onLoaded(List<PaintInfoBean> colors) {
+                adapter.refresh(colors);
+            }
+        })).start();
     }
 
     @Override
@@ -57,9 +62,5 @@ public class PickFontColorsPoW extends BasePopupWindow implements OnItemClickLis
         dismiss();
     }
 
-    @Override
-    public void onLoaded(List<PaintInfoBean> colors) {
-        adapter.refresh(colors);
-    }
 
 }

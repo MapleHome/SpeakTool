@@ -20,11 +20,12 @@ public class DrawPaint {
     private static PaintInfoBean globalPaintInfo;
 
     static {
-        globalPaintInfo = new PaintInfoBean();
-        globalPaintInfo.setColor(MyColors.BLACK);
-        globalPaintInfo.setIconResId(R.drawable.black);
-        globalPaintInfo.setIconResIdSelected(R.drawable.black_seleted);
-        globalPaintInfo.setStrokeWidth(DensityUtils.dp2px(SpeakApp.app(), DEFAULT_STROKE_WIDTH));
+        globalPaintInfo = new PaintInfoBean(
+                MyColors.BLACK,
+                R.drawable.black,
+                R.drawable.black_seleted,
+                DensityUtils.dp2px(SpeakApp.app(), DEFAULT_STROKE_WIDTH)
+        );
     }
 
     public DrawPaint() {
