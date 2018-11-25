@@ -68,7 +68,6 @@ import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecordError;
 import com.speaktool.impl.recorder.RecorderContext;
-import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.utils.BitmapScaleUtil;
@@ -682,8 +681,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         resetPageId();
         DrawPage.resetShapeId(this);
         //
-        if (getPlayMode() == PlayMode.MAKE)
-            SoundRecorder.closeWorldTimer();
+        if (getPlayMode() == PlayMode.MAKE){
+//            SoundRecorder.closeWorldTimer();
+            getPageRecorder().closeWorldTimer();
+        }
         SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
@@ -910,6 +911,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // 创建临时CMD文件和录音文件
                 final RecordError ret = getPageRecorder().recordPage(getCurrentBoard().getPageID());
                 // dismissLoading();
                 postTaskToUiThread(new Runnable() {
@@ -983,8 +985,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         selectNowUi(nowMode);
     }
 
+
     @Subscribe
     public void onEventMainThread(RecordTimeChangedEvent event) {
+        // 更新时间
         tvTime.setText(FormatUtils.getFormatTimeSimple(event.getNow()));
     }
 

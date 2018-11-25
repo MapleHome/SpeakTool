@@ -17,7 +17,7 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 
 /**
- * Record 文件解析
+ * Record info.txt文件解析
  *
  * @author maple
  * @time 2018/11/13

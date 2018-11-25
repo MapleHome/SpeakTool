@@ -1,127 +1,116 @@
 package com.speaktool.impl.recorder;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.busevents.RecordTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class RecordWorldTime {
-	private long now = ICmd.TIME_DELETE_FLAG;// millsec.
+    private long closeTime = Long.MAX_VALUE;
+    private long now = ICmd.TIME_DELETE_FLAG;// millsec.
+    private boolean isNeedSendTimeChangedEvent = false;
+    private boolean isTicking = false;
 
-	private boolean isTicking = false;
+    private Timer mTimer;
 
-	private Timer mTimer;
 
-	private boolean isNeedSendTimeChangedEvent = false;
+    public RecordWorldTime(boolean isChangedUI) {
+        super();
+        this.isNeedSendTimeChangedEvent = isChangedUI;
+    }
 
-	private long closeTime = Long.MAX_VALUE;
+//	public RecordWorldTime(boolean isNeedSendTimeChangedEvent, long closeTime, boolean isMake) {
+//		super();
+//		this.isNeedSendTimeChangedEvent = isNeedSendTimeChangedEvent;
+//		this.closeTime = closeTime;
+//		this.isMake = isMake;
+//	}
 
-	private boolean isMake = true;
+    public void setNowTime(long now) {
+        this.now = now;
+    }
 
-	public RecordWorldTime(boolean isNeedSendTimeChangedEvent, boolean isMake) {
-		super();
-		this.isNeedSendTimeChangedEvent = isNeedSendTimeChangedEvent;
-		this.isMake = isMake;
-	}
+//	public long getCloseTime() {
+//		return closeTime;
+//	}
 
-	public RecordWorldTime(boolean isNeedSendTimeChangedEvent, long closeTime, boolean isMake) {
-		super();
-		this.isNeedSendTimeChangedEvent = isNeedSendTimeChangedEvent;
-		this.closeTime = closeTime;
-		this.isMake = isMake;
-	}
+    public void pause() {
+        if (!isTicking)
+            return;
+        mTimer.cancel();
+        mTimer = null;
+        isTicking = false;
+    }
 
-	public void setNowTime(long now) {
-		this.now = now;
-	}
+    public void stop() {
+        pause();
+        now = 0;
+        isBooted = false;
+    }
 
-	public long getCloseTime() {
-		return closeTime;
-	}
+    public void goOn() {
+        if (isTicking)
+            return;
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                now += 10;
+                if (now % 1000 == 0)
+                    postEvent();
+            }
+        }, 100, 10);
+        isTicking = true;
+    }
 
-	public void pause() {
-		if (!isTicking)
-			return;
-		mTimer.cancel();
-		mTimer = null;
-		isTicking = false;
-	}
+    private boolean isBooted = false;
 
-	public void stop() {
-		pause();
-		now = 0;
-		isBooted = false;
-	}
+    public void boot(long nowInit) {
+        if (isBooted)
+            return;
+        isBooted = true;
+        now = nowInit;
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(new TimerTask() {
 
-	public void goOn() {
-		if (isTicking)
-			return;
-		mTimer = new Timer();
-		mTimer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				now += 10;
-				if (now % 1000 == 0)
-					postEvent();
-			}
-		}, 100, 10);
-		isTicking = true;
-	}
+            @Override
+            public void run() {
+                now += 10;
+                if (now % 1000 == 0)
+                    postEvent();
+            }
+        }, 100, 10);
+        isTicking = true;
 
-	private boolean isBooted = false;
+    }
 
-	public void boot(long nowInit) {
-		if (isBooted)
-			return;
-		isBooted = true;
-		now = nowInit;
-		mTimer = new Timer();
-		mTimer.scheduleAtFixedRate(new TimerTask() {
+    public long now() {
+        return now;
+    }
 
-			@Override
-			public void run() {
-				now += 10;
-				if (now % 1000 == 0)
-					postEvent();
-			}
-		}, 100, 10);
-		isTicking = true;
+    public boolean isBooted() {
+        return isBooted;
+    }
 
-	}
+    public boolean isTicking() {
+        return isTicking;
+    }
 
-	public long now() {
-		return now;
-	}
+    private void postEvent() {
+        if (now > closeTime) {
+            stop();
+            return;
+        }
+        if (isNeedSendTimeChangedEvent) {
+            EventBus.getDefault().post(new RecordTimeChangedEvent(now, closeTime));
+        }
+    }
 
-	public boolean isBooted() {
-		return isBooted;
-	}
-
-	public boolean isTicking() {
-		return isTicking;
-	}
-
-	private void postEvent() {
-		if (now > closeTime) {
-			stop();
-			return;
-		}
-		if (isNeedSendTimeChangedEvent) {
-			// 通过EventBus订阅者发送消息
-			if (isMake) {
-				EventBus.getDefault().post(new RecordTimeChangedEvent(now, closeTime));
-			} else {
-				EventBus.getDefault().post(new PlayTimeChangedEvent(now, closeTime));
-			}
-		}
-	}
-
-	public long totalTimeNow() {
-		return now;
-	}
+//	public long totalTimeNow() {
+//		return now;
+//	}
 }
