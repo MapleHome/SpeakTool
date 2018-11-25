@@ -12,8 +12,8 @@
 
         <com.speaktool.view.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/popup_selectColor_strokepreview_height"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:background="#dddddd" />
 
         <SeekBar

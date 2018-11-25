@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/drawactivity_topbar_height"
+        android:layout_height="@dimen/top_bar_height"
         android:background="@color/draw_left_bar_bg">
 
         <RelativeLayout
@@ -57,7 +57,7 @@
     <RelativeLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/drawactivity_bottombar_height"
+        android:layout_height="@dimen/top_bar_height"
         android:layout_alignParentBottom="true"
         android:background="@color/draw_right_bar_bg">
 

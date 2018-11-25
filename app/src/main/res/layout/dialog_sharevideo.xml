@@ -9,7 +9,6 @@
     android:padding="5dp">
 
     <LinearLayout
-        android:id="@+id/secondFrame"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
@@ -31,7 +30,7 @@
                 android:maxLines="2"
                 android:text="课程名称"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/dialog_fillsaveinfo_title_size" />
+                android:textSize="30sp" />
 
             <ImageView
                 android:id="@+id/ivBack"

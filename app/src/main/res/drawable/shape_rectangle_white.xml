@@ -2,30 +2,18 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 课程记录条目背景-圆角-带边 -->
-
-
-    <!-- 默认状态 -->
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
-
-            <!-- 填充颜色 -->
             <solid android:color="@color/taikonghui_def" />
-            <!-- 线的宽度，颜色灰色 -->
             <stroke android:width="0.7dip" android:color="@color/line_bg" />
-            <!-- 矩形的圆角半径 -->
             <corners android:radius="1dp" />
         </shape>
     </item>
 
-    <!-- 选择状态 -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-
-            <!-- 填充颜色 -->
             <solid android:color="@color/taikonghui_sel" />
-            <!-- 线的宽度，颜色灰色 -->
             <stroke android:width="0.7dip" android:color="@color/line_bg" />
-            <!-- 矩形的圆角半径 -->
             <corners android:radius="1dp" />
         </shape>
     </item>
