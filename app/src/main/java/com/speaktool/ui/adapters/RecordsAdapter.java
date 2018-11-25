@@ -57,4 +57,6 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
         return item;
     }
 
+
+
 }

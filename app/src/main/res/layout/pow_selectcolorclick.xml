@@ -23,18 +23,18 @@
 
         <com.speaktool.view.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="#dddddd" />
 
         <SeekBar
             android:id="@+id/seekBarAdjustStrokeWidth"
-            style="@style/Widget.SeekBar.Normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:max="50"
-            android:progress="1" />
+            android:progress="10" />
     </LinearLayout>
 
 </LinearLayout>

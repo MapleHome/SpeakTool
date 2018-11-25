@@ -46,7 +46,7 @@ public class SplashActivity extends BaseFragmentActivity {
             setContentView(R.layout.activity_base_fragment);
             addView(new SplashFragment());
         } else {
-            // null content View, 快速加载 Styles.Theme 中 windowBackground
+            // null ContentView, 快速加载Styles.Theme中windowBackground.
             // setBaseContentView(R.layout.activity_splash_view1);
 
             long sleepTime = Const.SplashMinTime - (System.currentTimeMillis() - startTime);

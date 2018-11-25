@@ -27,8 +27,6 @@ public class LocalRecordBean implements Serializable, CourseItem {
 
 	private String courseId;
 	//
-	private boolean isUploading = false;
-	//
 	private int makeWindowWidth;
 	private int makeWindowHeight;
 	// just use upload.
@@ -133,16 +131,6 @@ public class LocalRecordBean implements Serializable, CourseItem {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 
-	}
-
-	@Override
-	public boolean isUploading() {
-		return isUploading;
-	}
-
-	@Override
-	public void setUploading(boolean b) {
-		isUploading = b;
 	}
 
 	public int getMakeWindowWidth() {

@@ -34,10 +34,4 @@ public interface CourseItem {
 	/** 获取课程记录介绍 */
 	String getIntroduce();
 
-	/** 是否正在上传 */
-	boolean isUploading();
-
-	/** 设置是否正在上传 */
-	void setUploading(boolean b);
-
 }

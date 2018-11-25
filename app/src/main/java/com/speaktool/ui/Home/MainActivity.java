@@ -1,14 +1,12 @@
 package com.speaktool.ui.Home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.KeyEvent;
 
 import com.speaktool.Const;
 import com.speaktool.R;
+import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.ui.Setting.UserFMActivity;
@@ -29,9 +27,8 @@ import butterknife.OnClick;
  *
  * @author shaoshuai
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseFragmentActivity {
     private HomePage mHomePage;
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +36,9 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        mContext = this;
 
-        initView();
-    }
-
-    private void initView() {
         mHomePage = new HomePage();
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.id_content, mHomePage).commit();
+        addView(mHomePage, R.id.id_content);
     }
 
     @OnClick(R.id.tvMakeVideo)
@@ -63,7 +53,6 @@ public class MainActivity extends FragmentActivity {
         intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
         startActivity(intent);
     }
-
 
     private void test() {
         try {
