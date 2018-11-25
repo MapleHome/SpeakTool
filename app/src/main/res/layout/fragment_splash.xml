@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,21 +20,21 @@
         android:padding="5dp">
 
         <ImageView
-            android:id="@+id/guide_dot1_iv"
+            android:id="@+id/iv_dot1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@drawable/guide_dot_pressed" />
 
         <ImageView
-            android:id="@+id/guide_dot2_iv"
+            android:id="@+id/iv_dot2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@drawable/guide_dot_normal" />
 
         <ImageView
-            android:id="@+id/guide_dot3_iv"
+            android:id="@+id/iv_dot3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"

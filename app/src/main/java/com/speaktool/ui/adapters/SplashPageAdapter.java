@@ -8,6 +8,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+/**
+ * @author maple
+ * @time 2018/11/23
+ */
 public class SplashPageAdapter extends PagerAdapter {
     private List<View> Views;
 
@@ -15,12 +19,10 @@ public class SplashPageAdapter extends PagerAdapter {
         this.Views = views;
     }
 
-
     @Override
     public int getCount() {
         return Views.size();
     }
-
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
@@ -38,6 +40,5 @@ public class SplashPageAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
-
 
 }

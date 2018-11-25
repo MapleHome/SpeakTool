@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="draw_left_bar_bg">#aa0066CC</color> <!-- 左侧功能条颜色 -->
+    <color name="app_main_bg">#5698D9</color>
+
+    <color name="draw_left_bar_bg">#c80066cc</color> <!-- 左侧功能条颜色 -->
     <color name="draw_right_bar_bg">#aa0066CC</color> <!-- 右侧功能条颜色 -->
     <color name="bar_recording_background">#f08080</color> <!-- 录屏状态功能条颜色 -->
 

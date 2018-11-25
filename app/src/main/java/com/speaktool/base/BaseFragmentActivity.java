@@ -18,32 +18,33 @@ import com.speaktool.R;
  * @time 2018/10/11
  */
 public abstract class BaseFragmentActivity extends FragmentActivity {
-    public LinearLayout ll_root;
-    public FrameLayout fl_content;
+//    public LinearLayout ll_root;
+//    public FrameLayout fl_content;
 
     public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 保持竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        setContentView(R.layout.activity_base_fragment);
+//        setContentView(R.layout.activity_base_fragment);
         mContext = getBaseContext();
 
-        findView();
+//        findView();
     }
 
-    private void findView() {
-        ll_root = (LinearLayout) findViewById(R.id.ll_root);
-        fl_content = (FrameLayout) findViewById(R.id.fl_content);
-    }
-
-    public void setBaseContentView(int layoutID) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(layoutID, ll_root);
-        fl_content.setVisibility(View.GONE);
-    }
+//    private void findView() {
+//        ll_root = (LinearLayout) findViewById(R.id.ll_root);
+//        fl_content = (FrameLayout) findViewById(R.id.fl_content);
+//    }
+//
+//    public void setBaseContentView(int layoutID) {
+//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        inflater.inflate(layoutID, ll_root);
+//        fl_content.setVisibility(View.GONE);
+//    }
 
     // ------------------ fragment ------------------
 

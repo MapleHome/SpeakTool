@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <color android:color="@color/app_main_bg" />
+    </item>
+
+    <item android:gravity="center">
+        <bitmap android:src="@mipmap/ic_launcher" />
+    </item>
+
+</layer-list>
