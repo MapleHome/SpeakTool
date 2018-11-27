@@ -67,7 +67,7 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
                     return;
                 }
                 //
-                final String dirPath = mDraw.getPageRecorder().getRecordDir();
+                String dirPath = mDraw.getPageRecorder().getRecordDir();
                 showLoading();
                 Intent it = new Intent(mContext, PlayService.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -83,7 +83,7 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
                     T.showShort(mContext, "还没有录像！");
                     return;
                 }
-                final String dirPath = mDraw.getPageRecorder().getRecordDir();
+                String dirPath = mDraw.getPageRecorder().getRecordDir();
                 showLoading();
                 Intent it = new Intent(mContext, PlayService.class);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

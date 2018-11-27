@@ -3,7 +3,7 @@ package com.speaktool.tasks;
 import com.speaktool.Const;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.utils.RecordFileUtils;
+import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.record.RecordFileAnalytic;
 
 import java.io.File;
@@ -49,7 +49,8 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
      * 获取本地课程记录
      */
     private List<CourseItem> getLocalRecords() {
-        File basedir = new File(Const.RECORD_DIR);// 本地保存记录的根目录
+        //  本地保存记录的根目录 /spktl/records/
+        File basedir = new File(Const.RECORD_DIR);
         if (!basedir.exists())
             return null;
         File[] files = basedir.listFiles(new FileFilter() {
@@ -58,28 +59,22 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
                 return pathname.isDirectory();
             }
         });
-        if (files == null)
+        if (files == null || files.length == 0)
             return null;
+
         List<CourseItem> recs = new ArrayList<>();
         for (File dir : files) {
-            // 解析info.txt文件信息
-            LocalRecordBean item = RecordFileAnalytic.analyticInfoFile(dir);
-            // release.txt 和 release.mp3 是否存在
-            File mJsonFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
+            File infoFile = new File(dir, Const.INFO_FILE_NAME);
+            File mCmdFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
             File audioFile = new File(dir, Const.RELEASE_SOUND_NAME);
-            if (mJsonFile.exists()) {
-                item.setRecordDir(dir.getAbsolutePath());
+            // 解析info.txt文件信息
+            LocalRecordBean infoBean = RecordFileAnalytic.analyticInfoFile(dir);
+            if (infoBean != null && mCmdFile.exists()) {
+                infoBean.setRecordDir(dir.getAbsolutePath());
+                recs.add(infoBean);
             } else {
-                RecordFileUtils.deleteDirectory(dir);
-                continue;
+                FileUtils.deleteDir(dir);
             }
-            if (item != null) {
-                recs.add(item);
-            } else {
-                RecordFileUtils.deleteDirectory(dir);
-                continue;
-            }
-
         }
         Collections.sort(recs, new Comparator<CourseItem>() {
             @Override

@@ -34,16 +34,20 @@ public class RecordFileAnalytic {
     public static final String MAKE_WINDOW_HEIGHT = "makeWindowHeight";
     public static final String SHARE_URL = "shareUrl";
 
-    // 解析info文件
+    /**
+     * 解析info文件
+     *
+     * @param dir
+     * @return
+     */
     public static LocalRecordBean analyticInfoFile(File dir) {
-        LocalRecordBean item = new LocalRecordBean();
-        File infofile = new File(dir, Const.INFO_FILE_NAME);
-        if (!infofile.exists()) {
+        File infoFile = new File(dir, Const.INFO_FILE_NAME);
+        if (!infoFile.exists()) {
             return null;
         }
         try {
             Properties p = new Properties();
-            FileInputStream ins = new FileInputStream(infofile);
+            FileInputStream ins = new FileInputStream(infoFile);
             p.load(ins);
             String title = p.getProperty(TITLE);
             String thumbnailName = p.getProperty(THUMBNAIL_NAME);
@@ -56,6 +60,7 @@ public class RecordFileAnalytic {
 
             String thumbnailImgPath = String.format("%s%s%s", dir.getAbsolutePath(), File.separator, thumbnailName);
             //
+            LocalRecordBean item = new LocalRecordBean();
             item.setRecordTitle(title != null ? title : "unknown");
             item.setThumbnailImgPath(thumbnailImgPath != null ? thumbnailImgPath : "");
             item.setTab(tab != null ? tab : "");
@@ -63,7 +68,7 @@ public class RecordFileAnalytic {
             item.setIntroduce(introduce != null ? introduce : "");
             item.setShareUrl(shareUrl);
             item.setCourseId(courseId != null ? courseId : "");
-            item.setCreateTime(infofile.lastModified());
+            item.setCreateTime(infoFile.lastModified());
             // 设置录音时间
             long duration = RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
             item.setDuration(Long.valueOf(duration));
@@ -75,6 +80,12 @@ public class RecordFileAnalytic {
     }
 
 
+    /**
+     *
+     * @param dir
+     * @param info
+     * @return
+     */
     public static boolean setRecordInfos(File dir, RecordUploadBean info) {
         try {
             // logicTime.stop();

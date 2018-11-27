@@ -10,7 +10,7 @@ import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.utils.FileIOUtils;
+import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,7 +57,7 @@ public class MainActivity extends BaseFragmentActivity {
     private void test() {
         try {
             File file = new File(Const.RECORD_DIR, "test.txt");
-            FileIOUtils.writeFile(file, "text88888");
+            FileUtils.writeFile(file, "text88888");
         } catch (IOException e) {
             e.printStackTrace();
         }

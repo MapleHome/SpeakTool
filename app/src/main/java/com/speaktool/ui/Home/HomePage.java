@@ -13,11 +13,11 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.speaktool.R;
 import com.speaktool.api.CourseItem;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.tasks.TaskLoadRecords;
 import com.speaktool.tasks.TaskLoadRecords.RecordsUi;
 import com.speaktool.tasks.ThreadPoolWrapper;
 import com.speaktool.ui.adapters.RecordsAdapter;
-import com.speaktool.base.BaseFragment;
 import com.speaktool.view.dialogs.CourseItemDesDialog;
 
 import java.util.List;
@@ -49,20 +49,6 @@ public class HomePage extends BaseFragment {
         // 记录列表
         recordsAdapter = new RecordsAdapter(mContext, null);
         gv_records.setAdapter(recordsAdapter);
-
-        srl_refreshLayout
-                .setRefreshHeader(new ClassicsHeader(mContext))
-                .setEnableLoadMore(false);
-
-        // 默认设置
-        refreshIndexPage();
-
-        srl_refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                refreshIndexPage();
-            }
-        });
         gv_records.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,6 +56,19 @@ public class HomePage extends BaseFragment {
                 new CourseItemDesDialog(getActivity(), course).show();
             }
         });
+
+        srl_refreshLayout
+                .setRefreshHeader(new ClassicsHeader(mContext))
+                .setOnRefreshListener(new OnRefreshListener() {
+                    @Override
+                    public void onRefresh(RefreshLayout refreshlayout) {
+                        refreshIndexPage();
+                    }
+                })
+                .setEnableLoadMore(false);
+
+        // 默认设置
+        refreshIndexPage();
     }
 
     public void refreshIndexPage() {
@@ -83,7 +82,7 @@ public class HomePage extends BaseFragment {
                             // tvSearchEmpty.setProgressbarVisibility(View.GONE);
                         }
                         recordsAdapter.refresh(datas);
-                        srl_refreshLayout.finishRefresh(2000);
+                        srl_refreshLayout.finishRefresh();
                     }
                 }));
     }

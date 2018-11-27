@@ -464,22 +464,6 @@ public class RecordFileUtils {
         }
     }
 
-    /**
-     * 删除目录
-     *
-     * @param dir
-     */
-    public static void deleteDirectory(File dir) {
-        if (dir == null || !dir.exists())
-            return;
-        File[] files = dir.listFiles();
-        if (files == null || files.length < 1)
-            return;
-//        for (File f : files)
-//            f.delete();
-//        dir.delete();
-    }
-
 
     /**
      * 是否是发布文件
