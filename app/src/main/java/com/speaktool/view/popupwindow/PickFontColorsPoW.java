@@ -3,7 +3,6 @@ package com.speaktool.view.popupwindow;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -17,31 +16,30 @@ import com.speaktool.ui.adapters.AdapterColors;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 选择字体颜色
  *
  * @author shaoshuai
  */
 public class PickFontColorsPoW extends BasePopupWindow implements OnItemClickListener {
-    private GridView gridViewColors;
-    private AdapterColors adapter;
+    @BindView(R.id.gridViewColors) GridView gridViewColors;
 
+    private AdapterColors adapter;
     private EditWidget mEditWidget;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_pickfontcolor, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_pickfontcolor, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public PickFontColorsPoW(Context context, View token, View anchor, EditWidget edit) {
-        this(context, token, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, edit);
-    }
-
-    public PickFontColorsPoW(Context context, View token, View anchor, int w, int h, EditWidget edit) {
-        super(context, token, anchor, w, h);
+        super(context, token, anchor);
         mEditWidget = edit;
-
-        gridViewColors = (GridView) mRootView.findViewById(R.id.gridViewColors);
 
         gridViewColors.setOnItemClickListener(this);
         adapter = new AdapterColors(mContext, null);

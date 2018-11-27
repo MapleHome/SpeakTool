@@ -336,7 +336,7 @@ public class JsonScriptPlayer {
             @Override
             public void run() {
                 draw.showViewFlipperOverlay();
-                play((int) positionTimeMills);
+                play(positionTimeMills);
             }
         });
     }

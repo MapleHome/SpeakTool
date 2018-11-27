@@ -26,6 +26,7 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
             if (datas == null) {
                 datas = new ArrayList<>();
             }
+            datas.clear();
             datas.add(new PaintInfoBean(MyColors.BLACK, R.drawable.black, R.drawable.black_seleted));
             datas.add(new PaintInfoBean(MyColors.BLUE, R.drawable.blue, R.drawable.blue_seleted));
             datas.add(new PaintInfoBean(MyColors.RED, R.drawable.red, R.drawable.red_seleted));

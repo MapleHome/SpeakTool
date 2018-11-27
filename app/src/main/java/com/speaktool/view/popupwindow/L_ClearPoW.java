@@ -3,8 +3,6 @@ package com.speaktool.view.popupwindow;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import com.speaktool.R;
 import com.speaktool.api.Draw;
@@ -12,67 +10,68 @@ import com.speaktool.bean.ClearPageData;
 import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.utils.T;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 顶部功能栏——更多功能——清除本页内容
  *
  * @author shaoshuai
  */
-public class L_ClearPoW extends BasePopupWindow implements OnClickListener {
+public class L_ClearPoW extends BasePopupWindow {
     private DrawActivity drawActivity;
     private Draw mDraw;
+    int pageId;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_clearclick, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_clearclick, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public L_ClearPoW(Context context, View anchor, Draw draw, DrawActivity drawAct) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw, drawAct);
-    }
-
-    public L_ClearPoW(Context context, View anchor, int w, int h, Draw draw, DrawActivity drawAct) {
-        super(context, anchor, w, h);
+        super(context, anchor);
         mDraw = draw;
         drawActivity = drawAct;
-
-        mRootView.findViewById(R.id.tvClearPagePen).setOnClickListener(this);
-        mRootView.findViewById(R.id.tvClearPagePenAndContents).setOnClickListener(this);
-        mRootView.findViewById(R.id.tvClearPageRecords).setOnClickListener(this);
-        mRootView.findViewById(R.id.tvDelPage).setOnClickListener(this);
+        pageId = mDraw.getCurrentBoard().getPageID();
     }
 
-    @Override
-    public void onClick(View v) {
-        final int pageId = mDraw.getCurrentBoard().getPageID();// 画纸界面ID
 
-        switch (v.getId()) {
-            case R.id.tvDelPage:// 删除界面
-                dismiss();
-                drawActivity.deletePager();
-                break;
-            case R.id.tvClearPagePenAndContents:// 清除本页所有内容
-                dismiss();
-                mDraw.clearPageClick(pageId, ClearPageData.OPT_CLEAR_ALL);
-                break;
-            case R.id.tvClearPagePen:// 清除本页绘画笔记
-                dismiss();
-                mDraw.clearPageClick(pageId, ClearPageData.OPT_CLEAR_NOTES);
-                break;
-            case R.id.tvClearPageRecords:// 清除本页录音
-                dismiss();
-                if (mDraw.getPageRecorder().isHaveRecordForPage(pageId)) {
-                    mDraw.preChangePage(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDraw.getPageRecorder().deletePageRecord(pageId);
-                        }
-                    });
-                } else {
-                    T.showShort(mContext, "本页还没有录像！");
+    // 删除界面
+    @OnClick(R.id.tvDelPage)
+    void onDeletePage() {
+        dismiss();
+        drawActivity.deletePager();
+    }
+
+    // 清除本页所有内容
+    @OnClick(R.id.tvClearPagePenAndContents)
+    void onClearPagePenAndContents() {
+        dismiss();
+        mDraw.clearPageClick(pageId, ClearPageData.OPT_CLEAR_ALL);
+    }
+
+    // 清除本页绘画笔记
+    @OnClick(R.id.tvClearPagePen)
+    void onClearPagePen() {
+        dismiss();
+        mDraw.clearPageClick(pageId, ClearPageData.OPT_CLEAR_NOTES);
+    }
+
+    // 清除本页录音
+    @OnClick(R.id.tvClearPageRecords)
+    void onClearPageRecords() {
+        dismiss();
+        if (mDraw.getPageRecorder().isHaveRecordForPage(pageId)) {
+            mDraw.preChangePage(new Runnable() {
+                @Override
+                public void run() {
+                    mDraw.getPageRecorder().deletePageRecord(pageId);
                 }
-                break;
-            default:
-                break;
+            });
+        } else {
+            T.showShort(mContext, "本页还没有录像！");
         }
     }
 

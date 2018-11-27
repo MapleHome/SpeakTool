@@ -25,7 +25,7 @@ public class ItemViewChooseBackgroundPop extends FrameLayout {
     @BindView(R.id.ivChooseState) ImageView ivChooseState;// 是否选中
 
     private String note = "";
-    private int iconResid;
+    private int iconResId;
     private boolean isCheck = false;
 
     public ItemViewChooseBackgroundPop(Context context) {
@@ -34,21 +34,14 @@ public class ItemViewChooseBackgroundPop extends FrameLayout {
     }
 
     public ItemViewChooseBackgroundPop(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.itemSelectBg);
-        note = a.getString(R.styleable.itemSelectBg_itemSelectBg_note);
-        iconResid = a.getResourceId(R.styleable.itemSelectBg_itemSelectBg_icon, -1);
-        isCheck = a.getBoolean(R.styleable.itemSelectBg_itemSelectBg_isCheck, false);
-        a.recycle();
-        init();
+        this(context, attrs, 0);
     }
 
     public ItemViewChooseBackgroundPop(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.itemSelectBg);
         note = a.getString(R.styleable.itemSelectBg_itemSelectBg_note);
-        iconResid = a.getResourceId(R.styleable.itemSelectBg_itemSelectBg_icon, -1);
+        iconResId = a.getResourceId(R.styleable.itemSelectBg_itemSelectBg_icon, -1);
         isCheck = a.getBoolean(R.styleable.itemSelectBg_itemSelectBg_isCheck, false);
         a.recycle();
         init();
@@ -58,17 +51,18 @@ public class ItemViewChooseBackgroundPop extends FrameLayout {
         View view = View.inflate(getContext(), R.layout.item_choosebackground_pop, this);
         ButterKnife.bind(this, view);
 
-        if (iconResid != -1)
-            ivIcon.setImageResource(iconResid);
+        if (iconResId != -1)
+            ivIcon.setImageResource(iconResId);
         if (!TextUtils.isEmpty(note))
             tvNote.setText(note);
         setCheckState(isCheck);
     }
 
     public void setCheckState(boolean isChecked) {
-        if (isChecked)
+        if (isChecked) {
             ivChooseState.setVisibility(View.VISIBLE);
-        else
+        } else {
             ivChooseState.setVisibility(View.INVISIBLE);
+        }
     }
 }

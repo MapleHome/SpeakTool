@@ -2,13 +2,11 @@ package com.speaktool.view.popupwindow;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -45,6 +43,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.NonNull;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * 顶部功能栏——更多功能——添加图片——网络图片
@@ -53,10 +55,10 @@ import java.util.concurrent.Executors;
  */
 public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener,
         OnDismissListener, OnItemClickListener, SearchCategoryChangedListener {
-    private SearchView mSearchView;
-    private SmartRefreshLayout layContent;
-    private GridView mNetPicsGrid;
-    private ImageView netImagePreview;
+    @BindView(R.id.searchView) SearchView mSearchView;
+    @BindView(R.id.layContent) SmartRefreshLayout layContent;
+    @BindView(R.id.listNetImage) GridView mNetPicsGrid;
+    @BindView(R.id.netImagePreview) ImageView netImagePreview;
 
     private Draw mDraw;
     private ExecutorService singleExecutor = Executors
@@ -65,44 +67,40 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
     private LoadingDialog mLoadingDialog;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_add_net_image, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_add_net_image, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public L_M_AddNetImgPoW(Context context, View view, Draw draw) {
-        this(context, view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
-    }
-
-    public L_M_AddNetImgPoW(Context context, View view, int w, int h, Draw draw) {
-        super(context, view, w, h);
-        mDraw = draw;
+        super(context, view);
         EventBus.getDefault().register(this);
+        mDraw = draw;
         mLoadingDialog = new LoadingDialog(mContext);
 
-        mSearchView = (SearchView) mRootView.findViewById(R.id.searchView);
-        layContent = mRootView.findViewById(R.id.layContent);
-        netImagePreview = (ImageView) mRootView.findViewById(R.id.netImagePreview);
-        mNetPicsGrid = (GridView) mRootView.findViewById(R.id.listNetImage);
 
-        // mNetPicsGrid.getRefreshableView().setColumnWidth(mRootView.getWidth()/6);
+        // mNetPicsGrid.getRefreshableView().setColumnWidth(mContentView.getWidth()/6);
 //        mNetPicsGrid.setMode(Mode.BOTH);
 //        mNetPicsGrid.setOnRefreshListener(this);
-        layContent.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                refresh();
-            }
-        }).setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                if (!isHaveMore) {
-                    layContent.finishLoadMore();
-                    T.showShort(mContext, "没有更多数据了");
-                    return;
-                }
-                dosearch(mCurrentSearchKey, mCurrentSearchIndex);
-            }
-        });
+        layContent
+                .setOnRefreshListener(new OnRefreshListener() {
+                    @Override
+                    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                        refresh();
+                    }
+                })
+                .setOnLoadMoreListener(new OnLoadMoreListener() {
+                    @Override
+                    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                        if (!isHaveMore) {
+                            layContent.finishLoadMore();
+                            T.showShort(mContext, "没有更多数据了");
+                            return;
+                        }
+                        dosearch(mCurrentSearchKey, mCurrentSearchIndex);
+                    }
+                });
 
         SearchCategoryBean type = new SearchCategoryBean("网络搜索", SearchCategoryBean.CID_BAIDU_SEARCH);
         mSearchView.setCategory(type);
@@ -116,7 +114,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         mSearchView.setDropdownClickListener(this);
         mSearchView.setSearchClickListener(this);
         netImagePreview.setOnClickListener(this);
-        this.setOnDismissListener(this);
+        setOnDismissListener(this);
         switchUi(type.getCategoryId());
     }
 
@@ -294,7 +292,7 @@ public class L_M_AddNetImgPoW extends BasePopupWindow implements OnClickListener
         ret.add(new SearchCategoryBean("网络搜索", SearchCategoryBean.CID_BAIDU_SEARCH));
         ret.add(new SearchCategoryBean("网址搜索", SearchCategoryBean.CID_PIC_URL));
 
-        CategoryPoW pp = new CategoryPoW(mContext, mAnchorView, anchor, this);
+        CategoryPoW pp = new CategoryPoW(mContext, parentView, anchor, this);
         pp.refreshCategoryList(ret);
         pp.showPopupWindow(WeiZhi.Bottom);
     }

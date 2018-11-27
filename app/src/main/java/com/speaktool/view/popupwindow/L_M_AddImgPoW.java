@@ -26,28 +26,22 @@ public class L_M_AddImgPoW extends BasePopupWindow implements OnClickListener {
     private PickPhotoCallback mPickPhotoCallback;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_add_image, null);
+    public View getContentView(LayoutInflater inflater) {
+        return inflater.inflate(R.layout.pow_add_image, null);
     }
 
     public L_M_AddImgPoW(Context context, View anchor, PhotoImporter photoImporter, PickPhotoCallback callback) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, photoImporter,
-                callback);
-    }
-
-    public L_M_AddImgPoW(Context context, View anchor, int w, int h, PhotoImporter photoImporter,
-                         PickPhotoCallback callback) {
-        super(context, anchor, w, h);
+        super(context, anchor);
         mPhotoImporter = photoImporter;
         mPickPhotoCallback = callback;
 
-        tvImportFromCamera = mRootView.findViewById(R.id.tvImportFromCamera);// 拍照
+        tvImportFromCamera = mContentView.findViewById(R.id.tvImportFromCamera);// 拍照
         tvImportFromCamera.setOnClickListener(this);
-        tvImportFromAlbum = mRootView.findViewById(R.id.tvImportFromAlbum);// 从相册选取
+        tvImportFromAlbum = mContentView.findViewById(R.id.tvImportFromAlbum);// 从相册选取
         tvImportFromAlbum.setOnClickListener(this);
-        tvImportFromNet = mRootView.findViewById(R.id.tvImportFromNet);// 获取网络图片
+        tvImportFromNet = mContentView.findViewById(R.id.tvImportFromNet);// 获取网络图片
         tvImportFromNet.setOnClickListener(this);
-        tvImportBatch = mRootView.findViewById(R.id.tvImportBatch);// 批量导入图片
+        tvImportBatch = mContentView.findViewById(R.id.tvImportBatch);// 批量导入图片
         tvImportBatch.setOnClickListener(this);
     }
 
@@ -55,26 +49,23 @@ public class L_M_AddImgPoW extends BasePopupWindow implements OnClickListener {
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.tvImportFromCamera:// 拍照
-                onDestory();
-                mPhotoImporter.getImageFromCamera(mRootView, mPickPhotoCallback);
+                dismiss();
+                mPhotoImporter.getImageFromCamera(mContentView, mPickPhotoCallback);
                 break;
             case R.id.tvImportFromAlbum:// 从相册选取
-                onDestory();
-                mPhotoImporter.getImageFromAlbum(mRootView, mPickPhotoCallback);
+                dismiss();
+                mPhotoImporter.getImageFromAlbum(mContentView, mPickPhotoCallback);
                 break;
             case R.id.tvImportFromNet:// 获取网络图片
-                onDestory();
-                mPhotoImporter.getImageFromNet(mRootView, mPickPhotoCallback);
+                dismiss();
+                mPhotoImporter.getImageFromNet(mContentView, mPickPhotoCallback);
                 break;
             case R.id.tvImportBatch:// 批量导入图片
-                onDestory();
-                mPhotoImporter.importImageBatch(mRootView, mPickPhotoCallback);
+                dismiss();
+                mPhotoImporter.importImageBatch(mContentView, mPickPhotoCallback);
                 break;
         }
     }
 
-    private void onDestory() {
-        this.dismiss();
-    }
 
 }

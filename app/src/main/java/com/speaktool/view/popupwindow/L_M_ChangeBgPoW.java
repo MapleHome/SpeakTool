@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import com.speaktool.R;
 import com.speaktool.api.Draw;
+import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
 import com.speaktool.view.layouts.ItemViewChooseBackgroundPop;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 左侧功能栏——更多功能——更换背景
@@ -17,30 +20,23 @@ import com.speaktool.view.layouts.ItemViewChooseBackgroundPop;
  * @author shaoshuai
  */
 public class L_M_ChangeBgPoW extends BasePopupWindow implements OnClickListener {
-    private ItemViewChooseBackgroundPop itemWhiteBg;
-    private ItemViewChooseBackgroundPop itemGridBg;
-    private ItemViewChooseBackgroundPop itemListBg;
-    private ItemViewChooseBackgroundPop itemCoordinateBg;
+    @BindView(R.id.itemWhiteBg) ItemViewChooseBackgroundPop itemWhiteBg;
+    @BindView(R.id.itemGridBg) ItemViewChooseBackgroundPop itemGridBg;
+    @BindView(R.id.itemListBg) ItemViewChooseBackgroundPop itemListBg;
+    @BindView(R.id.itemCoordinateBg) ItemViewChooseBackgroundPop itemCoordinateBg;
 
     private Draw mDraw;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_change_bg, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_change_bg, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public L_M_ChangeBgPoW(Context context, View anchor, Draw draw) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
-    }
-
-    public L_M_ChangeBgPoW(Context context, View anchor, int w, int h, Draw draw) {
-        super(context, anchor, w, h);
+        super(context, anchor);
         mDraw = draw;
-
-        itemWhiteBg = (ItemViewChooseBackgroundPop) mRootView.findViewById(R.id.itemWhiteBg);
-        itemGridBg = (ItemViewChooseBackgroundPop) mRootView.findViewById(R.id.itemGridBg);
-        itemListBg = (ItemViewChooseBackgroundPop) mRootView.findViewById(R.id.itemListBg);
-        itemCoordinateBg = (ItemViewChooseBackgroundPop) mRootView.findViewById(R.id.itemCoordinateBg);
 
         itemWhiteBg.setOnClickListener(this);
         itemGridBg.setOnClickListener(this);
@@ -75,9 +71,7 @@ public class L_M_ChangeBgPoW extends BasePopupWindow implements OnClickListener 
 
     @Override
     public void onClick(View v) {
-        int pageId = mDraw.getCurrentBoard().getPageID();
         Page_BG bgType = Page_BG.White;
-
         switch (v.getId()) {
             case R.id.itemWhiteBg:// 白色背景
                 bgType = Page_BG.White;
@@ -95,9 +89,14 @@ public class L_M_ChangeBgPoW extends BasePopupWindow implements OnClickListener 
                 break;
         }
 
+        changePageBg((ItemViewChooseBackgroundPop) v, bgType);
+    }
+
+    private void changePageBg(ItemViewChooseBackgroundPop v, Page_BG bgType) {
         dismiss();
+        int pageId = mDraw.getCurrentBoard().getPageID();
         mDraw.setPageBackgroundClick(pageId, bgType);
-        ((ItemViewChooseBackgroundPop) v).setCheckState(true);
+        v.setCheckState(true);
     }
 
 }

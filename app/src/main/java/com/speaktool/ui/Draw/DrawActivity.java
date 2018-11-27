@@ -219,8 +219,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 //                getDigitalPenController().destroy();// 断开设备
 //                getIBISPenController().destroy();
                 // 显示智能笔扫描窗口
-                L_HandPenPoW handPenPow = new L_HandPenPoW(mContext, v, this);
-                handPenPow.showPopupWindow(WeiZhi.Right);
+                new L_HandPenPoW(mContext, v, this).showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivChoose:// 手
                 DrawModeManager.getIns().setDrawMode(new DrawModeChoice());
@@ -229,8 +228,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 DrawModeCode code = DrawModeManager.getIns().getModeCode();
                 if (code == DrawModeCode.PATH) {
                     // 显示颜色窗口
-                    L_PencilColorPoW popupWindow = new L_PencilColorPoW(mContext, v);
-                    popupWindow.showPopupWindow(WeiZhi.Right);
+                    new L_PencilColorPoW(mContext, v)
+                            .showPopupWindow(WeiZhi.Right);
                 } else {
                     DrawModeManager.getIns().setDrawMode(new DrawModePath());
                 }
@@ -238,19 +237,17 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             case R.id.ivEraser:// 橡皮
                 if (DrawModeManager.getIns().getModeCode() == DrawModeCode.ERASER) {
                     // 显示橡皮擦窗口
-                    L_EraserWayWitchPoW eraserPow = new L_EraserWayWitchPoW(mContext, v);
-                    eraserPow.showPopupWindow(WeiZhi.Right);
+                    new L_EraserWayWitchPoW(mContext, v).showPopupWindow(WeiZhi.Right);
                 } else {
                     DrawModeManager.getIns().setDrawMode(new DrawModeEraser());
                 }
                 break;
             case R.id.ivMore:// 添加
-                L_MorePoW addPow = new L_MorePoW(mContext, v, this);
-                addPow.showPopupWindow(WeiZhi.Right);
+                new L_MorePoW(mContext, v, this)
+                        .showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivDeletePage:// 删除界面
-                L_ClearPoW delPow = new L_ClearPoW(mContext, v, this, this);
-                delPow.showPopupWindow(WeiZhi.Right);
+                new L_ClearPoW(mContext, v, this, this).showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivUndo:// 撤销
                 getCurrentBoard().undo();
@@ -264,8 +261,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 break;
             case R.id.ivReRecord:// 重录
                 // 显示重录窗口
-                R_RerecordPoW reRecordPow = new R_RerecordPoW(mContext, v, this);
-                reRecordPow.showPopupWindow(WeiZhi.Left);
+                new R_RerecordPoW(mContext, v, this).showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.ivPrePage:// 上一页
                 preChangePage(new Runnable() {
@@ -285,13 +281,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 break;
             case R.id.ivNewPage:// 添加新界面
                 // 显示添加新页面窗口
-                R_AddNewPagePoW newPagePow = new R_AddNewPagePoW(mContext, v, this);
-                newPagePow.showPopupWindow(WeiZhi.Left);
+                new R_AddNewPagePoW(mContext, v, this).showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.ivPreview:// 预览
                 // 预览
-                R_PreviewPoW previewPow = new R_PreviewPoW(mContext, v, this);
-                previewPow.showPopupWindow(WeiZhi.Left);
+                new R_PreviewPoW(mContext, v, this).showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.tvFinish:// 完成
                 onExitDraw();
@@ -362,16 +356,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 //    public DigitalPenController getDigitalPenController() {
 //        return mDigitalPenController;
 //    }
-
-    private OnActivityResultListener mOnActivityResultListener;
-
-    public void setOnActivityResultListener(OnActivityResultListener lsn) {
-        mOnActivityResultListener = lsn;
-    }
-
-    public interface OnActivityResultListener {
-        void onActivityResult(int requestCode, int resultCode, Intent data);
-    }
+//
+//    private OnActivityResultListener mOnActivityResultListener;
+//
+//    public void setOnActivityResultListener(OnActivityResultListener lsn) {
+//        mOnActivityResultListener = lsn;
+//    }
+//
+//    public interface OnActivityResultListener {
+//        void onActivityResult(int requestCode, int resultCode, Intent data);
+//    }
 
     @Subscribe
     public void onEventMainThread(HandpenStateEvent e) {
@@ -681,7 +675,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         resetPageId();
         DrawPage.resetShapeId(this);
         //
-        if (getPlayMode() == PlayMode.MAKE){
+        if (getPlayMode() == PlayMode.MAKE) {
 //            SoundRecorder.closeWorldTimer();
             getPageRecorder().closeWorldTimer();
         }
@@ -1135,9 +1129,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         } else {// not ok.
             T.showShort(mContext, "照相机失败!");
         }
-        if (mOnActivityResultListener != null) {
-            mOnActivityResultListener.onActivityResult(requestCode, resultCode, data);
-        }
+//        if (mOnActivityResultListener != null) {
+//            mOnActivityResultListener.onActivityResult(requestCode, resultCode, data);
+//        }
     }
 
     private void doCameraOk(Intent data) {
@@ -1156,23 +1150,22 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 显示挑选照片窗口
     @Override
     public void getImageFromAlbum(View anchor, PickPhotoCallback callback) {
-        L_M_AddSinglePhotosPoW popupWindow = new L_M_AddSinglePhotosPoW(mContext, anchor, callback);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+        new L_M_AddSinglePhotosPoW(mContext, anchor, callback)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        undim();
+                    }
+                })
+                .showPopupWindow(WeiZhi.Bottom);
         dim();
-        popupWindow.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                undim();
-            }
-        });
-
     }
 
     // 显示获取网路图片窗口
     @Override
     public void getImageFromNet(View anchor, PickPhotoCallback callback) {
-        L_M_AddNetImgPoW popupWindow = new L_M_AddNetImgPoW(mContext, anchor, this);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+        new L_M_AddNetImgPoW(mContext, anchor, this)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示多选照片窗口
@@ -1399,16 +1392,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     // 显示文本编辑功能栏
     @Override
-    public void showEditClickPopup(final EditWidget edit) {
-        EditClickPoW popupWindow = new EditClickPoW(mContext, edit);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+    public void showEditClickPopup(EditWidget edit) {
+        new EditClickPoW(mContext, edit)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示图片编辑功能栏
     @Override
     public void showImageClickPopup(final ImageWidget imageWidget) {
-        ImageClickPoW popupWindow = new ImageClickPoW(mContext, imageWidget);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+        new ImageClickPoW(mContext, imageWidget)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 实现接口 - 根据索引获取界面

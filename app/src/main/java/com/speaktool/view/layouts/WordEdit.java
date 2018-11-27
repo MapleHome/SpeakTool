@@ -310,7 +310,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
             imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
-    public final void showEditWindow(final EditWidget edit) {
+    public final void showEditWindow(EditWidget edit) {
         draw.showEditClickPopup(edit);
     }
 

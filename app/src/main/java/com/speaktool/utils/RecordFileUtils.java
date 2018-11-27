@@ -86,31 +86,6 @@ public class RecordFileUtils {
     /**
      * 将GIF格式图片拷贝到该记录路径下
      *
-     * @param bufferScaled
-     * @param dir
-     * @return
-     */
-    public static String copyGifToRecordDir(byte[] bufferScaled, String dir) {
-        try {
-            String imgname = Long.toHexString(System.currentTimeMillis()) + ".gif";
-            File img = new File(dir, imgname);
-            if (!img.exists())
-                img.createNewFile();
-            FileOutputStream fos = new FileOutputStream(img);
-            fos.write(bufferScaled);
-            fos.close();
-            return imgname;
-        } catch (Error err) {
-            err.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 将GIF格式图片拷贝到该记录路径下
-     *
      * @param gifpath GIF路径
      * @param dir     目录路径
      * @return
@@ -139,30 +114,6 @@ public class RecordFileUtils {
         return null;
     }
 
-    /**
-     * 将图片拷贝到该记录路径下
-     *
-     * @param bufferScaled
-     * @param dir
-     * @return
-     */
-    public static String copyBitmapToRecordDir(byte[] bufferScaled, String dir) {
-        try {
-            String imgname = Long.toHexString(System.currentTimeMillis()) + ".jpg";
-            File img = new File(dir, imgname);
-            if (!img.exists())
-                img.createNewFile();
-            FileOutputStream fos = new FileOutputStream(img);
-            fos.write(bufferScaled);
-            fos.close();
-            return imgname;
-        } catch (Error err) {
-            err.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     /**
      * 将图片拷贝到该记录路径下- 如果BitMap过大，将缩放
@@ -886,4 +837,57 @@ public class RecordFileUtils {
                 "-ar", "22050", "-ab", "64k", "-y", "-threads", "3", "-vol", "1024", "-f", "mp3", releaseSoundPath};
         return arg;
     }
+
+
+//    /**
+//     * 将图片拷贝到该记录路径下
+//     *
+//     * @param bufferScaled
+//     * @param dir
+//     * @return
+//     */
+//    public static String copyBitmapToRecordDir(byte[] bufferScaled, String dir) {
+//        try {
+//            String imgname = Long.toHexString(System.currentTimeMillis()) + ".jpg";
+//            File img = new File(dir, imgname);
+//            if (!img.exists())
+//                img.createNewFile();
+//            FileOutputStream fos = new FileOutputStream(img);
+//            fos.write(bufferScaled);
+//            fos.close();
+//            return imgname;
+//        } catch (Error err) {
+//            err.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
+
+//    /**
+//     * 将GIF格式图片拷贝到该记录路径下
+//     *
+//     * @param bufferScaled
+//     * @param dir
+//     * @return
+//     */
+//    public static String copyGifToRecordDir(byte[] bufferScaled, String dir) {
+//        try {
+//            String imgname = Long.toHexString(System.currentTimeMillis()) + ".gif";
+//            File img = new File(dir, imgname);
+//            if (!img.exists())
+//                img.createNewFile();
+//            FileOutputStream fos = new FileOutputStream(img);
+//            fos.write(bufferScaled);
+//            fos.close();
+//            return imgname;
+//        } catch (Error err) {
+//            err.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
 }
