@@ -45,9 +45,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 
 @SuppressWarnings("deprecation")
-public class WordEdit extends EditText implements OnEditorActionListener, FocusedView, EditWidget {
+public class WordEdit extends AppCompatEditText implements OnEditorActionListener, FocusedView, EditWidget {
 
     private Page mDrawBoard;
     private Draw draw;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
-    private static List<PaintInfoBean> datas;
+    private List<PaintInfoBean> datas;
     private WeakReference<Callback> mListener;
 
     public interface Callback {
@@ -47,7 +47,6 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
                 }
             }
         });
-
         return null;
     }
 

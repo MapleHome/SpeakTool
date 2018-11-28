@@ -7,74 +7,79 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.ImageView;
 
 import com.speaktool.R;
 
-public class CheckBoxImageView extends ImageView implements OnTouchListener, OnClickListener {
+import androidx.appcompat.widget.AppCompatImageView;
 
-	public CheckBoxImageView(Context context) {
-		super(context);
-		init();
-	}
+/**
+ * @author maple
+ * @time 2018/11/27
+ */
+public class CheckBoxImageView extends AppCompatImageView implements OnTouchListener, OnClickListener {
 
-	public CheckBoxImageView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init();
-	}
+    public CheckBoxImageView(Context context) {
+        super(context);
+        init();
+    }
 
-	public CheckBoxImageView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
+    public CheckBoxImageView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init();
+    }
 
-	private void init() {
-		this.setImageResource(R.drawable.choose_s);
-		this.setOnTouchListener(this);
-		this.setOnClickListener(this);
-	}
+    public CheckBoxImageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-	private boolean isChecked = true;
+    private void init() {
+        this.setImageResource(R.drawable.choose_s);
+        this.setOnTouchListener(this);
+        this.setOnClickListener(this);
+    }
 
-	public void check() {
-		if (isChecked)
-			return;
-		isChecked = true;
-		this.setImageResource(R.drawable.choose_s);
-	}
+    private boolean isChecked = true;
 
-	public void uncheck() {
-		if (!isChecked)
-			return;
-		isChecked = false;
-		this.setImageResource(R.drawable.choose_n);
+    public void check() {
+        if (isChecked)
+            return;
+        isChecked = true;
+        this.setImageResource(R.drawable.choose_s);
+    }
 
-	}
+    public void uncheck() {
+        if (!isChecked)
+            return;
+        isChecked = false;
+        this.setImageResource(R.drawable.choose_n);
+    }
 
-	public boolean isChecked() {
-		return isChecked;
-	}
+    public boolean isChecked() {
+        return isChecked;
+    }
 
-	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			this.setColorFilter(Color.GRAY);
-			break;
-		case MotionEvent.ACTION_MOVE:
-			break;
-		case MotionEvent.ACTION_UP:
-			this.setColorFilter(null);
-			break;
-		}
-		return false;
-	}
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                this.setColorFilter(Color.GRAY);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                this.setColorFilter(null);
+                break;
+        }
+        return false;
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (isChecked())
-			uncheck();
-		else
-			check();
-	}
+    @Override
+    public void onClick(View v) {
+        if (isChecked()) {
+            uncheck();
+        } else {
+            check();
+        }
+    }
 }

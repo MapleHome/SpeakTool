@@ -29,13 +29,11 @@ public class SearchView extends FrameLayout {
     private SearchCategoryBean mSearchCategory;
 
     public SearchView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public SearchView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public SearchView(Context context, AttributeSet attrs, int defStyle) {

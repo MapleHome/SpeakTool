@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.speaktool.Const;
 import com.speaktool.bean.Html5ImageInfoBean;
 import com.speaktool.bean.Html5SoundInfoBean;
-import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.TransformShapeData;
 import com.speaktool.impl.cmd.ICmd;
@@ -45,22 +44,6 @@ public class RecordFileUtils {
     private static final String tag = RecordFileUtils.class.getSimpleName();
 
     /**
-     * 获取上传文件
-     *
-     * @param dir
-     * @return
-     */
-    private static File[] getUploadFiles(File dir) {
-        File[] uploadFiles = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return isReleaseFile(filename);
-            }
-        });
-        return uploadFiles;
-    }
-
-    /**
      * 从本地目录中获取spk上传单元
      *
      * @param dirpath
@@ -70,18 +53,41 @@ public class RecordFileUtils {
         File dir = new File(dirpath);// 目录文件
         File zip = new File(dir, "record.zip");// 压缩文件
         if (!zip.exists()) {
-            File[] recordfiles = getUploadFiles(dir);
+            File[] uploadFiles = dir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    return isReleaseFile(filename);
+                }
+            });
             try {
                 /** 必须在 listfiles,否则压缩将zipped. */
                 zip.createNewFile();
-                ZipUtils.zipFiles(Arrays.asList(recordfiles), zip);
+                ZipUtils.zipFiles(Arrays.asList(uploadFiles), zip);
             } catch (IOException e) {
                 e.printStackTrace();
-
             }
         }
         return zip;
     }
+
+    /**
+     * 是否是发布文件
+     *
+     * @param filename
+     * @return
+     */
+    public static boolean isReleaseFile(String filename) {
+        if (TextUtils.isEmpty(filename))
+            return false;
+        return (filename.equals(Const.RELEASE_JSON_SCRIPT_NAME)
+                || filename.equals(Const.RELEASE_SOUND_NAME)
+                || filename.equals(Const.INFO_FILE_NAME)
+                || filename.endsWith(Const.IMAGE_SUFFIX)
+                || filename.endsWith(Const.GIF_SUFFIX)
+        );
+    }
+
+
 
     /**
      * 将GIF格式图片拷贝到该记录路径下
@@ -417,29 +423,6 @@ public class RecordFileUtils {
 
 
     /**
-     * 是否是发布文件
-     *
-     * @param filename
-     * @return
-     */
-    public static boolean isReleaseFile(String filename) {
-        if (TextUtils.isEmpty(filename))
-            return false;
-        if (filename.equals(Const.RELEASE_JSON_SCRIPT_NAME))
-            return true;
-        if (filename.equals(Const.RELEASE_SOUND_NAME))
-            return true;
-        if (filename.equals(Const.INFO_FILE_NAME))
-            return true;
-        if (filename.endsWith(Const.IMAGE_SUFFIX))
-            return true;
-        if (filename.endsWith(Const.GIF_SUFFIX))
-            return true;
-        return false;
-
-    }
-
-    /**
      * note static var,this is in new process.
      *
      * @param dir
@@ -725,7 +708,7 @@ public class RecordFileUtils {
     private static boolean isRecord(File jsonFile, int pageId) {
         if (jsonFile.getName().contains(Const.UN_RECORD_FILE_FLAG))// #
             return false;
-        final String page = pageId + "";
+        String page = pageId + "";
         if (!jsonFile.getName().startsWith(page))
             return false;
         return true;

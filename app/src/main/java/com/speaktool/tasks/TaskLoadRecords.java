@@ -30,11 +30,6 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
     }
 
     @Override
-    public void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
     public void onPostExecute(List<CourseItem> result) {
         super.onPostExecute(result);
         mListener.onRecordsLoaded(result);

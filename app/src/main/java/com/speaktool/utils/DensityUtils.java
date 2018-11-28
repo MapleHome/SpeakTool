@@ -4,7 +4,8 @@ import android.content.Context;
 import android.util.TypedValue;
 
 /**
- * Created by Maple on 2018/3/10.
+ * @author maple
+ * @time 2018/3/10
  */
 public class DensityUtils {
 
