@@ -36,9 +36,9 @@ public class PageRecorder {
     private List<ICmd> cmdList = new ArrayList<ICmd>();
     private Draw draw;
 
-    public long totalTimeNow() {
-        return RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
-    }
+//    public long totalTimeNow() {
+//        return RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
+//    }
 
     public PageRecorder(Draw draw) {
         this.draw = draw;
@@ -181,17 +181,12 @@ public class PageRecorder {
         final String page = pageId + "_";
         File[] files = dir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
-                if (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX) && pathname.getName().startsWith(page)
-                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                    return true;
-                else
-                    return false;
+                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
+                        && pathname.getName().startsWith(page)
+                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
             }
         });
-        if (files == null || files.length < 1)
-            return false;
-        else
-            return true;
+        return (files != null && files.length > 0);
     }
 
     /**
@@ -200,17 +195,11 @@ public class PageRecorder {
     public boolean isHaveRecordForAll() {
         File[] files = dir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
-                if (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
-                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                    return true;
-                else
-                    return false;
+                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
+                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
             }
         });
-        if (files == null || files.length < 1)
-            return false;
-        else
-            return true;
+        return (files != null && files.length > 0);
     }
 
     /**
@@ -284,7 +273,6 @@ public class PageRecorder {
     }
 
     public long recordTimeNow() {
-//        return SoundRecorder.getCurrentTime();
         return getCurrentTime();
     }
 

@@ -71,14 +71,14 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
             T.showShort(mContext, "还没有录像！");
             return;
         }
-        String dirPath = mDraw.getPageRecorder().getRecordDir();
-        showLoading();
-        Intent it = new Intent(mContext, PlayService.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
-        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
-        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
-        mContext.startService(it);
+//        String dirPath = mDraw.getPageRecorder().getRecordDir();
+//        showLoading();
+//        Intent it = new Intent(mContext, PlayService.class);
+//        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
+//        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
+//        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
+//        mContext.startService(it);
     }
 
     // 预览本页
@@ -90,15 +90,15 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
             return;
         }
         //
-        String dirPath = mDraw.getPageRecorder().getRecordDir();
-        showLoading();
-        Intent it = new Intent(mContext, PlayService.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
-        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
-        it.putExtra(PlayProcess.EXTRA_PREVIEW_PAGE_ID, pageid);
-        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
-        mContext.startService(it);
+//        String dirPath = mDraw.getPageRecorder().getRecordDir();
+//        showLoading();
+//        Intent it = new Intent(mContext, PlayService.class);
+//        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
+//        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
+//        it.putExtra(PlayProcess.EXTRA_PREVIEW_PAGE_ID, pageid);
+//        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
+//        mContext.startService(it);
     }
 
     @Override

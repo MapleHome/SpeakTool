@@ -52,42 +52,30 @@ public class RecordFileUtils {
     public static File getSpklUploadBeanFromDir(String dirpath) {
         File dir = new File(dirpath);// 目录文件
         File zip = new File(dir, "record.zip");// 压缩文件
-        if (!zip.exists()) {
-            File[] uploadFiles = dir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    return isReleaseFile(filename);
-                }
-            });
-            try {
-                /** 必须在 listfiles,否则压缩将zipped. */
-                zip.createNewFile();
-                ZipUtils.zipFiles(Arrays.asList(uploadFiles), zip);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (zip.exists()) {
+            zip.delete();
+        }
+        File[] uploadFiles = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                if (TextUtils.isEmpty(filename))
+                    return false;
+                return (filename.equals(Const.RELEASE_JSON_SCRIPT_NAME)
+                        || filename.equals(Const.RELEASE_SOUND_NAME)
+                        || filename.equals(Const.INFO_FILE_NAME)
+                        || filename.endsWith(Const.IMAGE_SUFFIX)
+                        || filename.endsWith(Const.GIF_SUFFIX));
             }
+        });
+        try {
+            /** 必须在 listfiles,否则压缩将zipped. */
+            zip.createNewFile();
+            ZipUtils.zipFiles(Arrays.asList(uploadFiles), zip);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return zip;
     }
-
-    /**
-     * 是否是发布文件
-     *
-     * @param filename
-     * @return
-     */
-    public static boolean isReleaseFile(String filename) {
-        if (TextUtils.isEmpty(filename))
-            return false;
-        return (filename.equals(Const.RELEASE_JSON_SCRIPT_NAME)
-                || filename.equals(Const.RELEASE_SOUND_NAME)
-                || filename.equals(Const.INFO_FILE_NAME)
-                || filename.endsWith(Const.IMAGE_SUFFIX)
-                || filename.endsWith(Const.GIF_SUFFIX)
-        );
-    }
-
-
 
     /**
      * 将GIF格式图片拷贝到该记录路径下
@@ -205,14 +193,9 @@ public class RecordFileUtils {
                 int dotIndex2 = rhs.getName().lastIndexOf(".");
                 if (_index2 == -1 || dotIndex2 == -1)
                     return 0;
-                try {
-                    long time1 = Long.valueOf(lhs.getName().substring(_index + 1, dotIndex));
-                    long time2 = Long.valueOf(rhs.getName().substring(_index2 + 1, dotIndex2));
-                    return time1 > time2 ? 1 : time1 < time2 ? -1 : 0;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
+                long time1 = Long.valueOf(lhs.getName().substring(_index + 1, dotIndex));
+                long time2 = Long.valueOf(rhs.getName().substring(_index2 + 1, dotIndex2));
+                return time1 > time2 ? 1 : time1 < time2 ? -1 : 0;
             }
         });
         return filelist;
@@ -266,7 +249,8 @@ public class RecordFileUtils {
             public boolean accept(File pathname) {
                 if (pathname.getName().equals(Const.RELEASE_SOUND_NAME))
                     return false;
-                if (pathname.getAbsolutePath().endsWith(Const.SOUND_FILE_SUFFIX) && pathname.getName().startsWith(page)) {
+                if (pathname.getAbsolutePath().endsWith(Const.SOUND_FILE_SUFFIX)
+                        && pathname.getName().startsWith(page)) {
                     if (isIncludeUnRecord) {
                         return true;
                     } else {
@@ -307,258 +291,237 @@ public class RecordFileUtils {
         return filelist;
     }
 
-    public static File getScreenInfoFile(File dir) {
-        File[] files = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                if (pathname.getAbsolutePath().endsWith(Const.CMD_FILE_SUFFIX))
-                    return true;
-                else
-                    return false;
-            }
-        });
-        if (files == null || files.length <= 0)
-            return null;
-        return files[0];
-    }
 
-    public static List<File> getPageCmdFilesSortByTime(File dir, final int pageId) {
-        final long lastSoundTime = getLastSoundFileTime(dir);
-        File[] files = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                int _index = pathname.getName().indexOf("_");
-                if (_index == -1)
-                    return false;
-                String pagestr = pathname.getName().substring(0, _index);
-                int p = Integer.valueOf(pagestr);
-                if (pathname.getName().equals(Const.RELEASE_JSON_SCRIPT_NAME))
-                    return false;
-                return pathname.getAbsolutePath().endsWith(Const.CMD_FILE_SUFFIX) && p <= pageId
-                        && getRecordFileCreateTime(pathname) <= lastSoundTime;
+//    public static List<File> getPageCmdFilesSortByTime(File dir, final int pageId) {
+//        final long lastSoundTime = getLastSoundFileTime(dir);
+//        File[] files = dir.listFiles(new FileFilter() {
+//            @Override
+//            public boolean accept(File pathname) {
+//                int _index = pathname.getName().indexOf("_");
+//                if (_index == -1)
+//                    return false;
+//                String pagestr = pathname.getName().substring(0, _index);
+//                int p = Integer.valueOf(pagestr);
+//                if (pathname.getName().equals(Const.RELEASE_JSON_SCRIPT_NAME))
+//                    return false;
+//                return pathname.getAbsolutePath().endsWith(Const.CMD_FILE_SUFFIX) && p <= pageId
+//                        && getRecordFileCreateTime(pathname) <= lastSoundTime;
+//
+//            }
+//        });
+//        if (files == null)
+//            return null;
+//        //
+//        List<File> filelist = Arrays.asList(files);
+//        Collections.sort(filelist, new Comparator<File>() {
+//            @Override
+//            public int compare(File lhs, File rhs) {
+//                int _index = lhs.getName().lastIndexOf("_");
+//                int dotIndex = lhs.getName().lastIndexOf(".");
+//                if (_index == -1 || dotIndex == -1)
+//                    return 0;
+//                int _index2 = rhs.getName().lastIndexOf("_");
+//                int dotIndex2 = rhs.getName().lastIndexOf(".");
+//                if (_index2 == -1 || dotIndex2 == -1)
+//                    return 0;
+//                try {
+//                    long time1 = Long.valueOf(lhs.getName().substring(_index + 1, dotIndex));
+//                    long time2 = Long.valueOf(rhs.getName().substring(_index2 + 1, dotIndex2));
+//
+//                    return time1 > time2 ? 1 : time1 < time2 ? -1 : 0;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    return 0;
+//                }
+//            }
+//        });
+//        //
+//        return filelist;
+//    }
 
-            }
-        });
-        if (files == null)
-            return null;
-        //
-        List<File> filelist = Arrays.asList(files);
-        Collections.sort(filelist, new Comparator<File>() {
-            @Override
-            public int compare(File lhs, File rhs) {
-                int _index = lhs.getName().lastIndexOf("_");
-                int dotIndex = lhs.getName().lastIndexOf(".");
-                if (_index == -1 || dotIndex == -1)
-                    return 0;
-                int _index2 = rhs.getName().lastIndexOf("_");
-                int dotIndex2 = rhs.getName().lastIndexOf(".");
-                if (_index2 == -1 || dotIndex2 == -1)
-                    return 0;
-                try {
-                    long time1 = Long.valueOf(lhs.getName().substring(_index + 1, dotIndex));
-                    long time2 = Long.valueOf(rhs.getName().substring(_index2 + 1, dotIndex2));
+//    private static long getLastSoundFileTime(File dir) {
+//        File[] files = dir.listFiles(new FileFilter() {
+//            @Override
+//            public boolean accept(File pathname) {
+//                return pathname.getAbsolutePath().endsWith(Const.SOUND_FILE_SUFFIX);
+//            }
+//        });
+//        if (files == null)
+//            return -1;
+//        //
+//        List<File> filelist = Arrays.asList(files);
+//        Collections.sort(filelist, new Comparator<File>() {
+//            @Override
+//            public int compare(File lhs, File rhs) {
+//                int _index = lhs.getName().lastIndexOf("_");
+//                int dotIndex = lhs.getName().lastIndexOf(".");
+//                if (_index == -1 || dotIndex == -1)
+//                    return 0;
+//                int _index2 = rhs.getName().lastIndexOf("_");
+//                int dotIndex2 = rhs.getName().lastIndexOf(".");
+//                if (_index2 == -1 || dotIndex2 == -1)
+//                    return 0;
+//                try {
+//                    long time1 = Long.valueOf(lhs.getName().substring(_index + 1, dotIndex));
+//                    long time2 = Long.valueOf(rhs.getName().substring(_index2 + 1, dotIndex2));
+//                    return time1 > time2 ? 1 : time1 < time2 ? -1 : 0;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    return 0;
+//                }
+//            }
+//        });
+//        long lastRecordFileTime = getRecordFileCreateTime(filelist.get(filelist.size() - 1)); // filelist.get(filelist.size()
+//        // -
+//        // 1).lastModified();
+//        return lastRecordFileTime;
+//    }
+//
+//    private static long getRecordFileCreateTime(File f) {
+//        int _index = f.getName().lastIndexOf("_");
+//        int dotIndex = f.getName().lastIndexOf(".");
+//        if (_index == -1 || dotIndex == -1)
+//            return 0;
+//        try {
+//            long time1 = Long.valueOf(f.getName().substring(_index + 1, dotIndex));
+//            return time1;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return 0;
+//        }
+//    }
+//
 
-                    return time1 > time2 ? 1 : time1 < time2 ? -1 : 0;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
-            }
-        });
-        //
-        return filelist;
-    }
-
-    private static long getLastSoundFileTime(File dir) {
-        File[] files = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getAbsolutePath().endsWith(Const.SOUND_FILE_SUFFIX);
-            }
-        });
-        if (files == null)
-            return -1;
-        //
-        List<File> filelist = Arrays.asList(files);
-        Collections.sort(filelist, new Comparator<File>() {
-            @Override
-            public int compare(File lhs, File rhs) {
-                int _index = lhs.getName().lastIndexOf("_");
-                int dotIndex = lhs.getName().lastIndexOf(".");
-                if (_index == -1 || dotIndex == -1)
-                    return 0;
-                int _index2 = rhs.getName().lastIndexOf("_");
-                int dotIndex2 = rhs.getName().lastIndexOf(".");
-                if (_index2 == -1 || dotIndex2 == -1)
-                    return 0;
-                try {
-                    long time1 = Long.valueOf(lhs.getName().substring(_index + 1, dotIndex));
-                    long time2 = Long.valueOf(rhs.getName().substring(_index2 + 1, dotIndex2));
-                    return time1 > time2 ? 1 : time1 < time2 ? -1 : 0;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return 0;
-                }
-            }
-        });
-        long lastRecordFileTime = getRecordFileCreateTime(filelist.get(filelist.size() - 1)); // filelist.get(filelist.size()
-        // -
-        // 1).lastModified();
-        return lastRecordFileTime;
-    }
-
-    private static long getRecordFileCreateTime(File f) {
-        int _index = f.getName().lastIndexOf("_");
-        int dotIndex = f.getName().lastIndexOf(".");
-        if (_index == -1 || dotIndex == -1)
-            return 0;
-        try {
-            long time1 = Long.valueOf(f.getName().substring(_index + 1, dotIndex));
-            return time1;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
+//    /**
+//     * note static var,this is in new process.
+//     *
+//     * @param dir
+//     * @param pageId
+//     * @param context
+//     * @throws Exception
+//     */
+//    public static void makeReleaseScript(File dir, int pageId, Context context, ScreenInfoBean info) throws Exception {
+//        List<File> jsonFiles = RecordFileUtils.getPageCmdFilesSortByTime(dir, pageId);
+//        if (jsonFiles == null || jsonFiles.isEmpty())
+//            return;
+//        final JsonScriptParser parser = new JsonScriptParser(context);
+//
+//        // final ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
+//        List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
+//        if (jpgNames == null) {
+//            jpgNames = new LinkedList<>();
+//        }
+//
+//        final Html5SoundInfoBean sound = getScriptSound(dir, pageId);
+//
+//        File releaseFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
+//        if (releaseFile.exists())
+//            releaseFile.delete();
+//        releaseFile.createNewFile();
+//
+//        FileOutputStream ous = new FileOutputStream(releaseFile, true);
+//        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ous), 10240);
+//
+//        writer.write("{\"wbEvents\":[");
+//        boolean isFirstCmd = true;
+//        long delta = 0;
+//        List<ICmd> filteredCmds = new ArrayList<>();
+//        Map<Integer, Boolean> transformCmd = new HashMap<>();
+//
+//        for (int i = 0; i < jsonFiles.size(); i++) {
+//            File jsonf = jsonFiles.get(i);
+//            List<ICmd> pageCmds = parser.jsonFileToCmds(jsonf.getAbsolutePath());
+//            if (pageCmds == null || pageCmds.isEmpty())
+//                continue;
+//            if (!isRecord(jsonf, pageId)) {// not record.
+//                for (int j = pageCmds.size() - 1; j >= 0; j--) {
+//                    ICmd cmd = pageCmds.get(j);
+//                    // filter repeat transform cmds.
+//                    if (cmd.getType().equals(ICmd.TYPE_TRANSFORM_SHAPE)) {
+//                        TransformShapeData data = (TransformShapeData) cmd.getData();
+//                        if (!transformCmd.containsKey(data.getShapeID())) {
+//                            transformCmd.put(data.getShapeID(), true);
+//
+//                            cmd.setTime(ICmd.TIME_DELETE_FLAG);
+//
+//                            ICmd copy = cmd.copy();
+//                            filteredCmds.add(0, copy != null ? copy : cmd);
+//                        } else
+//                            Log.e(tag, "repeat cmd");
+//
+//                    } else {// not transform.
+//                        cmd.setTime(ICmd.TIME_DELETE_FLAG);
+//                        ICmd copy = cmd.copy();
+//                        filteredCmds.add(0, copy != null ? copy : cmd);
+//                    }
+//                }// for cmds end.
+//                delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,
+//                        Const.SOUND_FILE_SUFFIX));
+//                //
+//                String line = new Gson().toJson(filteredCmds);
+//                line = line.substring(1, line.length() - 1);
+//                if (!isFirstCmd)
+//                    writer.write(",");
+//                else
+//                    isFirstCmd = false;
+//                writer.write(line);
+//                filteredCmds.clear();
+//                transformCmd.clear();
+//
+//            } else {// IS RECORD.
+//                for (ICmd cmd : pageCmds) {
+//                    cmd.setTime(cmd.getTime() - delta);
+//                }
+//                String line = new Gson().toJson(pageCmds);
+//                line = line.substring(1, line.length() - 1);
+//                if (!isFirstCmd)
+//                    writer.write(",");
+//                else
+//                    isFirstCmd = false;
+//                writer.write(line);
+//
+//            }
+//        }// for files end.
+//        writer.write("]");
+//        writer.write(",");
+//        writer.write("\"sound\":" + new Gson().toJson(sound));
+//        writer.write(",");
+//        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
+//        writer.write(",");
+//        writer.write("\"inputScreenWidth\":" + info.w);
+//        writer.write(",");
+//        writer.write("\"inputScreenHeight\":" + info.h);
+//        writer.write(",");
+//        writer.write("\"density\":" + info.density);
+//        writer.write(",");
+//        writer.write("\"version\":" + Const.SCRIPT_VERSION);
+//        writer.write(",");
+//        writer.write("\"inputRate\":" + Const.SCRIPT_INPUT_RATE);
+//
+//        writer.write("}");
+//        writer.write("\n");
+//
+//        writer.close();
+//        ous.close();
+//    }
 
     /**
-     * note static var,this is in new process.
-     *
      * @param dir
-     * @param pageId
      * @param context
+     * @param info
      * @throws Exception
      */
-    public static void makeReleaseScript(File dir, int pageId, Context context, ScreenInfoBean info) throws Exception {
-        List<File> jsonFiles = RecordFileUtils.getPageCmdFilesSortByTime(dir, pageId);
+    public static void makeReleaseScript(File dir, Context context, ScreenInfoBean info) throws Exception {
+        List<File> jsonFiles = getAllCmdFilesSortByTime(dir);
         if (jsonFiles == null || jsonFiles.isEmpty())
             return;
-        final JsonScriptParser parser = new JsonScriptParser(context);
-
-        // final ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
-        List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
-        if (jpgNames == null) {
-            jpgNames = new LinkedList<>();
-        }
-
-        final Html5SoundInfoBean sound = getScriptSound(dir, pageId);
-
+        // release.txt
         File releaseFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
         if (releaseFile.exists())
             releaseFile.delete();
         releaseFile.createNewFile();
 
         FileOutputStream ous = new FileOutputStream(releaseFile, true);
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ous), 10240);
-
-        writer.write("{\"wbEvents\":[");
-        boolean isFirstCmd = true;
-        long delta = 0;
-        List<ICmd> filteredCmds = new ArrayList<>();
-        Map<Integer, Boolean> transformCmd = new HashMap<>();
-
-        for (int i = 0; i < jsonFiles.size(); i++) {
-            File jsonf = jsonFiles.get(i);
-            List<ICmd> pageCmds = parser.jsonFileToCmds(jsonf.getAbsolutePath());
-            if (pageCmds == null || pageCmds.isEmpty())
-                continue;
-            if (!isRecord(jsonf, pageId)) {// not record.
-                for (int j = pageCmds.size() - 1; j >= 0; j--) {
-                    ICmd cmd = pageCmds.get(j);
-                    // filter repeat transform cmds.
-                    if (cmd.getType().equals(ICmd.TYPE_TRANSFORM_SHAPE)) {
-                        TransformShapeData data = (TransformShapeData) cmd.getData();
-                        if (!transformCmd.containsKey(data.getShapeID())) {
-                            transformCmd.put(data.getShapeID(), true);
-
-                            cmd.setTime(ICmd.TIME_DELETE_FLAG);
-
-                            ICmd copy = cmd.copy();
-                            filteredCmds.add(0, copy != null ? copy : cmd);
-                        } else
-                            Log.e(tag, "repeat cmd");
-
-                    } else {// not transform.
-                        cmd.setTime(ICmd.TIME_DELETE_FLAG);
-                        ICmd copy = cmd.copy();
-                        filteredCmds.add(0, copy != null ? copy : cmd);
-                    }
-                }// for cmds end.
-                delta += getSoundFileDuration(jsonf.getAbsolutePath().replaceAll(Const.CMD_FILE_SUFFIX,
-                        Const.SOUND_FILE_SUFFIX));
-                //
-                String line = new Gson().toJson(filteredCmds);
-                line = line.substring(1, line.length() - 1);
-                if (!isFirstCmd)
-                    writer.write(",");
-                else
-                    isFirstCmd = false;
-                writer.write(line);
-                filteredCmds.clear();
-                transformCmd.clear();
-
-            } else {// IS RECORD.
-                for (ICmd cmd : pageCmds) {
-                    cmd.setTime(cmd.getTime() - delta);
-                }
-                String line = new Gson().toJson(pageCmds);
-                line = line.substring(1, line.length() - 1);
-                if (!isFirstCmd)
-                    writer.write(",");
-                else
-                    isFirstCmd = false;
-                writer.write(line);
-
-            }
-        }// for files end.
-        writer.write("]");
-        writer.write(",");
-        writer.write("\"sound\":" + new Gson().toJson(sound));
-        writer.write(",");
-        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
-        writer.write(",");
-        writer.write("\"inputScreenWidth\":" + info.w);
-        writer.write(",");
-        writer.write("\"inputScreenHeight\":" + info.h);
-        writer.write(",");
-        writer.write("\"density\":" + info.density);
-        writer.write(",");
-        writer.write("\"version\":" + Const.SCRIPT_VERSION);
-        writer.write(",");
-        writer.write("\"inputRate\":" + Const.SCRIPT_INPUT_RATE);
-
-        writer.write("}");
-        writer.write("\n");
-
-        writer.close();
-        ous.close();
-    }
-
-    /**
-     * note static var,this is in new process.
-     *
-     * @param dir
-     * @param context
-     * @throws Exception
-     */
-    public static void makeReleaseScript(File dir, Context context, ScreenInfoBean info) throws Exception {
-        List<File> jsonFiles = RecordFileUtils.getAllCmdFilesSortByTime(dir);
-        if (jsonFiles == null || jsonFiles.isEmpty())
-            return;
-        List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
-        if (jpgNames == null) {
-            jpgNames = new LinkedList<>();
-        }
-
-        final Html5SoundInfoBean sound = getScriptSound(dir, -1);
-
-        File realeaseJsonScript = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
-        if (realeaseJsonScript.exists())
-            realeaseJsonScript.delete();
-        realeaseJsonScript.createNewFile();
-
-        FileOutputStream ous = new FileOutputStream(realeaseJsonScript, true);
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ous), 10240);
 
         writer.write("{\"wbEvents\":[");
@@ -621,6 +584,13 @@ public class RecordFileUtils {
                 writer.write(line);
             }
         }// for files end.
+
+        Html5SoundInfoBean sound = getScriptSound(dir, -1);
+        List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
+        if (jpgNames == null) {
+            jpgNames = new LinkedList<>();
+        }
+
         writer.write("]");
         writer.write(",");
         writer.write("\"sound\":" + new Gson().toJson(sound));
@@ -741,12 +711,8 @@ public class RecordFileUtils {
             return null;
         Log.e(tag, "jpgNames:" + jpgNames.toString());
         List<Html5ImageInfoBean> jpgBeans = new LinkedList<>();
-        Html5ImageInfoBean bean = null;
         for (String jpgName : jpgNames) {
-            bean = new Html5ImageInfoBean();
-            bean.setPath(jpgName);
-            bean.setResourceID(jpgName);
-            jpgBeans.add(bean);
+            jpgBeans.add(new Html5ImageInfoBean(jpgName, jpgName));
         }
         return jpgBeans;
     }
@@ -800,12 +766,8 @@ public class RecordFileUtils {
 //				throw new FFmpegException("ffmpeg fail,return code:" + ret);
 
         }
-
-        Html5SoundInfoBean sound = new Html5SoundInfoBean();
-        sound.setPath(Const.RELEASE_SOUND_NAME);
-        sound.setType(Const.REALEASE_SOUND_FILE_TYPE);
-        return sound;
-
+        // type:mp3  path:release.mp3
+        return new Html5SoundInfoBean(Const.REALEASE_SOUND_FILE_TYPE, Const.RELEASE_SOUND_NAME);
     }
 
     /**

@@ -14,10 +14,10 @@ import com.speaktool.utils.ScreenFitUtil;
 import java.io.File;
 
 public class PlayProcess {
-    /**
-     * 预览
-     */
-    public static final String ACTION_PREVIEW = "action_preview";
+//    /**
+//     * 预览
+//     */
+//    public static final String ACTION_PREVIEW = "action_preview";
     /**
      * 制作发行脚本
      */
@@ -36,52 +36,53 @@ public class PlayProcess {
             return;
         }
         String action = intent.getStringExtra(EXTRA_ACTION);
-        if (ACTION_PREVIEW.equals(action)) {// 预览
-            final ScreenInfoBean info = (ScreenInfoBean) intent.getSerializableExtra(EXTRA_SCREEN_INFO);// 屏幕信息
-            final String dirPath = intent.getStringExtra(EXTRA_RECORD_DIR);
-            final int pageId = intent.getIntExtra(EXTRA_PREVIEW_PAGE_ID, -1);
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (pageId < 0) {
-                            RecordFileUtils.makeReleaseScript(new File(dirPath), context, info);
-                        } else {
-                            RecordFileUtils.makeReleaseScript(new File(dirPath), pageId, context, info);
-                        }
-                        // 发送广播，关闭R_PreviewPoW
-                        Intent makeResultIntent = new Intent(ACTION_PREVIEW_RESULT);
-                        context.sendBroadcast(makeResultIntent);
-                        // 去播放页面，播放
-//                        LocalRecordBean item = new LocalRecordBean();
-//                        item.setDuration(RecordFileUtils.getRecordDuration(dirPath));
-//                        item.setRecordDir(dirPath);
-//                        toDrawPager(context, item);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Intent makeResultIntent = new Intent(ACTION_PREVIEW_RESULT);
-                        context.sendBroadcast(makeResultIntent);
-                        SpeakApp.getUiHandler().post(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                new AlertDialog(context)
-                                        .setMessage("录音合成失败！请检查存储卡空间")
-                                        .setLeftButton("确定", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                stopPlayProcess(context);
-                                            }
-                                        })
-                                        .show();
-                            }
-                        });
-                    }
-                }
-
-            }).start();
-        } else if (ACTION_MAKE_RELEASE_SCRIPT.equals(action)) {
+//        if (ACTION_PREVIEW.equals(action)) {// 预览
+//            final ScreenInfoBean info = (ScreenInfoBean) intent.getSerializableExtra(EXTRA_SCREEN_INFO);// 屏幕信息
+//            final String dirPath = intent.getStringExtra(EXTRA_RECORD_DIR);
+//            final int pageId = intent.getIntExtra(EXTRA_PREVIEW_PAGE_ID, -1);
+//
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        if (pageId < 0) {
+//                            RecordFileUtils.makeReleaseScript(new File(dirPath), context, info);
+//                        } else {
+//                            RecordFileUtils.makeReleaseScript(new File(dirPath), pageId, context, info);
+//                        }
+//                        // 发送广播，关闭R_PreviewPoW
+//                        Intent makeResultIntent = new Intent(ACTION_PREVIEW_RESULT);
+//                        context.sendBroadcast(makeResultIntent);
+//                        // 去播放页面，播放
+////                        LocalRecordBean item = new LocalRecordBean();
+////                        item.setDuration(RecordFileUtils.getRecordDuration(dirPath));
+////                        item.setRecordDir(dirPath);
+////                        toDrawPager(context, item);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Intent makeResultIntent = new Intent(ACTION_PREVIEW_RESULT);
+//                        context.sendBroadcast(makeResultIntent);
+//                        SpeakApp.getUiHandler().post(new Runnable() {
+//
+//                            @Override
+//                            public void run() {
+//                                new AlertDialog(context)
+//                                        .setMessage("录音合成失败！请检查存储卡空间")
+//                                        .setLeftButton("确定", new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View v) {
+//                                                stopPlayProcess(context);
+//                                            }
+//                                        })
+//                                        .show();
+//                            }
+//                        });
+//                    }
+//                }
+//
+//            }).start();
+//        } else
+        if (ACTION_MAKE_RELEASE_SCRIPT.equals(action)) {
             final String dirPath = intent.getStringExtra(EXTRA_RECORD_DIR);
             new Thread(new Runnable() {
                 @Override

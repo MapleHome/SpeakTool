@@ -759,7 +759,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void saveRecord(final RecordUploadBean recordUploadBean) {
+    public void saveRecord(RecordUploadBean recordUploadBean) {
         showLoading("保存中，请稍侯...", new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -770,14 +770,12 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 return false;
             }
         });
-        getPageRecorder().saveCurrentPageRecord();//save release.txt
+        getPageRecorder().saveCurrentPageRecord();// 保存当前页数据
         boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
 //        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
         try {
-            // 汇总release.txt文件
-            ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
-            String dirPath = getRecordDir();
-            RecordFileUtils.makeReleaseScript(new File(dirPath), mContext, info);
+            //save release.txt
+            RecordFileUtils.makeReleaseScript(new File(getRecordDir()), mContext, ScreenFitUtil.getCurrentDeviceInfo());
             // RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
             // 生成上传压缩包
             RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir());
@@ -973,10 +971,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     //
     @Subscribe
     public void onEventMainThread(DrawModeChangedEvent event) {
-        DrawModeCode preMode = event.getPreMode();
-        DrawModeCode nowMode = event.getNowMode();
-        normalPreUi(preMode);
-        selectNowUi(nowMode);
+        normalPreUi(event.getPreMode());
+        selectNowUi(event.getNowMode());
     }
 
 
