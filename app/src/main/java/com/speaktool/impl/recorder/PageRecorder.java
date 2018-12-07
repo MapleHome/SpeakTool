@@ -4,6 +4,10 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.maple.recorder.recording.AudioRecordConfig;
+import com.maple.recorder.recording.MsRecorder;
+import com.maple.recorder.recording.PullTransport;
+import com.maple.recorder.recording.Recorder;
 import com.speaktool.Const;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.ScreenInfoBean;
@@ -32,21 +36,28 @@ public class PageRecorder {
 
     private File dir;
     private File cmdFile;
-    private File soundFile;
+//    private File soundFile;
+    private File releaseSoundFile;
     private List<ICmd> cmdList = new ArrayList<ICmd>();
     private Draw draw;
-
-//    public long totalTimeNow() {
-//        return RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
-//    }
 
     public PageRecorder(Draw draw) {
         this.draw = draw;
         // 创建记录目录 /spktl/records/1674a49413e/
         String dirpath = String.format("%s%s", Const.RECORD_DIR, Long.toHexString(System.currentTimeMillis()));
+
         dir = new File(dirpath);
         if (!dir.exists())
             dir.mkdirs();
+
+        releaseSoundFile = new File(dir, Const.RELEASE_SOUND_NAME);
+        if (!releaseSoundFile.exists()) {
+            try {
+                releaseSoundFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public RecordError recordPage(int pageId) {
@@ -98,22 +109,22 @@ public class PageRecorder {
             }
         }
         // 创建录音文件
-        if (isRunning) {
-            // pageId + "_" + currentMillis + ".amr"
-            String mp3FileName = String.format("%s%s%s%s",
-                    pageId, "_", timeMills, Const.SOUND_FILE_SUFFIX);
-            soundFile = new File(dir, mp3FileName);
-            if (!soundFile.exists())
-                try {
-                    soundFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    if (e.getMessage().contains("space"))
-                        return RecordError.SDCARD_NO_ENOUGH_SPACE;
-                    else
-                        return RecordError.SDCARD_CANNOT_WRITE;
-                }
-        }
+//        if (isRunning) {
+//            // pageId + "_" + currentMillis + ".amr"
+//            String mp3FileName = String.format("%s%s%s%s", pageId, "_", timeMills, Const.SOUND_FILE_SUFFIX);
+//            soundFile = new File(dir, mp3FileName);
+//            if (!soundFile.exists()) {
+//                try {
+//                    soundFile.createNewFile();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    if (e.getMessage().contains("space"))
+//                        return RecordError.SDCARD_NO_ENOUGH_SPACE;
+//                    else
+//                        return RecordError.SDCARD_CANNOT_WRITE;
+//                }
+//            }
+//        }
         return RecordError.SUCCESS;
     }
 
@@ -311,12 +322,19 @@ public class PageRecorder {
 
     private RecordWorldTime refreshUiTime;
     private RecordWorldTime logicTime;
-//    private SoundRecorder mSoundRecorder;
+    Recorder recorder;
 
     private void startRecorder() {
-//        mSoundRecorder = new SoundRecorder();
-//        mSoundRecorder.startRecord(soundFile.getAbsolutePath());
-
+        if (recorder == null) {
+            recorder = MsRecorder.wav(
+                    releaseSoundFile,
+                    new AudioRecordConfig.Default(),
+                    new PullTransport.Default());
+            recorder.startRecording();
+            recorder.pauseRecording();
+        }
+        recorder.resumeRecording();
+        // TODO 开始录音。。
         if (refreshUiTime == null)
             refreshUiTime = new RecordWorldTime(true);
         if (logicTime == null)
@@ -335,10 +353,10 @@ public class PageRecorder {
     }
 
     private void stopRecorder() {
-//        if (mSoundRecorder != null) {
-//            mSoundRecorder.destroy();
-//            mSoundRecorder = null;
-//        }
+        if (recorder != null) {
+            recorder.pauseRecording();
+        }
+        // TODO 暂停录音
         if (refreshUiTime != null)
             refreshUiTime.pause();
         if (logicTime != null)
@@ -363,6 +381,13 @@ public class PageRecorder {
     }
 
     public void closeWorldTimer() {// do at drawactivity finish.
+        if (recorder != null) {
+            try {
+                recorder.stopRecording();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (refreshUiTime != null) {
             refreshUiTime.stop();
             refreshUiTime = null;

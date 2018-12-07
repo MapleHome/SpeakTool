@@ -1,6 +1,8 @@
 package com.speaktool.busevents;
 
 /**
+ * 更新UI
+ *
  * @author maple
  * @time 2018/5/18.
  */

@@ -42,7 +42,6 @@ import com.speaktool.bean.CreatePageData;
 import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.RecordUploadBean;
-import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.busevents.EraserEvent;
@@ -243,8 +242,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 }
                 break;
             case R.id.ivMore:// 添加
-                new L_MorePoW(mContext, v, this)
-                        .showPopupWindow(WeiZhi.Right);
+                new L_MorePoW(mContext, v, this).showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivDeletePage:// 删除界面
                 new L_ClearPoW(mContext, v, this, this).showPopupWindow(WeiZhi.Right);
@@ -974,7 +972,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         normalPreUi(event.getPreMode());
         selectNowUi(event.getNowMode());
     }
-
 
     @Subscribe
     public void onEventMainThread(RecordTimeChangedEvent event) {

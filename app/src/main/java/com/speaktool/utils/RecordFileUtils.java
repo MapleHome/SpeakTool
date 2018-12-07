@@ -249,12 +249,12 @@ public class RecordFileUtils {
             public boolean accept(File pathname) {
                 if (pathname.getName().equals(Const.RELEASE_SOUND_NAME))
                     return false;
-                if (pathname.getAbsolutePath().endsWith(Const.SOUND_FILE_SUFFIX)
+                if (pathname.getAbsolutePath().endsWith(Const.SOUND_FILE_SUFFIX) // .amr
                         && pathname.getName().startsWith(page)) {
                     if (isIncludeUnRecord) {
                         return true;
                     } else {
-                        if (!pathname.getName().contains(Const.UN_RECORD_FILE_FLAG))
+                        if (!pathname.getName().contains(Const.UN_RECORD_FILE_FLAG)) // #
                             return true;
                         else
                             return false;
