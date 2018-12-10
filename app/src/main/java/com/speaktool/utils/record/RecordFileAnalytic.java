@@ -112,8 +112,8 @@ public class RecordFileAnalytic {
             p.put(INTRODUCE, introduce);
             //
             ScreenInfoBean screen = ScreenFitUtil.getCurrentDeviceInfo();
-            p.put(MAKE_WINDOW_WIDTH, screen.w + "");
-            p.put(MAKE_WINDOW_HEIGHT, screen.h + "");
+            p.put(MAKE_WINDOW_WIDTH, screen.width + "");
+            p.put(MAKE_WINDOW_HEIGHT, screen.height + "");
             //
             p.put(COURSE_ID, MD5Util.getUUID());
             // shareUrl.

@@ -14,10 +14,7 @@ import com.speaktool.utils.ScreenFitUtil;
 import java.io.File;
 
 public class PlayProcess {
-//    /**
-//     * 预览
-//     */
-//    public static final String ACTION_PREVIEW = "action_preview";
+//    public static final String ACTION_PREVIEW = "action_preview";// 预览
     /**
      * 制作发行脚本
      */

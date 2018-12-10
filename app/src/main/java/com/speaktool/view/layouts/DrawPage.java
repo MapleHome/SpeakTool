@@ -526,10 +526,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
          * use to save info in make mode.
          */
         if (isMakeMode()) {
-            ScreenInfoBean info = new ScreenInfoBean();
-            info.w = this.getWidth();
-            info.h = this.getHeight();
-            info.density = DisplayUtil.getScreenDensity(getContext());
+            ScreenInfoBean info = new ScreenInfoBean(getWidth(),getHeight(),DisplayUtil.getScreenDensity(getContext()));
             ScreenFitUtil.setCurrentDeviceInfo(info);
             ScreenFitUtil.setInputDeviceInfo(info);
         }

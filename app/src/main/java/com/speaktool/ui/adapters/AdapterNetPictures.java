@@ -35,13 +35,9 @@ public class AdapterNetPictures extends AbsAdapter<NetPictureBean> {
         }
         ItemViewNetPicture item = (ItemViewNetPicture) convertView;
         NetPictureBean bean = (NetPictureBean) getItem(position);
-        if (bean == null) {
-            item.setLoading();
-            return item;
+        if (bean != null) {
+            item.setTag(bean.thumbUrl);
         }
-
-        String imageUrl = bean.thumbUrl;
-        item.setTag(imageUrl);
         item.setLoading();
 
         return item;

@@ -81,13 +81,14 @@ public class JsonScriptParser {
 
         JSONObject script = new JSONObject(json);
 
-        ScreenInfoBean inputScreenInfo = new ScreenInfoBean();
-        inputScreenInfo.w = script.getInt("inputScreenWidth");
-        inputScreenInfo.h = script.getInt("inputScreenHeight");
-        inputScreenInfo.density = script.getInt("density");
+        ScreenInfoBean inputScreenInfo = new ScreenInfoBean(
+                script.getInt("inputScreenWidth"),
+                script.getInt("inputScreenHeight"),
+                script.getInt("density")
+        );
         ScreenFitUtil.setInputDeviceInfo(inputScreenInfo);
         //
-        float inputRatioHW = ((float) inputScreenInfo.h) / inputScreenInfo.w;
+        float inputRatioHW = ((float) inputScreenInfo.height) / inputScreenInfo.width;
         //
 
         Point screenSize = DisplayUtil.getScreenSize(mContext);
@@ -96,10 +97,7 @@ public class JsonScriptParser {
         //
         Point size = ScreenFitUtil.getKeepRatioScaledSize(inputRatioHW, screenWidth, screenHeight);
 
-        ScreenInfoBean currentScreenInfo = new ScreenInfoBean();
-        currentScreenInfo.w = size.x;
-        currentScreenInfo.h = size.y;
-        currentScreenInfo.density = DisplayUtil.getScreenDensity(mContext);
+        ScreenInfoBean currentScreenInfo = new ScreenInfoBean(size.x, size.y, DisplayUtil.getScreenDensity(mContext));
         ScreenFitUtil.setCurrentDeviceInfo(currentScreenInfo);
     }
 

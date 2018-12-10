@@ -15,7 +15,6 @@ import com.speaktool.tasks.MyColors;
  * @author Maple Shao
  */
 public class EraserPaint {
-
     private static final float DEFAULT_STROKE_WIDTH = 15;// dp
     private final Paint eraserPaint = new Paint();
     private static PaintInfoBean globalPaintInfo;

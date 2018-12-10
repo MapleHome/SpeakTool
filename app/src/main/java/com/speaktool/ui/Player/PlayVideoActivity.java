@@ -112,8 +112,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
         ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
         ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-        pageWidth = currentScreen.w;
-        pageHeight = currentScreen.h;
+        pageWidth = currentScreen.width;
+        pageHeight = currentScreen.height;
         // 设置播放器大小
         LayoutParams lp = (LayoutParams) vSeekBar.getLayoutParams();
         lp.width = pageWidth;

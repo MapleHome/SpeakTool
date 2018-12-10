@@ -191,8 +191,8 @@ public class PageRecorder {
 
         ScriptData scriptData = new ScriptData();
         scriptData.setDensity(info.density);
-        scriptData.setInputScreenWidth(info.w);
-        scriptData.setInputScreenHeight(info.h);
+        scriptData.setInputScreenWidth(info.width);
+        scriptData.setInputScreenHeight(info.height);
         scriptData.setInputRate(60);
         scriptData.setVersion(1);
         scriptData.setWbEvents(cmdList);

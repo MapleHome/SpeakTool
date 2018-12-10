@@ -33,8 +33,6 @@ public class DrawPaint {
     }
 
     public DrawPaint(int color, int strokeWidth) {
-        super();
-
         initCommon();
         mDrawPaint.setColor(color);
         mDrawPaint.setStrokeWidth(strokeWidth);

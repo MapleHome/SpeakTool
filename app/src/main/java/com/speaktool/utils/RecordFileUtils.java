@@ -488,9 +488,9 @@ public class RecordFileUtils {
 //        writer.write(",");
 //        writer.write("\"resources\":" + new Gson().toJson(jpgNames));
 //        writer.write(",");
-//        writer.write("\"inputScreenWidth\":" + info.w);
+//        writer.write("\"inputScreenWidth\":" + info.width);
 //        writer.write(",");
-//        writer.write("\"inputScreenHeight\":" + info.h);
+//        writer.write("\"inputScreenHeight\":" + info.height);
 //        writer.write(",");
 //        writer.write("\"density\":" + info.density);
 //        writer.write(",");
@@ -597,9 +597,9 @@ public class RecordFileUtils {
         writer.write(",");
         writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");
-        writer.write("\"inputScreenWidth\":" + info.w);
+        writer.write("\"inputScreenWidth\":" + info.width);
         writer.write(",");
-        writer.write("\"inputScreenHeight\":" + info.h);
+        writer.write("\"inputScreenHeight\":" + info.height);
         writer.write(",");
         writer.write("\"density\":" + info.density);
         writer.write(",");
