@@ -67,10 +67,10 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
     // 预览全部
     @OnClick(R.id.tvPreviewAll)
     void previewAll() {
-        if (!mDraw.getPageRecorder().isHaveRecordForAll()) {
-            T.showShort(mContext, "还没有录像！");
-            return;
-        }
+//        if (!mDraw.getPageRecorder().isHaveRecordForAll()) {
+//            T.showShort(mContext, "还没有录像！");
+//            return;
+//        }
 //        String dirPath = mDraw.getPageRecorder().getRecordDir();
 //        showLoading();
 //        Intent it = new Intent(mContext, PlayService.class);
@@ -84,11 +84,11 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
     // 预览本页
     @OnClick(R.id.tvPreviewPage)
     void previewPage() {
-        int pageid = mDraw.getCurrentBoard().getPageID();
-        if (!mDraw.getPageRecorder().isHaveRecordForPage(pageid)) {
-            T.showShort(mContext, "本页还没有录像！");
-            return;
-        }
+//        int pageid = mDraw.getCurrentBoard().getPageID();
+//        if (!mDraw.getPageRecorder().isHaveRecordForPage(pageid)) {
+//            T.showShort(mContext, "本页还没有录像！");
+//            return;
+//        }
         //
 //        String dirPath = mDraw.getPageRecorder().getRecordDir();
 //        showLoading();

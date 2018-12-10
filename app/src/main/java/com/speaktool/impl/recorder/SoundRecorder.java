@@ -41,13 +41,13 @@ public class SoundRecorder {
 		mRecorder.start();
 //		if (!refreshUiTime.isBooted()) {
 //			refreshUiTime.boot(0);
-//		} else if (!refreshUiTime.isTicking()) {
+//		} else if (!refreshUiTime.isRunning()) {
 //			refreshUiTime.goOn();
 //		}
 //		//
 //		if (!logicTime.isBooted()) {
 //			logicTime.boot(0);
-//		} else if (!logicTime.isTicking()) {
+//		} else if (!logicTime.isRunning()) {
 //			logicTime.goOn();
 //		}
 	}

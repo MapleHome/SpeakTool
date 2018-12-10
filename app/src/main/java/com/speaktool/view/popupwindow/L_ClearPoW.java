@@ -63,16 +63,16 @@ public class L_ClearPoW extends BasePopupWindow {
     @OnClick(R.id.tvClearPageRecords)
     void onClearPageRecords() {
         dismiss();
-        if (mDraw.getPageRecorder().isHaveRecordForPage(pageId)) {
-            mDraw.preChangePage(new Runnable() {
-                @Override
-                public void run() {
-                    mDraw.getPageRecorder().deletePageRecord(pageId);
-                }
-            });
-        } else {
-            T.showShort(mContext, "本页还没有录像！");
-        }
+//        if (mDraw.getPageRecorder().isHaveRecordForPage(pageId)) {
+//            mDraw.preChangePage(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mDraw.getPageRecorder().deletePageRecord(pageId);
+//                }
+//            });
+//        } else {
+//            T.showShort(mContext, "本页还没有录像！");
+//        }
     }
 
 }

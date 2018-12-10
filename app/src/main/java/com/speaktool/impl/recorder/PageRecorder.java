@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.maple.recorder.recording.AudioChunk;
 import com.maple.recorder.recording.AudioRecordConfig;
 import com.maple.recorder.recording.MsRecorder;
 import com.maple.recorder.recording.PullTransport;
@@ -13,7 +14,6 @@ import com.speaktool.api.Draw;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 
 import java.io.BufferedWriter;
@@ -36,7 +36,7 @@ public class PageRecorder {
 
     private File dir;
     private File cmdFile;
-//    private File soundFile;
+    //    private File soundFile;
     private File releaseSoundFile;
     private List<ICmd> cmdList = new ArrayList<ICmd>();
     private Draw draw;
@@ -129,76 +129,76 @@ public class PageRecorder {
     }
 
     // 重录所有
-    public void reRecordAll() {
-//        SoundRecorder.resetRefreshUiTime(0);
-        resetRefreshUiTime(0);
-        if (!draw.getRecorderContext().isRunning())
-            draw.getRecorderContext().continuing();
-        deleteAllRecordFiles();
-        // cmdList.clear(); TODO 为什么没清空？
-    }
+//    public void reRecordAll() {
+////        SoundRecorder.resetRefreshUiTime(0);
+//        resetRefreshUiTime(0);
+//        if (!draw.getRecorderContext().isRunning())
+//            draw.getRecorderContext().continuing();
+//        deleteAllRecordFiles();
+//        // cmdList.clear(); TODO 为什么没清空？
+//    }
 
-    /**
-     * 删除所有记录文件
-     */
-    private void deleteAllRecordFiles() {
-        stopRecorder();
-        File[] files = dir.listFiles();
-        if (files == null)
-            return;
-        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
-        for (File f : files) {
-            if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
-                if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                    f.renameTo(new File(dir, f.getName().replace("_", flag)));
-            }
-        }// for end.
-    }
-
-    public void reRecordPage(int pageId) {
-        if (!draw.getRecorderContext().isRunning())
-            draw.getRecorderContext().continuing();
-        deletePageRecord(pageId);
-    }
-
-    public void deletePageRecord(int pageId) {
-        stopRecorder();
-        /**
-         * reduce ui time.
-         */
-        long pageDuration = RecordFileUtils.getPageRecordDuration(pageId, dir.getAbsolutePath(), false);
-//        SoundRecorder.resetRefreshUiTime(SoundRecorder.getRefreshUiTime() - pageDuration);
-        resetRefreshUiTime(getRefreshUiTime() - pageDuration);
-        File[] files = dir.listFiles();
-        if (files == null)
-            return;
-        String page = pageId + "_";
-        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
-        for (File f : files) {
-            if (f.getName().startsWith(page)) {
-                if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
-                    /***
-                     * sound cannot be deleted,because will use to count time
-                     * for releaseScript.
-                     */
-                    if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                        f.renameTo(new File(dir, f.getName().replace("_", flag)));
-                }
-            }
-        }// for.s
-    }
-
-    public boolean isHaveRecordForPage(int pageId) {
-        final String page = pageId + "_";
-        File[] files = dir.listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
-                        && pathname.getName().startsWith(page)
-                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
-            }
-        });
-        return (files != null && files.length > 0);
-    }
+//    /**
+//     * 删除所有记录文件
+//     */
+//    private void deleteAllRecordFiles() {
+//        stopRecorder();
+//        File[] files = dir.listFiles();
+//        if (files == null)
+//            return;
+//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
+//        for (File f : files) {
+//            if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
+//                if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
+//                    f.renameTo(new File(dir, f.getName().replace("_", flag)));
+//            }
+//        }// for end.
+//    }
+//
+//    public void reRecordPage(int pageId) {
+//        if (!draw.getRecorderContext().isRunning())
+//            draw.getRecorderContext().continuing();
+//        deletePageRecord(pageId);
+//    }
+//
+//    public void deletePageRecord(int pageId) {
+//        stopRecorder();
+//        /**
+//         * reduce ui time.
+//         */
+//        long pageDuration = RecordFileUtils.getPageRecordDuration(pageId, dir.getAbsolutePath(), false);
+////        SoundRecorder.resetRefreshUiTime(SoundRecorder.getRefreshUiTime() - pageDuration);
+//        resetRefreshUiTime(getRefreshUiTime() - pageDuration);
+//        File[] files = dir.listFiles();
+//        if (files == null)
+//            return;
+//        String page = pageId + "_";
+//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
+//        for (File f : files) {
+//            if (f.getName().startsWith(page)) {
+//                if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
+//                    /***
+//                     * sound cannot be deleted,because will use to count time
+//                     * for releaseScript.
+//                     */
+//                    if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
+//                        f.renameTo(new File(dir, f.getName().replace("_", flag)));
+//                }
+//            }
+//        }// for.s
+//    }
+//
+//    public boolean isHaveRecordForPage(int pageId) {
+//        final String page = pageId + "_";
+//        File[] files = dir.listFiles(new FileFilter() {
+//            public boolean accept(File pathname) {
+//                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
+//                        && pathname.getName().startsWith(page)
+//                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
+//            }
+//        });
+//        return (files != null && files.length > 0);
+//    }
 
     /**
      * 是否记录所有
@@ -206,8 +206,11 @@ public class PageRecorder {
     public boolean isHaveRecordForAll() {
         File[] files = dir.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
-                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
-                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
+                return (
+//                        pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX) &&
+//                                !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG) &&
+                        pathname.getName().contains(Const.RELEASE_SOUND_NAME)
+                );
             }
         });
         return (files != null && files.length > 0);
@@ -219,12 +222,12 @@ public class PageRecorder {
      * @return
      */
     public RecordError saveCurrentPageRecord() {
-        RecordError ret = saveCmdsToDisk();
-        if (ret != RecordError.SUCCESS)
-            return ret;
         stopRecorder();
         // logicTime.stop();
-        cmdList.clear();
+        RecordError ret = saveCmdsToDisk();
+        if (ret == RecordError.SUCCESS) {
+            cmdList.clear();
+        }
         return ret;
 
     }
@@ -320,58 +323,39 @@ public class PageRecorder {
 
     //----------------------------------------------------------------------------------
 
-    private RecordWorldTime refreshUiTime;
     private RecordWorldTime logicTime;
-    Recorder recorder;
+    private Recorder recorder;
 
     private void startRecorder() {
+        if (logicTime == null) {
+            logicTime = new RecordWorldTime(0, true);
+        }
+        logicTime.goRun();
+
         if (recorder == null) {
             recorder = MsRecorder.wav(
                     releaseSoundFile,
                     new AudioRecordConfig.Default(),
-                    new PullTransport.Default());
+                    new PullTransport.Default(new PullTransport.OnAudioChunkPulledListener() {
+                        @Override
+                        public void onAudioChunkPulled(AudioChunk audioChunk) {
+                            Log.e("[ audio ]", "max amplitude : " + audioChunk.maxAmplitude());
+                        }
+                    }));
             recorder.startRecording();
             recorder.pauseRecording();
         }
-        recorder.resumeRecording();
         // TODO 开始录音。。
-        if (refreshUiTime == null)
-            refreshUiTime = new RecordWorldTime(true);
-        if (logicTime == null)
-            logicTime = new RecordWorldTime(false);
-        if (!refreshUiTime.isBooted()) {
-            refreshUiTime.boot(0);
-        } else if (!refreshUiTime.isTicking()) {
-            refreshUiTime.goOn();
-        }
-        //
-        if (!logicTime.isBooted()) {
-            logicTime.boot(0);
-        } else if (!logicTime.isTicking()) {
-            logicTime.goOn();
-        }
+        recorder.resumeRecording();
     }
 
     private void stopRecorder() {
+        if (logicTime != null)
+            logicTime.pause();
+        // TODO 暂停录音
         if (recorder != null) {
             recorder.pauseRecording();
         }
-        // TODO 暂停录音
-        if (refreshUiTime != null)
-            refreshUiTime.pause();
-        if (logicTime != null)
-            logicTime.pause();
-    }
-
-    public void resetRefreshUiTime(long time) {
-        refreshUiTime.setNowTime(time);
-    }
-
-    public long getRefreshUiTime() {
-        if (refreshUiTime == null) {
-            return ICmd.TIME_DELETE_FLAG;
-        }
-        return refreshUiTime.now();
     }
 
     public long getCurrentTime() {
@@ -380,22 +364,17 @@ public class PageRecorder {
         return logicTime.now();
     }
 
-    public void closeWorldTimer() {// do at drawactivity finish.
+    public void closeWorldTimer() {// do at draw activity finish.
+        if (logicTime != null) {
+            logicTime.stop();
+            logicTime = null;
+        }
         if (recorder != null) {
             try {
                 recorder.stopRecording();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        if (refreshUiTime != null) {
-            refreshUiTime.stop();
-            refreshUiTime = null;
-        }
-        //
-        if (logicTime != null) {
-            logicTime.stop();
-            logicTime = null;
         }
     }
 

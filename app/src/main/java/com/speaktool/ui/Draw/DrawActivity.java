@@ -202,12 +202,12 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     private void initPage() {
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
-        if (getPlayMode() == PlayMode.MAKE) {
-            int id = makePageId();
-            createPageSendcmd(Page.DEFAULT_PAGE_BG_TYPE, 0, id);
-            setActivePageSendcmd(id);
-            postChangePage();
-        }
+//        if (getPlayMode() == PlayMode.MAKE) {
+        int id = makePageId();
+        createPageSendcmd(Page.DEFAULT_PAGE_BG_TYPE, 0, id);
+        setActivePageSendcmd(id);
+        postChangePage();
+//        }
     }
 
     @Override
@@ -1195,8 +1195,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 实现接口 - 启动记录
     @Override
     public void bootRecord() {
-        if (getRecorderContext().isBooted())
-            return;
         preChangePage(new Runnable() {
             @Override
             public void run() {

@@ -10,21 +10,13 @@ public class RecordTimeChangedEvent {
 
 	private final long now;
 
-	private final long closeTime;
-
-	public RecordTimeChangedEvent(long now, long closeTime) {
+	public RecordTimeChangedEvent(long now) {
 		super();
 		this.now = now;
-		this.closeTime = closeTime;
 	}
 
 	public long getNow() {
 		return now;
-	}
-
-	public long getCloseTime() {
-
-		return closeTime;
 	}
 
 }

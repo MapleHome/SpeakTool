@@ -1,27 +1,82 @@
 package com.speaktool.impl.recorder;
 
 import com.speaktool.busevents.RecordTimeChangedEvent;
-import com.speaktool.impl.cmd.ICmd;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ * 时间记录器
+ * @author maple
+ * @time 2018/12/10
+ */
 public class RecordWorldTime {
-    private long closeTime = Long.MAX_VALUE;
-    private long now = ICmd.TIME_DELETE_FLAG;// millsec.
+    private long now = 0;// millsec.
     private boolean isNeedSendTimeChangedEvent = false;
-    private boolean isTicking = false;
+    private boolean isRunning = false;
 
     private Timer mTimer;
 
-
-    public RecordWorldTime(boolean isChangedUI) {
-        super();
+    public RecordWorldTime(long nowInit, boolean isChangedUI) {
+        now = nowInit;
         this.isNeedSendTimeChangedEvent = isChangedUI;
     }
+
+    public void goRun() {
+        if (isRunning)
+            return;
+
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                now += 10;
+                if (now % 1000 == 0) { // 每秒更新一次UI
+                    if (isNeedSendTimeChangedEvent) {
+                        EventBus.getDefault().post(new RecordTimeChangedEvent(now));
+                    }
+                }
+            }
+        }, 100, 10);
+        isRunning = true;
+    }
+
+    public void pause() {
+        if (!isRunning)
+            return;
+        mTimer.cancel();
+        mTimer = null;
+        isRunning = false;
+    }
+
+    public void stop() {
+        pause();
+        now = 0;
+    }
+
+    // 获取当前时间
+    public long now() {
+        return now;
+    }
+
+//    // 是否计时
+//    public boolean isRunning() {
+//        return isRunning;
+//    }
+
+//    public void boot(long nowInit) {
+//        if (isBooted)
+//            return;
+//        isBooted = true;
+//    }
+
+//    // 是否启动
+//    public boolean isBooted() {
+//        return isBooted;
+//    }
 
 //	public RecordWorldTime(boolean isNeedSendTimeChangedEvent, long closeTime, boolean isMake) {
 //		super();
@@ -30,87 +85,22 @@ public class RecordWorldTime {
 //		this.isMake = isMake;
 //	}
 
-    public void setNowTime(long now) {
-        this.now = now;
-    }
+//    public void setNowTime(long now) {
+//        this.now = now;
+//    }
 
 //	public long getCloseTime() {
 //		return closeTime;
 //	}
 
-    public void pause() {
-        if (!isTicking)
-            return;
-        mTimer.cancel();
-        mTimer = null;
-        isTicking = false;
-    }
-
-    public void stop() {
-        pause();
-        now = 0;
-        isBooted = false;
-    }
-
-    public void goOn() {
-        if (isTicking)
-            return;
-        mTimer = new Timer();
-        mTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                now += 10;
-                if (now % 1000 == 0)
-                    postEvent();
-            }
-        }, 100, 10);
-        isTicking = true;
-    }
-
-    private boolean isBooted = false;
-
-    public void boot(long nowInit) {
-        if (isBooted)
-            return;
-        isBooted = true;
-        now = nowInit;
-        mTimer = new Timer();
-        mTimer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                now += 10;
-                if (now % 1000 == 0)
-                    postEvent();
-            }
-        }, 100, 10);
-        isTicking = true;
-
-    }
-
-    public long now() {
-        return now;
-    }
-
-    public boolean isBooted() {
-        return isBooted;
-    }
-
-    public boolean isTicking() {
-        return isTicking;
-    }
-
-    private void postEvent() {
-        if (now > closeTime) {
-            stop();
-            return;
-        }
-        if (isNeedSendTimeChangedEvent) {
-            EventBus.getDefault().post(new RecordTimeChangedEvent(now, closeTime));
-        }
-    }
-
-//	public long totalTimeNow() {
-//		return now;
-//	}
+//    private void postEvent() {
+//        long closeTime = Long.MAX_VALUE;
+//        if (now > closeTime) {
+//            stop();
+//        } else {
+//        if (isNeedSendTimeChangedEvent) {
+//            EventBus.getDefault().post(new RecordTimeChangedEvent(now));
+//        }
+//        }
+//    }
 }
