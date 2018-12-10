@@ -27,9 +27,7 @@ public class CmdCreateEdit extends CmdCreateShape<EditCommonData> {
 			@Override
 			public void run() {
 				Page page = draw.getCurrentBoard();
-				WordEdit edit = new WordEdit(draw.context(), draw,
-						data.getShapeID());
-
+				WordEdit edit = new WordEdit(draw.context(), draw, data.getShapeID());
 				WordEdit.inflateDataToAttrs(data, edit);
 
 				page.draw(edit);
@@ -41,22 +39,18 @@ public class CmdCreateEdit extends CmdCreateShape<EditCommonData> {
 
 	@Override
 	public ICmd<DeleteShapeData> inverse() {
-		DeleteShapeData inversedata = new DeleteShapeData();
-		EditCommonData createdata = getData();
-		
 		CmdDeleteEdit inverseCmd = new CmdDeleteEdit();
-		inversedata.setShapeID(createdata.getShapeID());
-		inverseCmd.setData(inversedata);
+		inverseCmd.setData(new DeleteShapeData(getData().getShapeID()));
 		return inverseCmd;
 	}
 
 	@Override
 	public ICmd<EditCommonData> copy() {
-		CmdCreateEdit copy = new CmdCreateEdit();
-		copy.setTime(getTime());
-		copy.setData(getData());
+//		CmdCreateEdit copy = new CmdCreateEdit();
+//		copy.setTime(getTime());
+//		copy.setData(getData());
 
-		return copy;
+		return this;
 	}
 
 }

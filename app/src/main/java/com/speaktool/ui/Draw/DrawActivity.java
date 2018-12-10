@@ -137,12 +137,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @BindView(R.id.tvFinish) TextView tvFinish;// 完成
 
     private Context mContext;
-    private int pageWidth;
-    private int pageHeight;
+    private RecordBean recordBean;
     private List<Page> pages = new ArrayList<>();// 【画册】- 画纸集合
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
     private String mRecordDir;// 课程目录
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +149,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         mContext = this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-
+        recordBean = RecordBean.getInstance();
         // 绘制
         if (android.os.Build.VERSION.SDK_INT >= 18) {
             // mIBISPenController = new IBISPenController(this);
@@ -163,8 +161,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
         // 初始化画板纸张的宽高
         Point screenSize = DisplayUtil.getScreenSize(getApplicationContext());
-        pageWidth = LayoutParams.MATCH_PARENT;
-        pageHeight = screenSize.y;
+        recordBean.pageWidth = LayoutParams.MATCH_PARENT;
+        recordBean.pageHeight = screenSize.y;
 
         initListener();
         initPage();
@@ -202,12 +200,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     private void initPage() {
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
-//        if (getPlayMode() == PlayMode.MAKE) {
         int id = makePageId();
         createPageSendcmd(Page.DEFAULT_PAGE_BG_TYPE, 0, id);
         setActivePageSendcmd(id);
         postChangePage();
-//        }
     }
 
     @Override
@@ -474,9 +470,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         // send cmd.
         CmdDeletePage cmd = new CmdDeletePage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        ActivePageData data = new ActivePageData();
-        data.setPageID(bd.getPageID());
-        cmd.setData(data);
+
+//        ActivePageData data = new ActivePageData(bd.getPageID());
+//        data.setPageID(bd.getPageID());
+
+        cmd.setData(new ActivePageData(bd.getPageID()));
         getCurrentBoard().sendCommand(cmd, true);
         /** set active page. */
         setActivePageSendcmd(pageShouldShow.getPageID());
@@ -546,14 +544,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private void copyPageSendcmd(int srcPageId, int destPageId, String option) {
         copyPageImpl(srcPageId, destPageId, option);
         // send cmd.
-        CopyPageData data = new CopyPageData();
-        data.setSrcPageId(srcPageId);
-        data.setDestPageId(destPageId);
-        data.setOption(option);
-
         CmdCopyPage cmd = new CmdCopyPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new CopyPageData(srcPageId, destPageId, option));
         getCurrentBoard().sendCommand(cmd, true);
 
     }
@@ -562,10 +555,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void copyPageImpl(int srcPageId, int destPageId, String option) {
         Page srcPage = getPageFromId(srcPageId);
         Page destPage = getPageFromId(destPageId);
-        if (CopyPageData.OPT_COPY_ALL.equals(option))
+        if (CopyPageData.OPT_COPY_ALL.equals(option)) {
             srcPage.copyAllTo(destPage);
-        else
+        } else {
             srcPage.copyViewsTo(destPage);
+        }
     }
 
     // 实现接口——清除页面内容
@@ -573,13 +567,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void clearPageClick(int pageId, String option) {
         clearPageImpl(pageId, option);
         // send cmd.
-        ClearPageData data = new ClearPageData();
-        data.setPageId(pageId);// 设置页面ID
-        data.setOption(option);// 设置清除类型
-
         CmdClearPage cmd = new CmdClearPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new ClearPageData(pageId, option));
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -673,10 +663,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         resetPageId();
         DrawPage.resetShapeId(this);
         //
-        if (getPlayMode() == PlayMode.MAKE) {
+//        if (getPlayMode() == PlayMode.MAKE) {
 //            SoundRecorder.closeWorldTimer();
-            getPageRecorder().closeWorldTimer();
-        }
+        getPageRecorder().closeWorldTimer();
+//        }
         SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
@@ -691,8 +681,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         onExitDraw();
     }
 
-    private int pageID;
-
     // 实现接口 - 设置当前互动的画纸
     @Override
     public void setActivePageSendcmd(int id) {
@@ -702,9 +690,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             return;
         setActivePageImpl(id);
         // 发送命令
-        CmdActivePage cmd = new CmdActivePage();
-        cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(new ActivePageData(id));
+        CmdActivePage cmd = new CmdActivePage(
+                getPageRecorder().recordTimeNow(),
+                new ActivePageData(id)
+        );
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -1053,6 +1042,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return mRecorderContext;
     }
 
+    private int pageID;
+
     @Override
     public int makePageId() {
         return ++pageID;
@@ -1080,13 +1071,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         setPageBackgroundImpl(pageId, backgroundType);
         // send cmd.
         CmdChangePageBackground cmd = new CmdChangePageBackground();
-        PageBackgroundData data = new PageBackgroundData();
-        data.setBackgroundType(backgroundType);
-        data.setPageID(pageId);
-
-        cmd.setData(data);
         cmd.setTime(getPageRecorder().recordTimeNow());
-
+        cmd.setData(new PageBackgroundData(pageId, backgroundType));
         getCurrentBoard().sendCommand(cmd, true);
 
     }
@@ -1358,12 +1344,12 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public int makePageWidth() {
-        return pageWidth;
+        return recordBean.pageWidth;
     }
 
     @Override
     public int makePageHeight() {
-        return pageHeight;
+        return recordBean.pageHeight;
     }
 
     @Override

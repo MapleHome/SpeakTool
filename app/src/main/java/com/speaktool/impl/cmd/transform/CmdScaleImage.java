@@ -89,7 +89,7 @@ public class CmdScaleImage extends CmdTransformSeqBase<ChangeImageData<ScaleData
         ImageCommonData copydata = data.copy();
 
         copy.setData(copydata);
-        copy.setOlddata(olddata);
+        copy.setOldData(olddata);
         return copy;
 
     }

@@ -107,22 +107,18 @@ public class CmdCreatePen extends CmdCreateShape<CreatePenData> {
 
     @Override
     public ICmd inverse() {
-        DeleteShapeData data = new DeleteShapeData();
-        data.setShapeID(getData().getShapeID());
-
         CmdDeletePen undoCmd = new CmdDeletePen();
-        undoCmd.setData(data);
+        undoCmd.setData(new DeleteShapeData(getData().getShapeID()));
         return undoCmd;
     }
 
     @Override
     public ICmd copy() {
-        CmdCreatePen copy = new CmdCreatePen();
-        copy.setData(getData().copy());
-        copy.setEndTime(getEndTime());
-        copy.setTime(getTime());
-
-        return copy;
+//        CmdCreatePen copy = new CmdCreatePen();
+//        copy.setData(getData().copy());
+//        copy.setEndTime(getEndTime());
+//        copy.setTime(getTime());
+        return this;
     }
 
 }

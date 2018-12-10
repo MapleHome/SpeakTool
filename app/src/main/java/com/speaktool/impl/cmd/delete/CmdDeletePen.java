@@ -37,10 +37,10 @@ public class CmdDeletePen extends CmdBase<DeleteShapeData> {
 
     @Override
     public ICmd copy() {
-        CmdDeletePen cd = new CmdDeletePen();
-        cd.setData(getData());
-        cd.setTime(getTime());
-        return cd;
+//        CmdDeletePen cd = new CmdDeletePen();
+//        cd.setData(getData());
+//        cd.setTime(getTime());
+        return this;
     }
 
 }

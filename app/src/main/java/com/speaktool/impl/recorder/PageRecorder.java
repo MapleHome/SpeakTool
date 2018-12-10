@@ -88,12 +88,10 @@ public class PageRecorder {
         String cmdFileName;
         if (isRunning) {
             // pageId + currentMillis + ".txt"
-            cmdFileName = String.format("%s_%s%s",
-                    pageId, timeMills, Const.CMD_FILE_SUFFIX);
+            cmdFileName = String.format("%s_%s%s", pageId, timeMills, Const.CMD_FILE_SUFFIX);
         } else {
             // pageId + "#" + currentMillis + ".txt"
-            cmdFileName = String.format("%s_%s_%s%s",
-                    pageId, Const.UN_RECORD_FILE_FLAG, timeMills, Const.CMD_FILE_SUFFIX);
+            cmdFileName = String.format("%s_%s_%s%s", pageId, Const.UN_RECORD_FILE_FLAG, timeMills, Const.CMD_FILE_SUFFIX);
         }
         cmdFile = new File(dir, cmdFileName);
         // 创建CMD文件
@@ -128,77 +126,6 @@ public class PageRecorder {
         return RecordError.SUCCESS;
     }
 
-    // 重录所有
-//    public void reRecordAll() {
-////        SoundRecorder.resetRefreshUiTime(0);
-//        resetRefreshUiTime(0);
-//        if (!draw.getRecorderContext().isRunning())
-//            draw.getRecorderContext().continuing();
-//        deleteAllRecordFiles();
-//        // cmdList.clear(); TODO 为什么没清空？
-//    }
-
-//    /**
-//     * 删除所有记录文件
-//     */
-//    private void deleteAllRecordFiles() {
-//        stopRecorder();
-//        File[] files = dir.listFiles();
-//        if (files == null)
-//            return;
-//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
-//        for (File f : files) {
-//            if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
-//                if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
-//                    f.renameTo(new File(dir, f.getName().replace("_", flag)));
-//            }
-//        }// for end.
-//    }
-//
-//    public void reRecordPage(int pageId) {
-//        if (!draw.getRecorderContext().isRunning())
-//            draw.getRecorderContext().continuing();
-//        deletePageRecord(pageId);
-//    }
-//
-//    public void deletePageRecord(int pageId) {
-//        stopRecorder();
-//        /**
-//         * reduce ui time.
-//         */
-//        long pageDuration = RecordFileUtils.getPageRecordDuration(pageId, dir.getAbsolutePath(), false);
-////        SoundRecorder.resetRefreshUiTime(SoundRecorder.getRefreshUiTime() - pageDuration);
-//        resetRefreshUiTime(getRefreshUiTime() - pageDuration);
-//        File[] files = dir.listFiles();
-//        if (files == null)
-//            return;
-//        String page = pageId + "_";
-//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
-//        for (File f : files) {
-//            if (f.getName().startsWith(page)) {
-//                if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
-//                    /***
-//                     * sound cannot be deleted,because will use to count time
-//                     * for releaseScript.
-//                     */
-//                    if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
-//                        f.renameTo(new File(dir, f.getName().replace("_", flag)));
-//                }
-//            }
-//        }// for.s
-//    }
-//
-//    public boolean isHaveRecordForPage(int pageId) {
-//        final String page = pageId + "_";
-//        File[] files = dir.listFiles(new FileFilter() {
-//            public boolean accept(File pathname) {
-//                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
-//                        && pathname.getName().startsWith(page)
-//                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
-//            }
-//        });
-//        return (files != null && files.length > 0);
-//    }
 
     /**
      * 是否记录所有
@@ -377,6 +304,81 @@ public class PageRecorder {
             }
         }
     }
+
+
+
+
+    // 重录所有
+//    public void reRecordAll() {
+////        SoundRecorder.resetRefreshUiTime(0);
+//        resetRefreshUiTime(0);
+//        if (!draw.getRecorderContext().isRunning())
+//            draw.getRecorderContext().continuing();
+//        deleteAllRecordFiles();
+//        // cmdList.clear(); TODO 为什么没清空？
+//    }
+
+//    /**
+//     * 删除所有记录文件
+//     */
+//    private void deleteAllRecordFiles() {
+//        stopRecorder();
+//        File[] files = dir.listFiles();
+//        if (files == null)
+//            return;
+//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
+//        for (File f : files) {
+//            if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
+//                if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
+//                    f.renameTo(new File(dir, f.getName().replace("_", flag)));
+//            }
+//        }// for end.
+//    }
+//
+//    public void reRecordPage(int pageId) {
+//        if (!draw.getRecorderContext().isRunning())
+//            draw.getRecorderContext().continuing();
+//        deletePageRecord(pageId);
+//    }
+//
+//    public void deletePageRecord(int pageId) {
+//        stopRecorder();
+//        /**
+//         * reduce ui time.
+//         */
+//        long pageDuration = RecordFileUtils.getPageRecordDuration(pageId, dir.getAbsolutePath(), false);
+////        SoundRecorder.resetRefreshUiTime(SoundRecorder.getRefreshUiTime() - pageDuration);
+//        resetRefreshUiTime(getRefreshUiTime() - pageDuration);
+//        File[] files = dir.listFiles();
+//        if (files == null)
+//            return;
+//        String page = pageId + "_";
+//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
+//        for (File f : files) {
+//            if (f.getName().startsWith(page)) {
+//                if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
+//                    /***
+//                     * sound cannot be deleted,because will use to count time
+//                     * for releaseScript.
+//                     */
+//                    if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
+//                        f.renameTo(new File(dir, f.getName().replace("_", flag)));
+//                }
+//            }
+//        }// for.s
+//    }
+//
+//    public boolean isHaveRecordForPage(int pageId) {
+//        final String page = pageId + "_";
+//        File[] files = dir.listFiles(new FileFilter() {
+//            public boolean accept(File pathname) {
+//                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
+//                        && pathname.getName().startsWith(page)
+//                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
+//            }
+//        });
+//        return (files != null && files.length > 0);
+//    }
 
 
 }

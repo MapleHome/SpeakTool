@@ -2,43 +2,45 @@ package com.speaktool.bean;
 
 /**
  * 复制页面数据
- * 
+ *
  * @author shaoshuai
- * 
  */
 public class CopyPageData {
+    public static final String OPT_COPY_ALL = "all";
+    public static final String OPT_COPY_VIEWS = "views";
 
-	public static final String OPT_COPY_ALL = "all";
-	public static final String OPT_COPY_VIEWS = "views";
-	/** 源页面ID */
-	private int srcPageId;
-	/** 目标页面ID */
-	private int destPageId;
-	/** 操作类型 */
-	private String option;
+    private int srcPageId;// 源页面ID
+    private int destPageId;// 目标页面ID
+    private String option;// 操作类型
 
-	public int getSrcPageId() {
-		return srcPageId;
-	}
+    public CopyPageData(int srcPageId, int destPageId, String option) {
+        this.srcPageId = srcPageId;
+        this.destPageId = destPageId;
+        this.option = option;
+    }
 
-	public void setSrcPageId(int srcPageId) {
-		this.srcPageId = srcPageId;
-	}
+    public int getSrcPageId() {
+        return srcPageId;
+    }
 
-	public int getDestPageId() {
-		return destPageId;
-	}
+    public void setSrcPageId(int srcPageId) {
+        this.srcPageId = srcPageId;
+    }
 
-	public void setDestPageId(int destPageId) {
-		this.destPageId = destPageId;
-	}
+    public int getDestPageId() {
+        return destPageId;
+    }
 
-	public String getOption() {
-		return option;
-	}
+    public void setDestPageId(int destPageId) {
+        this.destPageId = destPageId;
+    }
 
-	public void setOption(String option) {
-		this.option = option;
-	}
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
 
 }

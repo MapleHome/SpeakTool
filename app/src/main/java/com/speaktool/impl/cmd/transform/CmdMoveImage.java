@@ -86,7 +86,7 @@ public class CmdMoveImage extends CmdTransformSeqBase<ChangeImageData<MoveData>>
         ImageCommonData copydata = data.copy();
 
         copy.setData(copydata);
-        copy.setOlddata(olddata);
+        copy.setOldData(olddata);
         return copy;
 
     }

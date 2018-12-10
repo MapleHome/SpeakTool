@@ -10,51 +10,46 @@ import com.speaktool.view.layouts.OuterImage;
 
 /**
  * 创建图片
- * 
+ *
  * @author shaoshuai
- * 
  */
 public class CmdCreateImage extends CmdCreateShape<ImageCommonData> {
 
-	public CmdCreateImage() {
-		super();
-	}
+    public CmdCreateImage() {
+        super();
+    }
 
-	@Override
-	public void run(final Draw draw, Page bw) {
+    @Override
+    public void run(final Draw draw, Page bw) {
 
-		final ImageCommonData data = getData();
+        final ImageCommonData data = getData();
 
-		draw.postTaskToUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Page page = draw.getCurrentBoard();
-				OuterImage img = new OuterImage(draw.context(), draw,
-						data.getShapeID());
-				OuterImage.inflateDataToAttrs(data, img);
-				page.draw(img);
-				page.saveShape(img);
-			}
-		});
-	}
+        draw.postTaskToUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Page page = draw.getCurrentBoard();
+                OuterImage img = new OuterImage(draw.context(), draw, data.getShapeID());
+                OuterImage.inflateDataToAttrs(data, img);
+                page.draw(img);
+                page.saveShape(img);
+            }
+        });
+    }
 
-	@Override
-	public ICmd<DeleteShapeData> inverse() {
-		CmdDeleteImage inverseCmd = new CmdDeleteImage();
+    @Override
+    public ICmd<DeleteShapeData> inverse() {
+        CmdDeleteImage inverseCmd = new CmdDeleteImage();
+        inverseCmd.setData(new DeleteShapeData(getData().getShapeID()));
+        return inverseCmd;
+    }
 
-		DeleteShapeData data = new DeleteShapeData();
-		data.setShapeID(getData().getShapeID());
-		inverseCmd.setData(data);
-		return inverseCmd;
-	}
+    @Override
+    public ICmd<ImageCommonData> copy() {
+//		CmdCreateImage copy = new CmdCreateImage();
+//		copy.setTime(getTime());
+//		copy.setData(getData());
 
-	@Override
-	public ICmd<ImageCommonData> copy() {
-		CmdCreateImage copy = new CmdCreateImage();
-		copy.setTime(getTime());
-		copy.setData(getData());
-
-		return copy;
-	}
+        return this;
+    }
 
 }

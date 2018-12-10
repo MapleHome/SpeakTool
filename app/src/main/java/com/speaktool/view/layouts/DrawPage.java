@@ -597,27 +597,22 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
     @Override
     public void setBackgroundType(Page_BG type) {
-        final long maxMem = 5 * 1024 * 1024;
-        //
-        if (Page_BG.White.equals(type)) {
-            this.setBackgroundColor(Color.WHITE);
-        } else if (Page_BG.Line.equals(type)) {
-            Bitmap bpscl = BitmapScaleUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.line_bg, maxMem);
-            if (bpscl != null)
-                this.setBackgroundDrawable(new BitmapDrawable(bpscl));
-
-        } else if (Page_BG.Grid.equals(type)) {
-            Bitmap bpscl = BitmapScaleUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.grid_bg, maxMem);
-            if (bpscl != null)
-                this.setBackgroundDrawable(new BitmapDrawable(bpscl));
-
-        } else if (Page_BG.Cor.equals(type)) {
-            Bitmap bpscl = BitmapScaleUtil.decodeSampledBitmapFromResource(getResources(),
-                    R.drawable.draw_coordinate_bg, maxMem);
-            if (bpscl != null)
-                this.setBackgroundDrawable(new BitmapDrawable(bpscl));
-        } else {
-            this.setBackgroundColor(Color.WHITE);
+        switch (type) {
+            case White:
+                this.setBackgroundColor(Color.WHITE);
+                break;
+            case Line:
+                this.setBackgroundResource(R.drawable.line_bg);
+                break;
+            case Grid:
+                this.setBackgroundResource(R.drawable.grid_bg);
+                break;
+            case Cor:
+                this.setBackgroundResource(R.drawable.draw_coordinate_bg);
+                break;
+            default:
+                this.setBackgroundColor(Color.WHITE);
+                break;
         }
         backgroundType = type;
     }

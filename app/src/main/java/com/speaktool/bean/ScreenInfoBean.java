@@ -17,7 +17,6 @@ public class ScreenInfoBean implements Serializable {
 
     public ScreenInfoBean() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public ScreenInfoBean(int w, int h, int density) {

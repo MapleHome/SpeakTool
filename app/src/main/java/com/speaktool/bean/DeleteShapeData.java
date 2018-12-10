@@ -1,14 +1,19 @@
 package com.speaktool.bean;
 
+
 public class DeleteShapeData {
-	private int shapeID;
+    private int shapeID;
 
-	public int getShapeID() {
-		return shapeID;
-	}
+    public DeleteShapeData(int shapeID) {
+        this.shapeID = shapeID;
+    }
 
-	public void setShapeID(int shapeID) {
-		this.shapeID = shapeID;
-	}
+    public int getShapeID() {
+        return shapeID;
+    }
+
+    public void setShapeID(int shapeID) {
+        this.shapeID = shapeID;
+    }
 
 }

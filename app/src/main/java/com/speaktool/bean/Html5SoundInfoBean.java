@@ -5,8 +5,6 @@ public class Html5SoundInfoBean {
     private String type;
     private String path;
 
-    public Html5SoundInfoBean() {
-    }
 
     public Html5SoundInfoBean(String type, String path) {
         this.type = type;

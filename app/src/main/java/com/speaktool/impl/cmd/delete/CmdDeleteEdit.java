@@ -9,14 +9,10 @@ import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.create.CmdCreateEdit;
 
 public class CmdDeleteEdit extends CmdBase<DeleteShapeData> {
-    private transient EditCommonData olddata;
+    private transient EditCommonData oldData;
 
-    public EditCommonData getOlddata() {
-        return olddata;
-    }
-
-    public void setOlddata(EditCommonData olddata) {
-        this.olddata = olddata;
+    public void setOldData(EditCommonData olddata) {
+        this.oldData = olddata;
     }
 
     public CmdDeleteEdit() {
@@ -39,17 +35,17 @@ public class CmdDeleteEdit extends CmdBase<DeleteShapeData> {
     @Override
     public ICmd inverse() {
         CmdCreateEdit cmd = new CmdCreateEdit();
-        cmd.setData(olddata);
+        cmd.setData(oldData);
         return cmd;
     }
 
     @Override
     public ICmd copy() {
-        CmdDeleteEdit copy = new CmdDeleteEdit();
-        copy.setTime(getTime());
-        copy.setData(getData());
-        copy.setOlddata(getOlddata());
-        return copy;
+//        CmdDeleteEdit copy = new CmdDeleteEdit();
+//        copy.setTime(getTime());
+//        copy.setData(getData());
+//        copy.setOldData(getOlddata());
+        return this;
     }
 
 }

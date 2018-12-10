@@ -36,6 +36,6 @@ public class CmdClearPage extends CmdBase<ClearPageData> {
 
 	@Override
 	public ICmd copy() {
-		return null;
+		return this;
 	}
 }

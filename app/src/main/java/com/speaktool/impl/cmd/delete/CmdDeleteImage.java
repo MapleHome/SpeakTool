@@ -9,14 +9,10 @@ import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.create.CmdCreateImage;
 
 public class CmdDeleteImage extends CmdBase<DeleteShapeData> {
-    private transient ImageCommonData olddata;
+    private transient ImageCommonData oldData;
 
-    public ImageCommonData getOlddata() {
-        return olddata;
-    }
-
-    public void setOlddata(ImageCommonData olddata) {
-        this.olddata = olddata;
+    public void setOldData(ImageCommonData oldData) {
+        this.oldData = oldData;
     }
 
     public CmdDeleteImage() {
@@ -40,17 +36,17 @@ public class CmdDeleteImage extends CmdBase<DeleteShapeData> {
     @Override
     public ICmd inverse() {
         CmdCreateImage cmd = new CmdCreateImage();
-        cmd.setData(olddata);
+        cmd.setData(oldData);
         return cmd;
     }
 
     @Override
     public ICmd copy() {
-        CmdDeleteImage copy = new CmdDeleteImage();
-        copy.setData(getData());
-        copy.setOlddata(getOlddata());
-        copy.setTime(getTime());
-        return copy;
+//        CmdDeleteImage copy = new CmdDeleteImage();
+//        copy.setData(getData());
+//        copy.setOldData(getOlddata());
+//        copy.setTime(getTime());
+        return this;
     }
 
 }

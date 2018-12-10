@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout.LayoutParams;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -342,11 +341,8 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
         saveOldData();
         CmdDeleteEdit cmd = new CmdDeleteEdit();
         cmd.setTime(draw.getPageRecorder().recordTimeNow());
-        DeleteShapeData data = new DeleteShapeData();
-        data.setShapeID(getShapeID());
-        cmd.setData(data);
-        //
-        cmd.setOlddata(olddata);
+        cmd.setData(new DeleteShapeData(getShapeID()));
+        cmd.setOldData(olddata);
         //
         mDrawBoard.deleteShape(getShapeID());
         mDrawBoard.sendCommand(cmd, false);
@@ -444,7 +440,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
         EditCommonData data = new EditCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mDrawBoard.sendCommand(cmd, false);
     }
@@ -459,7 +455,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
         EditCommonData data = new EditCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mDrawBoard.sendCommand(cmd, false);
     }
@@ -476,7 +472,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
         EditCommonData data = new EditCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mDrawBoard.sendCommand(cmd, false);
     }
@@ -521,7 +517,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
                 EditCommonData data = new EditCommonData();
                 copyAttrsToData(data, this);
                 cmd.setData(data);
-                cmd.setOlddata(olddata);
+                cmd.setOldData(olddata);
                 // data.set
                 mDrawBoard.sendCommand(cmd, false);
             }

@@ -14,6 +14,20 @@ public abstract class CmdBase<DATATYPE> implements ICmd<DATATYPE> {
 	private long time;
 	private DATATYPE data;
 
+	public CmdBase() {
+	}
+
+	public CmdBase(long time, DATATYPE data) {
+		this.time = time;
+		this.data = data;
+	}
+
+	public CmdBase(String type, long time, DATATYPE data) {
+		this.type = type;
+		this.time = time;
+		this.data = data;
+	}
+
 	@Override
 	public void setType(String type) {
 		this.type = type;

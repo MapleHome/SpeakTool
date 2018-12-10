@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.fragment.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -67,6 +66,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -215,11 +215,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         createPageImpl(backgroundType, position, pageId);
         CmdCreatePage cmd = new CmdCreatePage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        CreatePageData data = new CreatePageData();
-        data.setBackgroundType(backgroundType);
-        data.setPageID(pageId);
-        data.setPosition(position);
-        cmd.setData(data);
+        cmd.setData(new CreatePageData(pageId, position, backgroundType));
         getCurrentBoard().sendCommand(cmd, true);
         return pages.size();
     }
@@ -251,14 +247,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     private void copyPageSendcmd(int srcPageId, int destPageId, String option) {
         copyPageImpl(srcPageId, destPageId, option);
         // send cmd.
-        CopyPageData data = new CopyPageData();
-        data.setSrcPageId(srcPageId);
-        data.setDestPageId(destPageId);
-        data.setOption(option);
-
         CmdCopyPage cmd = new CmdCopyPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new CopyPageData(srcPageId, destPageId, option));
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -277,13 +268,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     public void clearPageClick(int pageId, String option) {
         clearPageImpl(pageId, option);
         // send cmd.
-        ClearPageData data = new ClearPageData();
-        data.setPageId(pageId);// 设置页面ID
-        data.setOption(option);// 设置清除类型
-
         CmdClearPage cmd = new CmdClearPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new ClearPageData(pageId, option));
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -379,17 +366,14 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     public void setActivePageSendcmd(int id) {
         Page bd = getPageFromId(id);
         int position = pages.indexOf(bd);
-
         if (position < 0 || position >= pages.size())
             return;
         setActivePageImpl(id);
 
-        ActivePageData data = new ActivePageData();
-        data.setPageID(id);
-
-        CmdActivePage cmd = new CmdActivePage();
-        cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        CmdActivePage cmd = new CmdActivePage(
+                getPageRecorder().recordTimeNow(),// time
+                new ActivePageData(id)// data:page id
+        );
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -565,13 +549,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         setPageBackgroundImpl(pageId, backgroundType);
         // send cmd.
         CmdChangePageBackground cmd = new CmdChangePageBackground();
-        PageBackgroundData data = new PageBackgroundData();
-        data.setBackgroundType(backgroundType);
-        data.setPageID(pageId);
-
-        cmd.setData(data);
+        cmd.setData(new PageBackgroundData(pageId, backgroundType));
         cmd.setTime(getPageRecorder().recordTimeNow());
-
         getCurrentBoard().sendCommand(cmd, true);
 
     }

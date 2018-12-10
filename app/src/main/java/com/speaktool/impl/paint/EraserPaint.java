@@ -26,15 +26,7 @@ public class EraserPaint {
         globalPaintInfo.setStrokeWidth(DensityUtils.dp2px(SpeakApp.app(), DEFAULT_STROKE_WIDTH));
     }
 
-    public EraserPaint() {
-        super();
-        initCommom();
-        eraserPaint.setColor(globalPaintInfo.getColor());
-        eraserPaint.setStrokeWidth(globalPaintInfo.getStrokeWidth());//
-    }
-
     public EraserPaint(int strokeWidth) {
-        super();
         initCommom();
         eraserPaint.setColor(globalPaintInfo.getColor());
         eraserPaint.setStrokeWidth(strokeWidth);//
