@@ -65,9 +65,9 @@ public class PageRecorder {
         if (ret != RecordError.SUCCESS)
             return ret;
 
-        if (draw.getRecorderContext().isRunning()) {
-            startRecorder();
-        }
+//        if (draw.getRecorderContext().isRunning()) {
+//            startRecorder();
+//        }
         return ret;
     }
 
@@ -149,7 +149,7 @@ public class PageRecorder {
      * @return
      */
     public RecordError saveCurrentPageRecord() {
-        stopRecorder();
+//        stopRecorder();
         // logicTime.stop();
         RecordError ret = saveCmdsToDisk();
         if (ret == RecordError.SUCCESS) {
@@ -223,7 +223,7 @@ public class PageRecorder {
     public void deleteRecordDir() {
         if (dir == null || !dir.exists())
             return;
-        stopRecorder();
+//        stopRecorder();
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files)
@@ -253,7 +253,7 @@ public class PageRecorder {
     private RecordWorldTime logicTime;
     private Recorder recorder;
 
-    private void startRecorder() {
+    public void startRecorder() {
         if (logicTime == null) {
             logicTime = new RecordWorldTime(0, true);
         }
@@ -263,23 +263,19 @@ public class PageRecorder {
             recorder = MsRecorder.wav(
                     releaseSoundFile,
                     new AudioRecordConfig.Default(),
-                    new PullTransport.Default(new PullTransport.OnAudioChunkPulledListener() {
+                    new PullTransport.Default().setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
                         @Override
                         public void onAudioChunkPulled(AudioChunk audioChunk) {
                             Log.e("[ audio ]", "max amplitude : " + audioChunk.maxAmplitude());
                         }
                     }));
-            recorder.startRecording();
-            recorder.pauseRecording();
         }
-        // TODO 开始录音。。
-        recorder.resumeRecording();
+        recorder.startRecording();
     }
 
-    private void stopRecorder() {
+    public void stopRecorder() {
         if (logicTime != null)
             logicTime.pause();
-        // TODO 暂停录音
         if (recorder != null) {
             recorder.pauseRecording();
         }
@@ -297,15 +293,9 @@ public class PageRecorder {
             logicTime = null;
         }
         if (recorder != null) {
-            try {
-                recorder.stopRecording();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            recorder.stopRecording();
         }
     }
-
-
 
 
     // 重录所有

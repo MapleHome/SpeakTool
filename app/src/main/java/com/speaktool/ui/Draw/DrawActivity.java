@@ -643,12 +643,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        // when use camera.
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     protected void onDestroy() {
 //        if (mIBISPenController != null) {
 //            mIBISPenController.destroy();
@@ -972,12 +966,14 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void onEventMainThread(RecordRunEvent event) {
         if (event.isRun) {
             // 更换为：记录状态
+            getPageRecorder().startRecorder();
             int barRecordingColor = getResources().getColor(R.color.bar_recording_background);
             layoutLeftBar.setBackgroundColor(barRecordingColor);
             layoutBottom.setBackgroundColor(barRecordingColor);
             ivRecord.setImageResource(R.drawable.draw_recording_selected);
         } else {
             // 更换成：记录暂停状态
+            getPageRecorder().stopRecorder();
             layoutLeftBar.setBackgroundColor(getResources().getColor(R.color.draw_left_bar_bg));
             layoutBottom.setBackgroundColor(getResources().getColor(R.color.draw_right_bar_bg));
             ivRecord.setImageResource(R.drawable.draw_recording_normal);
