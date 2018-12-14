@@ -34,7 +34,6 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.etIntroduce) EditText etIntroduce;// 简介
     @BindView(R.id.btnFinish) Button btnFinish;// 完成
 
-    public static final String FRAGMENT_NAME = "注册";
     private UserFMActivity mActivity;
     private LoadingDialog mLoadingDialog;
 
@@ -49,7 +48,7 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("注册");
         //
         mLoadingDialog = new LoadingDialog(mActivity);
         btnFinish.setOnClickListener(this);// 完成

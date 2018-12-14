@@ -588,19 +588,19 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     }
 
-    @Override
-    public void dim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        this.getWindow().setAttributes(lp);
-    }
-
-    @Override
-    public void undim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 1f;
-        this.getWindow().setAttributes(lp);
-    }
+//    @Override
+//    public void dim() {
+//        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//        lp.alpha = 0.9f;
+//        this.getWindow().setAttributes(lp);
+//    }
+//
+//    @Override
+//    public void undim() {
+//        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//        lp.alpha = 1f;
+//        this.getWindow().setAttributes(lp);
+//    }
 
     @Override
     public void bootRecord() {

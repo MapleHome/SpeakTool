@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -20,9 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -657,10 +654,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         resetPageId();
         DrawPage.resetShapeId(this);
         //
-//        if (getPlayMode() == PlayMode.MAKE) {
-//            SoundRecorder.closeWorldTimer();
         getPageRecorder().closeWorldTimer();
-//        }
         SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
@@ -745,7 +739,17 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    showCancelMakeReleaseRecordDialog();
+                    new AlertDialog(mContext)
+                            .setTitle("提示")
+                            .setMessage("您确定要放弃合成录像吗？")
+                            .setRightButton("确认", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dismissLoading();
+                                }
+                            })
+                            .setLeftButton("取消", null)
+                            .show();
                     return true;
                 }
                 return false;
@@ -780,26 +784,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             String msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
             new AlertDialog(mContext).setTitle("提示").setMessage(msg).show();
         }
-
     }
 
-    /**
-     * 显示取消合成课程记录Dialog
-     */
-    private void showCancelMakeReleaseRecordDialog() {
-        new AlertDialog(this)
-                .setTitle("提示")
-                .setMessage("您确定要放弃合成录像吗？")
-                .setRightButton("确认", new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dismissLoading();
-                    }
-                })
-                .setLeftButton("取消", null)
-                .show();
-
-    }
 
     private Dialog mLoadingDialog;
 
@@ -1126,52 +1112,24 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @Override
     public void getImageFromAlbum(View anchor, PickPhotoCallback callback) {
         new L_M_AddSinglePhotosPoW(mContext, anchor, callback)
-                .setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        undim();
-                    }
-                })
+                .setAlphaStyle(this)
                 .showPopupWindow(WeiZhi.Bottom);
-        dim();
     }
 
     // 显示获取网路图片窗口
     @Override
     public void getImageFromNet(View anchor, PickPhotoCallback callback) {
         new L_M_AddNetImgPoW(mContext, anchor, this)
+                .setAlphaStyle(this)
                 .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示多选照片窗口
     @Override
     public void importImageBatch(View anchor, PickPhotoCallback callback) {
-        L_M_AddBatchPhotosPoW popupWindow = new L_M_AddBatchPhotosPoW(mContext, anchor, callback);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
-        dim();
-        popupWindow.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                undim();
-            }
-        });
-
-    }
-
-    // 实现接口 - 背景暗淡
-    @Override
-    public void dim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        this.getWindow().setAttributes(lp);
-    }
-
-    // 实现接口 - 背景正常
-    @Override
-    public void undim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 1f;
-        this.getWindow().setAttributes(lp);
+        new L_M_AddBatchPhotosPoW(mContext, anchor, callback)
+                .setAlphaStyle(this)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 实现接口 - 启动记录

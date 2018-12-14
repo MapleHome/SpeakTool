@@ -1,5 +1,6 @@
 package com.speaktool.view.popupwindow;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import com.speaktool.R;
@@ -184,11 +187,18 @@ public abstract class BasePopupWindow {
     }
 
     // -----------------------------------------透明度变化----------------------------------------------
-
-    //    Window window;
+    Window window;
     float defAlpha = 0.7f;
 
-    //
+    public BasePopupWindow setAlphaStyle(Activity activity) {
+        return setAlphaStyle(activity.getWindow());
+    }
+
+    public BasePopupWindow setAlphaStyle(Window window) {
+        this.window = window;
+        return this;
+    }
+
 //    public BasePopupWindow setAlphaStyle(Activity activity, float defAlpha) {
 //        return setAlphaStyle(activity.getWindow(), defAlpha);
 //    }
@@ -198,13 +208,13 @@ public abstract class BasePopupWindow {
 //        this.defAlpha = defAlpha;
 //        return this;
 //    }
-//
+
     public void setAlpha(float alpha) {
-//        if (window != null) {
-//            WindowManager.LayoutParams params = window.getAttributes();
-//            params.alpha = alpha;
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//            window.setAttributes(params);
-//        }
+        if (window != null) {
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.alpha = alpha;
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setAttributes(params);
+        }
     }
 }
