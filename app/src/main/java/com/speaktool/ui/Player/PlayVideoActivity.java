@@ -12,8 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.SeekBar;
@@ -27,12 +25,12 @@ import com.speaktool.SpeakApp;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
+import com.speaktool.api.PlayMode;
 import com.speaktool.bean.ActivePageData;
 import com.speaktool.bean.ClearPageData;
 import com.speaktool.bean.CopyPageData;
 import com.speaktool.bean.CreatePageData;
 import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
@@ -47,7 +45,6 @@ import com.speaktool.impl.cmd.transform.CmdChangePageBackground;
 import com.speaktool.impl.modes.DrawModePath;
 import com.speaktool.impl.player.JsonScriptPlayer;
 import com.speaktool.impl.player.PlayProcess;
-import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
@@ -84,7 +81,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     @BindView(R.id.layoutVideoController) VideoSeekBar vSeekBar;// 视频播放控制器
 
     // 常量
-    private List<MusicBean> globalMusics = new ArrayList<>();// 添加音乐集合
+//    private List<MusicBean> globalMusics = new ArrayList<>();// 添加音乐集合
     private List<Page> pages = new ArrayList<Page>();// 界面集合
     private JsonScriptPlayer mJsonScriptPlayer;// JSON脚本播放器
     private int currentBoardIndex = 0;// 当前界面索引
@@ -96,18 +93,12 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(null);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        super.onCreate(savedInstanceState);// inject finish.
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
         rec = (LocalRecordBean) getIntent().getSerializableExtra(EXTRA_RECORD_BEAN);
-        // 检查是否为空
-//        Preconditions.checkNotNull(rec, "null LocalRecordBean handle to play.");
         mJsonScriptPlayer = new JsonScriptPlayer(rec, this);
 
         ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
@@ -128,7 +119,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
         mJsonScriptPlayer.play();
-
     }
 
     private void initListener() {
@@ -332,7 +322,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         pages.clear();
         currentBoardIndex = 0;
         pageID = 0;
-        DrawPage.resetShapeId(this);
+        DrawPage.resetShapeId(PlayMode.PLAY);
 
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
     }
@@ -341,13 +331,13 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         pageID = 0;
-        DrawPage.resetShapeId(this);
+        DrawPage.resetShapeId(PlayMode.PLAY);
 
         killPlayProcess();
         if (isRecordsChanged) {
             EventBus.getDefault().post(new RefreshCourseListEvent());
         }
-        SoundPlayer.unique().stop();// stop other sound.
+//        SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
 
@@ -438,7 +428,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
             public void run() {
                 getPageRecorder().saveCurrentPageRecord();
                 boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
-//                final boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
                 if (!isSuccess) {
                     dismissLoading();
                     postTaskToUiThread(new Runnable() {
@@ -454,10 +443,10 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     }
 
-    @Override
-    public void deleteRecord() {
-        getPageRecorder().deleteRecordDir();
-    }
+//    @Override
+//    public void deleteRecord() {
+//        getPageRecorder().deleteRecordDir();
+//    }
 
     /**
      * 改变页面
@@ -588,20 +577,6 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     }
 
-//    @Override
-//    public void dim() {
-//        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//        lp.alpha = 0.9f;
-//        this.getWindow().setAttributes(lp);
-//    }
-//
-//    @Override
-//    public void undim() {
-//        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//        lp.alpha = 1f;
-//        this.getWindow().setAttributes(lp);
-//    }
-
     @Override
     public void bootRecord() {
         if (getRecorderContext().isBooted())
@@ -625,7 +600,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
             @Override
             public void run() {
                 getRecorderContext().pause();
-                SoundPlayer.unique().pause();
+//                SoundPlayer.unique().pause();
             }
         });
     }
@@ -731,10 +706,10 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         return pages.get(position);
     }
 
-    @Override
-    public void addGlobalMusic(MusicBean music) {
-        globalMusics.add(music);
-    }
+//    @Override
+//    public void addGlobalMusic(MusicBean music) {
+//        globalMusics.add(music);
+//    }
 
     // ---------------------------------------------------------------------------------------
 

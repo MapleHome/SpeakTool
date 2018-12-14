@@ -32,11 +32,11 @@ import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
+import com.speaktool.api.PlayMode;
 import com.speaktool.bean.ActivePageData;
 import com.speaktool.bean.ClearPageData;
 import com.speaktool.bean.CopyPageData;
 import com.speaktool.bean.CreatePageData;
-import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
@@ -60,7 +60,6 @@ import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.modes.DrawModeEraser;
 import com.speaktool.impl.modes.DrawModePath;
 import com.speaktool.impl.paint.DrawPaint;
-import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecordError;
 import com.speaktool.impl.recorder.RecorderContext;
@@ -635,7 +634,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         pages.clear();
         currentBoardIndex = 0;
         resetPageId();
-        DrawPage.resetShapeId(this);
+        DrawPage.resetShapeId(PlayMode.MAKE);
         initPage();
     }
 
@@ -652,16 +651,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         // 反注册EventBus订阅者
         EventBus.getDefault().unregister(this);
         resetPageId();
-        DrawPage.resetShapeId(this);
+        DrawPage.resetShapeId(PlayMode.MAKE);
         //
         getPageRecorder().closeWorldTimer();
-        SoundPlayer.unique().stop();// stop other sound.
+//        SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        if (getPlayMode() == PlayMode.MAKE && getCurrentBoard().getFocusedView() != null) {
+        if (getCurrentBoard().getFocusedView() != null) {
             // 通过EventBus订阅者发送消息
             EventBus.getDefault().post(new CloseEditPopupWindowEvent());
             return;
@@ -802,10 +801,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
     }
 
-    @Override
-    public void deleteRecord() {
-        getPageRecorder().deleteRecordDir();
-    }
+//    @Override
+//    public void deleteRecord() {
+//        getPageRecorder().deleteRecordDir();
+//    }
 
     private String getErrorMsg(RecordError error) {
         switch (error) {
@@ -1152,7 +1151,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             @Override
             public void run() {
                 getRecorderContext().pause();
-                SoundPlayer.unique().pause();
+//                SoundPlayer.unique().pause();
             }
         });
     }
@@ -1341,9 +1340,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return pages.get(position);
     }
 
-    @Override
-    public void addGlobalMusic(MusicBean music) {
-    }
+//    @Override
+//    public void addGlobalMusic(MusicBean music) {
+//    }
 
     // ---------------------------------------------------------------------------------------
 

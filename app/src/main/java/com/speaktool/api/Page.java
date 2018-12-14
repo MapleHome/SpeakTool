@@ -28,6 +28,17 @@ public interface Page {
      */
     Page_BG DEFAULT_PAGE_BG_TYPE = Page_BG.White;
 
+    /**
+     * 获取背景类型
+     */
+    Page_BG getBackgroundType();
+
+    /**
+     * 设置背景类型
+     */
+    void setBackgroundType(Page_BG bgType);
+
+
     View view();
 
     /**
@@ -112,15 +123,6 @@ public interface Page {
 
     void unDraw(ViewShape_ view);
 
-    /**
-     * 获取背景类型
-     */
-    Page_BG getBackgroundType();
-
-    /**
-     * 设置背景类型
-     */
-    void setBackgroundType(Page_BG bgType);
 
     FocusedView getFocusedView();
 
@@ -133,7 +135,7 @@ public interface Page {
      */
     boolean isUserHaveOperation();
 
-    int getPlayBoardWidth();
+//    int getPlayBoardWidth();
 
     /**
      * 重绘缓存Bitmap

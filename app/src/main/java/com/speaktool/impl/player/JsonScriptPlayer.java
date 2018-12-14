@@ -12,7 +12,6 @@ import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.TransformShapeData;
 import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.utils.RecordFileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
