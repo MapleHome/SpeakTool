@@ -9,13 +9,8 @@ public class ImageCommonData extends TransformShapeData {
 	private int rotation;
 	private float scale;
 	private String type = "image";// text,image,pen.
-
 	private PositionData positionData;
-	//
-
 	private String resourceID;
-
-	//
 
 	private static float formatFloat(float f) {
 		return FormatUtils.formatFloat(f);

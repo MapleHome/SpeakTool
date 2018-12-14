@@ -3,7 +3,6 @@ package com.speaktool.view.popupwindow;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -14,30 +13,30 @@ import com.speaktool.ui.adapters.AdapterSearchRecordTypes;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 分类列表下拉框
  *
  * @author shaoshuai
  */
 public class CategoryPoW extends BasePopupWindow implements OnItemClickListener {
-    private ListView lvTypes;// 类型列表
+    @BindView(R.id.lvTypes) ListView lvTypes;// 类型列表
+
     private AdapterSearchRecordTypes mAdapterSearchSpinnerTypes;
     private SearchCategoryChangedListener mSearchCategoryChangedListener;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_searchbox_dropdown, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_searchbox_dropdown, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public CategoryPoW(Context context, View token, View anchor, SearchCategoryChangedListener lsn) {
-        this(context, token, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, lsn);
-    }
-
-    public CategoryPoW(Context context, View token, View anchor, int w, int h, SearchCategoryChangedListener lsn) {
-        super(context, token, anchor, w, h);
+        super(context, token, anchor);
         mSearchCategoryChangedListener = lsn;
-
-        lvTypes = mRootView.findViewById(R.id.lvTypes);
 
         mAdapterSearchSpinnerTypes = new AdapterSearchRecordTypes(context, null);
         lvTypes.setAdapter(mAdapterSearchSpinnerTypes);
@@ -49,7 +48,7 @@ public class CategoryPoW extends BasePopupWindow implements OnItemClickListener 
         void onSearchCategoryChanged(SearchCategoryBean categoryNew);
     }
 
-    public void refreshCategoryList(final List<SearchCategoryBean> datas) {
+    public void refreshCategoryList(List<SearchCategoryBean> datas) {
         mAdapterSearchSpinnerTypes.refresh(datas);
     }
 

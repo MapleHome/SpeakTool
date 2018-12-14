@@ -13,17 +13,6 @@ import com.speaktool.api.CourseItem;
 public class LocalRecordBean implements Serializable, CourseItem {
 	private static final long serialVersionUID = 3846767521452450072L;
 
-	public static final String TITLE = "title";
-	public static final String THUMBNAIL_NAME = "thumnailName";
-	public static final String TAB = "tab";
-	public static final String CATEGORY_NAME = "categoryName";
-	public static final String INTRODUCE = "introduce";
-	public static final String SHARE_URL = "shareUrl";
-	public static final String COURSE_ID = "courseId";
-	//
-	public static final String MAKE_WINDOW_WIDTH = "makeWindowWidth";
-	public static final String MAKE_WINDOW_HEIGHT = "makeWindowHeight";
-
 	private String recordTitle;
 	private String recordDir;
 	private long createTime;
@@ -37,8 +26,6 @@ public class LocalRecordBean implements Serializable, CourseItem {
 	private String url;
 
 	private String courseId;
-	//
-	private boolean isUploading = false;
 	//
 	private int makeWindowWidth;
 	private int makeWindowHeight;
@@ -144,16 +131,6 @@ public class LocalRecordBean implements Serializable, CourseItem {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 
-	}
-
-	@Override
-	public boolean isUploading() {
-		return isUploading;
-	}
-
-	@Override
-	public void setUploading(boolean b) {
-		isUploading = b;
 	}
 
 	public int getMakeWindowWidth() {

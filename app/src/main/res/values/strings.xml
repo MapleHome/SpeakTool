@@ -1,24 +1,17 @@
 <resources>
     <string name="app_name">讲讲</string>
-    <string name="deletepage_last">已经是最后一页了</string>
-    <string name="saveRecord_empty_title">标题不能为空</string>
-    <string name="recordType_exist">目录已经存在</string>
-    <string name="inputRecordType_empty">输入分类不能为空</string>
-    <string name="allRecordType">全部分类</string>
+
+    <string name="splash_page_1_title">讲微课</string>
+    <string name="splash_page_1_des">边写边讲，轻松制作微课\n史上最简单的微课创作工具</string>
+    <string name="splash_page_2_title">讲生活</string>
+    <string name="splash_page_2_des">记录你的生活，表达你的思想\n从图文时代进入动画时代！</string>
+    <string name="splash_page_3_title">讲新闻</string>
+    <string name="splash_page_3_des">一样的新闻，不一样的演绎\n把你的讲述分享到朋友圈，让你的微信更拉风！</string>
+    <string name="splash_page_3_start">开始体验\"讲讲\"吧</string>
+
+
     <string name="share_baseContent">我在“讲讲”发布了新内容：%1$s ,网址是：%2$s</string>
-    <string name="empty_record_text">未找到录像</string>
-    <string name="search_empty_keywords">搜索关键字不能为空！</string>
-    <string name="net_connect_fail">服务器链接失败！请检查网络</string>
-    <string name="server_response_error">服务器响应错误！</string>
-    <string name="net_not_available">网络不可用！</string>
     <string name="loading">正在加载</string>
-    <string name="format_account_incorrect">帐号格式不正确！</string>
-    <string name="format_email_incorrect">邮箱格式不正确！</string>
-    <string name="format_password_incorrect">密码格式不正确！</string>
-    <string name="copy_video_link_success">录像地址已复制到剪贴板！</string>
-    <string name="net_pic_empty">还没有图片，请重新搜索</string>
-    <string name="no_more_data">没有更多数据了</string>
-    <string name="update_checking">正在检查更新...</string>
 
     <string-array name="native_recordTypes">
         <item>其他</item>
@@ -29,40 +22,7 @@
         <item>新闻</item>
     </string-array>
 
-    <string name="course_uploading">课程正在上传,请稍后再试</string>
-    <string name="course_delete_success">课程删除成功！</string>
-    <string name="course_delete_fail">课程删除失败！</string>
-    <string name="record_not_exist_in_page">本页还没有录像！</string>
-    <string name="record_not_exist_in_allpage">还没有录像！</string>
-    <string name="delete_page_alerttext">请问是否删除本页？</string>
-    <string name="sdcard_not_exist">存储卡不可用！无法创建录音文件</string>
-    <string name="sdcard_no_free_space">存储卡空间不足！无法创建录音文件</string>
-    <string name="sdcard_cannot_write">存储卡不可写！无法创建录音文件</string>
-    <string name="exit_ask">请问是否退出？退出后之前的所有操作都会被清空</string>
-    <string name="record_combine_fail">录音合成失败！请检查存储卡空间</string>
-    <string name="upload_course_exist">课程已经存在！</string>
-    <string name="token_invalid">该平台验证口令失效，请重新登录</string>
-    <string name="upload_cancel">上传被取消！</string>
-    <string name="json_parse_error">数据解析错误！</string>
-    <string name="delete_record_alert">请问是否确定删除录像？</string>
-    <string name="addImage_fail">图片添加失败！</string>
-    <string name="miui_floatset_msg">正常使用本应用需要悬浮窗权限，请到设置中心开启！</string>
-    <string name="cancel_makeReleaseRecord_msg">您确定要放弃合成录像吗？</string>
-    <string name="app_update_note">重要性:%1$s\n当前版本:%2$s\n最新版本:%3$s\n更新内容:\n%4$s</string>
-    <string name="app_update_title">讲讲更新提示</string>
-    <string name="app_update_forceMsg">本版本api接口需要强制更新，否则将导致无法正常使用。</string>
-    <string name="app_update_reccommandMsg">本版本可以选择性更新。</string>
-    <string name="updateApp_DownloadTask_AddSuccess_msg">成功添加更新下载任务！</string>
-    <string name="updateApp_DownloadFail_msg">讲讲更新下载失败！</string>
-    <string name="app_versionName">版本号 : %1$s</string>
     <string name="save_recordinfo_fail">保存录像信息文件失败，请检查存储卡是否有剩余空间！</string>
-
-    <string name="try_listen">试听</string>
-    <string name="pause">暂停</string>
-    <string name="insert_success">成功添加到面板！</string>
-    <string name="tryListen_success">已加到试听面板！</string>
-    <string name="version_already_new">版本已经最新！</string>
-    <string name="app_updateCheck_fail">检查更新失败！</string>
 
 
     <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>

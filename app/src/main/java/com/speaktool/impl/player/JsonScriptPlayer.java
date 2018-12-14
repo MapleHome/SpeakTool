@@ -17,6 +17,7 @@ import com.speaktool.utils.RecordFileUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,18 @@ public class JsonScriptPlayer {
     private volatile boolean isPlayComplete = false;// 是否播放完
     private volatile boolean isUserPlaying = false;
 
+    public File getScreenInfoFile(File dir) {
+        File[] files = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getAbsolutePath().endsWith(Const.CMD_FILE_SUFFIX);
+            }
+        });
+        if (files == null || files.length < 1)
+            return null;
+        return files[0];
+    }
+
     public JsonScriptPlayer(LocalRecordBean rec, Draw draw) {
         this.draw = draw;
         String recordDirPath = rec.getRecordDir();
@@ -54,7 +67,7 @@ public class JsonScriptPlayer {
         draw.setRecordDir(recordDirPath);
         File recordDir = new File(recordDirPath);
 
-        parser = new JsonScriptParser(draw.context(), RecordFileUtils.getScreenInfoFile(recordDir));
+        parser = new JsonScriptParser(draw.context(), getScreenInfoFile(recordDir));
         // 内容文件 release.txt
         mJsonFile = new File(recordDir, Const.RELEASE_JSON_SCRIPT_NAME);
         if (!mJsonFile.exists()) {
@@ -336,7 +349,7 @@ public class JsonScriptPlayer {
             @Override
             public void run() {
                 draw.showViewFlipperOverlay();
-                play((int) positionTimeMills);
+                play(positionTimeMills);
             }
         });
     }

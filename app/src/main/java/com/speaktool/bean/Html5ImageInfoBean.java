@@ -5,6 +5,11 @@ public class Html5ImageInfoBean {
 	private String path;
 	private String resourceID;
 
+	public Html5ImageInfoBean(String path, String resourceID) {
+		this.path = path;
+		this.resourceID = resourceID;
+	}
+
 	public String getPath() {
 		return path;
 	}

@@ -11,17 +11,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.PopupWindow.OnDismissListener;
 
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.impl.player.PlayProcess;
-import com.speaktool.service.PlayService;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
+import com.speaktool.ui.Player.PlayService;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
+import com.speaktool.view.dialogs.LoadingDialog;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 右侧功能栏——预览界面
@@ -33,25 +35,19 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
     private Dialog mLoadingDialog;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_previewclick, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_previewclick, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public R_PreviewPoW(Context context, View anchor, Draw draw) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
-    }
-
-    public R_PreviewPoW(Context context, View anchor, int w, int h, Draw draw) {
-        super(context, anchor, w, h);
-
+        super(context, anchor);
         this.setOnDismissListener(this);
         mDraw = draw;
         mMakeReleaseScriptResultReceiver = new MakeReleaseScriptResultReceiver();
         IntentFilter filter = new IntentFilter(PlayProcess.ACTION_PREVIEW_RESULT);
         mContext.registerReceiver(mMakeReleaseScriptResultReceiver, filter);
-        //
-        mRootView.findViewById(R.id.tvPreviewPage).setOnClickListener(this);
-        mRootView.findViewById(R.id.tvPreviewAll).setOnClickListener(this);
 
         mDraw.pauseRecord();
     }
@@ -59,40 +55,50 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
     @Override
     public void onClick(View arg0) {
         switch (arg0.getId()) {
-            case R.id.tvPreviewPage:// 预览本页
-            {
-                final int pageid = mDraw.getCurrentBoard().getPageID();
-                if (!mDraw.getPageRecorder().isHaveRecordForPage(pageid)) {
-                    T.showShort(mContext, "本页还没有录像！");
-                    return;
-                }
-                //
-                final String dirPath = mDraw.getPageRecorder().getRecordDir();
-                showLoading();
-                Intent it = new Intent(mContext, PlayService.class);
-                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
-                it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
-                it.putExtra(PlayProcess.EXTRA_PREVIEW_PAGE_ID, pageid);
-                it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
-                mContext.startService(it);
-            }
-            break;
-            case R.id.tvPreviewAll:// 预览全部
-                if (!mDraw.getPageRecorder().isHaveRecordForAll()) {
-                    T.showShort(mContext, "还没有录像！");
-                    return;
-                }
-                final String dirPath = mDraw.getPageRecorder().getRecordDir();
-                showLoading();
-                Intent it = new Intent(mContext, PlayService.class);
-                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
-                it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
-                it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
-                mContext.startService(it);
+            case R.id.tvPreviewPage:
+                previewPage();
+                break;
+            case R.id.tvPreviewAll:
+                previewAll();
                 break;
         }
+    }
+
+    // 预览全部
+    @OnClick(R.id.tvPreviewAll)
+    void previewAll() {
+//        if (!mDraw.getPageRecorder().isHaveRecordForAll()) {
+//            T.showShort(mContext, "还没有录像！");
+//            return;
+//        }
+//        String dirPath = mDraw.getPageRecorder().getRecordDir();
+//        showLoading();
+//        Intent it = new Intent(mContext, PlayService.class);
+//        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
+//        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
+//        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
+//        mContext.startService(it);
+    }
+
+    // 预览本页
+    @OnClick(R.id.tvPreviewPage)
+    void previewPage() {
+//        int pageid = mDraw.getCurrentBoard().getPageID();
+//        if (!mDraw.getPageRecorder().isHaveRecordForPage(pageid)) {
+//            T.showShort(mContext, "本页还没有录像！");
+//            return;
+//        }
+        //
+//        String dirPath = mDraw.getPageRecorder().getRecordDir();
+//        showLoading();
+//        Intent it = new Intent(mContext, PlayService.class);
+//        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        it.putExtra(PlayProcess.EXTRA_ACTION, PlayProcess.ACTION_PREVIEW);
+//        it.putExtra(PlayProcess.EXTRA_RECORD_DIR, dirPath);
+//        it.putExtra(PlayProcess.EXTRA_PREVIEW_PAGE_ID, pageid);
+//        it.putExtra(PlayProcess.EXTRA_SCREEN_INFO, ScreenFitUtil.getCurrentDeviceInfo());
+//        mContext.startService(it);
     }
 
     @Override
@@ -102,7 +108,7 @@ public class R_PreviewPoW extends BasePopupWindow implements OnClickListener, On
     }
 
     private void showLoading() {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(mDraw.context(), "正在加载");
+        mLoadingDialog = new LoadingDialog(mDraw.context(), "正在加载");
         mLoadingDialog.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {

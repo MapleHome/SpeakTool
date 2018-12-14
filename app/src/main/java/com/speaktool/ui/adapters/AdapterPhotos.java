@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 import com.speaktool.view.layouts.MulticheckableView;
 
 import java.util.ArrayList;
@@ -26,14 +26,12 @@ public class AdapterPhotos extends AbsAdapter<String> {
             int h = pw / 4;
             (convertView).setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, h));
         }
-        final MulticheckableView item = (MulticheckableView) convertView;
+        MulticheckableView item = (MulticheckableView) convertView;
         String imagePath = (String) getItem(position);
-        if (imagePath == null)
-            return item;
-
-        item.setTag(imagePath);
-        item.setLoading();
-        //
+        if (imagePath != null){
+            item.setTag(imagePath);
+            item.setLoading();
+        }
         if (mCheckedItemIndexs.contains(position)) {
             item.check();
         } else {

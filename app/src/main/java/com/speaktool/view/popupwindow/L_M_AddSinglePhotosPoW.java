@@ -50,31 +50,27 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
     private static final int SECOND_PAGE = 1;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_pickphotos, null);
+    public View getContentView(LayoutInflater inflater) {
+        return inflater.inflate(R.layout.pow_pickphotos, null);
     }
 
     public L_M_AddSinglePhotosPoW(Context context, View anchor, PickPhotoCallback draw) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
-    }
-
-    public L_M_AddSinglePhotosPoW(Context context, View anchor, int w, int h, PickPhotoCallback draw) {
-        super(context, anchor, w, h);
+        super(context, anchor);
         EventBus.getDefault().register(this);
 
         mDraw = draw;
 
-        viewFlipperPhotos = (ViewFlipper) mRootView.findViewById(R.id.viewFlipperPhotos);
-        listViewPhotoDirs = (ListView) mRootView.findViewById(R.id.listViewPhotoDirs);
+        viewFlipperPhotos = (ViewFlipper) mContentView.findViewById(R.id.viewFlipperPhotos);
+        listViewPhotoDirs = (ListView) mContentView.findViewById(R.id.listViewPhotoDirs);
 
         // 第二页
-        llBack = mRootView.findViewById(R.id.llBack);// 返回
-        gridViewPhotos = (GridView) mRootView.findViewById(R.id.gridViewPhotos);
-        llBackOverlay = mRootView.findViewById(R.id.llBackOverlay);
-        tvSecondPageTitle = (TextView) mRootView.findViewById(R.id.tvSecondPageTitle);
-        tvSecondPageFinish = (TextView) mRootView.findViewById(R.id.tvSecondPageFinish);
+        llBack = mContentView.findViewById(R.id.llBack);// 返回
+        gridViewPhotos = (GridView) mContentView.findViewById(R.id.gridViewPhotos);
+        llBackOverlay = mContentView.findViewById(R.id.llBackOverlay);
+        tvSecondPageTitle = (TextView) mContentView.findViewById(R.id.tvSecondPageTitle);
+        tvSecondPageFinish = (TextView) mContentView.findViewById(R.id.tvSecondPageFinish);
 
-        llFinishOverlay = mRootView.findViewById(R.id.llFinishOverlay);
+        llFinishOverlay = mContentView.findViewById(R.id.llFinishOverlay);
 
         initAnim(anchor.getContext());
 
@@ -84,7 +80,7 @@ public class L_M_AddSinglePhotosPoW extends BasePopupWindow implements OnClickLi
         mAdapterPhotos = new AdapterPhotos(anchor.getContext(), null);
         gridViewPhotos.setAdapter(mAdapterPhotos);
 
-        this.setOnDismissListener(this);
+        setOnDismissListener(this);
         listViewPhotoDirs.setOnItemClickListener(listItemClickListener);
         gridViewPhotos.setOnItemClickListener(getOnGridItemClickListener());
         llBack.setOnClickListener(this);

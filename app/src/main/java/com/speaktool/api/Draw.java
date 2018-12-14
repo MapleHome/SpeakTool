@@ -117,11 +117,11 @@ public interface Draw extends PhotoImporter {
 
 	void setPageBackgroundClick(int pageId, Page_BG bgType);
 
-	/** 背景暗淡 */
-	void dim();
-
-	/** 背景正常 */
-	void undim();
+//	/** 背景暗淡 */
+//	void dim();
+//
+//	/** 背景正常 */
+//	void undim();
 
 	/** 启动记录器 */
 	void bootRecord();

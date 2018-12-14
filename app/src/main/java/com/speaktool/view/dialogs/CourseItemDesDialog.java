@@ -13,13 +13,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
 import com.speaktool.api.CourseItem;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Player.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
-import com.speaktool.utils.FileUtil;
+import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
@@ -103,13 +102,13 @@ public class CourseItemDesDialog extends Dialog {
     // -------------------------------点击事件----------------------------------------------------
 
     @OnClick(R.id.ivBack)
-    public void onBack() {
-        dismiss();
+    void onBack() {
+        this.dismiss();
     }
 
     @OnClick(R.id.ivPlay)
-    public void toPlayVideoPage() {
-        dismiss();
+    void toPlayVideoPage() {
+        this.dismiss();
 
         Intent it = new Intent(getContext(), PlayVideoActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -118,12 +117,12 @@ public class CourseItemDesDialog extends Dialog {
     }
 
     @OnClick(R.id.ivShare)
-    public void more() {
+    void more() {
         T.showShort(mContext, "click more！");
     }
 
     @OnClick(R.id.ivCopyLink)
-    public void copyLinkLocalRecord() {
+    void copyLinkLocalRecord() {
         String shareUrl = mItemBean.getShareUrl();
         if (shareUrl != null) {
             ClipboardManager cmb = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -135,7 +134,7 @@ public class CourseItemDesDialog extends Dialog {
     }
 
     @OnClick(R.id.ivDeleteVideo)
-    public void showDeleteDialog() {
+    void showDeleteDialog() {
         new AlertDialog(mContext)
                 .setTitle("提示")
                 .setMessage("请问是否确定删除录像？")
@@ -152,17 +151,8 @@ public class CourseItemDesDialog extends Dialog {
 
     private void deleteRecord() {
         File dir = new File(mItemBean.getRecordDir());
-        FileUtil.deleteDir(dir);
+        FileUtils.deleteDir(dir);
 
-        SpeakToolApp.getUiHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                afterDeleteSuccess();
-            }
-        });
-    }
-
-    private void afterDeleteSuccess() {
         new AlertDialog(mContext)
                 .setTitle("提示")
                 .setMessage("课程删除成功！")
@@ -170,7 +160,7 @@ public class CourseItemDesDialog extends Dialog {
                     @Override
                     public void onClick(View v) {
                         EventBus.getDefault().post(new RefreshCourseListEvent());
-                        dismiss();
+                        onBack();
                     }
                 }).show();
     }

@@ -97,7 +97,7 @@ public class CmdMoveEdit extends CmdTransformSeqBase<ChangeEditData<MoveData>> {
         EditCommonData copydata = data.copy();
 
         copy.setData(copydata);
-        copy.setOlddata(olddata);
+        copy.setOldData(olddata);
         return copy;
 
     }

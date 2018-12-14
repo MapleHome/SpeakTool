@@ -16,7 +16,7 @@ import com.speaktool.R;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Login.UserLoginPage;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.view.dialogs.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,10 +82,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
             user_name.setText("登陆");// 用户名
             bt_logout.setVisibility(View.GONE);// 隐藏注销按钮
         }
-    }
 
-    @Override
-    public void initListener() {
         ib_userPortrait.setOnClickListener(this);// 头像
         user_name.setOnClickListener(this);// 用户名
 

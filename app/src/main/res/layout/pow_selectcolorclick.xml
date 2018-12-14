@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:layout_width="200dp"
-        android:layout_height="220dp"
+        android:layout_height="210dp"
         android:background="@drawable/shape_pow_bg"
         android:orientation="vertical"
         android:padding="5dp">
@@ -13,26 +13,24 @@
         <GridView
             android:id="@+id/gridViewColors"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:background="@drawable/shape_pow_bg"
+            android:layout_height="100dp"
             android:cacheColorHint="#00000000"
             android:horizontalSpacing="5dp"
             android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp" />
+            android:stretchMode="columnWidth" />
 
         <com.speaktool.view.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="#dddddd" />
 
         <SeekBar
             android:id="@+id/seekBarAdjustStrokeWidth"
-            style="@style/Widget.SeekBar.Normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:max="50"
             android:progress="1" />
     </LinearLayout>

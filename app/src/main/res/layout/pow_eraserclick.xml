@@ -12,15 +12,15 @@
 
         <com.speaktool.view.layouts.StrokeWidthPreview
             android:id="@+id/strokeWidthPreview"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/popup_selectColor_strokepreview_height"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:background="#dddddd" />
 
         <SeekBar
-            android:id="@+id/seekBarAdjustStrokeWidth"
-            style="@style/Widget.SeekBar.Normal"
+            android:id="@+id/sb_StrokeWidth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:max="50"
             android:progress="1" />
     </LinearLayout>

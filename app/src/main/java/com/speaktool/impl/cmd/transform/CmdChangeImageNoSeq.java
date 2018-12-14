@@ -8,15 +8,10 @@ import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.view.layouts.OuterImage;
 
 public class CmdChangeImageNoSeq extends CmdBase<ImageCommonData> {
+    private transient ImageCommonData oldData;
 
-    private transient ImageCommonData olddata;
-
-    public ImageCommonData getOlddata() {
-        return olddata;
-    }
-
-    public void setOlddata(ImageCommonData olddata) {
-        this.olddata = olddata;
+    public void setOldData(ImageCommonData oldData) {
+        this.oldData = oldData;
     }
 
     public CmdChangeImageNoSeq() {
@@ -42,18 +37,18 @@ public class CmdChangeImageNoSeq extends CmdBase<ImageCommonData> {
     @Override
     public ICmd inverse() {
         CmdChangeImageNoSeq undo = new CmdChangeImageNoSeq();
-        undo.setData(olddata);
+        undo.setData(oldData);
         return undo;
     }
 
     @Override
     public ICmd copy() {
-        CmdChangeImageNoSeq copy = new CmdChangeImageNoSeq();
-        copy.setTime(getTime());
-        copy.setType(getType());
-        copy.setData(getData());
-        copy.setOlddata(olddata);
-        return copy;
+//        CmdChangeImageNoSeq copy = new CmdChangeImageNoSeq();
+//        copy.setTime(getTime());
+//        copy.setType(getType());
+//        copy.setData(getData());
+//        copy.setOldData(oldData);
+        return this;
     }
 
 }

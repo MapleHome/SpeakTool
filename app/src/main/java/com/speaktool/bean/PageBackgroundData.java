@@ -4,23 +4,29 @@ import com.speaktool.api.Page.Page_BG;
 
 public class PageBackgroundData {
 
-	private Page_BG backgroundType;
-	private int pageID;
+    private Page_BG backgroundType;
+    private int pageID;
 
-	public Page_BG getBackgroundType() {
-		return backgroundType;
-	}
+    public PageBackgroundData(int pageID, Page_BG backgroundType) {
+        this.pageID = pageID;
+        this.backgroundType = backgroundType;
+    }
 
-	public void setBackgroundType(Page_BG backgroundType) {
-		this.backgroundType = backgroundType;
-	}
 
-	public int getPageID() {
-		return pageID;
-	}
+    public Page_BG getBackgroundType() {
+        return backgroundType;
+    }
 
-	public void setPageID(int pageID) {
-		this.pageID = pageID;
-	}
+    public void setBackgroundType(Page_BG backgroundType) {
+        this.backgroundType = backgroundType;
+    }
+
+    public int getPageID() {
+        return pageID;
+    }
+
+    public void setPageID(int pageID) {
+        this.pageID = pageID;
+    }
 
 }

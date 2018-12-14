@@ -1,22 +1,17 @@
 package com.speaktool.ui.Home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
+import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.utils.FileIOUtils;
+import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.T;
-import com.speaktool.view.layouts.SearchView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -24,7 +19,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.io.IOException;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,13 +27,8 @@ import butterknife.OnClick;
  *
  * @author shaoshuai
  */
-public class MainActivity extends FragmentActivity {
-    @BindView(R.id.tvMakeVideo) TextView tvMakeVideo;// 新建按钮
-    @BindView(R.id.searchView) SearchView searchView;// 整个搜索框
-    @BindView(R.id.ivSetting) ImageView ivSetting;// 设置按钮
-
+public class MainActivity extends BaseFragmentActivity {
     private HomePage mHomePage;
-    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,36 +36,28 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        mContext = this;
 
-        initView();
-    }
-
-    private void initView() {
         mHomePage = new HomePage();
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.id_content, mHomePage).commit();
+        addView(mHomePage, R.id.id_content);
     }
 
     @OnClick(R.id.tvMakeVideo)
-    public void make() {
+    void make() {
         Intent it = new Intent(this, DrawActivity.class);
         startActivity(it);
     }
 
     @OnClick(R.id.ivSetting)
-    public void toUserMGPage() {
+    void toSettingGPage() {
         Intent intent = new Intent(this, UserFMActivity.class);
         intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
         startActivity(intent);
     }
 
-
     private void test() {
         try {
             File file = new File(Const.RECORD_DIR, "test.txt");
-            FileIOUtils.writeFile(file, "text88888");
+            FileUtils.writeFile(file, "text88888");
         } catch (IOException e) {
             e.printStackTrace();
         }

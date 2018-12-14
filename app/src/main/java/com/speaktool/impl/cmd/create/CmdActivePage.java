@@ -8,36 +8,34 @@ import com.speaktool.impl.cmd.ICmd;
 
 /**
  * 互动页面
- * 
+ *
  * @author shaoshuai
- * 
  */
 public class CmdActivePage extends CmdBase<ActivePageData> {
 
-	public CmdActivePage() {
-		super();
-		setType(TYPE_SET_ACTIVE_PAGE);
-	}
+    public CmdActivePage(long time, ActivePageData data) {
+        super(TYPE_SET_ACTIVE_PAGE, time, data);
+    }
 
-	@Override
-	public void run(final Draw draw, Page board) {
-		final int pageId = getData().getPageID();
-		draw.postTaskToUiThread(new Runnable() {
-			@Override
-			public void run() {
-				draw.setActivePageImpl(pageId);
-			}
-		});
-	}
+    @Override
+    public void run(final Draw draw, Page board) {
+        final int pageId = getData().getPageID();
+        draw.postTaskToUiThread(new Runnable() {
+            @Override
+            public void run() {
+                draw.setActivePageImpl(pageId);
+            }
+        });
+    }
 
-	@Override
-	public ICmd inverse() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public ICmd inverse() {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public ICmd copy() {
-		return null;
-	}
+    @Override
+    public ICmd copy() {
+        return this;
+    }
 
 }

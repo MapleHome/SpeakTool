@@ -8,26 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
+    private List<PaintInfoBean> datas;
+    private WeakReference<Callback> mListener;
 
     public interface Callback {
         void onLoaded(List<PaintInfoBean> colors);
     }
-
-    private static List<PaintInfoBean> datas;
-    private static Object lock = new Object();
-
-    private final static int[][] colors = {
-            {MyColors.BLACK, R.drawable.black, R.drawable.black_seleted},
-            {MyColors.BLUE, R.drawable.blue, R.drawable.blue_seleted},
-            {MyColors.RED, R.drawable.red, R.drawable.red_seleted},
-            {MyColors.GREEN, R.drawable.green, R.drawable.green_seleted},
-            {MyColors.YELLOW, R.drawable.yellow, R.drawable.yellow_seleted},
-            {MyColors.BROWN, R.drawable.brown, R.drawable.brown_seleted},
-            {MyColors.GRAY, R.drawable.gray, R.drawable.gray_seleted},
-            {MyColors.DARK_BLUE, R.drawable.darkblue, R.drawable.darkblue_seleted}
-    };
-
-    private WeakReference<Callback> mListener;
 
     public TaskLoadPaintColors(Callback listener) {
         super();
@@ -36,19 +22,21 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
 
     @Override
     public Void doBackground() {
-        synchronized (lock) {
+        synchronized (this) {
             if (datas == null) {
                 datas = new ArrayList<>();
-                for (int[] one : colors) {
-                    PaintInfoBean item = new PaintInfoBean();
-                    item.setColor(one[0]);
-                    item.setIconResId(one[1]);
-                    item.setIconResIdSelected(one[2]);
-                    datas.add(item);
-                }
             }
-        }// synchronized
-        //
+            datas.clear();
+            datas.add(new PaintInfoBean(MyColors.BLACK, R.drawable.black, R.drawable.black_seleted));
+            datas.add(new PaintInfoBean(MyColors.BLUE, R.drawable.blue, R.drawable.blue_seleted));
+            datas.add(new PaintInfoBean(MyColors.RED, R.drawable.red, R.drawable.red_seleted));
+            datas.add(new PaintInfoBean(MyColors.GREEN, R.drawable.green, R.drawable.green_seleted));
+
+            datas.add(new PaintInfoBean(MyColors.YELLOW, R.drawable.yellow, R.drawable.yellow_seleted));
+            datas.add(new PaintInfoBean(MyColors.BROWN, R.drawable.brown, R.drawable.brown_seleted));
+            datas.add(new PaintInfoBean(MyColors.GRAY, R.drawable.gray, R.drawable.gray_seleted));
+            datas.add(new PaintInfoBean(MyColors.DARK_BLUE, R.drawable.darkblue, R.drawable.darkblue_seleted));
+        }
         uiHandler.post(new Runnable() {
 
             @Override
@@ -59,7 +47,6 @@ public class TaskLoadPaintColors extends BaseRunnable<Integer, Void> {
                 }
             }
         });
-
         return null;
     }
 

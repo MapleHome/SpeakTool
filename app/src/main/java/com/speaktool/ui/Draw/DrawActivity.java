@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -20,9 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -30,7 +27,7 @@ import android.widget.ViewFlipper;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
@@ -42,7 +39,6 @@ import com.speaktool.bean.CreatePageData;
 import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
 import com.speaktool.bean.RecordUploadBean;
-import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.busevents.EraserEvent;
@@ -68,7 +64,6 @@ import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecordError;
 import com.speaktool.impl.recorder.RecorderContext;
-import com.speaktool.impl.recorder.SoundRecorder;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
 import com.speaktool.utils.BitmapScaleUtil;
@@ -77,7 +72,8 @@ import com.speaktool.utils.FormatUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
+import com.speaktool.utils.record.RecordFileAnalytic;
+import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.dialogs.SaveRecordAlertDialog;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
@@ -138,12 +134,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @BindView(R.id.tvFinish) TextView tvFinish;// 完成
 
     private Context mContext;
-    private int pageWidth;
-    private int pageHeight;
+    private RecordBean recordBean;
     private List<Page> pages = new ArrayList<>();// 【画册】- 画纸集合
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
     private String mRecordDir;// 课程目录
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +146,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         mContext = this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-
+        recordBean = RecordBean.getInstance();
         // 绘制
         if (android.os.Build.VERSION.SDK_INT >= 18) {
             // mIBISPenController = new IBISPenController(this);
@@ -164,8 +158,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
         // 初始化画板纸张的宽高
         Point screenSize = DisplayUtil.getScreenSize(getApplicationContext());
-        pageWidth = LayoutParams.MATCH_PARENT;
-        pageHeight = screenSize.y;
+        recordBean.pageWidth = LayoutParams.MATCH_PARENT;
+        recordBean.pageHeight = screenSize.y;
 
         initListener();
         initPage();
@@ -203,12 +197,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     private void initPage() {
         DrawModeManager.getIns().setDrawMode(new DrawModePath());
-        if (getPlayMode() == PlayMode.MAKE) {
-            int id = makePageId();
-            createPageSendcmd(Page.DEFAULT_PAGE_BG_TYPE, 0, id);
-            setActivePageSendcmd(id);
-            postChangePage();
-        }
+        int id = makePageId();
+        createPageSendcmd(Page.DEFAULT_PAGE_BG_TYPE, 0, id);
+        setActivePageSendcmd(id);
+        postChangePage();
     }
 
     @Override
@@ -219,8 +211,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 //                getDigitalPenController().destroy();// 断开设备
 //                getIBISPenController().destroy();
                 // 显示智能笔扫描窗口
-                L_HandPenPoW handPenPow = new L_HandPenPoW(mContext, v, this);
-                handPenPow.showPopupWindow(WeiZhi.Right);
+                new L_HandPenPoW(mContext, v, this).showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivChoose:// 手
                 DrawModeManager.getIns().setDrawMode(new DrawModeChoice());
@@ -229,8 +220,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 DrawModeCode code = DrawModeManager.getIns().getModeCode();
                 if (code == DrawModeCode.PATH) {
                     // 显示颜色窗口
-                    L_PencilColorPoW popupWindow = new L_PencilColorPoW(mContext, v);
-                    popupWindow.showPopupWindow(WeiZhi.Right);
+                    new L_PencilColorPoW(mContext, v)
+                            .showPopupWindow(WeiZhi.Right);
                 } else {
                     DrawModeManager.getIns().setDrawMode(new DrawModePath());
                 }
@@ -238,19 +229,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             case R.id.ivEraser:// 橡皮
                 if (DrawModeManager.getIns().getModeCode() == DrawModeCode.ERASER) {
                     // 显示橡皮擦窗口
-                    L_EraserWayWitchPoW eraserPow = new L_EraserWayWitchPoW(mContext, v);
-                    eraserPow.showPopupWindow(WeiZhi.Right);
+                    new L_EraserWayWitchPoW(mContext, v).showPopupWindow(WeiZhi.Right);
                 } else {
                     DrawModeManager.getIns().setDrawMode(new DrawModeEraser());
                 }
                 break;
             case R.id.ivMore:// 添加
-                L_MorePoW addPow = new L_MorePoW(mContext, v, this);
-                addPow.showPopupWindow(WeiZhi.Right);
+                new L_MorePoW(mContext, v, this).showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivDeletePage:// 删除界面
-                L_ClearPoW delPow = new L_ClearPoW(mContext, v, this, this);
-                delPow.showPopupWindow(WeiZhi.Right);
+                new L_ClearPoW(mContext, v, this, this).showPopupWindow(WeiZhi.Right);
                 break;
             case R.id.ivUndo:// 撤销
                 getCurrentBoard().undo();
@@ -264,8 +252,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 break;
             case R.id.ivReRecord:// 重录
                 // 显示重录窗口
-                R_RerecordPoW reRecordPow = new R_RerecordPoW(mContext, v, this);
-                reRecordPow.showPopupWindow(WeiZhi.Left);
+                new R_RerecordPoW(mContext, v, this).showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.ivPrePage:// 上一页
                 preChangePage(new Runnable() {
@@ -285,13 +272,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                 break;
             case R.id.ivNewPage:// 添加新界面
                 // 显示添加新页面窗口
-                R_AddNewPagePoW newPagePow = new R_AddNewPagePoW(mContext, v, this);
-                newPagePow.showPopupWindow(WeiZhi.Left);
+                new R_AddNewPagePoW(mContext, v, this).showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.ivPreview:// 预览
                 // 预览
-                R_PreviewPoW previewPow = new R_PreviewPoW(mContext, v, this);
-                previewPow.showPopupWindow(WeiZhi.Left);
+                new R_PreviewPoW(mContext, v, this).showPopupWindow(WeiZhi.Left);
                 break;
             case R.id.tvFinish:// 完成
                 onExitDraw();
@@ -362,16 +347,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 //    public DigitalPenController getDigitalPenController() {
 //        return mDigitalPenController;
 //    }
-
-    private OnActivityResultListener mOnActivityResultListener;
-
-    public void setOnActivityResultListener(OnActivityResultListener lsn) {
-        mOnActivityResultListener = lsn;
-    }
-
-    public interface OnActivityResultListener {
-        void onActivityResult(int requestCode, int resultCode, Intent data);
-    }
+//
+//    private OnActivityResultListener mOnActivityResultListener;
+//
+//    public void setOnActivityResultListener(OnActivityResultListener lsn) {
+//        mOnActivityResultListener = lsn;
+//    }
+//
+//    public interface OnActivityResultListener {
+//        void onActivityResult(int requestCode, int resultCode, Intent data);
+//    }
 
     @Subscribe
     public void onEventMainThread(HandpenStateEvent e) {
@@ -482,9 +467,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         // send cmd.
         CmdDeletePage cmd = new CmdDeletePage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        ActivePageData data = new ActivePageData();
-        data.setPageID(bd.getPageID());
-        cmd.setData(data);
+
+//        ActivePageData data = new ActivePageData(bd.getPageID());
+//        data.setPageID(bd.getPageID());
+
+        cmd.setData(new ActivePageData(bd.getPageID()));
         getCurrentBoard().sendCommand(cmd, true);
         /** set active page. */
         setActivePageSendcmd(pageShouldShow.getPageID());
@@ -554,14 +541,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private void copyPageSendcmd(int srcPageId, int destPageId, String option) {
         copyPageImpl(srcPageId, destPageId, option);
         // send cmd.
-        CopyPageData data = new CopyPageData();
-        data.setSrcPageId(srcPageId);
-        data.setDestPageId(destPageId);
-        data.setOption(option);
-
         CmdCopyPage cmd = new CmdCopyPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new CopyPageData(srcPageId, destPageId, option));
         getCurrentBoard().sendCommand(cmd, true);
 
     }
@@ -570,10 +552,11 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void copyPageImpl(int srcPageId, int destPageId, String option) {
         Page srcPage = getPageFromId(srcPageId);
         Page destPage = getPageFromId(destPageId);
-        if (CopyPageData.OPT_COPY_ALL.equals(option))
+        if (CopyPageData.OPT_COPY_ALL.equals(option)) {
             srcPage.copyAllTo(destPage);
-        else
+        } else {
             srcPage.copyViewsTo(destPage);
+        }
     }
 
     // 实现接口——清除页面内容
@@ -581,13 +564,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void clearPageClick(int pageId, String option) {
         clearPageImpl(pageId, option);
         // send cmd.
-        ClearPageData data = new ClearPageData();
-        data.setPageId(pageId);// 设置页面ID
-        data.setOption(option);// 设置清除类型
-
         CmdClearPage cmd = new CmdClearPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new ClearPageData(pageId, option));
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -661,12 +640,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        // when use camera.
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     protected void onDestroy() {
 //        if (mIBISPenController != null) {
 //            mIBISPenController.destroy();
@@ -681,8 +654,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         resetPageId();
         DrawPage.resetShapeId(this);
         //
-        if (getPlayMode() == PlayMode.MAKE)
-            SoundRecorder.closeWorldTimer();
+        getPageRecorder().closeWorldTimer();
         SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
@@ -697,8 +669,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         onExitDraw();
     }
 
-    private int pageID;
-
     // 实现接口 - 设置当前互动的画纸
     @Override
     public void setActivePageSendcmd(int id) {
@@ -708,9 +678,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             return;
         setActivePageImpl(id);
         // 发送命令
-        CmdActivePage cmd = new CmdActivePage();
-        cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(new ActivePageData(id));
+        CmdActivePage cmd = new CmdActivePage(
+                getPageRecorder().recordTimeNow(),
+                new ActivePageData(id)
+        );
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -763,30 +734,36 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void saveRecord(final RecordUploadBean recordUploadBean) {
+    public void saveRecord(RecordUploadBean recordUploadBean) {
         showLoading("保存中，请稍侯...", new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    showCancelMakeReleaseRecordDialog();
+                    new AlertDialog(mContext)
+                            .setTitle("提示")
+                            .setMessage("您确定要放弃合成录像吗？")
+                            .setRightButton("确认", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dismissLoading();
+                                }
+                            })
+                            .setLeftButton("取消", null)
+                            .show();
                     return true;
                 }
                 return false;
             }
         });
-        getPageRecorder().saveCurrentPageRecord();//save release.txt
-        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
+        getPageRecorder().saveCurrentPageRecord();// 保存当前页数据
+        boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
+//        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
         try {
-            // 汇总release.txt文件
-            ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
-            String dirPath = getRecordDir();
-            RecordFileUtils.makeReleaseScript(new File(dirPath), mContext, info);
+            //save release.txt
+            RecordFileUtils.makeReleaseScript(new File(getRecordDir()), mContext, ScreenFitUtil.getCurrentDeviceInfo());
             // RecordFileUtils.deleteNonReleaseFiles(new File(getRecordDir()));
             // 生成上传压缩包
-            RecordUploadBean uploadBean = RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir(), mContext);
-            if (uploadBean == null) {
-                T.showShort(mContext, "上传内容为空！");
-            }
+            RecordFileUtils.getSpklUploadBeanFromDir(getPageRecorder().getRecordDir());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -807,31 +784,13 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             String msg = "保存录像信息文件失败，请检查存储卡是否有剩余空间！";
             new AlertDialog(mContext).setTitle("提示").setMessage(msg).show();
         }
-
     }
 
-    /**
-     * 显示取消合成课程记录Dialog
-     */
-    private void showCancelMakeReleaseRecordDialog() {
-        new AlertDialog(this)
-                .setTitle("提示")
-                .setMessage("您确定要放弃合成录像吗？")
-                .setRightButton("确认", new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dismissLoading();
-                    }
-                })
-                .setLeftButton("取消", null)
-                .show();
-
-    }
 
     private Dialog mLoadingDialog;
 
     public void showLoading(String msg, OnKeyListener onKeyListener) {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, msg);
+        mLoadingDialog = new LoadingDialog(this, msg);
         mLoadingDialog.setOnKeyListener(onKeyListener);
         mLoadingDialog.show();
     }
@@ -842,7 +801,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             mLoadingDialog = null;
         }
     }
-
 
     @Override
     public void deleteRecord() {
@@ -912,6 +870,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // 创建临时CMD文件和录音文件
                 final RecordError ret = getPageRecorder().recordPage(getCurrentBoard().getPageID());
                 // dismissLoading();
                 postTaskToUiThread(new Runnable() {
@@ -979,14 +938,13 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     //
     @Subscribe
     public void onEventMainThread(DrawModeChangedEvent event) {
-        DrawModeCode preMode = event.getPreMode();
-        DrawModeCode nowMode = event.getNowMode();
-        normalPreUi(preMode);
-        selectNowUi(nowMode);
+        normalPreUi(event.getPreMode());
+        selectNowUi(event.getNowMode());
     }
 
     @Subscribe
     public void onEventMainThread(RecordTimeChangedEvent event) {
+        // 更新时间
         tvTime.setText(FormatUtils.getFormatTimeSimple(event.getNow()));
     }
 
@@ -994,12 +952,14 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public void onEventMainThread(RecordRunEvent event) {
         if (event.isRun) {
             // 更换为：记录状态
+            getPageRecorder().startRecorder();
             int barRecordingColor = getResources().getColor(R.color.bar_recording_background);
             layoutLeftBar.setBackgroundColor(barRecordingColor);
             layoutBottom.setBackgroundColor(barRecordingColor);
             ivRecord.setImageResource(R.drawable.draw_recording_selected);
         } else {
             // 更换成：记录暂停状态
+            getPageRecorder().stopRecorder();
             layoutLeftBar.setBackgroundColor(getResources().getColor(R.color.draw_left_bar_bg));
             layoutBottom.setBackgroundColor(getResources().getColor(R.color.draw_right_bar_bg));
             ivRecord.setImageResource(R.drawable.draw_recording_normal);
@@ -1064,6 +1024,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return mRecorderContext;
     }
 
+    private int pageID;
+
     @Override
     public int makePageId() {
         return ++pageID;
@@ -1075,7 +1037,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public void postTaskToUiThread(Runnable task) {
-        SpeakToolApp.getUiHandler().post(task);
+        SpeakApp.getUiHandler().post(task);
     }
 
     @Override
@@ -1091,13 +1053,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         setPageBackgroundImpl(pageId, backgroundType);
         // send cmd.
         CmdChangePageBackground cmd = new CmdChangePageBackground();
-        PageBackgroundData data = new PageBackgroundData();
-        data.setBackgroundType(backgroundType);
-        data.setPageID(pageId);
-
-        cmd.setData(data);
         cmd.setTime(getPageRecorder().recordTimeNow());
-
+        cmd.setData(new PageBackgroundData(pageId, backgroundType));
         getCurrentBoard().sendCommand(cmd, true);
 
     }
@@ -1133,9 +1090,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         } else {// not ok.
             T.showShort(mContext, "照相机失败!");
         }
-        if (mOnActivityResultListener != null) {
-            mOnActivityResultListener.onActivityResult(requestCode, resultCode, data);
-        }
+//        if (mOnActivityResultListener != null) {
+//            mOnActivityResultListener.onActivityResult(requestCode, resultCode, data);
+//        }
     }
 
     private void doCameraOk(Intent data) {
@@ -1154,61 +1111,30 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     // 显示挑选照片窗口
     @Override
     public void getImageFromAlbum(View anchor, PickPhotoCallback callback) {
-        L_M_AddSinglePhotosPoW popupWindow = new L_M_AddSinglePhotosPoW(mContext, anchor, callback);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
-        dim();
-        popupWindow.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                undim();
-            }
-        });
-
+        new L_M_AddSinglePhotosPoW(mContext, anchor, callback)
+                .setAlphaStyle(this)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示获取网路图片窗口
     @Override
     public void getImageFromNet(View anchor, PickPhotoCallback callback) {
-        L_M_AddNetImgPoW popupWindow = new L_M_AddNetImgPoW(mContext, anchor, this);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+        new L_M_AddNetImgPoW(mContext, anchor, this)
+                .setAlphaStyle(this)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示多选照片窗口
     @Override
     public void importImageBatch(View anchor, PickPhotoCallback callback) {
-        L_M_AddBatchPhotosPoW popupWindow = new L_M_AddBatchPhotosPoW(mContext, anchor, callback);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
-        dim();
-        popupWindow.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                undim();
-            }
-        });
-
-    }
-
-    // 实现接口 - 背景暗淡
-    @Override
-    public void dim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        this.getWindow().setAttributes(lp);
-    }
-
-    // 实现接口 - 背景正常
-    @Override
-    public void undim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 1f;
-        this.getWindow().setAttributes(lp);
+        new L_M_AddBatchPhotosPoW(mContext, anchor, callback)
+                .setAlphaStyle(this)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 实现接口 - 启动记录
     @Override
     public void bootRecord() {
-        if (getRecorderContext().isBooted())
-            return;
         preChangePage(new Runnable() {
             @Override
             public void run() {
@@ -1259,7 +1185,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public void onPhotoPicked(final String imgPath) {
-        SpeakToolApp.getUiHandler().post(new Runnable() {
+        SpeakApp.getUiHandler().post(new Runnable() {
 
             @Override
             public void run() {
@@ -1305,7 +1231,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                     if (ret != null) {
                         images.add(ret);
                     } else {
-                        SpeakToolApp.getUiHandler().post(new Runnable() {
+                        SpeakApp.getUiHandler().post(new Runnable() {
                             @Override
                             public void run() {
                                 T.showShort(mContext, "图片添加失败！");
@@ -1333,7 +1259,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             setActivePageSendcmd(batchImportFirstPageId);
             return;
         }
-        SpeakToolApp.getUiHandler().post(new Runnable() {
+        SpeakApp.getUiHandler().post(new Runnable() {
             @Override
             public void run() {
                 getCurrentBoard().addImg(images.remove(0));
@@ -1372,17 +1298,17 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     @Override
     public int makePageWidth() {
-        return pageWidth;
+        return recordBean.pageWidth;
     }
 
     @Override
     public int makePageHeight() {
-        return pageHeight;
+        return recordBean.pageHeight;
     }
 
     @Override
     public void removeAllHandlerTasks() {
-        SpeakToolApp.getUiHandler().removeCallbacksAndMessages(null);
+        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -1397,16 +1323,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 
     // 显示文本编辑功能栏
     @Override
-    public void showEditClickPopup(final EditWidget edit) {
-        EditClickPoW popupWindow = new EditClickPoW(mContext, edit);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+    public void showEditClickPopup(EditWidget edit) {
+        new EditClickPoW(mContext, edit)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 显示图片编辑功能栏
     @Override
     public void showImageClickPopup(final ImageWidget imageWidget) {
-        ImageClickPoW popupWindow = new ImageClickPoW(mContext, imageWidget);
-        popupWindow.showPopupWindow(WeiZhi.Bottom);
+        new ImageClickPoW(mContext, imageWidget)
+                .showPopupWindow(WeiZhi.Bottom);
     }
 
     // 实现接口 - 根据索引获取界面

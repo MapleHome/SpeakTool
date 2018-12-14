@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +23,7 @@ import android.widget.ViewFlipper;
 
 import com.speaktool.Const;
 import com.speaktool.R;
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
@@ -53,10 +52,10 @@ import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.service.PlayService;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.utils.T;
-import com.speaktool.view.dialogs.ProgressDialogOffer;
+import com.speaktool.utils.record.RecordFileAnalytic;
+import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.layouts.VideoSeekBar;
 
@@ -67,6 +66,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -112,8 +112,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
         ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
         ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-        pageWidth = currentScreen.w;
-        pageHeight = currentScreen.h;
+        pageWidth = currentScreen.width;
+        pageHeight = currentScreen.height;
         // 设置播放器大小
         LayoutParams lp = (LayoutParams) vSeekBar.getLayoutParams();
         lp.width = pageWidth;
@@ -215,11 +215,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         createPageImpl(backgroundType, position, pageId);
         CmdCreatePage cmd = new CmdCreatePage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        CreatePageData data = new CreatePageData();
-        data.setBackgroundType(backgroundType);
-        data.setPageID(pageId);
-        data.setPosition(position);
-        cmd.setData(data);
+        cmd.setData(new CreatePageData(pageId, position, backgroundType));
         getCurrentBoard().sendCommand(cmd, true);
         return pages.size();
     }
@@ -251,14 +247,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     private void copyPageSendcmd(int srcPageId, int destPageId, String option) {
         copyPageImpl(srcPageId, destPageId, option);
         // send cmd.
-        CopyPageData data = new CopyPageData();
-        data.setSrcPageId(srcPageId);
-        data.setDestPageId(destPageId);
-        data.setOption(option);
-
         CmdCopyPage cmd = new CmdCopyPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new CopyPageData(srcPageId, destPageId, option));
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -277,13 +268,9 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     public void clearPageClick(int pageId, String option) {
         clearPageImpl(pageId, option);
         // send cmd.
-        ClearPageData data = new ClearPageData();
-        data.setPageId(pageId);// 设置页面ID
-        data.setOption(option);// 设置清除类型
-
         CmdClearPage cmd = new CmdClearPage();
         cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        cmd.setData(new ClearPageData(pageId, option));
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -379,17 +366,14 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     public void setActivePageSendcmd(int id) {
         Page bd = getPageFromId(id);
         int position = pages.indexOf(bd);
-
         if (position < 0 || position >= pages.size())
             return;
         setActivePageImpl(id);
 
-        ActivePageData data = new ActivePageData();
-        data.setPageID(id);
-
-        CmdActivePage cmd = new CmdActivePage();
-        cmd.setTime(getPageRecorder().recordTimeNow());
-        cmd.setData(data);
+        CmdActivePage cmd = new CmdActivePage(
+                getPageRecorder().recordTimeNow(),// time
+                new ActivePageData(id)// data:page id
+        );
         getCurrentBoard().sendCommand(cmd, true);
     }
 
@@ -453,7 +437,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
             @Override
             public void run() {
                 getPageRecorder().saveCurrentPageRecord();
-                final boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
+                boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
+//                final boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);
                 if (!isSuccess) {
                     dismissLoading();
                     postTaskToUiThread(new Runnable() {
@@ -547,7 +532,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public void postTaskToUiThread(Runnable task) {
-        SpeakToolApp.getUiHandler().post(task);
+        SpeakApp.getUiHandler().post(task);
     }
 
     @Override
@@ -564,13 +549,8 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
         setPageBackgroundImpl(pageId, backgroundType);
         // send cmd.
         CmdChangePageBackground cmd = new CmdChangePageBackground();
-        PageBackgroundData data = new PageBackgroundData();
-        data.setBackgroundType(backgroundType);
-        data.setPageID(pageId);
-
-        cmd.setData(data);
+        cmd.setData(new PageBackgroundData(pageId, backgroundType));
         cmd.setTime(getPageRecorder().recordTimeNow());
-
         getCurrentBoard().sendCommand(cmd, true);
 
     }
@@ -608,19 +588,19 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     }
 
-    @Override
-    public void dim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        this.getWindow().setAttributes(lp);
-    }
-
-    @Override
-    public void undim() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 1f;
-        this.getWindow().setAttributes(lp);
-    }
+//    @Override
+//    public void dim() {
+//        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//        lp.alpha = 0.9f;
+//        this.getWindow().setAttributes(lp);
+//    }
+//
+//    @Override
+//    public void undim() {
+//        WindowManager.LayoutParams lp = getWindow().getAttributes();
+//        lp.alpha = 1f;
+//        this.getWindow().setAttributes(lp);
+//    }
 
     @Override
     public void bootRecord() {
@@ -679,7 +659,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
     }
 
     private void showLoading(String msg, OnKeyListener onKeyListener) {
-        mLoadingDialog = ProgressDialogOffer.offerDialogAsActivity(this, msg);
+        mLoadingDialog = new LoadingDialog(this, msg);
         mLoadingDialog.setOnKeyListener(onKeyListener);
         mLoadingDialog.show();
     }
@@ -725,7 +705,7 @@ public class PlayVideoActivity extends FragmentActivity implements Draw {
 
     @Override
     public void removeAllHandlerTasks() {
-        SpeakToolApp.getUiHandler().removeCallbacksAndMessages(null);
+        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
     }
 
     @Override

@@ -3,11 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivDirIcon"
@@ -25,29 +25,27 @@
             android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@+id/ivArrow"
             android:layout_toRightOf="@+id/ivDirIcon"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvDirName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="TextView"
                 android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:singleLine="true"
-                android:ellipsize="end"
-                 />
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/tvDirIncludeCounts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" 
-                  android:textColor="@android:color/black"
-                android:textSize="16dp"
-                  android:singleLine="true"
-                   android:ellipsize="end"
-                />
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="TextView"
+                android:textColor="@android:color/black"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <ImageView
@@ -56,10 +54,9 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/gray_arrow_right"
-            android:tint="@android:color/darker_gray"
             android:layout_marginRight="5dp"
-             />
+            android:src="@drawable/gray_arrow_right"
+            android:tint="@android:color/darker_gray" />
     </RelativeLayout>
 
 </LinearLayout>

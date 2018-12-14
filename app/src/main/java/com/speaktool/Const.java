@@ -10,9 +10,7 @@ import java.io.File;
  * @author shaoshuai
  */
 public class Const {
-    //在欢迎页面至少停留时间
     public static final long SplashMinTime = 2000;
-    // 是否第一次进入标记
     public static final String First_ComeIn = "isFirstComeIn";
 
     // SD卡路径
@@ -54,12 +52,10 @@ public class Const {
     public static final int SCRIPT_VERSION = 1;
     public static final int SCRIPT_INPUT_RATE = 60;
 
-    // 讲讲服务器地址
-    public static final String SPEEKTOOL_SERVER__URL = "http://www.speaktool.com/";
-    // 讲讲服务器API地址
-    public static final String SPEEKTOOL_SERVER_API_URL = "http://www.speaktool.com/api/";
-    // 讲讲论坛地址
-    public static final String SPEEKTOOL_BBS_URL = "http://bbs.speaktool.com:8080/";
+
+    public static final String SPEEKTOOL_SERVER__URL = "http://www.speaktool.com/";// 讲讲服务器地址
+    public static final String SPEEKTOOL_SERVER_API_URL = "http://www.speaktool.com/api/";// 讲讲服务器API地址
+    public static final String SPEEKTOOL_BBS_URL = "http://bbs.speaktool.com:8080/";// 讲讲论坛地址
 
 
     //BMP图片最大可以分配内存

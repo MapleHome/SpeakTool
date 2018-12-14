@@ -23,10 +23,10 @@ import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.api.PhotoImporter;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.tasks.TaskModifyUserInfo;
 import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
-import com.speaktool.ui.base.BaseFragment;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
@@ -69,10 +69,6 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private LoadingDialog mLoadingDialog;
     private UserBean session;
 
-    String niceName;
-    String introduce;
-    String email;
-
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_user_info_change, null);
@@ -95,10 +91,9 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
             tv_introduce.setText(session.getIntroduce());// 个性签名
             tv_mail.setText(session.getEmail()); // 邮箱
         }
-
+        initListener();
     }
 
-    @Override
     public void initListener() {
         rl_portrait_area.setOnClickListener(this);// 头像
         rl_name_area.setOnClickListener(this);// 用户名
@@ -235,17 +230,11 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
         new AlertEditDialog(mActivity)
                 .setTitle("请输入昵称")
                 .setMessage("起一个好听的名字，让更多人认识你！")
-                .setEditCallListener(new AlertEditDialog.EditTextCallListener() {
+                .setRightButton("确定", new AlertEditDialog.EditTextCallListener() {
                     @Override
-                    public void callBack(String s) {
-                        niceName = s;
-                    }
-                })
-                .setRightButton("确定", new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!TextUtils.isEmpty(niceName)) {
-                            tv_name.setText(niceName);
+                    public void callBack(String name) {
+                        if (!TextUtils.isEmpty(name)) {
+                            tv_name.setText(name);
                         }
                     }
                 })
@@ -259,15 +248,9 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private void changeIntroduce() {
         new AlertEditDialog(mActivity)
                 .setTitle("请输入个性签名")
-                .setEditCallListener(new AlertEditDialog.EditTextCallListener() {
+                .setRightButton("确定", new AlertEditDialog.EditTextCallListener() {
                     @Override
-                    public void callBack(String s) {
-                        introduce = s;
-                    }
-                })
-                .setRightButton("确定", new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    public void callBack(String introduce) {
                         if (!TextUtils.isEmpty(introduce)) {
                             tv_introduce.setText(introduce);
                         }
@@ -328,15 +311,9 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private void changeMail() {
         new AlertEditDialog(mActivity)
                 .setTitle("绑定新邮箱")
-                .setEditCallListener(new AlertEditDialog.EditTextCallListener() {
+                .setRightButton("确定", new AlertEditDialog.EditTextCallListener() {
                     @Override
-                    public void callBack(String s) {
-                        email = s;
-                    }
-                })
-                .setRightButton("确定", new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    public void callBack(String email) {
                         if (!TextUtils.isEmpty(email)) {
                             tv_mail.setText(email);
                         }

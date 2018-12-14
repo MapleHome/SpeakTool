@@ -1,19 +1,19 @@
 package com.speaktool.impl.recorder;
 
 import android.os.Environment;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.maple.recorder.recording.AudioChunk;
+import com.maple.recorder.recording.AudioRecordConfig;
+import com.maple.recorder.recording.MsRecorder;
+import com.maple.recorder.recording.PullTransport;
+import com.maple.recorder.recording.Recorder;
 import com.speaktool.Const;
 import com.speaktool.api.Draw;
-import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.utils.MD5Util;
-import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 
 import java.io.BufferedWriter;
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * 画纸页面记录器
@@ -33,29 +32,46 @@ import java.util.Properties;
  */
 @SuppressWarnings("rawtypes")
 public class PageRecorder {
-    private File dir;
-    private File cmdFile;
-    private File soundFile;
-
-    private List<ICmd> cmdList = new ArrayList<ICmd>();
-
     private static final int MAX_CMD_SIZE = 1000;
 
+    private File dir;
+    private File cmdFile;
+    //    private File soundFile;
+    private File releaseSoundFile;
+    private List<ICmd> cmdList = new ArrayList<ICmd>();
     private Draw draw;
-
-    public long totalTimeNow() {
-        return RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
-    }
 
     public PageRecorder(Draw draw) {
         this.draw = draw;
+        // 创建记录目录 /spktl/records/1674a49413e/
         String dirpath = String.format("%s%s", Const.RECORD_DIR, Long.toHexString(System.currentTimeMillis()));
+
         dir = new File(dirpath);
         if (!dir.exists())
             dir.mkdirs();
 
+        releaseSoundFile = new File(dir, Const.RELEASE_SOUND_NAME);
+        if (!releaseSoundFile.exists()) {
+            try {
+                releaseSoundFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    public RecordError recordPage(int pageId) {
+        RecordError ret = createFiles(pageId);
+        if (ret != RecordError.SUCCESS)
+            return ret;
+
+//        if (draw.getRecorderContext().isRunning()) {
+//            startRecorder();
+//        }
+        return ret;
+    }
+
+    // 创建临时CMD文件和录音文件
     private RecordError createFiles(int pageId) {
         if (!isSdcardExist()) {
             return RecordError.SDCARD_NOT_EXIST;
@@ -66,17 +82,20 @@ public class PageRecorder {
                 return RecordError.SDCARD_CANNOT_WRITE;
             }
         }
+        boolean isRunning = draw.getRecorderContext().isRunning();
         String timeMills = String.valueOf(System.currentTimeMillis());
-        String cmdfilename;
-        if (!draw.getRecorderContext().isRunning())
-            cmdfilename = String.format("%s_%s_%s%s", pageId, Const.UN_RECORD_FILE_FLAG, timeMills,
-                    Const.CMD_FILE_SUFFIX);
-        else
-            cmdfilename = String.format("%s_%s%s", pageId, timeMills, Const.CMD_FILE_SUFFIX);
-
-        cmdFile = new File(dir, cmdfilename);
-
-        if (!cmdFile.exists())
+        // 确定CMD文件名
+        String cmdFileName;
+        if (isRunning) {
+            // pageId + currentMillis + ".txt"
+            cmdFileName = String.format("%s_%s%s", pageId, timeMills, Const.CMD_FILE_SUFFIX);
+        } else {
+            // pageId + "#" + currentMillis + ".txt"
+            cmdFileName = String.format("%s_%s_%s%s", pageId, Const.UN_RECORD_FILE_FLAG, timeMills, Const.CMD_FILE_SUFFIX);
+        }
+        cmdFile = new File(dir, cmdFileName);
+        // 创建CMD文件
+        if (!cmdFile.exists()) {
             try {
                 cmdFile.createNewFile();
             } catch (IOException e) {
@@ -86,34 +105,42 @@ public class PageRecorder {
                 else
                     return RecordError.SDCARD_CANNOT_WRITE;
             }
-        if (draw.getRecorderContext().isRunning()) {
-            soundFile = new File(dir, String.format("%s%s%s%s", pageId, "_", timeMills, Const.SOUND_FILE_SUFFIX));
-            if (!soundFile.exists())
-                try {
-                    soundFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    if (e.getMessage().contains("space"))
-                        return RecordError.SDCARD_NO_ENOUGH_SPACE;
-                    else
-                        return RecordError.SDCARD_CANNOT_WRITE;
-                }
         }
+        // 创建录音文件
+//        if (isRunning) {
+//            // pageId + "_" + currentMillis + ".amr"
+//            String mp3FileName = String.format("%s%s%s%s", pageId, "_", timeMills, Const.SOUND_FILE_SUFFIX);
+//            soundFile = new File(dir, mp3FileName);
+//            if (!soundFile.exists()) {
+//                try {
+//                    soundFile.createNewFile();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    if (e.getMessage().contains("space"))
+//                        return RecordError.SDCARD_NO_ENOUGH_SPACE;
+//                    else
+//                        return RecordError.SDCARD_CANNOT_WRITE;
+//                }
+//            }
+//        }
         return RecordError.SUCCESS;
     }
 
-    private SoundRecorder mSoundRecorder;
 
-    public RecordError recordPage(int pageId) {
-        RecordError ret = createFiles(pageId);
-        if (ret != RecordError.SUCCESS)
-            return ret;
-
-        if (draw.getRecorderContext().isRunning()) {
-            mSoundRecorder = new SoundRecorder();
-            mSoundRecorder.startRecord(soundFile.getAbsolutePath());
-        }
-        return ret;
+    /**
+     * 是否记录所有
+     */
+    public boolean isHaveRecordForAll() {
+        File[] files = dir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                return (
+//                        pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX) &&
+//                                !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG) &&
+                        pathname.getName().contains(Const.RELEASE_SOUND_NAME)
+                );
+            }
+        });
+        return (files != null && files.length > 0);
     }
 
     /**
@@ -122,120 +149,23 @@ public class PageRecorder {
      * @return
      */
     public RecordError saveCurrentPageRecord() {
-
-        RecordError ret = saveCmdsToDisk();
-        if (ret != RecordError.SUCCESS)
-            return ret;
-        if (mSoundRecorder != null) {
-            mSoundRecorder.destroy();
-            mSoundRecorder = null;
-        }
+//        stopRecorder();
         // logicTime.stop();
-        cmdList.clear();
+        RecordError ret = saveCmdsToDisk();
+        if (ret == RecordError.SUCCESS) {
+            cmdList.clear();
+        }
         return ret;
 
     }
 
-    public void reRecordAll() {
-        SoundRecorder.resetRefreshUiTime(0);
-        if (!draw.getRecorderContext().isRunning())
-            draw.getRecorderContext().continuing();
-        deleteAllRecordFiles();
-    }
-
-    /**
-     * 删除所有记录文件
-     */
-    private void deleteAllRecordFiles() {
-        if (mSoundRecorder != null) {
-            mSoundRecorder.destroy();
-            mSoundRecorder = null;
-        }
-        File[] files = dir.listFiles();
-        if (files == null)
-            return;
-        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
-        for (File f : files) {
-            if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
-                if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                    f.renameTo(new File(dir, f.getName().replace("_", flag)));
-            }
-        }// for end.
-    }
-
-    public void reRecordPage(int pageId) {
-        if (!draw.getRecorderContext().isRunning())
-            draw.getRecorderContext().continuing();
-        deletePageRecord(pageId);
-    }
-
-    public boolean isHaveRecordForPage(int pageId) {
-        final String page = pageId + "_";
-        File[] files = dir.listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                if (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX) && pathname.getName().startsWith(page)
-                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                    return true;
-                else
-                    return false;
-            }
-        });
-        if (files == null || files.length < 1)
-            return false;
-        else
-            return true;
-    }
-
-    /**
-     * 是否记录所有
-     */
-    public boolean isHaveRecordForAll() {
-        File[] files = dir.listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                if (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
-                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                    return true;
-                else
-                    return false;
-            }
-        });
-        if (files == null || files.length < 1)
-            return false;
-        else
-            return true;
-    }
-
-    public void deletePageRecord(int pageId) {
-        if (mSoundRecorder != null) {
-            mSoundRecorder.destroy();
-            mSoundRecorder = null;
-        }
-        /**
-         * reduce ui time.
-         */
-        long pageDuration = RecordFileUtils.getPageRecordDuration(pageId, dir.getAbsolutePath(), false);
-        SoundRecorder.resetRefreshUiTime(SoundRecorder.getRefreshUiTime() - pageDuration);
-        File[] files = dir.listFiles();
-        if (files == null)
-            return;
-        String page = pageId + "_";
-        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
-        for (File f : files) {
-            if (f.getName().startsWith(page)) {
-                if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
-                    /***
-                     * sound cannot be deleted,because will use to count time
-                     * for releaseScript.
-                     */
-                    if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
-                        f.renameTo(new File(dir, f.getName().replace("_", flag)));
-                }
-            }
-        }// for.s
-    }
-
     public void record(final ICmd cmd, int pageId) {
         if (cmdList.size() == MAX_CMD_SIZE) {
+            // saveCmdsToDisk()
+            // cmdList.clear();
+            // cmdList.add(cmd);
+            // recordPage
+
             // save to disk.
             draw.preChangePage(new Runnable() {
                 public void run() {
@@ -257,11 +187,12 @@ public class PageRecorder {
             return RecordError.SDCARD_NOT_EXIST;
         }
 
-        ScriptData scriptData = new ScriptData();
         ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
+
+        ScriptData scriptData = new ScriptData();
         scriptData.setDensity(info.density);
-        scriptData.setInputScreenWidth(info.w);
-        scriptData.setInputScreenHeight(info.h);
+        scriptData.setInputScreenWidth(info.width);
+        scriptData.setInputScreenHeight(info.height);
         scriptData.setInputRate(60);
         scriptData.setVersion(1);
         scriptData.setWbEvents(cmdList);
@@ -283,60 +214,7 @@ public class PageRecorder {
     }
 
     public long recordTimeNow() {
-        return SoundRecorder.getCurrentTime();
-    }
-
-    /**
-     * 保存info.txt
-     * <p>
-     * 设置记录信息
-     *
-     * @param info
-     * @return
-     */
-    public boolean setRecordInfos(RecordUploadBean info) {
-        try {
-            // logicTime.stop();
-            Properties p = new Properties();
-            String title = info.getTitle();
-            if (TextUtils.isEmpty(title))
-                title = " ";
-            p.put(LocalRecordBean.TITLE, title);
-            String thumnailName = info.getThumbNailName();
-            if (TextUtils.isEmpty(thumnailName))
-                thumnailName = "unknown";
-            p.put(LocalRecordBean.THUMBNAIL_NAME, thumnailName);
-            String tab = info.getTab();
-            if (TextUtils.isEmpty(tab))
-                tab = " ";
-            p.put(LocalRecordBean.TAB, tab);
-            String categoryName = info.getType();
-            if (TextUtils.isEmpty(categoryName))
-                categoryName = " ";
-            p.put(LocalRecordBean.CATEGORY_NAME, categoryName);
-            String introduce = info.getIntroduce();
-            if (TextUtils.isEmpty(introduce))
-                introduce = " ";
-            p.put(LocalRecordBean.INTRODUCE, introduce);
-            //
-            ScreenInfoBean screen = ScreenFitUtil.getCurrentDeviceInfo();
-            p.put(LocalRecordBean.MAKE_WINDOW_WIDTH, screen.w + "");
-            p.put(LocalRecordBean.MAKE_WINDOW_HEIGHT, screen.h + "");
-            //
-            p.put(LocalRecordBean.COURSE_ID, MD5Util.getUUID());
-            // shareUrl.
-            File infofile = new File(dir, Const.INFO_FILE_NAME);
-            if (!infofile.exists())
-                infofile.createNewFile();
-            FileOutputStream os = new FileOutputStream(infofile);
-            p.store(os, null);
-            os.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("PageRecorder", "设置记录信息时错误.请检查SD卡\n" + e.getMessage());
-            return false;
-        }
+        return getCurrentTime();
     }
 
     /**
@@ -345,8 +223,7 @@ public class PageRecorder {
     public void deleteRecordDir() {
         if (dir == null || !dir.exists())
             return;
-        if (mSoundRecorder != null)
-            mSoundRecorder.destroy();
+//        stopRecorder();
         File[] files = dir.listFiles();
         if (files != null) {
             for (File f : files)
@@ -363,7 +240,135 @@ public class PageRecorder {
         return dir.getAbsolutePath();
     }
 
+    public File getDir() {
+        return dir;
+    }
+
     public boolean isSdcardExist() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
+
+    //----------------------------------------------------------------------------------
+
+    private RecordWorldTime logicTime;
+    private Recorder recorder;
+
+    public void startRecorder() {
+        if (logicTime == null) {
+            logicTime = new RecordWorldTime(0, true);
+        }
+        logicTime.goRun();
+
+        if (recorder == null) {
+            recorder = MsRecorder.wav(
+                    releaseSoundFile,
+                    new AudioRecordConfig.Default(),
+                    new PullTransport.Default().setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
+                        @Override
+                        public void onAudioChunkPulled(AudioChunk audioChunk) {
+                            Log.e("[ audio ]", "max amplitude : " + audioChunk.maxAmplitude());
+                        }
+                    }));
+        }
+        recorder.startRecording();
+    }
+
+    public void stopRecorder() {
+        if (logicTime != null)
+            logicTime.pause();
+        if (recorder != null) {
+            recorder.pauseRecording();
+        }
+    }
+
+    public long getCurrentTime() {
+        if (logicTime == null)
+            return ICmd.TIME_DELETE_FLAG;
+        return logicTime.now();
+    }
+
+    public void closeWorldTimer() {// do at draw activity finish.
+        if (logicTime != null) {
+            logicTime.stop();
+            logicTime = null;
+        }
+        if (recorder != null) {
+            recorder.stopRecording();
+        }
+    }
+
+
+    // 重录所有
+//    public void reRecordAll() {
+////        SoundRecorder.resetRefreshUiTime(0);
+//        resetRefreshUiTime(0);
+//        if (!draw.getRecorderContext().isRunning())
+//            draw.getRecorderContext().continuing();
+//        deleteAllRecordFiles();
+//        // cmdList.clear(); TODO 为什么没清空？
+//    }
+
+//    /**
+//     * 删除所有记录文件
+//     */
+//    private void deleteAllRecordFiles() {
+//        stopRecorder();
+//        File[] files = dir.listFiles();
+//        if (files == null)
+//            return;
+//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
+//        for (File f : files) {
+//            if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
+//                if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
+//                    f.renameTo(new File(dir, f.getName().replace("_", flag)));
+//            }
+//        }// for end.
+//    }
+//
+//    public void reRecordPage(int pageId) {
+//        if (!draw.getRecorderContext().isRunning())
+//            draw.getRecorderContext().continuing();
+//        deletePageRecord(pageId);
+//    }
+//
+//    public void deletePageRecord(int pageId) {
+//        stopRecorder();
+//        /**
+//         * reduce ui time.
+//         */
+//        long pageDuration = RecordFileUtils.getPageRecordDuration(pageId, dir.getAbsolutePath(), false);
+////        SoundRecorder.resetRefreshUiTime(SoundRecorder.getRefreshUiTime() - pageDuration);
+//        resetRefreshUiTime(getRefreshUiTime() - pageDuration);
+//        File[] files = dir.listFiles();
+//        if (files == null)
+//            return;
+//        String page = pageId + "_";
+//        String flag = String.format("_%s_", Const.UN_RECORD_FILE_FLAG);
+//        for (File f : files) {
+//            if (f.getName().startsWith(page)) {
+//                if (f.getName().endsWith(Const.CMD_FILE_SUFFIX) || f.getName().endsWith(Const.SOUND_FILE_SUFFIX)) {
+//                    /***
+//                     * sound cannot be deleted,because will use to count time
+//                     * for releaseScript.
+//                     */
+//                    if (!f.getName().contains(Const.UN_RECORD_FILE_FLAG))
+//                        f.renameTo(new File(dir, f.getName().replace("_", flag)));
+//                }
+//            }
+//        }// for.s
+//    }
+//
+//    public boolean isHaveRecordForPage(int pageId) {
+//        final String page = pageId + "_";
+//        File[] files = dir.listFiles(new FileFilter() {
+//            public boolean accept(File pathname) {
+//                return (pathname.getName().endsWith(Const.SOUND_FILE_SUFFIX)
+//                        && pathname.getName().startsWith(page)
+//                        && !pathname.getName().contains(Const.UN_RECORD_FILE_FLAG));
+//            }
+//        });
+//        return (files != null && files.length > 0);
+//    }
+
+
 }

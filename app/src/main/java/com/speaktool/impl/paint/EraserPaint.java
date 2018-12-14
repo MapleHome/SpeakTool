@@ -4,7 +4,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
-import com.speaktool.SpeakToolApp;
+import com.speaktool.SpeakApp;
 import com.speaktool.bean.PaintInfoBean;
 import com.speaktool.utils.DensityUtils;
 import com.speaktool.tasks.MyColors;
@@ -15,7 +15,6 @@ import com.speaktool.tasks.MyColors;
  * @author Maple Shao
  */
 public class EraserPaint {
-
     private static final float DEFAULT_STROKE_WIDTH = 15;// dp
     private final Paint eraserPaint = new Paint();
     private static PaintInfoBean globalPaintInfo;
@@ -23,18 +22,10 @@ public class EraserPaint {
     static {
         globalPaintInfo = new PaintInfoBean();
         globalPaintInfo.setColor(MyColors.BLACK);
-        globalPaintInfo.setStrokeWidth(DensityUtils.dp2px(SpeakToolApp.app(), DEFAULT_STROKE_WIDTH));
-    }
-
-    public EraserPaint() {
-        super();
-        initCommom();
-        eraserPaint.setColor(globalPaintInfo.getColor());
-        eraserPaint.setStrokeWidth(globalPaintInfo.getStrokeWidth());//
+        globalPaintInfo.setStrokeWidth(DensityUtils.dp2px(SpeakApp.app(), DEFAULT_STROKE_WIDTH));
     }
 
     public EraserPaint(int strokeWidth) {
-        super();
         initCommom();
         eraserPaint.setColor(globalPaintInfo.getColor());
         eraserPaint.setStrokeWidth(strokeWidth);//

@@ -8,8 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.speaktool.R;
-import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,10 +36,7 @@ public class FeedbackPage extends BaseFragment {
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
         mActivity.setTitle("意见反馈");
-    }
 
-    @Override
-    public void initListener() {
         // 提交反馈
         bt_fb_submit.setOnClickListener(new OnClickListener() {
             @Override

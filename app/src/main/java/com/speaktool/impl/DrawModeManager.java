@@ -18,9 +18,6 @@ import org.greenrobot.eventbus.EventBus;
  * 
  */
 public class DrawModeManager {
-
-	private DrawMode mode = new DrawModeChoice();
-
 	private static DrawModeManager sIns = new DrawModeManager();
 
 	private DrawModeManager() {
@@ -31,6 +28,10 @@ public class DrawModeManager {
 	public static DrawModeManager getIns() {
 		return sIns;
 	}
+
+
+
+	private DrawMode mode = new DrawModeChoice();
 
 	/** 获取绘制模式 */
 	public DrawMode getDrawMode() {

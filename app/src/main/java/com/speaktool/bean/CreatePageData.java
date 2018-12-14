@@ -8,14 +8,10 @@ import com.speaktool.api.Page.Page_BG;
  * @author shaoshuai
  */
 public class CreatePageData {
-
     private int pageID;// 纸张ID
     private int position;// 纸张索引
     private Page_BG backgroundType; // 纸张背景
 
-    public CreatePageData() {
-        super();
-    }
 
     /**
      * 画板纸张属性
@@ -25,7 +21,6 @@ public class CreatePageData {
      * @param backgroundType - 纸张背景
      */
     public CreatePageData(int pageID, int position, Page_BG backgroundType) {
-        super();
         this.pageID = pageID;
         this.position = position;
         this.backgroundType = backgroundType;

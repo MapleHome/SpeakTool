@@ -8,17 +8,7 @@ package com.speaktool.bean;
 public class ActivePageData {
     private int pageID;
 
-    public ActivePageData() {
-        super();
-    }
-
-    /**
-     * 当前互动纸张属性Item
-     *
-     * @param pageID
-     */
     public ActivePageData(int pageID) {
-        super();
         this.pageID = pageID;
     }
 

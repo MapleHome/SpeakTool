@@ -8,14 +8,14 @@ public class ScriptData {
     private int inputRate;
     private int version;
     private List<ICmd> wbEvents;
-    //
+    // 屏幕属性
     private int inputScreenWidth;
     private int inputScreenHeight;
     private int density;
 
-    private String wbEventsString;
-    private List<Html5ImageInfoBean> resources;
-    private Html5SoundInfoBean sound;
+//    private String wbEventsString;
+//    private List<Html5ImageInfoBean> resources;
+//    private Html5SoundInfoBean sound;
 
 
     public int getInputRate() {
@@ -66,36 +66,36 @@ public class ScriptData {
         this.density = density;
     }
 
-    public List<Html5ImageInfoBean> getPictureNames() {
-        return resources;
-    }
-
-    public void setPictureNames(List<Html5ImageInfoBean> pictureNames) {
-        this.resources = pictureNames;
-    }
-
-    public List<Html5ImageInfoBean> getResources() {
-        return resources;
-    }
-
-    public void setResources(List<Html5ImageInfoBean> resources) {
-        this.resources = resources;
-    }
-
-    public Html5SoundInfoBean getSound() {
-        return sound;
-    }
-
-    public void setSound(Html5SoundInfoBean sound) {
-        this.sound = sound;
-    }
-
-    public String getWbEventsString() {
-        return wbEventsString;
-    }
-
-    public void setWbEventsString(String wbEventsString) {
-        this.wbEventsString = wbEventsString;
-    }
+//    public List<Html5ImageInfoBean> getPictureNames() {
+//        return resources;
+//    }
+//
+//    public void setPictureNames(List<Html5ImageInfoBean> pictureNames) {
+//        this.resources = pictureNames;
+//    }
+//
+//    public List<Html5ImageInfoBean> getResources() {
+//        return resources;
+//    }
+//
+//    public void setResources(List<Html5ImageInfoBean> resources) {
+//        this.resources = resources;
+//    }
+//
+//    public Html5SoundInfoBean getSound() {
+//        return sound;
+//    }
+//
+//    public void setSound(Html5SoundInfoBean sound) {
+//        this.sound = sound;
+//    }
+//
+//    public String getWbEventsString() {
+//        return wbEventsString;
+//    }
+//
+//    public void setWbEventsString(String wbEventsString) {
+//        this.wbEventsString = wbEventsString;
+//    }
 
 }

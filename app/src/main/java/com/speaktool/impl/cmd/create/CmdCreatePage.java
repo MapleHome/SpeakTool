@@ -41,7 +41,7 @@ public class CmdCreatePage extends CmdBase<CreatePageData> {
 
     @Override
     public ICmd copy() {
-        return null;
+        return this;
     }
 
 }

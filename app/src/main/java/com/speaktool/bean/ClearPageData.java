@@ -2,35 +2,35 @@ package com.speaktool.bean;
 
 /**
  * 清除页面数据
- * 
+ *
  * @author shaoshuai
- * 
  */
 public class ClearPageData {
-	/** 清除所有 */
-	public static final String OPT_CLEAR_ALL = "all";
-	/** 清除笔记 */
-	public static final String OPT_CLEAR_NOTES = "notes";
+    public static final String OPT_CLEAR_ALL = "all";// 清除所有
+    public static final String OPT_CLEAR_NOTES = "notes";// 清除笔记
 
-	/** 页面ID */
-	private int pageId;
-	/** 清除类型 */
-	private String option;
+    private int pageId;// 页面ID
+    private String option;// 清除类型
 
-	public int getPageId() {
-		return pageId;
-	}
+    public ClearPageData(int pageId, String option) {
+        this.pageId = pageId;
+        this.option = option;
+    }
 
-	public void setPageId(int pageId) {
-		this.pageId = pageId;
-	}
+    public int getPageId() {
+        return pageId;
+    }
 
-	public String getOption() {
-		return option;
-	}
+    public void setPageId(int pageId) {
+        this.pageId = pageId;
+    }
 
-	public void setOption(String option) {
-		this.option = option;
-	}
+    public String getOption() {
+        return option;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
 
 }

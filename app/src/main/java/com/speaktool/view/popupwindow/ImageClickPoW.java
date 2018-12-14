@@ -5,7 +5,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import com.speaktool.R;
 import com.speaktool.api.FocusedView;
@@ -22,37 +21,33 @@ import org.greenrobot.eventbus.Subscribe;
  * @author shaoshuai
  */
 public class ImageClickPoW extends BasePopupWindow implements OnClickListener {
-
     private ImageWidget mImage;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_imageclick, null);
+    public View getContentView(LayoutInflater inflater) {
+        return inflater.inflate(R.layout.pow_imageclick, null);
     }
+
 
     public ImageClickPoW(Context context, ImageWidget edit) {
-        this(context, edit, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
-
-    public ImageClickPoW(Context context, ImageWidget edit, int w, int h) {
-        super(context, edit.getPage().view(), w, h);
+        super(context, edit.getPage().view());
         mImage = edit;
         EventBus.getDefault().register(this);
 
-        mRootView.findViewById(R.id.imgtv_delete).setOnClickListener(this);
-        mRootView.findViewById(R.id.imgtv_copy).setOnClickListener(this);
-        mRootView.findViewById(R.id.imgtv_rotate).setOnClickListener(this);
-        mRootView.findViewById(R.id.imgtv_widthAutoFit).setOnClickListener(this);
-        mRootView.findViewById(R.id.imgtv_heightAutoFit).setOnClickListener(this);
-        mRootView.findViewById(R.id.imgtv_lock).setOnClickListener(this);
+        mContentView.findViewById(R.id.imgtv_delete).setOnClickListener(this);
+        mContentView.findViewById(R.id.imgtv_copy).setOnClickListener(this);
+        mContentView.findViewById(R.id.imgtv_rotate).setOnClickListener(this);
+        mContentView.findViewById(R.id.imgtv_widthAutoFit).setOnClickListener(this);
+        mContentView.findViewById(R.id.imgtv_heightAutoFit).setOnClickListener(this);
+        mContentView.findViewById(R.id.imgtv_lock).setOnClickListener(this);
 
         mPopupWindow.setFocusable(false);// 是否具有获取焦点的能力
         mPopupWindow.setTouchable(true);
         mPopupWindow.setOutsideTouchable(false);// 外部触摸
 
-        mRootView.setFocusable(true);
-        mRootView.setFocusableInTouchMode(true);
-        mRootView.setOnKeyListener(new View.OnKeyListener() {
+        mContentView.setFocusable(true);
+        mContentView.setFocusableInTouchMode(true);
+        mContentView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_MENU) {

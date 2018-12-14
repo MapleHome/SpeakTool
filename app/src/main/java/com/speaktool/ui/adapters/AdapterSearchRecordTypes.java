@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.speaktool.R;
 import com.speaktool.bean.SearchCategoryBean;
-import com.speaktool.ui.base.AbsAdapter;
+import com.speaktool.base.AbsAdapter;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class AdapterSearchRecordTypes extends AbsAdapter<SearchCategoryBean> {
         }
 
         String typename = ((SearchCategoryBean) getItem(position)).getCategoryName();
-        TextView tv = (TextView) convertView.findViewById(R.id.tvType);
+        TextView tv = convertView.findViewById(R.id.tvType);
         if (typename != null) {
             tv.setText(typename);
         }

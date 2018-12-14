@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.speaktool.R;
 import com.speaktool.bean.UserBean;
 import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.ui.base.BaseFragment;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.utils.T;
 import com.speaktool.utils.UserInfoValidateUtil;
 
@@ -35,7 +35,6 @@ public class UserLoginPage extends BaseFragment {
     @BindView(R.id.layQQLogin) LinearLayout layQQLogin;// QQ
     @BindView(R.id.layMore) LinearLayout layMore;// 更多
 
-    public static final String FRAGMENT_NAME = "登录";
     private UserFMActivity mActivity;
 
     @Override
@@ -49,13 +48,8 @@ public class UserLoginPage extends BaseFragment {
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
-        mActivity.setTitle(FRAGMENT_NAME);
+        mActivity.setTitle("登录");
     }
-
-    @Override
-    public void initListener() {
-    }
-
 
     @OnClick(R.id.btnRegister)
     public void toRegisterPage() {

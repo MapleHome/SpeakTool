@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout.LayoutParams;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -45,9 +44,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 
 @SuppressWarnings("deprecation")
-public class WordEdit extends EditText implements OnEditorActionListener, FocusedView, EditWidget {
+public class WordEdit extends AppCompatEditText implements OnEditorActionListener, FocusedView, EditWidget {
 
     private Page mDrawBoard;
     private Draw draw;
@@ -310,7 +311,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
             imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
-    public final void showEditWindow(final EditWidget edit) {
+    public final void showEditWindow(EditWidget edit) {
         draw.showEditClickPopup(edit);
     }
 
@@ -340,11 +341,8 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
         saveOldData();
         CmdDeleteEdit cmd = new CmdDeleteEdit();
         cmd.setTime(draw.getPageRecorder().recordTimeNow());
-        DeleteShapeData data = new DeleteShapeData();
-        data.setShapeID(getShapeID());
-        cmd.setData(data);
-        //
-        cmd.setOlddata(olddata);
+        cmd.setData(new DeleteShapeData(getShapeID()));
+        cmd.setOldData(olddata);
         //
         mDrawBoard.deleteShape(getShapeID());
         mDrawBoard.sendCommand(cmd, false);
@@ -442,7 +440,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
         EditCommonData data = new EditCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mDrawBoard.sendCommand(cmd, false);
     }
@@ -457,7 +455,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
         EditCommonData data = new EditCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mDrawBoard.sendCommand(cmd, false);
     }
@@ -474,7 +472,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
         EditCommonData data = new EditCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mDrawBoard.sendCommand(cmd, false);
     }
@@ -519,7 +517,7 @@ public class WordEdit extends EditText implements OnEditorActionListener, Focuse
                 EditCommonData data = new EditCommonData();
                 copyAttrsToData(data, this);
                 cmd.setData(data);
-                cmd.setOlddata(olddata);
+                cmd.setOldData(olddata);
                 // data.set
                 mDrawBoard.sendCommand(cmd, false);
             }

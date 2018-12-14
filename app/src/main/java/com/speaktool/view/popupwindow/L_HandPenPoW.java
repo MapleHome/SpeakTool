@@ -9,7 +9,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -20,45 +19,36 @@ import com.speaktool.R;
 import com.speaktool.ui.Draw.DrawActivity;
 import com.speaktool.utils.T;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 顶部功能栏——手写笔
  *
  * @author shaoshuai
  */
 public class L_HandPenPoW extends BasePopupWindow {
-    private Button bt_search;// 搜索
-    private TextView tv_cur_state;// 当前状态
-    private ListView lv_hand_pen;// 笔列表
+    @BindView(R.id.bt_search) Button bt_search;// 搜索
+    @BindView(R.id.tv_cur_state) TextView tv_cur_state;// 当前状态
+    @BindView(R.id.lv_hand_pen) ListView lv_hand_pen;// 笔列表
 
     private DrawActivity drawActivity;
     private BluetoothAdapter mBluetoothAdapter;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_hand_pen, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_hand_pen, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public L_HandPenPoW(Context context, View anchor, DrawActivity drawAct) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, drawAct);
-    }
-
-
-    public L_HandPenPoW(Context context, View anchor, int w, int h, DrawActivity drawAct) {
-        super(context, anchor, w, h);
+        super(context, anchor);
         drawActivity = drawAct;
         // mHandler = new Handler();
-        bt_search = (Button) mRootView.findViewById(R.id.bt_search);
-        tv_cur_state = (TextView) mRootView.findViewById(R.id.tv_cur_state);
-        lv_hand_pen = (ListView) mRootView.findViewById(R.id.lv_hand_pen);
         // 蓝牙列表
-
         initBluetoothLEAdapter();
         initListener();
-    }
-
-
-    public L_HandPenPoW(Context context, View anchor, int w, int h) {
-        super(context, anchor, w, h);
     }
 
     /**
@@ -98,14 +88,9 @@ public class L_HandPenPoW extends BasePopupWindow {
         lv_hand_pen.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             }
         });
-    }
-
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
     }
 
 }

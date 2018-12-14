@@ -40,7 +40,7 @@ public class CmdChangePageBackground extends CmdBase<PageBackgroundData> {
 
     @Override
     public ICmd copy() {
-        return null;
+        return this;
     }
 
 }

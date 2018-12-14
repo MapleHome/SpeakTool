@@ -40,7 +40,7 @@ public class CmdCopyPage extends CmdBase<CopyPageData> {
 
     @Override
     public ICmd copy() {
-        return null;
+        return this;
     }
 
 }

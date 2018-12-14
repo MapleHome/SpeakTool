@@ -3,8 +3,6 @@ package com.speaktool.view.popupwindow;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import com.speaktool.R;
 import com.speaktool.api.Draw;
@@ -12,54 +10,54 @@ import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.modes.DrawModeWord;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * 顶部功能栏——更多功能窗体
  *
  * @author shaoshuai
  */
-public class L_MorePoW extends BasePopupWindow implements OnClickListener {
-
+public class L_MorePoW extends BasePopupWindow {
     private Draw mDraw;
 
     @Override
-    public View getContentView() {
-        return LayoutInflater.from(mContext).inflate(R.layout.pow_more_operation, null);
+    public View getContentView(LayoutInflater inflater) {
+        View view = inflater.inflate(R.layout.pow_more_operation, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public L_MorePoW(Context context, View anchor, Draw draw) {
-        this(context, anchor, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, draw);
-    }
-
-    public L_MorePoW(Context context, View anchor, int w, int h, Draw draw) {
-        super(context, anchor, w, h);
+        super(context, anchor);
         mDraw = draw;
-
-        mRootView.findViewById(R.id.iv_add_text).setOnClickListener(this);
-        mRootView.findViewById(R.id.iv_add_img).setOnClickListener(this);
-        mRootView.findViewById(R.id.iv_change_bg).setOnClickListener(this);
-
     }
 
-    @Override
-    public void onClick(View v) {
-        dismiss();// Pow隐藏
-        switch (v.getId()) {
-            case R.id.iv_add_text:// 添加文字
-                mDraw.pauseRecord();// 暂停记录
-                DrawModeManager.getIns().setDrawMode(new DrawModeWord());
-                break;
-            case R.id.iv_add_img:// 添加图片
-                mDraw.pauseRecord();// 暂停记录
-                L_M_AddImgPoW addImgPow = new L_M_AddImgPoW(mContext, mAnchorView, mDraw, (PickPhotoCallback) mDraw);
-                addImgPow.showPopupWindow(WeiZhi.Right);
-                break;
-            case R.id.iv_change_bg:// 更改背景
-                L_M_ChangeBgPoW changeBgPow = new L_M_ChangeBgPoW(mContext, mAnchorView, mDraw);
-                changeBgPow.showPopupWindow(WeiZhi.Right);
-                break;
-            default:
-                break;
-        }
+
+    // 添加文字
+    @OnClick(R.id.iv_add_text)
+    void addText() {
+        dismiss();
+        mDraw.pauseRecord();// 暂停记录
+        DrawModeManager.getIns().setDrawMode(new DrawModeWord());
     }
+
+    // 添加图片
+    @OnClick(R.id.iv_add_img)
+    void addImage() {
+        dismiss();
+        mDraw.pauseRecord();// 暂停记录
+        new L_M_AddImgPoW(mContext, parentView, mDraw, (PickPhotoCallback) mDraw)
+                .showPopupWindow(WeiZhi.Right);
+    }
+
+    // 更改背景
+    @OnClick(R.id.iv_change_bg)
+    void changePageBg() {
+        dismiss();
+        new L_M_ChangeBgPoW(mContext, parentView, mDraw)
+                .showPopupWindow(WeiZhi.Right);
+    }
+
 
 }

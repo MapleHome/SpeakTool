@@ -34,7 +34,7 @@ public class CmdDeletePage extends CmdBase<ActivePageData> {
 
     @Override
     public ICmd copy() {
-        return null;
+        return this;
     }
 
 }

@@ -527,7 +527,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         ImageCommonData data = new ImageCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mPage.sendCommand(cmd, false);
     }
@@ -557,7 +557,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         ImageCommonData data = new ImageCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mPage.sendCommand(cmd, false);
 
@@ -577,11 +577,8 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         //
         CmdDeleteImage cmd = new CmdDeleteImage();
         cmd.setTime(draw.getPageRecorder().recordTimeNow());
-        DeleteShapeData data = new DeleteShapeData();
-        data.setShapeID(getShapeID());
-        cmd.setData(data);
-        //
-        cmd.setOlddata(olddata);
+        cmd.setData(new DeleteShapeData(getShapeID()));
+        cmd.setOldData(olddata);
         //
         mPage.deleteShape(getShapeID());
         mPage.sendCommand(cmd, false);
@@ -625,7 +622,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         ImageCommonData data = new ImageCommonData();
         copyAttrsToData(data, this);
         cmd.setData(data);
-        cmd.setOlddata(olddata);
+        cmd.setOldData(olddata);
         // data.set
         mPage.sendCommand(cmd, false);
     }

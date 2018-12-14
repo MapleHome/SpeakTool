@@ -526,10 +526,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
          * use to save info in make mode.
          */
         if (isMakeMode()) {
-            ScreenInfoBean info = new ScreenInfoBean();
-            info.w = this.getWidth();
-            info.h = this.getHeight();
-            info.density = DisplayUtil.getScreenDensity(getContext());
+            ScreenInfoBean info = new ScreenInfoBean(getWidth(),getHeight(),DisplayUtil.getScreenDensity(getContext()));
             ScreenFitUtil.setCurrentDeviceInfo(info);
             ScreenFitUtil.setInputDeviceInfo(info);
         }
@@ -556,10 +553,12 @@ public class DrawPage extends AbsoluteLayout implements Page {
             draw.getPageRecorder().record(copy, this.getPageID());
         if (isJustSendToPlaying)
             return;
-        if (copy != null)
+        if (copy != null) {
+
             addUndoCmd(copy);
-        else
+        } else {
             addUndoCmd(cmd);
+        }
         cmdsRedo.clear();
         //
         postEvent(new RedoEvent(false));
@@ -576,16 +575,16 @@ public class DrawPage extends AbsoluteLayout implements Page {
     @Override
     public void deleteShape(int id) {
         Shape_ obj = allShapeViews.remove(id);
-        if (obj instanceof PenShape_)
+        if (obj instanceof PenShape_) {
             unDraw((PenShape_) obj);
-        else
+        } else {
             unDraw((ViewShape_) obj);
+        }
     }
 
     @Override
     public Shape_ shape(int id) {
         return allShapeViews.get(id);
-
     }
 
     @Override
@@ -595,44 +594,41 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
     @Override
     public void setBackgroundType(Page_BG type) {
-        final long maxMem = 5 * 1024 * 1024;
-        //
-        if (Page_BG.White.equals(type)) {
-            this.setBackgroundColor(Color.WHITE);
-        } else if (Page_BG.Line.equals(type)) {
-            Bitmap bpscl = BitmapScaleUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.line_bg, maxMem);
-            if (bpscl != null)
-                this.setBackgroundDrawable(new BitmapDrawable(bpscl));
-
-        } else if (Page_BG.Grid.equals(type)) {
-            Bitmap bpscl = BitmapScaleUtil.decodeSampledBitmapFromResource(getResources(), R.drawable.grid_bg, maxMem);
-            if (bpscl != null)
-                this.setBackgroundDrawable(new BitmapDrawable(bpscl));
-
-        } else if (Page_BG.Cor.equals(type)) {
-            Bitmap bpscl = BitmapScaleUtil.decodeSampledBitmapFromResource(getResources(),
-                    R.drawable.draw_coordinate_bg, maxMem);
-            if (bpscl != null)
-                this.setBackgroundDrawable(new BitmapDrawable(bpscl));
-        } else {
-            this.setBackgroundColor(Color.WHITE);
+        switch (type) {
+            case White:
+                this.setBackgroundColor(Color.WHITE);
+                break;
+            case Line:
+                this.setBackgroundResource(R.drawable.line_bg);
+                break;
+            case Grid:
+                this.setBackgroundResource(R.drawable.grid_bg);
+                break;
+            case Cor:
+                this.setBackgroundResource(R.drawable.draw_coordinate_bg);
+                break;
+            default:
+                this.setBackgroundColor(Color.WHITE);
+                break;
         }
         backgroundType = type;
     }
 
     @Override
     public int makeShapeId() {
-        if (isMakeMode())
+        if (isMakeMode()) {
             return ++shapeId;
-        else
+        } else {
             return ++playShapeId;
+        }
     }
 
     public static void resetShapeId(Draw draw) {
-        if (draw.getPlayMode() == PlayMode.MAKE)
+        if (draw.getPlayMode() == PlayMode.MAKE) {
             shapeId = 0;
-        else
+        } else {
             playShapeId = 0;
+        }
     }
 
     @Override
@@ -642,19 +638,22 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
     @Override
     public void drawOnBuffer(Path_ path) {
-        if (!path.isEraser())
+        if (!path.isEraser()) {
             bufferCanvas.drawPath(path.getPath(), new DrawPaint(path.getColor(), path.getStokeWidth()).getPaint());
-        else
+        } else {
             bufferCanvas.drawPath(path.getPath(), new EraserPaint(path.getStokeWidth()).getPaint());
+        }
     }
 
     @Override
     public void drawOnBuffer(Point_ point) {
-        if (!point.isEraser())
+        if (!point.isEraser()) {
             bufferCanvas.drawPoint(point.getmX(), point.getmY(),
                     new DrawPaint(point.getColor(), point.getStokeWidth()).getPaint());
-        else
-            bufferCanvas.drawPoint(point.getmX(), point.getmY(), new EraserPaint(point.getStokeWidth()).getPaint());
+        } else {
+            bufferCanvas.drawPoint(point.getmX(), point.getmY(),
+                    new EraserPaint(point.getStokeWidth()).getPaint());
+        }
     }
 
     @Override

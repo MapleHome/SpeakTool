@@ -8,19 +8,14 @@ package com.speaktool.bean;
 public class SearchCategoryBean {
     public static final int CID_BAIDU_SEARCH = 1;
     public static final int CID_PIC_URL = 2;
-    //
     public static final int CID_ALL = -11;
     public static final int CID_USER_DEFINE = 22;
 
     private String categoryName;
     private int categoryId = CID_USER_DEFINE;
 
-    public SearchCategoryBean() {
-        super();
-    }
 
     public SearchCategoryBean(String categoryName, int categoryId) {
-        super();
         this.categoryName = categoryName;
         this.categoryId = categoryId;
     }

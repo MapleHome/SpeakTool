@@ -1,64 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/topBar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/drawactivity_topbar_height"
-        android:background="@color/draw_left_bar_bg">
+        android:layout_height="@dimen/top_bar_height"
+        android:background="@color/draw_left_bar_bg"
+        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:id="@+id/rl_left_img"
+        <TextView
+            android:id="@+id/tvMakeVideo"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true">
+            android:background="@drawable/selector_finish_button"
+            android:gravity="center"
+            android:text="新建"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/tvMakeVideo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/selector_finish_button"
-                android:gravity="center"
-                android:text="新建"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/ivDevider"
-            android:layout_width="wrap_content"
+        <View
+            android:layout_width="1px"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/rl_left_img"
-            android:src="@drawable/draw_vetical_line" />
+            android:background="@color/line_bg" />
 
         <com.speaktool.view.layouts.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:layout_toRightOf="@+id/ivDevider"
             android:background="#fff" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/id_content"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/bottomBar"
-        android:layout_below="@+id/topBar"
-        android:layout_alignParentLeft="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/drawactivity_bottombar_height"
-        android:layout_alignParentBottom="true"
+        android:layout_height="50dp"
         android:background="@color/draw_right_bar_bg">
 
         <ImageView
@@ -67,10 +52,10 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="10dp"
             android:contentDescription="@null"
             android:scaleType="centerInside"
             android:src="@drawable/selector_setting_icon" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
