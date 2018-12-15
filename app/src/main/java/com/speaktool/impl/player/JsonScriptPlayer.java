@@ -8,10 +8,10 @@ import android.util.Log;
 
 import com.speaktool.Const;
 import com.speaktool.api.Play;
-import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.TransformShapeData;
 import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
+import com.speaktool.ui.Draw.RecordBean;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,12 +59,11 @@ public class JsonScriptPlayer {
         return files[0];
     }
 
-    public JsonScriptPlayer(LocalRecordBean rec, Play draw) {
+    public JsonScriptPlayer(RecordBean rec, Play draw) {
         this.draw = draw;
-        String recordDirPath = rec.getRecordDir();
-
-        draw.setRecordDir(recordDirPath);
-        File recordDir = new File(recordDirPath);
+//        String recordDirPath = rec.dir;
+//        draw.setRecordDir(recordDirPath);
+        File recordDir = new File(rec.dir);
 
         parser = new JsonScriptParser(draw.context(), getScreenInfoFile(recordDir));
         // 内容文件 release.txt
@@ -204,7 +203,7 @@ public class JsonScriptPlayer {
                             @Override
                             public void run() {
                                 closeLoading();
-                                draw.hideViewFlipperOverlay();
+//                                draw.hideViewFlipperOverlay();
                                 draw.getCurrentBoard().refresh();
                             }
                         });
@@ -225,7 +224,7 @@ public class JsonScriptPlayer {
                     @Override
                     public void run() {
                         closeLoading();
-                        draw.hideViewFlipperOverlay();
+//                        draw.hideViewFlipperOverlay();
                         draw.getCurrentBoard().refresh();
                     }
                 });
@@ -347,7 +346,7 @@ public class JsonScriptPlayer {
         draw.postTaskToUiThread(new Runnable() {
             @Override
             public void run() {
-                draw.showViewFlipperOverlay();
+//                draw.showViewFlipperOverlay();
                 play(positionTimeMills);
             }
         });

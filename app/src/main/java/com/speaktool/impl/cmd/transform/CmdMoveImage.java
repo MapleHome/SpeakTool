@@ -18,12 +18,13 @@ import java.util.List;
  * @author Maple Shao
  */
 public class CmdMoveImage extends CmdTransformSeqBase<ChangeImageData<MoveData>> {
+    private transient ImageCommonData olddata;
+    private long endTime;
+
+
     public CmdMoveImage() {
         super();
-
     }
-
-    private long endTime;
 
     public long getEndTime() {
         return endTime;
@@ -32,8 +33,6 @@ public class CmdMoveImage extends CmdTransformSeqBase<ChangeImageData<MoveData>>
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
-
-    private transient ImageCommonData olddata;
 
     public ImageCommonData getOlddata() {
         return olddata;

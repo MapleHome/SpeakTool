@@ -7,8 +7,6 @@ package com.speaktool.api;
  * @time 2018/12/15
  */
 public interface Play extends BaseDraw {
-    //
-    void setRecordDir(String dir);
 
     void resetAllViews();
 
@@ -18,7 +16,4 @@ public interface Play extends BaseDraw {
 
     void removeAllHandlerTasks();
 
-    void hideViewFlipperOverlay();
-
-    void showViewFlipperOverlay();
 }

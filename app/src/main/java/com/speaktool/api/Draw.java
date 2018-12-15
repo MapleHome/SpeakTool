@@ -1,7 +1,7 @@
 package com.speaktool.api;
 
 import com.speaktool.api.Page.Page_BG;
-import com.speaktool.bean.RecordUploadBean;
+import com.speaktool.ui.Draw.RecordBean;
 
 /**
  * 绘画模式
@@ -75,7 +75,7 @@ public interface Draw extends BaseDraw, PhotoImporter {
     /**
      * 保存课程记录
      */
-    void saveRecord(RecordUploadBean saveInfo);
+    void saveRecord(RecordBean saveInfo);
 
     /**
      * 退出画板
@@ -84,11 +84,4 @@ public interface Draw extends BaseDraw, PhotoImporter {
 
     void exitDrawWithoutSave();
 
-
-//    /**
-//     * 删除课程记录
-//     */
-//    void deleteRecord();
-
-//    void addGlobalMusic(MusicBean music);
 }

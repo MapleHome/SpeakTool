@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.speaktool.R;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
-import com.speaktool.bean.RecordUploadBean;
+import com.speaktool.ui.Draw.RecordBean;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;
@@ -116,20 +116,17 @@ public class FillSaveInfoDialog extends Dialog implements OnClickListener {
         String intro = firstPage.getIntroduce();
         Bitmap thumb = getVideoThumbnail();
         String thumbNailName = RecordFileUtils.copyBitmapToRecordDir(thumb, mDraw.getRecordDir());
-
-        boolean isPublicPublish = firstPage.isPublicPublish();
-        RecordUploadBean info = new RecordUploadBean();
-        info.setTitle(title);
-        info.setTab(tab);
-        info.setType(type);
-        info.setIntroduce(intro);
-
-        info.setThumbNailName(thumbNailName);
         String thumbNailPath = String.format("%s%s%s", mDraw.getRecordDir(), File.separator, thumbNailName);
-        info.setThumbNailPath(thumbNailPath);
-        info.setPublicPublish(isPublicPublish);
 
-        mDraw.saveRecord(info);
+        RecordBean recordBean = new RecordBean();
+        recordBean.title = title;
+        recordBean.tab = tab;
+        recordBean.type = type;
+        recordBean.introduce = intro;
+        recordBean.thumbNailName = thumbNailName;
+        recordBean.thumbNailPath = thumbNailPath;
+
+        mDraw.saveRecord(recordBean);
     }
 
     /**

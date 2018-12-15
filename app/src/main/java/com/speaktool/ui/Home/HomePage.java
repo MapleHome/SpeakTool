@@ -17,6 +17,7 @@ import com.speaktool.base.BaseFragment;
 import com.speaktool.tasks.TaskLoadRecords;
 import com.speaktool.tasks.TaskLoadRecords.RecordsUi;
 import com.speaktool.tasks.ThreadPoolWrapper;
+import com.speaktool.ui.Draw.RecordBean;
 import com.speaktool.ui.adapters.RecordsAdapter;
 import com.speaktool.view.dialogs.CourseItemDesDialog;
 
@@ -52,7 +53,7 @@ public class HomePage extends BaseFragment {
         gv_records.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CourseItem course = (CourseItem) parent.getAdapter().getItem(position);
+                RecordBean course = (RecordBean) parent.getAdapter().getItem(position);
                 new CourseItemDesDialog(getActivity(), course).show();
             }
         });
@@ -75,7 +76,7 @@ public class HomePage extends BaseFragment {
         ThreadPoolWrapper.newThreadPool(1)
                 .execute(new TaskLoadRecords(new RecordsUi() {
                     @Override
-                    public void onRecordsLoaded(List<CourseItem> datas) {
+                    public void onRecordsLoaded(List<RecordBean> datas) {
                         if (datas == null || datas.isEmpty()) {
                             // tvSearchEmpty.setText("未找到录像");
                             // tvSearchEmpty.setVisibility(View.VISIBLE);

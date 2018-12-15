@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -38,7 +37,6 @@ import com.speaktool.bean.ClearPageData;
 import com.speaktool.bean.CopyPageData;
 import com.speaktool.bean.CreatePageData;
 import com.speaktool.bean.PageBackgroundData;
-import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.busevents.EraserEvent;
@@ -136,7 +134,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private RecordBean recordBean;
     private List<Page> pages = new ArrayList<>();// 【画册】- 画纸集合
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
-    private String mRecordDir;// 课程目录
+//    private String mRecordDir;// 课程目录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +143,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         mContext = this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        recordBean = RecordBean.getInstance();
+        recordBean = new RecordBean();
         // 绘制
         if (android.os.Build.VERSION.SDK_INT >= 18) {
             // mIBISPenController = new IBISPenController(this);
@@ -677,7 +675,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void saveRecord(RecordUploadBean recordUploadBean) {
+    public void saveRecord(RecordBean recordBean) {
         showLoading("保存中，请稍侯...", new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -699,7 +697,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             }
         });
         getPageRecorder().saveCurrentPageRecord();// 保存当前页数据
-        boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
+        boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordBean);
 //        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
         try {
             //save release.txt
@@ -964,7 +962,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
 
-
     private int pageID;
 
     @Override
@@ -984,9 +981,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @Override
     public void setPageBackgroundImpl(int pageId, Page_BG backgroundType) {
         Page board = getPageFromId(pageId);
-        if (board == null)
-            return;
-        board.setBackgroundType(backgroundType);
+        if (board != null){
+            board.setBackgroundType(backgroundType);
+        }
     }
 
     @Override
@@ -1148,11 +1145,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
      */
     private String copyImgToRecordDir(String imgPath) {
         if (BitmapScaleUtil.isGif(imgPath)) {
-            final String resname = RecordFileUtils.copyGifToRecordDir(imgPath, getRecordDir());
-            return resname;
+            return RecordFileUtils.copyGifToRecordDir(imgPath, getRecordDir());
         } else {
-            final String resname = RecordFileUtils.copyBitmapToRecordDir(imgPath, getRecordDir());
-            return resname;
+            return RecordFileUtils.copyBitmapToRecordDir(imgPath, getRecordDir());
         }
     }
 
@@ -1172,17 +1167,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                     if (ret != null) {
                         images.add(ret);
                     } else {
-                        SpeakApp.getUiHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                T.showShort(mContext, "图片添加失败！");
-                            }
-                        });
+                        T.showShort(mContext, "图片添加失败！");
                     }
                 }// for end.
-                /**
-                 * do after copy finish.
-                 */
+                // do after copy finish.
                 batchImportFirstPageId = getCurrentBoard().getPageID();
                 runnAddImgTask(images);
             }
@@ -1215,12 +1203,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         });
     }
 
-
     @Override
     public String getRecordDir() {
-        if (TextUtils.isEmpty(mRecordDir))
-            return getPageRecorder().getRecordDir();
-        return mRecordDir;
+        return getPageRecorder().getRecordDir();
     }
 
     @Override
@@ -1242,8 +1227,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     public int makePageHeight() {
         return recordBean.pageHeight;
     }
-
-
 
     // 显示文本编辑功能栏
     @Override
@@ -1298,7 +1281,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
 
-
     @Override
     public void showVideoController() {
 //        if (layoutVideoController.getVisibility() == View.VISIBLE) {
@@ -1309,7 +1291,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
 //        layoutVideoController.setVisibility(View.VISIBLE);
 //        layoutVideoController.postDelayed(hideVideoControllerRunnable, 5000);
     }
-
 
 
     // =====================视频播放器--开始=======================================

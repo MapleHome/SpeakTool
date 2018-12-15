@@ -13,9 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
-import com.speaktool.api.CourseItem;
-import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
+import com.speaktool.ui.Draw.RecordBean;
 import com.speaktool.ui.Player.PlayVideoActivity;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.FileUtils;
@@ -46,12 +45,12 @@ public class CourseItemDesDialog extends Dialog {
     @BindView(R.id.ivDeleteVideo) ImageView ivDeleteVideo;// 删除
     // 其他
     private Context mContext;
-    private LocalRecordBean mItemBean;// 课程记录条目
+    private RecordBean mItemBean;// 课程记录条目
 
-    public CourseItemDesDialog(Context context, CourseItem itembean) {
+    public CourseItemDesDialog(Context context, RecordBean itembean) {
         super(context, R.style.dialogTheme);
         mContext = context;
-        mItemBean = (LocalRecordBean) itembean;
+        mItemBean = itembean;
 
         this.setCanceledOnTouchOutside(false);
     }
@@ -64,9 +63,9 @@ public class CourseItemDesDialog extends Dialog {
 
         resetLayout();
 
-        tvTips.setText(mItemBean.getRecordTitle());// 设置标题
+        tvTips.setText(mItemBean.title);// 设置标题
         Glide.with(mContext)
-                .load(new File(mItemBean.getThumbnailImgPath()))
+                .load(new File(mItemBean.thumbNailPath))
                 .into(ivThumbnail);
     }
 
@@ -123,7 +122,7 @@ public class CourseItemDesDialog extends Dialog {
 
     @OnClick(R.id.ivCopyLink)
     void copyLinkLocalRecord() {
-        String shareUrl = mItemBean.getShareUrl();
+        String shareUrl = mItemBean.thumbNailName;// TODO  url
         if (shareUrl != null) {
             ClipboardManager cmb = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
             cmb.setText(shareUrl);
@@ -150,7 +149,7 @@ public class CourseItemDesDialog extends Dialog {
     }
 
     private void deleteRecord() {
-        File dir = new File(mItemBean.getRecordDir());
+        File dir = new File(mItemBean.dir);
         FileUtils.deleteDir(dir);
 
         new AlertDialog(mContext)
