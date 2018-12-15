@@ -7,7 +7,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.speaktool.Const;
-import com.speaktool.api.Draw;
+import com.speaktool.api.Play;
 import com.speaktool.bean.LocalRecordBean;
 import com.speaktool.bean.TransformShapeData;
 import com.speaktool.busevents.PlayTimeChangedEvent;
@@ -35,7 +35,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 @SuppressWarnings("rawtypes")
 public class JsonScriptPlayer {
     private JsonScriptParser parser;
-    private Draw draw;
+    private Play draw;
     private MediaPlayer mSoundPlayer;
 
     private File mJsonFile;
@@ -59,7 +59,7 @@ public class JsonScriptPlayer {
         return files[0];
     }
 
-    public JsonScriptPlayer(LocalRecordBean rec, Draw draw) {
+    public JsonScriptPlayer(LocalRecordBean rec, Play draw) {
         this.draw = draw;
         String recordDirPath = rec.getRecordDir();
 

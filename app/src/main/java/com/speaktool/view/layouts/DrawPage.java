@@ -88,7 +88,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     /**
      * 初始化画板纸张
      */
-    public DrawPage(Context context, Page_BG backgroundType, Draw draw, int pageId) {
+    public DrawPage(Context context, Page_BG backgroundType, BaseDraw draw, int pageId) {
         super(context);
         this.setBackgroundType(backgroundType);
         this.draw = draw;

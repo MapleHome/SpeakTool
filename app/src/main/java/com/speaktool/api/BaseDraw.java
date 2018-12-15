@@ -87,6 +87,8 @@ public interface BaseDraw {
     void setPageBackgroundImpl(int pageId, Page.Page_BG bgType);
 
 
+    //
+    void preChangePage(final Runnable successRunnable);
 
 
     //----------------------------------------------------

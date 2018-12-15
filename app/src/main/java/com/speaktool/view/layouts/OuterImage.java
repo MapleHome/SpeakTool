@@ -15,7 +15,6 @@ import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout.LayoutParams;
 
 import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
 import com.speaktool.api.ViewTransformer;
@@ -62,7 +61,6 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         Drawable old = this.getDrawable();
         if (old == null) {
             setResourceID(resourceID);
-
         }
         super.onAttachedToWindow();
     }
@@ -469,7 +467,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
             EventBus.getDefault().post(new CloseEditPopupWindowEvent());
         }
         this.intoFocus();
-        showEditWindow(this);
+        draw.showImageClickPopup(this);
     }
 
     private float getRotation(MotionEvent event) {
@@ -596,7 +594,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
             mPage.getFocusedView().exitFocus();
 
         img.intoFoc();
-        showEditWindow(img);
+        draw.showImageClickPopup(img);
         // send cmd.
 
         CmdCreateImage cmd = new CmdCreateImage();
@@ -609,9 +607,6 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
 
     }
 
-    private final void showEditWindow(final ImageWidget imageWidget) {
-        draw.showImageClickPopup(imageWidget);
-    }
 
     @Override
     public void rotate() {

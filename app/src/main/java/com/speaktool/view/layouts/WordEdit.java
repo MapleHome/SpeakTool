@@ -241,7 +241,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
             EventBus.getDefault().post(new CloseEditPopupWindowEvent());
         }
         this.intoFocus();
-        showEditWindow(this);
+        draw.showEditClickPopup(this);
     }
 
     public static void copyAttrsToData(EditCommonData dest, WordEdit edit) {
@@ -312,9 +312,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
             imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
     }
 
-    public final void showEditWindow(EditWidget edit) {
-        draw.showEditClickPopup(edit);
-    }
+
 
     private boolean isEditState = false;
     private boolean isCreate = false;
@@ -360,7 +358,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
         mDrawBoard.draw(edit);
         mDrawBoard.saveShape(edit);
         edit.intoFocus();
-        showEditWindow(edit);
+        draw.showEditClickPopup(edit);
         // send cmd.
 
         CmdCreateEdit cmd = new CmdCreateEdit();

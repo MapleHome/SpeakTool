@@ -580,63 +580,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     // =====================操作命令--结束=======================================
-    // =====================视频播放器--开始=======================================
 
-//    private Runnable hideVideoControllerRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
-//        }
-//    };
-
-    @Override
-    public void showVideoController() {
-//        if (layoutVideoController.getVisibility() == View.VISIBLE) {
-//            layoutVideoController.setVisibility(View.INVISIBLE);
-//            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
-//            return;
-//        }
-//        layoutVideoController.setVisibility(View.VISIBLE);
-//        layoutVideoController.postDelayed(hideVideoControllerRunnable, 5000);
-
-    }
-
-    @Override
-    public void onPlayComplete() {
-//        postTaskToUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-//
-//                int p = JsonScriptPlayer.MAX_PROGRESS;
-//                String totalstr = FormatUtils.getFormatTimeSimple(p);
-//                layoutVideoController.setProgress(p);
-//                layoutVideoController.setProgressText(totalstr);
-//            }
-//        });
-    }
-
-    @Override
-    public void onPlayStart() {
-//        postTaskToUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
-//            }
-//        });
-    }
-
-    // =====================视频播放器--结束=======================================
-
-    @Override
-    public void resetAllViews() {
-        viewFlipper.removeAllViews();
-        pages.clear();
-        currentBoardIndex = 0;
-        resetPageId();
-        DrawPage.resetShapeId(PlayMode.MAKE);
-        initPage();
-    }
 
     @Override
     protected void onDestroy() {
@@ -801,10 +745,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
     }
 
-//    @Override
-//    public void deleteRecord() {
-//        getPageRecorder().deleteRecordDir();
-//    }
 
     private String getErrorMsg(RecordError error) {
         switch (error) {
@@ -1022,6 +962,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             mRecorderContext = new RecorderContext();
         return mRecorderContext;
     }
+
+
 
     private int pageID;
 
@@ -1273,10 +1215,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         });
     }
 
-    @Override
-    public void setRecordDir(String dir) {
-        mRecordDir = dir;
-    }
 
     @Override
     public String getRecordDir() {
@@ -1305,20 +1243,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return recordBean.pageHeight;
     }
 
-    @Override
-    public void removeAllHandlerTasks() {
-        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
-    }
 
-    @Override
-    public void showViewFlipperOverlay() {
-        viewFlipperOverlay.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideViewFlipperOverlay() {
-        viewFlipperOverlay.setVisibility(View.GONE);
-    }
 
     // 显示文本编辑功能栏
     @Override
@@ -1340,9 +1265,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return pages.get(position);
     }
 
-//    @Override
-//    public void addGlobalMusic(MusicBean music) {
-//    }
 
     // ---------------------------------------------------------------------------------------
 
@@ -1375,4 +1297,92 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return pages.indexOf(bd);// 搜索指定的对象，并返回整个 List 中第一个匹配项的从零开始的索引。
     }
 
+
+
+    @Override
+    public void showVideoController() {
+//        if (layoutVideoController.getVisibility() == View.VISIBLE) {
+//            layoutVideoController.setVisibility(View.INVISIBLE);
+//            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
+//            return;
+//        }
+//        layoutVideoController.setVisibility(View.VISIBLE);
+//        layoutVideoController.postDelayed(hideVideoControllerRunnable, 5000);
+    }
+
+
+
+    // =====================视频播放器--开始=======================================
+
+//    private Runnable hideVideoControllerRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+//        }
+//    };
+
+//    @Override
+//    public void onPlayComplete() {
+//        postTaskToUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
+//
+//                int p = JsonScriptPlayer.MAX_PROGRESS;
+//                String totalstr = FormatUtils.getFormatTimeSimple(p);
+//                layoutVideoController.setProgress(p);
+//                layoutVideoController.setProgressText(totalstr);
+//            }
+//        });
+//    }
+
+//    @Override
+//    public void onPlayStart() {
+//        postTaskToUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
+//            }
+//        });
+//    }
+
+    // =====================视频播放器--结束=======================================
+//    @Override
+//    public void showVideoController() {
+//
+//    }
+//    @Override
+//    public void deleteRecord() {
+//        getPageRecorder().deleteRecordDir();
+//    }
+//    @Override
+//    public void resetAllViews() {
+//        viewFlipper.removeAllViews();
+//        pages.clear();
+//        currentBoardIndex = 0;
+//        resetPageId();
+//        DrawPage.resetShapeId(PlayMode.MAKE);
+//        initPage();
+//    }
+//    @Override
+//    public void removeAllHandlerTasks() {
+//        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
+//    }
+//
+//    @Override
+//    public void showViewFlipperOverlay() {
+//        viewFlipperOverlay.setVisibility(View.VISIBLE);
+//    }
+//
+//    @Override
+//    public void hideViewFlipperOverlay() {
+//        viewFlipperOverlay.setVisibility(View.GONE);
+//    }
+//    @Override
+//    public void addGlobalMusic(MusicBean music) {
+//    }
+//    @Override
+//    public void setRecordDir(String dir) {
+//        mRecordDir = dir;
+//    }
 }

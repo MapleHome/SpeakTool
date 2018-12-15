@@ -37,7 +37,6 @@ public interface Draw extends BaseDraw, PhotoImporter {
      */
     int makePageId();
 
-    //
     void newEmptyBoardClick();
 
     /**
@@ -47,7 +46,6 @@ public interface Draw extends BaseDraw, PhotoImporter {
      */
     void copyPageClick(String option);
 
-
     /**
      * 清除页面内容
      *
@@ -56,7 +54,6 @@ public interface Draw extends BaseDraw, PhotoImporter {
      */
     void clearPageClick(int pageId, String option);
 
-    void removeAllHandlerTasks();
 
     void setPageBackgroundClick(int pageId, Page_BG bgType);
 
@@ -80,35 +77,18 @@ public interface Draw extends BaseDraw, PhotoImporter {
      */
     void saveRecord(RecordUploadBean saveInfo);
 
-//    /**
-//     * 删除课程记录
-//     */
-//    void deleteRecord();
-
     /**
      * 退出画板
      */
     void onExitDraw();
 
     void exitDrawWithoutSave();
-    //
-    void setRecordDir(String dir);
 
-    //
-    void resetAllViews();
 
-    void onPlayComplete();
+//    /**
+//     * 删除课程记录
+//     */
+//    void deleteRecord();
 
-    void onPlayStart();
-
-    //
-    void preChangePage(final Runnable successRunnable);
-
-    //
-    void showViewFlipperOverlay();
-
-    void hideViewFlipperOverlay();
-
-    //
 //    void addGlobalMusic(MusicBean music);
 }
