@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.speaktool.R;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
@@ -51,7 +52,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 public class WordEdit extends AppCompatEditText implements OnEditorActionListener, FocusedView, EditWidget {
 
     private Page mDrawBoard;
-    private Draw draw;
+    private BaseDraw draw;
     private Drawable leftIcon;
     private boolean isLocked = false;
     private boolean isInFocus = false;
@@ -65,7 +66,7 @@ public class WordEdit extends AppCompatEditText implements OnEditorActionListene
 
     private int id;
 
-    public WordEdit(Context context, Draw draw, int id) {
+    public WordEdit(Context context, BaseDraw draw, int id) {
         super(context);
         initBorderPaint();
         this.draw = draw;

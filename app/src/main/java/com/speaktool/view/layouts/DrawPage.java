@@ -15,6 +15,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 
 import com.speaktool.R;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
@@ -78,7 +79,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     private Stack<ICmd> cmdsRedo = new Stack<ICmd>();// 操作返回集合
 
     private FocusedView mFocusedView;
-    private Draw draw;
+    private BaseDraw draw;
     //
     private static int shapeId = 0;
     private static int playShapeId = 0;

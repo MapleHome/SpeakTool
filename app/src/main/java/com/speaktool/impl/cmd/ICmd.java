@@ -1,5 +1,6 @@
 package com.speaktool.impl.cmd;
 
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 
@@ -45,7 +46,7 @@ public interface ICmd<DATATYPE> {
 
 	DATATYPE getData();
 
-	void run(Draw draw, Page board);
+	void run(BaseDraw draw, Page board);
 
 	/** 反选 */
 	@SuppressWarnings("rawtypes")

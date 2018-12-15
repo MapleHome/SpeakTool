@@ -3,7 +3,7 @@ package com.speaktool.impl.cmd.transform;
 import android.graphics.Color;
 import android.os.SystemClock;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.ChangeEditData;
 import com.speaktool.bean.EditCommonData;
@@ -46,7 +46,7 @@ public class CmdMoveEdit extends CmdTransformSeqBase<ChangeEditData<MoveData>> {
     // ----------------------------------------------------------------------
 
     @Override
-    public void run(final Draw draw, Page bw) {
+    public void run(final BaseDraw draw, Page bw) {
         final ChangeEditData<MoveData> data = getData();
         List<MoveData> seq = data.getSequence();
 

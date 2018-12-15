@@ -1,6 +1,6 @@
 package com.speaktool.impl.cmd.create;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.CreatePageData;
 import com.speaktool.impl.cmd.CmdBase;
@@ -19,7 +19,7 @@ public class CmdCreatePage extends CmdBase<CreatePageData> {
     }
 
     @Override
-    public void run(final Draw draw, Page bw) {
+    public void run(final BaseDraw draw, Page bw) {
         draw.postTaskToUiThread(new Runnable() {
             @Override
             public void run() {

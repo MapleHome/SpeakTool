@@ -2,6 +2,7 @@ package com.speaktool.impl;
 
 import android.view.MotionEvent;
 
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.api.DrawMode;
 import com.speaktool.busevents.DrawModeChangedEvent;
@@ -52,7 +53,7 @@ public class DrawModeManager {
 		this.mode = mode;
 	}
 
-	public boolean doTouchEvent(MotionEvent event, Draw draw) {
+	public boolean doTouchEvent(MotionEvent event, BaseDraw draw) {
 		return mode.touchDraw(event, draw);
 	}
 

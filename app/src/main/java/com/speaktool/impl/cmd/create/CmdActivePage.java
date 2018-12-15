@@ -1,6 +1,6 @@
 package com.speaktool.impl.cmd.create;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.ActivePageData;
 import com.speaktool.impl.cmd.CmdBase;
@@ -18,7 +18,7 @@ public class CmdActivePage extends CmdBase<ActivePageData> {
     }
 
     @Override
-    public void run(final Draw draw, Page board) {
+    public void run(final BaseDraw draw, Page board) {
         final int pageId = getData().getPageID();
         draw.postTaskToUiThread(new Runnable() {
             @Override

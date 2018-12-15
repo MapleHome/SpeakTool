@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout.LayoutParams;
 
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
@@ -52,7 +53,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
     private final Paint borderPaint = new Paint();
     private final static float BORDER_PAINT_WIDTH = 3f;
     private final ViewTransformer mImageDecorator = new DefViewTransformer();
-    private Draw draw;
+    private BaseDraw draw;
     private Page mPage;
     private int id;
 
@@ -90,7 +91,7 @@ public class OuterImage extends GifImageView implements ImageWidget, FocusedView
         super.onDetachedFromWindow();
     }
 
-    public OuterImage(Context context, Draw draw, int id) {
+    public OuterImage(Context context, BaseDraw draw, int id) {
         super(context);
         initBorderPaint();
         this.id = id;

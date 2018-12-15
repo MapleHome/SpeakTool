@@ -3,7 +3,7 @@ package com.speaktool.impl.modes;
 import android.view.MotionEvent;
 import android.widget.AbsoluteLayout;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.DrawMode;
 import com.speaktool.api.Page;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
@@ -26,7 +26,7 @@ public class DrawModeWord implements DrawMode {
     }
 
     @Override
-    public boolean touchDraw(MotionEvent event, Draw draw) {
+    public boolean touchDraw(MotionEvent event, BaseDraw draw) {
         final Page drawBoard = draw.getCurrentBoard();
         if (drawBoard.getFocusedView() != null) {
             drawBoard.getFocusedView().exitFocus();
