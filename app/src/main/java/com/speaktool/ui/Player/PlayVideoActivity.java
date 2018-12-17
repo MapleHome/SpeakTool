@@ -203,7 +203,17 @@ public class PlayVideoActivity extends FragmentActivity implements Play {
     }
 
     @Override
+    protected void onStop() {
+        if (mJsonScriptPlayer.isPlaying()) {
+            mJsonScriptPlayer.pause();
+            ivPlayPause.setImageResource(android.R.drawable.ic_media_play);
+        }
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        mJsonScriptPlayer.exitPlayer();
         EventBus.getDefault().unregister(this);
         DrawPage.resetShapeId(PlayMode.PLAY);
         PlayService.killServiceProcess(this);
@@ -256,14 +266,7 @@ public class PlayVideoActivity extends FragmentActivity implements Play {
         }
     }
 
-    @Override
-    protected void onStop() {
-        if (mJsonScriptPlayer.isPlaying()) {
-            mJsonScriptPlayer.pause();
-            ivPlayPause.setImageResource(android.R.drawable.ic_media_play);
-        }
-        super.onStop();
-    }
+
 
     // =====================top pop=======================================
     @Subscribe

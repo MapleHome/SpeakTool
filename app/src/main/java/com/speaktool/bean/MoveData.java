@@ -13,6 +13,11 @@ public class MoveData {
         this.y = y;
     }
 
+    public void bianHuanXY(float fx, float fy) {
+        this.x = (int) (this.x * fx);
+        this.y = (int) (this.y * fy);
+    }
+
     public long getT() {
         return t;
     }

@@ -1,7 +1,9 @@
 package com.speaktool.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -17,21 +19,30 @@ public class FileUtils {
             file.createNewFile();
         }
         if (file.canWrite()) {
-            FileOutputStream fos = new FileOutputStream(file);
-            byte[] bytes = text.getBytes();
-            fos.write(bytes);
-            fos.close();
+            // 字符流写入
+            FileWriter writer = new FileWriter(file);
+            writer.write(text);
+            writer.close();
+            // 字节流写入
+//            FileOutputStream fos = new FileOutputStream(file);
+//            fos.write(text.getBytes());
+//            fos.close();
         } else {
             new IOException("is no file and not write! ");
         }
     }
 
     public static String readFile(File file) throws IOException {
-        String str = "";
+        StringBuilder sb = new StringBuilder();
         if (!file.exists()) {
-
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            reader.close();
         }
-        return str;
+        return sb.toString();
     }
 
     public static void deleteDir(File dir) {

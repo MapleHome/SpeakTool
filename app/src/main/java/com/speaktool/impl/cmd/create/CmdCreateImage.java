@@ -21,9 +21,7 @@ public class CmdCreateImage extends CmdCreateShape<ImageCommonData> {
 
     @Override
     public void run(final BaseDraw draw, Page bw) {
-
         final ImageCommonData data = getData();
-
         draw.postTaskToUiThread(new Runnable() {
             @Override
             public void run() {
@@ -48,7 +46,6 @@ public class CmdCreateImage extends CmdCreateShape<ImageCommonData> {
 //		CmdCreateImage copy = new CmdCreateImage();
 //		copy.setTime(getTime());
 //		copy.setData(getData());
-
         return this;
     }
 

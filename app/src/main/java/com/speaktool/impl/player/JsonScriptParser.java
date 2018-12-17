@@ -6,11 +6,7 @@ import android.graphics.Point;
 import com.google.gson.Gson;
 import com.speaktool.bean.ChangeEditData;
 import com.speaktool.bean.ChangeImageData;
-import com.speaktool.bean.CreatePenData;
-import com.speaktool.bean.EditCommonData;
-import com.speaktool.bean.ImageCommonData;
 import com.speaktool.bean.MoveData;
-import com.speaktool.bean.PositionData;
 import com.speaktool.bean.ScaleData;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.impl.cmd.ICmd;
@@ -30,6 +26,7 @@ import com.speaktool.impl.cmd.transform.CmdMoveEdit;
 import com.speaktool.impl.cmd.transform.CmdMoveImage;
 import com.speaktool.impl.cmd.transform.CmdScaleImage;
 import com.speaktool.utils.DisplayUtil;
+import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 
 import org.json.JSONArray;
@@ -51,34 +48,23 @@ import java.util.List;
  */
 @SuppressWarnings("rawtypes")
 public class JsonScriptParser {
-    private static final String tag = "DefJsonScriptParser";
     private Context mContext;
 
+    public JsonScriptParser(Context ctx) {
+        mContext = ctx;
+    }
+
     public JsonScriptParser(Context ctx, File screenInfoFile) {
-        super();
-        mContext = ctx.getApplicationContext();
+        mContext = ctx;
         try {
             initScreenInfo(screenInfoFile);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(tag + "[screeninfo parse fail.]");
         }
     }
 
-    public JsonScriptParser(Context ctx) {
-        super();
-        mContext = ctx.getApplicationContext();
-    }
-
-    private void initScreenInfo(File f) throws Exception {
-//		Preconditions.checkNotNull(f, "screenInfo文件为空.");// 检查非空
-//		Preconditions.checkArgument(f.exists(), "screenInfoFile 不存在.");// 检查参数
-//		Preconditions.checkArgument(f.isFile(), "screenInfoFile 不是文件.");
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-        String json = reader.readLine();
-        reader.close();
-
+    private void initScreenInfo(File f) throws IOException, JSONException {
+        String json = FileUtils.readFile(f);
         JSONObject script = new JSONObject(json);
 
         ScreenInfoBean inputScreenInfo = new ScreenInfoBean(
@@ -89,13 +75,8 @@ public class JsonScriptParser {
         ScreenFitUtil.setInputDeviceInfo(inputScreenInfo);
         //
         float inputRatioHW = ((float) inputScreenInfo.height) / inputScreenInfo.width;
-        //
-
         Point screenSize = DisplayUtil.getScreenSize(mContext);
-        int screenWidth = screenSize.x;
-        int screenHeight = screenSize.y;
-        //
-        Point size = ScreenFitUtil.getKeepRatioScaledSize(inputRatioHW, screenWidth, screenHeight);
+        Point size = ScreenFitUtil.getKeepRatioScaledSize(inputRatioHW, screenSize.x, screenSize.y);
 
         ScreenInfoBean currentScreenInfo = new ScreenInfoBean(size.x, size.y, DisplayUtil.getScreenDensity(mContext));
         ScreenFitUtil.setCurrentDeviceInfo(currentScreenInfo);
@@ -123,43 +104,20 @@ public class JsonScriptParser {
                 if (cmdType.equals(ICmd.TYPE_CREATE_SHAPE)) {
                     JSONObject data = cmdJson.getJSONObject("data");
                     String datatype = data.getString("type");
+                    float fx = ScreenFitUtil.getFactorX();
+                    float fy = ScreenFitUtil.getFactorY();
+                    float fd = ScreenFitUtil.getFactorDensity();
                     if (datatype.equals("text")) {
                         CmdCreateEdit cmd = new Gson().fromJson(cmdJson.toString(), CmdCreateEdit.class);
-                        EditCommonData cdata = cmd.getData();
-
-                        PositionData pos = cdata.getPosition();
-                        pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                        pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
-                        //
-                        cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
+                        cmd.getData().bianHuan(fx, fy);
                         cmds.add(cmd);
                     } else if (datatype.equals("image")) {
                         CmdCreateImage cmd = new Gson().fromJson(cmdJson.toString(), CmdCreateImage.class);
-                        ImageCommonData cdata = cmd.getData();
-
-                        PositionData pos = cdata.getPosition();
-                        pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                        pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
-                        //
+                        cmd.getData().getPosition().bianHuan(fx, fy);
                         cmds.add(cmd);
                     } else if (datatype.equals("pen") || datatype.equals("eraser")) {// create pen.
                         CmdCreatePen cmd = new Gson().fromJson(cmdJson.toString(), CmdCreatePen.class);
-                        CreatePenData cdata = cmd.getData();
-
-                        cdata.setStrokeWidth(ScreenFitUtil.mapStokeWidthtoCurrentScreen(cdata.getStrokeWidth()));
-                        PositionData maxXY = cdata.getMaxXY();
-                        maxXY.setX(ScreenFitUtil.mapXtoCurrentScreenSize(maxXY.getX()));
-                        maxXY.setY(ScreenFitUtil.mapYtoCurrentScreenSize(maxXY.getY()));
-                        PositionData minXY = cdata.getMinXY();
-                        minXY.setX(ScreenFitUtil.mapXtoCurrentScreenSize(minXY.getX()));
-                        minXY.setY(ScreenFitUtil.mapYtoCurrentScreenSize(minXY.getY()));
-                        //
-                        List<MoveData> points = cdata.getPoints();
-                        for (MoveData mv : points) {
-                            mv.setX(ScreenFitUtil.mapXtoCurrentScreenSize(mv.getX()));
-                            mv.setY(ScreenFitUtil.mapYtoCurrentScreenSize(mv.getY()));
-                        }
-                        //
+                        cmd.getData().bianHuan(fx, fy, fd);
                         cmds.add(cmd);
                     }
                 } else if (cmdType.equals(ICmd.TYPE_DELETE_SHAPE)) {
@@ -207,46 +165,32 @@ public class JsonScriptParser {
     }
 
     private ICmd imageTransform(JSONObject data, JSONObject cmdJson) {
+        float fx = ScreenFitUtil.getFactorX();
+        float fy = ScreenFitUtil.getFactorY();
         try {
             if (data.has("sequence")) {
-                JSONObject seqFirst = data.getJSONArray("sequence")
-                        .getJSONObject(0);
+                JSONObject seqFirst = data.getJSONArray("sequence").getJSONObject(0);
                 if (!seqFirst.has("s")) {// move.
                     CmdMoveImage cmd = new Gson().fromJson(cmdJson.toString(), CmdMoveImage.class);
                     ChangeImageData<MoveData> cdata = cmd.getData();
-
-                    PositionData pos = cdata.getPosition();
-                    pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                    pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
-                    List<MoveData> seq = cdata.getSequence();
-                    for (MoveData mv : seq) {
-                        mv.setX(ScreenFitUtil.mapXtoCurrentScreenSize(mv.getX()));
-                        mv.setY(ScreenFitUtil.mapYtoCurrentScreenSize(mv.getY()));
+                    cdata.getPosition().bianHuan(fx, fy);
+                    for (MoveData mv : cdata.getSequence()) {
+                        mv.bianHuanXY(fx, fy);
                     }
                     return cmd;
 
                 } else {// scale or rotation.
                     CmdScaleImage cmd = new Gson().fromJson(cmdJson.toString(), CmdScaleImage.class);
                     ChangeImageData<ScaleData> cdata = cmd.getData();
-
-                    PositionData pos = cdata.getPosition();
-                    pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                    pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
-                    //
-                    List<ScaleData> seq = cdata.getSequence();
-                    for (ScaleData sc : seq) {
-                        sc.setX(ScreenFitUtil.mapXtoCurrentScreenSize(sc.getX()));
-                        sc.setY(ScreenFitUtil.mapYtoCurrentScreenSize(sc.getY()));
+                    cdata.getPosition().bianHuan(fx, fy);
+                    for (ScaleData sc : cdata.getSequence()) {
+                        sc.bianHuanXY(fx, fy);
                     }
                     return cmd;
                 }
             } else {// no seq.
                 CmdChangeImageNoSeq cmd = new Gson().fromJson(cmdJson.toString(), CmdChangeImageNoSeq.class);
-                ImageCommonData cdata = cmd.getData();
-
-                PositionData pos = cdata.getPosition();
-                pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
+                cmd.getData().getPosition().bianHuan(fx, fy);
                 return cmd;
             }
         } catch (JSONException e) {
@@ -256,22 +200,17 @@ public class JsonScriptParser {
     }
 
     private ICmd textTransform(JSONObject data, JSONObject cmdJson) {
-
+        float fx = ScreenFitUtil.getFactorX();
+        float fy = ScreenFitUtil.getFactorY();
         try {
             if (data.has("sequence")) {
                 JSONObject seqFirst = data.getJSONArray("sequence").getJSONObject(0);
                 if (seqFirst.has("x")) {// move.
                     CmdMoveEdit cmd = new Gson().fromJson(cmdJson.toString(), CmdMoveEdit.class);
                     ChangeEditData<MoveData> cdata = cmd.getData();
-
-                    cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
-                    PositionData pos = cdata.getPosition();
-                    pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                    pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
-                    List<MoveData> seq = cdata.getSequence();
-                    for (MoveData mv : seq) {
-                        mv.setX(ScreenFitUtil.mapXtoCurrentScreenSize(mv.getX()));
-                        mv.setY(ScreenFitUtil.mapYtoCurrentScreenSize(mv.getY()));
+                    cdata.bianHuan(fx, fy);
+                    for (MoveData mv : cdata.getSequence()) {
+                        mv.bianHuanXY(fx, fy);
                     }
                     return cmd;
                 } else if (seqFirst.has("r")) {// rotation.
@@ -281,12 +220,7 @@ public class JsonScriptParser {
                 }
             } else {// no seq.
                 CmdChangeEditNoSeq cmd = new Gson().fromJson(cmdJson.toString(), CmdChangeEditNoSeq.class);
-                EditCommonData cdata = cmd.getData();
-
-                PositionData pos = cdata.getPosition();
-                pos.setX(ScreenFitUtil.mapXtoCurrentScreenSize(pos.getX()));
-                pos.setY(ScreenFitUtil.mapYtoCurrentScreenSize(pos.getY()));
-                cdata.setFontSize(ScreenFitUtil.mapTextSize(cdata.getFontSize()));
+                cmd.getData().bianHuan(fx, fy);
                 return cmd;
 
             }
@@ -317,40 +251,40 @@ public class JsonScriptParser {
         }
     }
 
-    /**
-     * 解析JSON文件
-     *
-     * @param jsonFilePath JSON文件路径
-     * @param startLine    开始行
-     * @param readlines    读取行
-     * @return 操作命令集合
-     */
-    public List<ICmd> jsonFileToCmds(String jsonFilePath, int startLine, int readlines) {
-        try {
-            File f = new File(jsonFilePath);
-            if (!f.exists())
-                return null;
-            if (!f.isFile())
-                return null;
-            List<ICmd> totalCmds = new ArrayList<ICmd>();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-            for (int i = 0; i < startLine; i++)
-                reader.readLine();
-            String line = null;
-            while ((line = reader.readLine()) != null && readlines > 0) {
-                totalCmds.addAll(jsonToCmds(line));
-                readlines -= 1;
-            }
-            // if (line == null)
-            // readflagRet.isEnd = true;
-            // else
-            // readflagRet.isEnd = false;
-            reader.close();
-            return totalCmds;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    /**
+//     * 解析JSON文件
+//     *
+//     * @param jsonFilePath JSON文件路径
+//     * @param startLine    开始行
+//     * @param readlines    读取行
+//     * @return 操作命令集合
+//     */
+//    public List<ICmd> jsonFileToCmds(String jsonFilePath, int startLine, int readlines) {
+//        try {
+//            File f = new File(jsonFilePath);
+//            if (!f.exists())
+//                return null;
+//            if (!f.isFile())
+//                return null;
+//            List<ICmd> totalCmds = new ArrayList<ICmd>();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+//            for (int i = 0; i < startLine; i++)
+//                reader.readLine();
+//            String line = null;
+//            while ((line = reader.readLine()) != null && readlines > 0) {
+//                totalCmds.addAll(jsonToCmds(line));
+//                readlines -= 1;
+//            }
+//            // if (line == null)
+//            // readflagRet.isEnd = true;
+//            // else
+//            // readflagRet.isEnd = false;
+//            reader.close();
+//            return totalCmds;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
 }

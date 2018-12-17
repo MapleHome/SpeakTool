@@ -29,40 +29,16 @@ public class ScreenFitUtil {
         return new ScreenInfoBean(currentScreenWidth, currentScreenHeight, currentScreenDensity);
     }
 
-    public static int mapStokeWidthtoCurrentScreen(int inputStrokeWidth) {
-        float factor = ((float) currentScreenDensity) / inputScreenDensity;
-        int ret = (int) (inputStrokeWidth * factor);
-        return ret;
-    }
-
-    public static int mapXtoCurrentScreenSize(int x) {
-        float factorX = ((float) currentScreenWidth) / inputScreenWidth;
-        int ret = (int) (x * factorX);
-        return ret;
-    }
-
-    public static int mapYtoCurrentScreenSize(int y) {
-        float factorY = ((float) currentScreenHeight) / inputScreenHeight;
-        int ret = (int) (y * factorY);
-        return ret;
-    }
-
-    public static int mapTextSize(int size) {
-        float facw = ((float) currentScreenWidth / (float) inputScreenWidth);
-        float fach = ((float) currentScreenHeight / (float) inputScreenHeight);
-        float fac = Math.min(facw, fach);
-        return (int) (fac * size);
-
+    public static float getFactorDensity() {
+        return ((float) currentScreenDensity) / inputScreenDensity;
     }
 
     public static float getFactorX() {
-        float factorX = ((float) currentScreenWidth) / inputScreenWidth;
-        return factorX;
+        return ((float) currentScreenWidth) / inputScreenWidth;
     }
 
     public static float getFactorY() {
-        float factorY = ((float) currentScreenHeight) / inputScreenHeight;
-        return factorY;
+        return ((float) currentScreenHeight) / inputScreenHeight;
     }
 
     public static Point getKeepRatioScaledSize(float ratioHW, int w, int h) {
@@ -84,6 +60,23 @@ public class ScreenFitUtil {
         }
         return new Point((int) neww, (int) newh);
     }
+
+
+//    public static int mapTextSize(int size) {
+//        float fac = Math.min(getFactorX(), getFactorY());
+//        return (int) (fac * size);
+//    }
+//    public static int mapStokeWidthtoCurrentScreen(int inputStrokeWidth) {
+//        return (int) (inputStrokeWidth * getFactorDensity());
+//    }
+//
+//    public static int mapXtoCurrentScreenSize(int x) {
+//        return (int) (x * getFactorX());
+//    }
+//
+//    public static int mapYtoCurrentScreenSize(int y) {
+//        return (int) (y * getFactorY());
+//    }
 
 //	public static ScreenInfoBean getInputDeviceInfo() {
 //		ScreenInfoBean info = new ScreenInfoBean();
