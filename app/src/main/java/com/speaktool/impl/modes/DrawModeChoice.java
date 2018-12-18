@@ -2,6 +2,7 @@ package com.speaktool.impl.modes;
 
 import android.view.MotionEvent;
 
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.api.DrawMode;
 import com.speaktool.api.FocusedView;
@@ -24,7 +25,7 @@ public class DrawModeChoice implements DrawMode {
 	}
 
 	@Override
-	public boolean touchDraw(MotionEvent event, Draw draw) {
+	public boolean touchDraw(MotionEvent event, BaseDraw draw) {
 		final Page drawBoard = draw.getCurrentBoard();
 		FocusedView focusView = drawBoard.getFocusedView();
 		if (focusView != null) {

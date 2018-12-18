@@ -8,6 +8,7 @@ import android.widget.AbsListView.LayoutParams;
 import com.bumptech.glide.Glide;
 import com.speaktool.api.CourseItem;
 import com.speaktool.base.AbsAdapter;
+import com.speaktool.ui.Draw.RecordBean;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.view.layouts.ItemViewLocalRecord;
 
@@ -19,9 +20,9 @@ import java.util.List;
  *
  * @author shaoshuai
  */
-public class RecordsAdapter extends AbsAdapter<CourseItem> {
+public class RecordsAdapter extends AbsAdapter<RecordBean> {
 
-    public RecordsAdapter(Context ctx, List<CourseItem> datas) {
+    public RecordsAdapter(Context ctx, List<RecordBean> datas) {
         super(ctx, datas);
     }
 
@@ -44,11 +45,11 @@ public class RecordsAdapter extends AbsAdapter<CourseItem> {
         item.setLayoutParams(lp);
 
 
-        CourseItem bean = (CourseItem) getItem(position);
+        RecordBean bean = (RecordBean) getItem(position);
         if (bean != null) {
-            item.setTitle(bean.getRecordTitle());
+            item.setTitle(bean.title);
 
-            String imagePath = bean.getThumbnailImgPath();
+            String imagePath = bean.thumbNailPath;
             Glide.with(mContext)
                     .load(new File(imagePath))
                     .into(item.getImageView());

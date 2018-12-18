@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.graphics.Path;
 import android.os.SystemClock;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.CreatePenData;
 import com.speaktool.bean.DeleteShapeData;
@@ -29,7 +29,7 @@ public class CmdCreatePen extends CmdCreateShape<CreatePenData> {
     }
 
     @Override
-    public void run(final Draw draw, Page bw) {
+    public void run(final BaseDraw draw, Page bw) {
         final CreatePenData data = getData();
         final int color = Color.parseColor(data.getStrokeColor());
         final int strokeWidth = data.getStrokeWidth();

@@ -2,7 +2,7 @@ package com.speaktool.impl.cmd.transform;
 
 import android.os.SystemClock;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.ChangeImageData;
 import com.speaktool.bean.ImageCommonData;
@@ -18,12 +18,13 @@ import java.util.List;
  * @author Maple Shao
  */
 public class CmdMoveImage extends CmdTransformSeqBase<ChangeImageData<MoveData>> {
+    private transient ImageCommonData olddata;
+    private long endTime;
+
+
     public CmdMoveImage() {
         super();
-
     }
-
-    private long endTime;
 
     public long getEndTime() {
         return endTime;
@@ -32,8 +33,6 @@ public class CmdMoveImage extends CmdTransformSeqBase<ChangeImageData<MoveData>>
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
-
-    private transient ImageCommonData olddata;
 
     public ImageCommonData getOlddata() {
         return olddata;
@@ -46,7 +45,7 @@ public class CmdMoveImage extends CmdTransformSeqBase<ChangeImageData<MoveData>>
     // ----------------------------------------------------------------------
 
     @Override
-    public void run(final Draw draw, Page bw) {
+    public void run(final BaseDraw draw, Page bw) {
         final ChangeImageData<MoveData> data = getData();
         List<MoveData> seq = data.getSequence();
 

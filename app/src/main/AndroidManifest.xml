@@ -29,7 +29,7 @@
         </activity>
         <activity
             android:name=".ui.Home.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.Draw.DrawActivity"
@@ -37,14 +37,11 @@
             android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".ui.Player.PlayVideoActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:hardwareAccelerated="true"
-            android:launchMode="standard"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".ui.Player.PlayUrlVideoActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity

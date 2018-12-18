@@ -8,13 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.speaktool.R;
-import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.view.dialogs.LoadingDialog;
+import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.utils.T;
 import com.speaktool.utils.UserInfoValidateUtil;
+import com.speaktool.view.dialogs.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -88,7 +88,7 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
             return;
         }
         //
-        final UserBean mUser = new UserBean();
+        UserBean mUser = new UserBean();
         mUser.setType(UserBean.USER_TYPE_SPEAKTOOL);
         mUser.setWidgetUserId(null);
         mUser.setAccount(account);// 帐号

@@ -4,12 +4,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.speaktool.Const;
-import com.speaktool.bean.LocalRecordBean;
-import com.speaktool.bean.RecordUploadBean;
-import com.speaktool.bean.ScreenInfoBean;
+import com.speaktool.ui.Draw.RecordBean;
 import com.speaktool.utils.MD5Util;
 import com.speaktool.utils.RecordFileUtils;
-import com.speaktool.utils.ScreenFitUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +37,7 @@ public class RecordFileAnalytic {
      * @param dir
      * @return
      */
-    public static LocalRecordBean analyticInfoFile(File dir) {
+    public static RecordBean analyticInfoFile(File dir) {
         File infoFile = new File(dir, Const.INFO_FILE_NAME);
         if (!infoFile.exists()) {
             return null;
@@ -60,18 +57,18 @@ public class RecordFileAnalytic {
 
             String thumbnailImgPath = String.format("%s%s%s", dir.getAbsolutePath(), File.separator, thumbnailName);
             //
-            LocalRecordBean item = new LocalRecordBean();
-            item.setRecordTitle(title != null ? title : "unknown");
-            item.setThumbnailImgPath(thumbnailImgPath != null ? thumbnailImgPath : "");
-            item.setTab(tab != null ? tab : "");
-            item.setType(categoryName != null ? categoryName : "");
-            item.setIntroduce(introduce != null ? introduce : "");
-            item.setShareUrl(shareUrl);
-            item.setCourseId(courseId != null ? courseId : "");
-            item.setCreateTime(infoFile.lastModified());
+            RecordBean item = new RecordBean();
+            item.title = (title != null ? title : "unknown");
+            item.thumbNailPath = (thumbnailImgPath != null ? thumbnailImgPath : "");
+            item.tab = (tab != null ? tab : "");
+            item.type = (categoryName != null ? categoryName : "");
+            item.introduce = (introduce != null ? introduce : "");
+            // item.setShareUrl(shareUrl);
+            item.courseId = (courseId != null ? courseId : "");
+            item.createTime = (infoFile.lastModified());
             // 设置录音时间
             long duration = RecordFileUtils.getRecordDuration(dir.getAbsolutePath());
-            item.setDuration(Long.valueOf(duration));
+            item.duration = (duration);
             return item;
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,39 +78,38 @@ public class RecordFileAnalytic {
 
 
     /**
-     *
      * @param dir
      * @param info
      * @return
      */
-    public static boolean setRecordInfos(File dir, RecordUploadBean info) {
+    public static boolean setRecordInfos(File dir, RecordBean info) {
         try {
             // logicTime.stop();
             Properties p = new Properties();
-            String title = info.getTitle();
+            String title = info.title;
             if (TextUtils.isEmpty(title))
                 title = " ";
             p.put(TITLE, title);
-            String thumnailName = info.getThumbNailName();
+            String thumnailName = info.thumbNailName;
             if (TextUtils.isEmpty(thumnailName))
                 thumnailName = "unknown";
             p.put(THUMBNAIL_NAME, thumnailName);
-            String tab = info.getTab();
+            String tab = info.tab;
             if (TextUtils.isEmpty(tab))
                 tab = " ";
             p.put(TAB, tab);
-            String categoryName = info.getType();
+            String categoryName = info.type;
             if (TextUtils.isEmpty(categoryName))
                 categoryName = " ";
             p.put(CATEGORY_NAME, categoryName);
-            String introduce = info.getIntroduce();
+            String introduce = info.introduce;
             if (TextUtils.isEmpty(introduce))
                 introduce = " ";
             p.put(INTRODUCE, introduce);
             //
-            ScreenInfoBean screen = ScreenFitUtil.getCurrentDeviceInfo();
-            p.put(MAKE_WINDOW_WIDTH, screen.width + "");
-            p.put(MAKE_WINDOW_HEIGHT, screen.height + "");
+//            ScreenInfoBean screen = ScreenFitUtil.getCurrentDeviceInfo();
+            p.put(MAKE_WINDOW_WIDTH, info.pageWidth + "");
+            p.put(MAKE_WINDOW_HEIGHT, info.pageHeight + "");
             //
             p.put(COURSE_ID, MD5Util.getUUID());
             // shareUrl.

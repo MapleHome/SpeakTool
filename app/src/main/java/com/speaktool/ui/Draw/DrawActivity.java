@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -32,13 +31,12 @@ import com.speaktool.api.Draw;
 import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
+import com.speaktool.api.PlayMode;
 import com.speaktool.bean.ActivePageData;
 import com.speaktool.bean.ClearPageData;
 import com.speaktool.bean.CopyPageData;
 import com.speaktool.bean.CreatePageData;
-import com.speaktool.bean.MusicBean;
 import com.speaktool.bean.PageBackgroundData;
-import com.speaktool.bean.RecordUploadBean;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.busevents.EraserEvent;
@@ -60,7 +58,6 @@ import com.speaktool.impl.modes.DrawModeCode;
 import com.speaktool.impl.modes.DrawModeEraser;
 import com.speaktool.impl.modes.DrawModePath;
 import com.speaktool.impl.paint.DrawPaint;
-import com.speaktool.impl.player.SoundPlayer;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecordError;
 import com.speaktool.impl.recorder.RecorderContext;
@@ -137,7 +134,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     private RecordBean recordBean;
     private List<Page> pages = new ArrayList<>();// 【画册】- 画纸集合
     private int currentBoardIndex = 0; // 当前画纸在画册中的索引
-    private String mRecordDir;// 课程目录
+//    private String mRecordDir;// 课程目录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +143,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         mContext = this;
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        recordBean = RecordBean.getInstance();
+        recordBean = new RecordBean();
         // 绘制
         if (android.os.Build.VERSION.SDK_INT >= 18) {
             // mIBISPenController = new IBISPenController(this);
@@ -581,63 +578,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     // =====================操作命令--结束=======================================
-    // =====================视频播放器--开始=======================================
 
-//    private Runnable hideVideoControllerRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
-//        }
-//    };
-
-    @Override
-    public void showVideoController() {
-//        if (layoutVideoController.getVisibility() == View.VISIBLE) {
-//            layoutVideoController.setVisibility(View.INVISIBLE);
-//            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
-//            return;
-//        }
-//        layoutVideoController.setVisibility(View.VISIBLE);
-//        layoutVideoController.postDelayed(hideVideoControllerRunnable, 5000);
-
-    }
-
-    @Override
-    public void onPlayComplete() {
-//        postTaskToUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
-//
-//                int p = JsonScriptPlayer.MAX_PROGRESS;
-//                String totalstr = FormatUtils.getFormatTimeSimple(p);
-//                layoutVideoController.setProgress(p);
-//                layoutVideoController.setProgressText(totalstr);
-//            }
-//        });
-    }
-
-    @Override
-    public void onPlayStart() {
-//        postTaskToUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
-//            }
-//        });
-    }
-
-    // =====================视频播放器--结束=======================================
-
-    @Override
-    public void resetAllViews() {
-        viewFlipper.removeAllViews();
-        pages.clear();
-        currentBoardIndex = 0;
-        resetPageId();
-        DrawPage.resetShapeId(this);
-        initPage();
-    }
 
     @Override
     protected void onDestroy() {
@@ -652,16 +593,16 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         // 反注册EventBus订阅者
         EventBus.getDefault().unregister(this);
         resetPageId();
-        DrawPage.resetShapeId(this);
+        DrawPage.resetShapeId(PlayMode.MAKE);
         //
         getPageRecorder().closeWorldTimer();
-        SoundPlayer.unique().stop();// stop other sound.
+//        SoundPlayer.unique().stop();// stop other sound.
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        if (getPlayMode() == PlayMode.MAKE && getCurrentBoard().getFocusedView() != null) {
+        if (getCurrentBoard().getFocusedView() != null) {
             // 通过EventBus订阅者发送消息
             EventBus.getDefault().post(new CloseEditPopupWindowEvent());
             return;
@@ -734,7 +675,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void saveRecord(RecordUploadBean recordUploadBean) {
+    public void saveRecord(RecordBean recordBean) {
         showLoading("保存中，请稍侯...", new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -756,7 +697,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             }
         });
         getPageRecorder().saveCurrentPageRecord();// 保存当前页数据
-        boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordUploadBean);
+        boolean isSuccess = RecordFileAnalytic.setRecordInfos(getPageRecorder().getDir(), recordBean);
 //        boolean isSuccess = getPageRecorder().setRecordInfos(recordUploadBean);// save info.txt
         try {
             //save release.txt
@@ -802,10 +743,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         }
     }
 
-    @Override
-    public void deleteRecord() {
-        getPageRecorder().deleteRecordDir();
-    }
 
     private String getErrorMsg(RecordError error) {
         switch (error) {
@@ -1024,6 +961,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return mRecorderContext;
     }
 
+
     private int pageID;
 
     @Override
@@ -1043,9 +981,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     @Override
     public void setPageBackgroundImpl(int pageId, Page_BG backgroundType) {
         Page board = getPageFromId(pageId);
-        if (board == null)
-            return;
-        board.setBackgroundType(backgroundType);
+        if (board != null){
+            board.setBackgroundType(backgroundType);
+        }
     }
 
     @Override
@@ -1152,7 +1090,7 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
             @Override
             public void run() {
                 getRecorderContext().pause();
-                SoundPlayer.unique().pause();
+//                SoundPlayer.unique().pause();
             }
         });
     }
@@ -1207,11 +1145,9 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
      */
     private String copyImgToRecordDir(String imgPath) {
         if (BitmapScaleUtil.isGif(imgPath)) {
-            final String resname = RecordFileUtils.copyGifToRecordDir(imgPath, getRecordDir());
-            return resname;
+            return RecordFileUtils.copyGifToRecordDir(imgPath, getRecordDir());
         } else {
-            final String resname = RecordFileUtils.copyBitmapToRecordDir(imgPath, getRecordDir());
-            return resname;
+            return RecordFileUtils.copyBitmapToRecordDir(imgPath, getRecordDir());
         }
     }
 
@@ -1231,17 +1167,10 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
                     if (ret != null) {
                         images.add(ret);
                     } else {
-                        SpeakApp.getUiHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                T.showShort(mContext, "图片添加失败！");
-                            }
-                        });
+                        T.showShort(mContext, "图片添加失败！");
                     }
                 }// for end.
-                /**
-                 * do after copy finish.
-                 */
+                // do after copy finish.
                 batchImportFirstPageId = getCurrentBoard().getPageID();
                 runnAddImgTask(images);
             }
@@ -1275,15 +1204,8 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
     }
 
     @Override
-    public void setRecordDir(String dir) {
-        mRecordDir = dir;
-    }
-
-    @Override
     public String getRecordDir() {
-        if (TextUtils.isEmpty(mRecordDir))
-            return getPageRecorder().getRecordDir();
-        return mRecordDir;
+        return getPageRecorder().getRecordDir();
     }
 
     @Override
@@ -1306,21 +1228,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return recordBean.pageHeight;
     }
 
-    @Override
-    public void removeAllHandlerTasks() {
-        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
-    }
-
-    @Override
-    public void showViewFlipperOverlay() {
-        viewFlipperOverlay.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideViewFlipperOverlay() {
-        viewFlipperOverlay.setVisibility(View.GONE);
-    }
-
     // 显示文本编辑功能栏
     @Override
     public void showEditClickPopup(EditWidget edit) {
@@ -1341,9 +1248,6 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return pages.get(position);
     }
 
-    @Override
-    public void addGlobalMusic(MusicBean music) {
-    }
 
     // ---------------------------------------------------------------------------------------
 
@@ -1376,4 +1280,90 @@ public class DrawActivity extends Activity implements OnClickListener, OnTouchLi
         return pages.indexOf(bd);// 搜索指定的对象，并返回整个 List 中第一个匹配项的从零开始的索引。
     }
 
+
+    @Override
+    public void showVideoController() {
+//        if (layoutVideoController.getVisibility() == View.VISIBLE) {
+//            layoutVideoController.setVisibility(View.INVISIBLE);
+//            layoutVideoController.removeCallbacks(hideVideoControllerRunnable);
+//            return;
+//        }
+//        layoutVideoController.setVisibility(View.VISIBLE);
+//        layoutVideoController.postDelayed(hideVideoControllerRunnable, 5000);
+    }
+
+
+    // =====================视频播放器--开始=======================================
+
+//    private Runnable hideVideoControllerRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            layoutVideoController.setVisibility(View.INVISIBLE);// 隐藏播放器
+//        }
+//    };
+
+//    @Override
+//    public void onPlayComplete() {
+//        postTaskToUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_play);
+//
+//                int p = JsonScriptPlayer.MAX_PROGRESS;
+//                String totalstr = FormatUtils.getFormatTimeSimple(p);
+//                layoutVideoController.setProgress(p);
+//                layoutVideoController.setProgressText(totalstr);
+//            }
+//        });
+//    }
+
+//    @Override
+//    public void onPlayStart() {
+//        postTaskToUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                layoutVideoController.setPlayPauseIcon(android.R.drawable.ic_media_pause);
+//            }
+//        });
+//    }
+
+    // =====================视频播放器--结束=======================================
+//    @Override
+//    public void showVideoController() {
+//
+//    }
+//    @Override
+//    public void deleteRecord() {
+//        getPageRecorder().deleteRecordDir();
+//    }
+//    @Override
+//    public void resetAllViews() {
+//        viewFlipper.removeAllViews();
+//        pages.clear();
+//        currentBoardIndex = 0;
+//        resetPageId();
+//        DrawPage.resetShapeId(PlayMode.MAKE);
+//        initPage();
+//    }
+//    @Override
+//    public void removeAllHandlerTasks() {
+//        SpeakApp.getUiHandler().removeCallbacksAndMessages(null);
+//    }
+//
+//    @Override
+//    public void showViewFlipperOverlay() {
+//        viewFlipperOverlay.setVisibility(View.VISIBLE);
+//    }
+//
+//    @Override
+//    public void hideViewFlipperOverlay() {
+//        viewFlipperOverlay.setVisibility(View.GONE);
+//    }
+//    @Override
+//    public void addGlobalMusic(MusicBean music) {
+//    }
+//    @Override
+//    public void setRecordDir(String dir) {
+//        mRecordDir = dir;
+//    }
 }

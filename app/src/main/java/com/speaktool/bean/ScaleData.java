@@ -19,6 +19,11 @@ public class ScaleData {
         this.y = y;
     }
 
+    public void bianHuanXY(float fx, float fy) {
+        this.x = (int) (this.x * fx);
+        this.y = (int) (this.y * fy);
+    }
+
     private static float formatFloat(float f) {
         return FormatUtils.formatFloat(f);
 

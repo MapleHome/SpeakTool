@@ -1,21 +1,18 @@
 package com.speaktool.ui.Player;
 
 import android.app.Dialog;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentActivity;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.speaktool.R;
 import com.speaktool.view.dialogs.LoadingDialog;
 
+import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,24 +22,16 @@ import butterknife.ButterKnife;
  * @author shaoshuai
  */
 public class PlayUrlVideoActivity extends FragmentActivity {
+    public static final String EXTRA_VIDEO_URL = "video_url";
+
     @BindView(R.id.videoView) VideoView videoView;
 
     private VideoView mVideoView;
     private Dialog mLoadingDialog;
 
-    public static final String EXTRA_VIDEO_URL = "video_url";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /* 设置播放视频时候不需要的部分 *//* 以下代码需要写在setContentView();之前 */
-        /* 去掉title */
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        /* 设置全屏 */
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        /* 设置屏幕常亮 *//* flag：标记 ； */
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        super.onCreate(savedInstanceState);// inject finish.
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_videoplay);
         ButterKnife.bind(this);
 
@@ -65,11 +54,6 @@ public class PlayUrlVideoActivity extends FragmentActivity {
         mLoadingDialog.show();
         mVideoView.start();// 开始播放视频
         mVideoView.requestFocus();// 请求获取焦点
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     @Override

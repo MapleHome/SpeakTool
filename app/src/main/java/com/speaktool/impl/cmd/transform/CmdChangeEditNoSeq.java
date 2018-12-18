@@ -1,6 +1,6 @@
 package com.speaktool.impl.cmd.transform;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.EditCommonData;
 import com.speaktool.impl.cmd.CmdBase;
@@ -20,7 +20,7 @@ public class CmdChangeEditNoSeq extends CmdBase<EditCommonData> {
     }
 
     @Override
-    public void run(final Draw draw, Page bw) {
+    public void run(final BaseDraw draw, Page bw) {
         final EditCommonData data = getData();
         draw.postTaskToUiThread(new Runnable() {
 

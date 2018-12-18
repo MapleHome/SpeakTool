@@ -1,6 +1,6 @@
 package com.speaktool.impl.cmd.delete;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.DeleteShapeData;
 import com.speaktool.bean.ImageCommonData;
@@ -21,7 +21,7 @@ public class CmdDeleteImage extends CmdBase<DeleteShapeData> {
     }
 
     @Override
-    public void run(final Draw draw, Page bw) {
+    public void run(final BaseDraw draw, Page bw) {
         final DeleteShapeData data = getData();
         draw.postTaskToUiThread(new Runnable() {
 

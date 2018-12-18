@@ -33,11 +33,10 @@ public class UserFMActivity extends FragmentActivity {
     public static final int INIT_USER_LOGIN = 2;// 用户登陆
     public static final int INIT_USER_INFO = 3;// 用户信息
     public static final int INIT_USER_INFO_CHANGE = 4;// 用户信息修改
-
     public static final int INIT_APP_FEEDBACK = 5;// 意见反馈
     public static final int INIT_APP_ABOUT = 6;// 其他
 
-    public static final String IN_LOAGING_PAGE_INDEX = "intent_load_page_index";// 需要加载的页面
+    public static final String LOAD_PAGE_INDEX = "intent_load_page_index";// 需要加载的页面
     public int loadViewIndex = 0;// 默认填充的页面
 
     @Override
@@ -51,7 +50,7 @@ public class UserFMActivity extends FragmentActivity {
 
     private void initView() {
         Intent it = getIntent();
-        loadViewIndex = it.getIntExtra(IN_LOAGING_PAGE_INDEX, 0);
+        loadViewIndex = it.getIntExtra(LOAD_PAGE_INDEX, 0);
         switch (loadViewIndex) {
             case INIT_USER_REGISTER:// 注册
                 loadView(new UserRegisterPage());

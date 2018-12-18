@@ -1,6 +1,6 @@
 package com.speaktool.impl.cmd.create;
 
-import com.speaktool.api.Draw;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.bean.DeleteShapeData;
 import com.speaktool.bean.ImageCommonData;
@@ -20,10 +20,8 @@ public class CmdCreateImage extends CmdCreateShape<ImageCommonData> {
     }
 
     @Override
-    public void run(final Draw draw, Page bw) {
-
+    public void run(final BaseDraw draw, Page bw) {
         final ImageCommonData data = getData();
-
         draw.postTaskToUiThread(new Runnable() {
             @Override
             public void run() {
@@ -48,7 +46,6 @@ public class CmdCreateImage extends CmdCreateShape<ImageCommonData> {
 //		CmdCreateImage copy = new CmdCreateImage();
 //		copy.setTime(getTime());
 //		copy.setData(getData());
-
         return this;
     }
 

@@ -7,17 +7,15 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.speaktool.Const;
-import com.speaktool.api.Draw;
-import com.speaktool.bean.LocalRecordBean;
+import com.speaktool.api.Play;
 import com.speaktool.bean.TransformShapeData;
 import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.utils.RecordFileUtils;
+import com.speaktool.ui.Draw.RecordBean;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,11 +33,12 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 @SuppressWarnings("rawtypes")
 public class JsonScriptPlayer {
-    private JsonScriptParser parser;
-    private Draw draw;
-    private MediaPlayer mSoundPlayer;
+    public static final int MAX_PROGRESS = 1000;
 
+    private MediaPlayer mSoundPlayer;
+    private Play draw;
     private File mJsonFile;
+    private List<ICmd> orgCmds;
     private int mPlayDuration;// 音频总时长
 
     private volatile boolean isExit = false;
@@ -48,32 +47,19 @@ public class JsonScriptPlayer {
     private volatile boolean isPlayComplete = false;// 是否播放完
     private volatile boolean isUserPlaying = false;
 
-    public File getScreenInfoFile(File dir) {
-        File[] files = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getAbsolutePath().endsWith(Const.CMD_FILE_SUFFIX);
-            }
-        });
-        if (files == null || files.length < 1)
-            return null;
-        return files[0];
-    }
 
-    public JsonScriptPlayer(LocalRecordBean rec, Draw draw) {
+    public JsonScriptPlayer(RecordBean rec, Play draw) {
         this.draw = draw;
-        String recordDirPath = rec.getRecordDir();
-
-        draw.setRecordDir(recordDirPath);
-        File recordDir = new File(recordDirPath);
-
-        parser = new JsonScriptParser(draw.context(), getScreenInfoFile(recordDir));
+        File recordDir = new File(rec.dir);
         // 内容文件 release.txt
         mJsonFile = new File(recordDir, Const.RELEASE_JSON_SCRIPT_NAME);
         if (!mJsonFile.exists()) {
             throw new IllegalArgumentException("脚本文件不存在！");
         }
-
+        if (orgCmds == null) {
+            JsonScriptParser parser = new JsonScriptParser(draw.context(), mJsonFile);
+            orgCmds = parser.jsonFileToCmds(mJsonFile.getAbsolutePath());
+        }
         mSoundPlayer = new MediaPlayer();
         mSoundPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mSoundPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -96,26 +82,8 @@ public class JsonScriptPlayer {
             throw new IllegalArgumentException("播放文件不存在！");
         }
 
-
         startCmdPlayThread();
         startRefreshProgressUi();
-    }
-
-    private void showLoading() {
-        // Intent it = new Intent(draw.context(), DialogActivity.class);
-        // it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // draw.context().startActivity(it);
-    }
-
-    private void closeLoading() {
-        // draw.postTaskToUiThread(new Runnable() {
-        // @Override
-        // public void run() {
-        // Intent it = new Intent(DialogActivity.ACTION_CLOSE_DIALOG);
-        // draw.context().sendBroadcast(it);
-        // }
-        // });
-
     }
 
     public void exitPlayer() {
@@ -154,10 +122,7 @@ public class JsonScriptPlayer {
         play(-1);
     }
 
-    private List<ICmd> orgCmds;
-
     private void play(final int seekPosition) {
-        showLoading();
         runTask(new Runnable() {
             @Override
             public void run() {
@@ -165,10 +130,7 @@ public class JsonScriptPlayer {
                 isRequestStopPlayThread = false;
                 isPlayComplete = false;
                 isSounFinish = false;
-                //
-                if (orgCmds == null) {
-                    orgCmds = parser.jsonFileToCmds(mJsonFile.getAbsolutePath());
-                }
+
                 List<ICmd> seekedCmds = getSeekedCmds(orgCmds, seekPosition);
                 final int size = seekedCmds.size();
                 draw.postTaskToUiThread(new Runnable() {
@@ -204,8 +166,6 @@ public class JsonScriptPlayer {
                         draw.postTaskToUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                closeLoading();
-                                draw.hideViewFlipperOverlay();
                                 draw.getCurrentBoard().refresh();
                             }
                         });
@@ -225,8 +185,6 @@ public class JsonScriptPlayer {
                 draw.postTaskToUiThread(new Runnable() {// 所有CMD完成后刷新
                     @Override
                     public void run() {
-                        closeLoading();
-                        draw.hideViewFlipperOverlay();
                         draw.getCurrentBoard().refresh();
                     }
                 });
@@ -331,12 +289,10 @@ public class JsonScriptPlayer {
         return isUserPlaying;
     }
 
-    public static final int MAX_PROGRESS = 1000;
-
-    public void seekTo(final long position) {
+    public void seekTo(long position) {
         //seekforward or seekback.
         isRequestStopPlayThread = true;
-        final int positionTimeMills = (int) (((float) position / MAX_PROGRESS) * mPlayDuration);
+        final int positionTimeMills = (int) (((float) position / 1000) * mPlayDuration);
         if (position > 0) {// seek.
             mSoundPlayer.seekTo(positionTimeMills);
         } else {// replay.
@@ -348,7 +304,6 @@ public class JsonScriptPlayer {
         draw.postTaskToUiThread(new Runnable() {
             @Override
             public void run() {
-                draw.showViewFlipperOverlay();
                 play(positionTimeMills);
             }
         });

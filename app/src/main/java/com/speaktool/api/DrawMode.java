@@ -12,7 +12,7 @@ import com.speaktool.impl.modes.DrawModeCode;
  */
 public interface DrawMode {
 
-	boolean touchDraw(MotionEvent event, Draw draw);
+	boolean touchDraw(MotionEvent event, BaseDraw draw);
 
 	/** 获取模式代码 */
 	DrawModeCode getModeCode();

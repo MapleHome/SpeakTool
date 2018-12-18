@@ -15,10 +15,11 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 
 import com.speaktool.R;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
-import com.speaktool.api.Draw.PlayMode;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
+import com.speaktool.api.PlayMode;
 import com.speaktool.bean.ImageCommonData;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.EraserEvent;
@@ -70,7 +71,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     private final Paint bufferPaint = new Paint(Paint.DITHER_FLAG);
     public Bitmap bufferBitmap;
     private Canvas bufferCanvas;
-    private int mPlayBoardWidth;
+//    private int mPlayBoardWidth;
     private final List<PenShape_> penShapes = new ArrayList<PenShape_>();
 
     private final static int MAX_UNDO_SIZE = 100;// 最大可撤销次数
@@ -78,7 +79,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     private Stack<ICmd> cmdsRedo = new Stack<ICmd>();// 操作返回集合
 
     private FocusedView mFocusedView;
-    private Draw draw;
+    private BaseDraw draw;
     //
     private static int shapeId = 0;
     private static int playShapeId = 0;
@@ -87,7 +88,7 @@ public class DrawPage extends AbsoluteLayout implements Page {
     /**
      * 初始化画板纸张
      */
-    public DrawPage(Context context, Page_BG backgroundType, Draw draw, int pageId) {
+    public DrawPage(Context context, Page_BG backgroundType, BaseDraw draw, int pageId) {
         super(context);
         this.setBackgroundType(backgroundType);
         this.draw = draw;
@@ -184,10 +185,10 @@ public class DrawPage extends AbsoluteLayout implements Page {
         return !cmdsUndo.isEmpty() || !cmdsRedo.isEmpty();
     }
 
-    @Override
-    public int getPlayBoardWidth() {
-        return mPlayBoardWidth;
-    }
+//    @Override
+//    public int getPlayBoardWidth() {
+//        return mPlayBoardWidth;
+//    }
 
     @Override
     public void copyAllTo(final Page dest) {
@@ -522,11 +523,9 @@ public class DrawPage extends AbsoluteLayout implements Page {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        /**
-         * use to save info in make mode.
-         */
+        //use to save info in make mode.
         if (isMakeMode()) {
-            ScreenInfoBean info = new ScreenInfoBean(getWidth(),getHeight(),DisplayUtil.getScreenDensity(getContext()));
+            ScreenInfoBean info = new ScreenInfoBean(getWidth(), getHeight(), DisplayUtil.getScreenDensity(getContext()));
             ScreenFitUtil.setCurrentDeviceInfo(info);
             ScreenFitUtil.setInputDeviceInfo(info);
         }
@@ -623,8 +622,8 @@ public class DrawPage extends AbsoluteLayout implements Page {
         }
     }
 
-    public static void resetShapeId(Draw draw) {
-        if (draw.getPlayMode() == PlayMode.MAKE) {
+    public static void resetShapeId(PlayMode mode) {
+        if (mode == PlayMode.MAKE) {
             shapeId = 0;
         } else {
             playShapeId = 0;

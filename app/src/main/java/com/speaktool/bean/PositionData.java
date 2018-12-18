@@ -5,9 +5,13 @@ public class PositionData {
     private int y;
 
     public PositionData(int x, int y) {
-
         this.x = x;
         this.y = y;
+    }
+
+    public void bianHuan(float mx, float my) {
+        this.x = (int) (this.x * mx);
+        this.y = (int) (this.y * my);
     }
 
     public int getX() {

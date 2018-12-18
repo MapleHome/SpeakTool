@@ -10,6 +10,7 @@ import com.maple.recorder.recording.MsRecorder;
 import com.maple.recorder.recording.PullTransport;
 import com.maple.recorder.recording.Recorder;
 import com.speaktool.Const;
+import com.speaktool.api.BaseDraw;
 import com.speaktool.api.Draw;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.bean.ScriptData;
@@ -39,9 +40,9 @@ public class PageRecorder {
     //    private File soundFile;
     private File releaseSoundFile;
     private List<ICmd> cmdList = new ArrayList<ICmd>();
-    private Draw draw;
+    private BaseDraw draw;
 
-    public PageRecorder(Draw draw) {
+    public PageRecorder(BaseDraw draw) {
         this.draw = draw;
         // 创建记录目录 /spktl/records/1674a49413e/
         String dirpath = String.format("%s%s", Const.RECORD_DIR, Long.toHexString(System.currentTimeMillis()));

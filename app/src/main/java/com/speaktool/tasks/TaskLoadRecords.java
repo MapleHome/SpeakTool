@@ -1,8 +1,7 @@
 package com.speaktool.tasks;
 
 import com.speaktool.Const;
-import com.speaktool.api.CourseItem;
-import com.speaktool.bean.LocalRecordBean;
+import com.speaktool.ui.Draw.RecordBean;
 import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.record.RecordFileAnalytic;
 
@@ -18,11 +17,11 @@ import java.util.List;
  *
  * @author shaoshuai
  */
-public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
+public class TaskLoadRecords extends BaseRunnable<Integer, List<RecordBean>> {
     private RecordsUi mListener;
 
     public interface RecordsUi {
-        void onRecordsLoaded(List<CourseItem> datas);
+        void onRecordsLoaded(List<RecordBean> datas);
     }
 
     public TaskLoadRecords(RecordsUi listener) {
@@ -30,20 +29,20 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
     }
 
     @Override
-    public void onPostExecute(List<CourseItem> result) {
+    public void onPostExecute(List<RecordBean> result) {
         super.onPostExecute(result);
         mListener.onRecordsLoaded(result);
     }
 
     @Override
-    public List<CourseItem> doBackground() {
+    public List<RecordBean> doBackground() {
         return getLocalRecords();
     }
 
     /**
      * 获取本地课程记录
      */
-    private List<CourseItem> getLocalRecords() {
+    private List<RecordBean> getLocalRecords() {
         //  本地保存记录的根目录 /spktl/records/
         File basedir = new File(Const.RECORD_DIR);
         if (!basedir.exists())
@@ -57,26 +56,24 @@ public class TaskLoadRecords extends BaseRunnable<Integer, List<CourseItem>> {
         if (files == null || files.length == 0)
             return null;
 
-        List<CourseItem> recs = new ArrayList<>();
+        List<RecordBean> recs = new ArrayList<>();
         for (File dir : files) {
             File infoFile = new File(dir, Const.INFO_FILE_NAME);
             File mCmdFile = new File(dir, Const.RELEASE_JSON_SCRIPT_NAME);
             File audioFile = new File(dir, Const.RELEASE_SOUND_NAME);
             // 解析info.txt文件信息
-            LocalRecordBean infoBean = RecordFileAnalytic.analyticInfoFile(dir);
+            RecordBean infoBean = RecordFileAnalytic.analyticInfoFile(dir);
             if (infoBean != null && mCmdFile.exists()) {
-                infoBean.setRecordDir(dir.getAbsolutePath());
+                infoBean.dir = dir.getAbsolutePath();
                 recs.add(infoBean);
             } else {
                 FileUtils.deleteDir(dir);
             }
         }
-        Collections.sort(recs, new Comparator<CourseItem>() {
+        Collections.sort(recs, new Comparator<RecordBean>() {
             @Override
-            public int compare(CourseItem lhs, CourseItem rhs) {
-                long lt = lhs.getCreateTime();
-                long rt = rhs.getCreateTime();
-                return lt > rt ? -1 : lt < rt ? 1 : 0;
+            public int compare(RecordBean lhs, RecordBean rhs) {
+                return Long.compare(rhs.createTime, lhs.createTime);
             }
         });
         return recs;
