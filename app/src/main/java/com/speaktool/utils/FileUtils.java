@@ -34,7 +34,7 @@ public class FileUtils {
 
     public static String readFile(File file) throws IOException {
         StringBuilder sb = new StringBuilder();
-        if (!file.exists()) {
+        if (file.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = null;
             while ((line = reader.readLine()) != null) {

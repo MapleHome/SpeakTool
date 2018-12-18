@@ -2,13 +2,16 @@ package com.speaktool.ui.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 
+import com.google.gson.Gson;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Draw.DrawActivity;
+import com.speaktool.ui.Player.ReleaseBean;
 import com.speaktool.ui.Setting.UserFMActivity;
 import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.T;
@@ -50,17 +53,27 @@ public class MainActivity extends BaseFragmentActivity {
     @OnClick(R.id.ivSetting)
     void toSettingGPage() {
         Intent intent = new Intent(this, UserFMActivity.class);
-        intent.putExtra(UserFMActivity.IN_LOAGING_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
+        intent.putExtra(UserFMActivity.LOAD_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
         startActivity(intent);
     }
 
     private void test() {
+        String str = "/167bb3e8e3a/release.txt";
+        File releaseFile = new File(Const.RECORD_DIR, str);
         try {
-            File file = new File(Const.RECORD_DIR, "test.txt");
-            FileUtils.writeFile(file, "text88888");
+            String res = FileUtils.readFile(releaseFile);
+            ReleaseBean releaseBean = new Gson().fromJson(res, ReleaseBean.class);
+            Log.e("res ", " :   " + res + "  " + releaseBean.version);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        try {
+//            File file = new File(Const.RECORD_DIR, "test.txt");
+//            FileUtils.writeFile(file, "text88888");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Subscribe

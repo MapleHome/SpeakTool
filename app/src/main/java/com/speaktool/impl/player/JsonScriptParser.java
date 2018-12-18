@@ -90,15 +90,12 @@ public class JsonScriptParser {
      */
     public List<ICmd> jsonToCmds(String json) {
         try {
+            JSONArray jarr = new JSONObject(json).getJSONArray("wbEvents");
             List<ICmd> cmds = new ArrayList<ICmd>();
-            JSONObject script = new JSONObject(json);
             //
-            JSONArray jarr = script.getJSONArray("wbEvents");
-            int len = jarr.length();
             JSONObject cmdJson;
             String cmdType;
-
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < jarr.length(); i++) {
                 cmdJson = jarr.getJSONObject(i);
                 cmdType = cmdJson.getString("type");
                 if (cmdType.equals(ICmd.TYPE_CREATE_SHAPE)) {
@@ -239,7 +236,7 @@ public class JsonScriptParser {
                 return null;
             List<ICmd> totalCmds = new ArrayList<ICmd>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 totalCmds.addAll(jsonToCmds(line));
             }
