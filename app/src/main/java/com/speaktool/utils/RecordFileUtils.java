@@ -10,9 +10,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.speaktool.Const;
 import com.speaktool.bean.Html5ImageInfoBean;
-import com.speaktool.bean.Html5SoundInfoBean;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.bean.TransformShapeData;
+import com.speaktool.impl.bean.TransformShapeData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.player.JsonScriptParser;
 import com.speaktool.utils.record.RecordFileAnalytic;
@@ -252,7 +251,7 @@ public class RecordFileUtils {
         }// for files end.
 
 //        Html5SoundInfoBean sound = getScriptSound(dir, -1);
-        Html5SoundInfoBean sound = new Html5SoundInfoBean(Const.REALEASE_SOUND_FILE_TYPE, Const.RELEASE_SOUND_NAME);
+//        Html5SoundInfoBean sound = new Html5SoundInfoBean(Const.REALEASE_SOUND_FILE_TYPE, Const.RELEASE_SOUND_NAME);
         List<Html5ImageInfoBean> jpgNames = getScriptJpgNames(dir);
         if (jpgNames == null) {
             jpgNames = new LinkedList<>();
@@ -260,7 +259,7 @@ public class RecordFileUtils {
 
         writer.write("]");
         writer.write(",");
-        writer.write("\"sound\":" + new Gson().toJson(sound));
+        writer.write("\"sound\":" + Const.RELEASE_SOUND_NAME);
         writer.write(",");
         writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");

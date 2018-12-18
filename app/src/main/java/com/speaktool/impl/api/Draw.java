@@ -1,6 +1,8 @@
-package com.speaktool.api;
+package com.speaktool.impl.api;
 
+import com.speaktool.api.Page;
 import com.speaktool.api.Page.Page_BG;
+import com.speaktool.api.PhotoImporter;
 import com.speaktool.ui.Draw.RecordBean;
 
 /**

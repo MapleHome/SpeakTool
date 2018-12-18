@@ -2,11 +2,11 @@ package com.speaktool.impl.cmd.transform;
 
 import android.os.SystemClock;
 
-import com.speaktool.api.BaseDraw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.Page;
-import com.speaktool.bean.ChangeImageData;
-import com.speaktool.bean.ImageCommonData;
-import com.speaktool.bean.MoveData;
+import com.speaktool.impl.bean.ChangeImageData;
+import com.speaktool.impl.bean.ImageCommonData;
+import com.speaktool.impl.bean.MoveData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.view.layouts.OuterImage;
 

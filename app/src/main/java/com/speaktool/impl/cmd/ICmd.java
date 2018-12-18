@@ -1,7 +1,6 @@
 package com.speaktool.impl.cmd;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.Page;
 
 /**

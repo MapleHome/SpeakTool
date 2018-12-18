@@ -1,4 +1,4 @@
-package com.speaktool.impl.handpen;
+package com.speaktool.handpen;
 
 /**
  * 手写笔连接状态事件

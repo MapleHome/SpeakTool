@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Point;
 
 import com.google.gson.Gson;
-import com.speaktool.bean.ChangeEditData;
-import com.speaktool.bean.ChangeImageData;
-import com.speaktool.bean.MoveData;
-import com.speaktool.bean.ScaleData;
+import com.speaktool.impl.bean.ChangeEditData;
+import com.speaktool.impl.bean.ChangeImageData;
+import com.speaktool.impl.bean.MoveData;
+import com.speaktool.impl.bean.ScaleData;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.clear.CmdClearPage;

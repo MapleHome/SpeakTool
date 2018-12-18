@@ -1,4 +1,4 @@
-package com.speaktool.bean;
+package com.speaktool.ui.Player;
 
 import com.speaktool.impl.cmd.ICmd;
 

@@ -5,7 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
 import com.speaktool.SpeakApp;
-import com.speaktool.bean.PaintInfoBean;
+import com.speaktool.impl.bean.PaintInfoBean;
 import com.speaktool.utils.DensityUtils;
 import com.speaktool.tasks.MyColors;
 

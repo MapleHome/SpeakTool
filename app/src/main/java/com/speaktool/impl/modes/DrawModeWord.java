@@ -3,8 +3,7 @@ package com.speaktool.impl.modes;
 import android.view.MotionEvent;
 import android.widget.AbsoluteLayout;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.DrawMode;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.Page;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.impl.DrawModeManager;

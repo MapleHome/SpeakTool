@@ -1,9 +1,9 @@
 package com.speaktool.impl.cmd.create;
 
-import com.speaktool.api.BaseDraw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.Page;
-import com.speaktool.bean.DeleteShapeData;
-import com.speaktool.bean.ImageCommonData;
+import com.speaktool.impl.bean.DeleteShapeData;
+import com.speaktool.impl.bean.ImageCommonData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.delete.CmdDeleteImage;
 import com.speaktool.view.layouts.OuterImage;

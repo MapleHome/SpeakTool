@@ -1,4 +1,4 @@
-package com.speaktool.bean;
+package com.speaktool.impl.bean;
 
 /**
  * 复制页面数据

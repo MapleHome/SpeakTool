@@ -1,4 +1,4 @@
-package com.speaktool.api;
+package com.speaktool.impl.api;
 
 /**
  * 画板模式 -【播放】or【绘制】

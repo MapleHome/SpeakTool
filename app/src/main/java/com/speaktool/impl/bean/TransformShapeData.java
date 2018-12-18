@@ -1,4 +1,4 @@
-package com.speaktool.bean;
+package com.speaktool.impl.bean;
 
 public class TransformShapeData {
 

@@ -1,4 +1,4 @@
-package com.speaktool.bean;
+package com.speaktool.impl.bean;
 
 import com.speaktool.utils.FormatUtils;
 

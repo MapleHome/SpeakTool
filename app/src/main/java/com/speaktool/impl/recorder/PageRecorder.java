@@ -10,10 +10,9 @@ import com.maple.recorder.recording.MsRecorder;
 import com.maple.recorder.recording.PullTransport;
 import com.maple.recorder.recording.Recorder;
 import com.speaktool.Const;
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.bean.ScriptData;
+import com.speaktool.ui.Player.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.utils.ScreenFitUtil;
 

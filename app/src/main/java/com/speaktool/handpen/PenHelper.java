@@ -1,4 +1,4 @@
-package com.speaktool.impl.handpen;
+package com.speaktool.handpen;
 
 import android.bluetooth.BluetoothDevice;
 

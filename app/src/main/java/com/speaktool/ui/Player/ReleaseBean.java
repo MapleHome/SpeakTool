@@ -1,7 +1,8 @@
 package com.speaktool.ui.Player;
 
-import com.speaktool.bean.MoveData;
-import com.speaktool.bean.PositionData;
+import com.speaktool.bean.Html5ImageInfoBean;
+import com.speaktool.impl.bean.MoveData;
+import com.speaktool.impl.bean.PositionData;
 
 import java.util.List;
 
@@ -11,13 +12,13 @@ import java.util.List;
  */
 public class ReleaseBean {
     public List<Event> wbEvents;
-    public List<String> resources;
+    public List<Html5ImageInfoBean> resources;
     public Sound sound;
+    public int version;
+    public int inputRate;
     public int inputScreenWidth;
     public int inputScreenHeight;
     public int density;
-    public int version;
-    public int inputRate;
 
     public class Sound {
         public String path;

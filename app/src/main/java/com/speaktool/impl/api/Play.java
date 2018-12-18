@@ -1,4 +1,4 @@
-package com.speaktool.api;
+package com.speaktool.impl.api;
 
 /**
  * 播放模式

@@ -4,7 +4,7 @@ import android.graphics.Paint;
 
 import com.speaktool.R;
 import com.speaktool.SpeakApp;
-import com.speaktool.bean.PaintInfoBean;
+import com.speaktool.impl.bean.PaintInfoBean;
 import com.speaktool.tasks.MyColors;
 import com.speaktool.utils.DensityUtils;
 

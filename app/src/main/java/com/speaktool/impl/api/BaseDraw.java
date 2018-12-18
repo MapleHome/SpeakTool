@@ -1,7 +1,8 @@
-package com.speaktool.api;
+package com.speaktool.impl.api;
 
 import android.content.Context;
 
+import com.speaktool.api.Page;
 import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
@@ -85,7 +86,6 @@ public interface BaseDraw {
 
 
     void setPageBackgroundImpl(int pageId, Page.Page_BG bgType);
-
 
     //
     void preChangePage(final Runnable successRunnable);

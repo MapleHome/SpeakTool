@@ -1,4 +1,4 @@
-package com.speaktool.bean;
+package com.speaktool.impl.bean;
 
 /**
  * 当前互动纸张属性Item

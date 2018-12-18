@@ -8,7 +8,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.speaktool.R;
-import com.speaktool.bean.PaintInfoBean;
+import com.speaktool.impl.bean.PaintInfoBean;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.tasks.TaskLoadPaintColors;
 import com.speaktool.tasks.TaskLoadPaintColors.Callback;

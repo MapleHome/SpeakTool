@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.speaktool.R;
-import com.speaktool.api.Draw;
+import com.speaktool.impl.api.Draw;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.impl.DrawModeManager;
 import com.speaktool.impl.modes.DrawModeWord;

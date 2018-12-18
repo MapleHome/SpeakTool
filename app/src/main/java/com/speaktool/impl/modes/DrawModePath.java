@@ -3,13 +3,12 @@ package com.speaktool.impl.modes;
 import android.graphics.Path;
 import android.view.MotionEvent;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.DrawMode;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
 import com.speaktool.api.Page;
-import com.speaktool.bean.CreatePenData;
-import com.speaktool.bean.MoveData;
-import com.speaktool.bean.PositionData;
+import com.speaktool.impl.bean.CreatePenData;
+import com.speaktool.impl.bean.MoveData;
+import com.speaktool.impl.bean.PositionData;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 import com.speaktool.impl.cmd.create.CmdCreatePen;
 import com.speaktool.impl.paint.DrawPaint;

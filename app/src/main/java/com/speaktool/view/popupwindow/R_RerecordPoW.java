@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.speaktool.R;
-import com.speaktool.api.Draw;
-import com.speaktool.utils.T;
+import com.speaktool.impl.api.Draw;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

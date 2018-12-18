@@ -1,8 +1,8 @@
-package com.speaktool.api;
+package com.speaktool.impl.modes;
 
 import android.view.MotionEvent;
 
-import com.speaktool.impl.modes.DrawModeCode;
+import com.speaktool.impl.api.BaseDraw;
 
 /**
  * 绘制模式

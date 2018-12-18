@@ -1,7 +1,7 @@
 package com.speaktool.tasks;
 
 import com.speaktool.R;
-import com.speaktool.bean.PaintInfoBean;
+import com.speaktool.impl.bean.PaintInfoBean;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package com.speaktool.impl.cmd.clear;
 
-import com.speaktool.api.BaseDraw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.Page;
-import com.speaktool.bean.ClearPageData;
+import com.speaktool.impl.bean.ClearPageData;
 import com.speaktool.impl.cmd.CmdBase;
 import com.speaktool.impl.cmd.ICmd;
 
