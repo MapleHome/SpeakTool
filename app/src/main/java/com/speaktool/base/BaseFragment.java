@@ -2,13 +2,12 @@ package com.speaktool.base;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 /**
  * Fragment基类
@@ -21,9 +20,14 @@ public abstract class BaseFragment extends Fragment {
     public View view;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mContext = getActivity();
         this.fm = getFragmentManager();
     }
 
@@ -38,6 +42,11 @@ public abstract class BaseFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData(savedInstanceState);
+    }
+
+    public boolean onKeyBackPressed() {
+        // 是否消耗掉back事件
+        return false;
     }
 
     public abstract int getLayoutRes();

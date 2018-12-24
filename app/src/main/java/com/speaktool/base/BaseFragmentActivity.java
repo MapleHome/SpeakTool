@@ -18,33 +18,26 @@ import com.speaktool.R;
  * @time 2018/10/11
  */
 public abstract class BaseFragmentActivity extends FragmentActivity {
-//    public LinearLayout ll_root;
-//    public FrameLayout fl_content;
-
     public Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 保持竖屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-//        setContentView(R.layout.activity_base_fragment);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 保持竖屏
         mContext = getBaseContext();
-
-//        findView();
     }
 
-//    private void findView() {
-//        ll_root = (LinearLayout) findViewById(R.id.ll_root);
-//        fl_content = (FrameLayout) findViewById(R.id.fl_content);
-//    }
-//
-//    public void setBaseContentView(int layoutID) {
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        inflater.inflate(layoutID, ll_root);
-//        fl_content.setVisibility(View.GONE);
-//    }
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fl_content);
+        if (fragment instanceof BaseFragment) {
+            if (!((BaseFragment) fragment).onKeyBackPressed()) {
+                backFragment();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     // ------------------ fragment ------------------
 
@@ -68,7 +61,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         ft.commit();
     }
 
-    public void onBack() {
+    public void backFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
         } else {
@@ -76,14 +69,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         }
     }
 
-    public boolean onNext() {
-        int nextPage = getSupportFragmentManager().getBackStackEntryCount() + 1;
+//    public boolean onNext() {
+//        int nextPage = getSupportFragmentManager().getBackStackEntryCount() + 1;
 //        if (fragmentList != null && fragmentList.size() > nextPage) {
 //            replaceView(fragmentList.get(nextPage));
 //            return true;
 //        }
-        return false;
-    }
-
+//        return false;
+//    }
 
 }
