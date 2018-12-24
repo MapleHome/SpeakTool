@@ -70,16 +70,14 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private UserBean session;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_user_info_change, null);
-        ButterKnife.bind(this, view);
-
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_user_info_change;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
+        ButterKnife.bind(this, view);
         mActivity.setTitle("个人信息修改");
 
         mLoadingDialog = new LoadingDialog(mActivity);

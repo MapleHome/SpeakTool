@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,15 +31,15 @@ public class AboutPage extends BaseFragment implements OnClickListener {
     private UserFMActivity mActivity;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_uc_about, null);
-        ButterKnife.bind(this, view);
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_uc_about;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
+        ButterKnife.bind(this, view);
+
         mActivity.setTitle("关于");
         // 版本号
         PackageInfo packageInfo = AppUtils.getPackageInfo(mContext);

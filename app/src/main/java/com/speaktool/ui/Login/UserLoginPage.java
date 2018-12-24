@@ -1,16 +1,14 @@
 package com.speaktool.ui.Login;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.speaktool.R;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.ui.Setting.UserFMActivity;
-import com.speaktool.base.BaseFragment;
 import com.speaktool.utils.T;
 import com.speaktool.utils.UserInfoValidateUtil;
 
@@ -38,16 +36,14 @@ public class UserLoginPage extends BaseFragment {
     private UserFMActivity mActivity;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_user_login, null);
-        ButterKnife.bind(this, view);
-
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_user_login;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
+        ButterKnife.bind(this, view);
         mActivity.setTitle("登录");
     }
 

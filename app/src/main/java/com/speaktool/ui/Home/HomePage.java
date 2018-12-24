@@ -38,15 +38,13 @@ public class HomePage extends BaseFragment {
     private RecordsAdapter recordsAdapter;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_home, null);
-        ButterKnife.bind(this, view);
-
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_home;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        ButterKnife.bind(this, view);
         // 记录列表
         recordsAdapter = new RecordsAdapter(mContext, null);
         gv_records.setAdapter(recordsAdapter);

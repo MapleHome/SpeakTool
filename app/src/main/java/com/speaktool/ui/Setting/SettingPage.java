@@ -3,7 +3,6 @@ package com.speaktool.ui.Setting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,10 +12,10 @@ import android.widget.TextView;
 
 import com.speaktool.Const;
 import com.speaktool.R;
+import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.Login.UserLoginPage;
-import com.speaktool.base.BaseFragment;
 import com.speaktool.view.dialogs.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,16 +47,15 @@ public class SettingPage extends BaseFragment implements OnClickListener {
     private LoadingDialog mLoadingDialog;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_user_info, null);
-        ButterKnife.bind(this, view);
-
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_user_info;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
+        ButterKnife.bind(this, view);
+
         mActivity.setTitle("设置");
 
         mLoadingDialog = new LoadingDialog(mActivity);

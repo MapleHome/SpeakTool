@@ -1,7 +1,6 @@
 package com.speaktool.ui.Login;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -38,16 +37,14 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
     private LoadingDialog mLoadingDialog;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_user_register, null);
-        ButterKnife.bind(this, view);
-
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_user_register;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
+        ButterKnife.bind(this, view);
         mActivity.setTitle("注册");
         //
         mLoadingDialog = new LoadingDialog(mActivity);

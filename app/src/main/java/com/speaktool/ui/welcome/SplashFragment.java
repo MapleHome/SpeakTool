@@ -33,15 +33,14 @@ public class SplashFragment extends BaseFragment {
     SplashActivity mActivity;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_splash, null);
-        ButterKnife.bind(this, view);
-        mActivity = (SplashActivity) getActivity();
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_splash;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        mActivity = (SplashActivity) getActivity();
+        ButterKnife.bind(this, view);
         // 初始化页面
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View guideView1 = inflater.inflate(R.layout.activity_splash_view1, null);

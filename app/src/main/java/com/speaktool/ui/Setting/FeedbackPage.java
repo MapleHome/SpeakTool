@@ -1,7 +1,6 @@
 package com.speaktool.ui.Setting;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,15 +25,14 @@ public class FeedbackPage extends BaseFragment {
     private UserFMActivity mActivity;
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_uc_feedback, null);
-        ButterKnife.bind(this, view);
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_uc_feedback;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
         mActivity = (UserFMActivity) getActivity();
+        ButterKnife.bind(this, view);
         mActivity.setTitle("意见反馈");
 
         // 提交反馈
