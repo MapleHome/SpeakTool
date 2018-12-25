@@ -10,8 +10,7 @@ import com.speaktool.api.EditTransformer;
  * @author shaoshuai
  * 
  */
-public class DefEditTransformer extends DefViewTransformer implements
-		EditTransformer {
+public class DefEditTransformer extends DefViewTransformer implements EditTransformer {
 
 	@Override
 	public void changeColor(EditText edit, int newColor) {

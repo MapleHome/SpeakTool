@@ -29,8 +29,6 @@ public class DrawModeManager {
 		return sIns;
 	}
 
-
-
 	private DrawMode mode = new DrawModeChoice();
 
 	/** 获取绘制模式 */

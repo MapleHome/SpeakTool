@@ -2,7 +2,7 @@ package com.speaktool.impl.modes;
 
 import android.graphics.Path;
 
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.impl.bean.CreatePenData;
 import com.speaktool.impl.bean.MoveData;
 import com.speaktool.impl.bean.PositionData;

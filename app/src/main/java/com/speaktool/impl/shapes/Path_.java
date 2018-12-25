@@ -2,7 +2,7 @@ package com.speaktool.impl.shapes;
 
 import android.graphics.Path;
 
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 
 public class Path_ implements PenShape_ {
 

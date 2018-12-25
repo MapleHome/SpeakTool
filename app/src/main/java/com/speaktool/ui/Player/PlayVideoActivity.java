@@ -12,8 +12,8 @@ import android.widget.ViewFlipper;
 
 import com.speaktool.R;
 import com.speaktool.SpeakApp;
-import com.speaktool.api.Page;
-import com.speaktool.api.Page.Page_BG;
+import com.speaktool.impl.api.Page;
+import com.speaktool.impl.api.Page.Page_BG;
 import com.speaktool.impl.api.Play;
 import com.speaktool.impl.api.PlayMode;
 import com.speaktool.impl.bean.ClearPageData;

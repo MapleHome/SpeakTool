@@ -17,7 +17,7 @@ import android.widget.FrameLayout;
 import com.speaktool.R;
 import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.impl.api.PlayMode;
 import com.speaktool.impl.bean.ImageCommonData;
 import com.speaktool.bean.ScreenInfoBean;

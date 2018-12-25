@@ -1,6 +1,6 @@
 package com.speaktool.impl.bean;
 
-import com.speaktool.api.Page.Page_BG;
+import com.speaktool.impl.api.Page.Page_BG;
 
 /**
  * 画板纸张属性

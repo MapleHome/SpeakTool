@@ -16,7 +16,7 @@ import android.widget.AbsoluteLayout.LayoutParams;
 
 import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.api.ViewTransformer;
 import com.speaktool.impl.bean.ChangeImageData;
 import com.speaktool.impl.bean.DeleteShapeData;

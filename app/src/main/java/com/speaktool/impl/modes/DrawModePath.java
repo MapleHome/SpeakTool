@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 
 import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.impl.bean.CreatePenData;
 import com.speaktool.impl.bean.MoveData;
 import com.speaktool.impl.bean.PositionData;

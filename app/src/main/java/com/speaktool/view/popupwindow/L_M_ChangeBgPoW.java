@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 
 import com.speaktool.R;
 import com.speaktool.impl.api.Draw;
-import com.speaktool.api.Page.Page_BG;
+import com.speaktool.impl.api.Page.Page_BG;
 import com.speaktool.view.layouts.ItemViewChooseBackgroundPop;
 
 import butterknife.BindView;

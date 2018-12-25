@@ -14,5 +14,5 @@ public enum DrawModeCode {
 	/** 文字 */
 	WORD,
 	/** 橡皮擦 */
-	ERASER;
+	ERASER
 }

@@ -21,7 +21,7 @@ import android.widget.TextView.OnEditorActionListener;
 import com.speaktool.R;
 import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.impl.bean.ChangeEditData;
 import com.speaktool.impl.bean.DeleteShapeData;
 import com.speaktool.impl.bean.EditCommonData;

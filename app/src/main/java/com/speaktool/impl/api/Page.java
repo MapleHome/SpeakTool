@@ -1,7 +1,8 @@
-package com.speaktool.api;
+package com.speaktool.impl.api;
 
 import android.view.View;
 
+import com.speaktool.api.FocusedView;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.shapes.Path_;
 import com.speaktool.impl.shapes.PenShape_;

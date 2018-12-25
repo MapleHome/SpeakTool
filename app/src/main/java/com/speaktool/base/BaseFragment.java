@@ -19,6 +19,7 @@ public abstract class BaseFragment extends Fragment {
     public FragmentManager fm;
     public View view;
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -43,6 +44,7 @@ public abstract class BaseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initData(savedInstanceState);
     }
+
 
     public boolean onKeyBackPressed() {
         // 是否消耗掉back事件

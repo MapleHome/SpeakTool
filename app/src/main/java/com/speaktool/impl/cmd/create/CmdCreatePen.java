@@ -5,7 +5,7 @@ import android.graphics.Path;
 import android.os.SystemClock;
 
 import com.speaktool.impl.api.BaseDraw;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.impl.bean.CreatePenData;
 import com.speaktool.impl.bean.DeleteShapeData;
 import com.speaktool.impl.bean.MoveData;

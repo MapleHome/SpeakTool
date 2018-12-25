@@ -3,7 +3,7 @@ package com.speaktool.impl.cmd.transform;
 import android.os.SystemClock;
 
 import com.speaktool.impl.api.BaseDraw;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.impl.bean.ChangeImageData;
 import com.speaktool.impl.bean.ImageCommonData;
 import com.speaktool.impl.bean.MoveData;
