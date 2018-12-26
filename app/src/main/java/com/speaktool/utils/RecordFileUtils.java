@@ -263,11 +263,11 @@ public class RecordFileUtils {
         writer.write(",");
         writer.write("\"resources\":" + new Gson().toJson(jpgNames));
         writer.write(",");
-        writer.write("\"inputScreenWidth\":" + info.width);
+        writer.write("\"inputScreenWidth\":" + info.getWidth());
         writer.write(",");
-        writer.write("\"inputScreenHeight\":" + info.height);
+        writer.write("\"inputScreenHeight\":" + info.getHeight());
         writer.write(",");
-        writer.write("\"density\":" + info.density);
+        writer.write("\"density\":" + info.getDensity());
         writer.write(",");
         writer.write("\"version\":" + Const.SCRIPT_VERSION);
         writer.write(",");

@@ -14,15 +14,15 @@ public class ScreenFitUtil {
     private static int currentScreenDensity = 1;
 
     public static void setInputDeviceInfo(ScreenInfoBean info) {
-        inputScreenWidth = info.width;
-        inputScreenHeight = info.height;
-        inputScreenDensity = info.density;
+        inputScreenWidth = info.getWidth();
+        inputScreenHeight = info.getHeight();
+        inputScreenDensity = info.getDensity();
     }
 
     public static void setCurrentDeviceInfo(ScreenInfoBean info) {
-        currentScreenWidth = info.width;
-        currentScreenHeight = info.height;
-        currentScreenDensity = info.density;
+        currentScreenWidth = info.getWidth();
+        currentScreenHeight = info.getHeight();
+        currentScreenDensity = info.getDensity();
     }
 
     public static ScreenInfoBean getCurrentDeviceInfo() {

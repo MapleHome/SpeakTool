@@ -75,8 +75,8 @@ public class PlayVideoActivity extends FragmentActivity implements Play {
 
         ivPlayPause.setVisibility(View.INVISIBLE);// 隐藏播放器
         ScreenInfoBean currentScreen = ScreenFitUtil.getCurrentDeviceInfo();
-        pageWidth = currentScreen.width;
-        pageHeight = currentScreen.height;
+        pageWidth = currentScreen.getWidth();
+        pageHeight = currentScreen.getHeight();
         //
         initListener();
 

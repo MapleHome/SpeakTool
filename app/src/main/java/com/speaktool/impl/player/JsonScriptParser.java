@@ -74,7 +74,7 @@ public class JsonScriptParser {
         );
         ScreenFitUtil.setInputDeviceInfo(inputScreenInfo);
         //
-        float inputRatioHW = ((float) inputScreenInfo.height) / inputScreenInfo.width;
+        float inputRatioHW = ((float) inputScreenInfo.getHeight()) / inputScreenInfo.getWidth();
         Point screenSize = DisplayUtil.getScreenSize(mContext);
         Point size = ScreenFitUtil.getKeepRatioScaledSize(inputRatioHW, screenSize.x, screenSize.y);
 

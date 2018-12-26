@@ -190,9 +190,9 @@ public class PageRecorder {
         ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
 
         ScriptData scriptData = new ScriptData();
-        scriptData.setDensity(info.density);
-        scriptData.setInputScreenWidth(info.width);
-        scriptData.setInputScreenHeight(info.height);
+        scriptData.setDensity(info.getDensity());
+        scriptData.setInputScreenWidth(info.getWidth());
+        scriptData.setInputScreenHeight(info.getHeight());
         scriptData.setInputRate(60);
         scriptData.setVersion(1);
         scriptData.setWbEvents(cmdList);
