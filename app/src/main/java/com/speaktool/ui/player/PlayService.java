@@ -1,4 +1,4 @@
-package com.speaktool.ui.Player;
+package com.speaktool.ui.player;
 
 import android.app.Notification;
 import android.app.Service;

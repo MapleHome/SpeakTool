@@ -1,7 +1,6 @@
-package com.speaktool.ui.Home;
+package com.speaktool.ui.home;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -12,12 +11,11 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.speaktool.R;
-import com.speaktool.api.CourseItem;
 import com.speaktool.base.BaseFragment;
 import com.speaktool.tasks.TaskLoadRecords;
 import com.speaktool.tasks.TaskLoadRecords.RecordsUi;
 import com.speaktool.tasks.ThreadPoolWrapper;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 import com.speaktool.ui.adapters.RecordsAdapter;
 import com.speaktool.view.dialogs.CourseItemDesDialog;
 

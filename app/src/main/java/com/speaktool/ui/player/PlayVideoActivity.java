@@ -1,4 +1,4 @@
-package com.speaktool.ui.Player;
+package com.speaktool.ui.player;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ import com.speaktool.impl.recorder.PageRecorder;
 import com.speaktool.impl.recorder.RecorderContext;
 import com.speaktool.impl.shapes.EditWidget;
 import com.speaktool.impl.shapes.ImageWidget;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 import com.speaktool.utils.ScreenFitUtil;
 import com.speaktool.view.layouts.DrawPage;
 import com.speaktool.view.layouts.VideoSeekBar;

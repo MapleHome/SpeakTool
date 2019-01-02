@@ -1,4 +1,4 @@
-package com.speaktool.ui.Player;
+package com.speaktool.ui.player;
 
 import com.speaktool.bean.Html5ImageInfoBean;
 import com.speaktool.impl.bean.MoveData;

@@ -2,7 +2,7 @@ package com.speaktool.impl.api;
 
 import com.speaktool.impl.api.Page.Page_BG;
 import com.speaktool.api.PhotoImporter;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 
 /**
  * 绘画模式

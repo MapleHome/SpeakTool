@@ -17,7 +17,7 @@ import com.maple.msdialog.AlertDialog;
 import com.speaktool.R;
 import com.speaktool.impl.api.Draw;
 import com.speaktool.impl.player.PlayProcess;
-import com.speaktool.ui.Player.PlayService;
+import com.speaktool.ui.player.PlayService;
 import com.speaktool.view.dialogs.LoadingDialog;
 
 import butterknife.ButterKnife;

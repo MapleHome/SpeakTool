@@ -1,4 +1,4 @@
-package com.speaktool.ui.Setting;
+package com.speaktool.ui.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,7 @@ import com.speaktool.R;
 import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.ui.Login.UserLoginPage;
-import com.speaktool.view.dialogs.LoadingDialog;
+import com.speaktool.ui.login.UserLoginPage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,8 +42,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.bt_logout) Button bt_logout;// 注销
 
     private UserFMActivity mActivity;
-    private boolean isLogin = false;// 是否登陆
-    private LoadingDialog mLoadingDialog;
+    private boolean isLogin = true;// 是否登陆
 
     @Override
     public int getLayoutRes() {
@@ -58,8 +56,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
 
         mActivity.setTitle("设置");
 
-        mLoadingDialog = new LoadingDialog(mActivity);
-        if (false) {
+        if (isLogin) {
             isLogin = true;
             UserBean session = new UserBean();
             session.setId("7b2d5a11803b4363977bf8923dbd36a6");
@@ -136,8 +133,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
      * 注销
      */
     private void logout() {
-        mLoadingDialog.show("正在退出...");
-        mLoadingDialog.dismiss();
+        isLogin = false;
         initData(getArguments());
         EventBus.getDefault().post(new RefreshCourseListEvent());
 

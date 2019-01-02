@@ -1,4 +1,4 @@
-package com.speaktool.ui.Setting;
+package com.speaktool.ui.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.speaktool.R;
 import com.speaktool.base.BaseFragmentActivity;
-import com.speaktool.ui.Login.UserLoginPage;
-import com.speaktool.ui.Login.UserRegisterPage;
+import com.speaktool.ui.login.UserLoginPage;
+import com.speaktool.ui.login.UserRegisterPage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

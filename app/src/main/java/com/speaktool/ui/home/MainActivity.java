@@ -1,4 +1,4 @@
-package com.speaktool.ui.Home;
+package com.speaktool.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.ui.Draw.DrawActivity;
-import com.speaktool.ui.Player.ReleaseBean;
-import com.speaktool.ui.Setting.UserFMActivity;
+import com.speaktool.ui.draw.DrawActivity;
+import com.speaktool.ui.player.ReleaseBean;
+import com.speaktool.ui.setting.UserFMActivity;
 import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.T;
 

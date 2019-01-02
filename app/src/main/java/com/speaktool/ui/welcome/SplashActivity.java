@@ -10,7 +10,7 @@ import android.os.Message;
 import com.speaktool.Const;
 import com.speaktool.R;
 import com.speaktool.base.BaseFragmentActivity;
-import com.speaktool.ui.Home.MainActivity;
+import com.speaktool.ui.home.MainActivity;
 import com.speaktool.utils.SPUtils;
 import com.speaktool.utils.T;
 import com.speaktool.utils.permission.PermissionFragment;

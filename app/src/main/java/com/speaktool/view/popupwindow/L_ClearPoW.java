@@ -7,7 +7,7 @@ import android.view.View;
 import com.speaktool.R;
 import com.speaktool.impl.api.Draw;
 import com.speaktool.impl.bean.ClearPageData;
-import com.speaktool.ui.Draw.DrawActivity;
+import com.speaktool.ui.draw.DrawActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

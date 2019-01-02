@@ -12,7 +12,7 @@ import com.maple.recorder.recording.Recorder;
 import com.speaktool.Const;
 import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.ui.Player.ScriptData;
+import com.speaktool.ui.player.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.utils.ScreenFitUtil;
 

@@ -1,4 +1,4 @@
-package com.speaktool.ui.Setting;
+package com.speaktool.ui.setting;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

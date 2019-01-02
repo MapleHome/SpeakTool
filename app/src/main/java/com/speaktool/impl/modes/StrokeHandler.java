@@ -9,7 +9,7 @@ import com.speaktool.impl.bean.PositionData;
 import com.speaktool.impl.cmd.create.CmdCreatePen;
 import com.speaktool.impl.shapes.Path_;
 import com.speaktool.impl.shapes.Point_;
-import com.speaktool.ui.Draw.DrawActivity;
+import com.speaktool.ui.draw.DrawActivity;
 
 import java.util.ArrayList;
 import java.util.List;

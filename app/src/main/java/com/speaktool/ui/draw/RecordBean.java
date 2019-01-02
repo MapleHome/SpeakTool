@@ -1,4 +1,4 @@
-package com.speaktool.ui.Draw;
+package com.speaktool.ui.draw;
 
 import java.io.Serializable;
 

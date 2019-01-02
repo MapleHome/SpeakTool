@@ -1,7 +1,6 @@
-package com.speaktool.ui.Player;
+package com.speaktool.ui.player;
 
 import android.app.Dialog;
-import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
