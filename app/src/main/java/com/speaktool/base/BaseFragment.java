@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
  * Fragment基类
  *
  * @author maple
+ * @time 2018/12/22
  */
 public abstract class BaseFragment extends Fragment {
     public Context mContext;

@@ -3,8 +3,6 @@ package com.speaktool.impl.bean;
 import com.speaktool.utils.FormatUtils;
 
 public class ImageCommonData extends TransformShapeData {
-	public static final int ALPHA_FACTOR = 10000;
-	public static final int SCALE_FACTOR = 10000;
 	private float alpha;
 	private int rotation;
 	private float scale;
@@ -14,7 +12,6 @@ public class ImageCommonData extends TransformShapeData {
 
 	private static float formatFloat(float f) {
 		return FormatUtils.formatFloat(f);
-
 	}
 
 	public float getAlpha() {

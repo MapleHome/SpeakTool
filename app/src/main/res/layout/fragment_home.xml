@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 搜索记录 -->
     <GridView
         android:id="@+id/gv_records"
         android:layout_width="match_parent"

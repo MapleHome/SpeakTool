@@ -137,11 +137,17 @@ public class SettingPage extends BaseFragment implements OnClickListener {
      */
     private void logout() {
         mLoadingDialog.show("正在退出...");
-
         mLoadingDialog.dismiss();
         initData(getArguments());
         EventBus.getDefault().post(new RefreshCourseListEvent());
+
         fm.popBackStack();// 退出当前页面
+    }
+
+    @Override
+    public boolean onKeyBackPressed() {
+
+        return false;
     }
 
     /**

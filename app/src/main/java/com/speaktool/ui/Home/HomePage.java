@@ -70,6 +70,9 @@ public class HomePage extends BaseFragment {
         refreshIndexPage();
     }
 
+    /**
+     * 刷新数据
+     */
     public void refreshIndexPage() {
         ThreadPoolWrapper.newThreadPool(1)
                 .execute(new TaskLoadRecords(new RecordsUi() {
