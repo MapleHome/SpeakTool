@@ -3,32 +3,31 @@ package com.speaktool.ui.Setting;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.speaktool.R;
+import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.tasks.ThreadPoolWrapper;
 import com.speaktool.view.layouts.MyProgress;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 网页
  *
  * @author shaoshuai
  */
-public class WebActivity extends FragmentActivity implements OnClickListener {
-    @BindView(R.id.iv_back) ImageView iv_back;// 返回
+public class WebActivity extends BaseFragmentActivity {
+    @BindView(R.id.tv_back) TextView tv_back;// 返回
     @BindView(R.id.tv_title) TextView tv_title;// 标题
     @BindView(R.id.mp_ProgressBar) MyProgress mp_ProgressBar;// 加载圈
     @BindView(R.id.wv_content) WebView webView;// 网页
@@ -51,7 +50,6 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
         url = (String) it.getSerializableExtra(EXTRA_URL);
 
         initView();
-        initListener();
         initDate();
     }
 
@@ -73,17 +71,6 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
         setting.setLoadWithOverviewMode(true);
         // setting.setSupportZoom(true);// 设置可以支持缩放
 
-    }
-
-    private void initDate() {
-
-        webView.loadUrl(url);// "http://m.zol.com/tuan/"
-
-    }
-
-    private void initListener() {
-        iv_back.setOnClickListener(this);
-
         webView.setWebChromeClient(new ChromClient());
         webView.setWebViewClient(new WebViewClient() {
             // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
@@ -94,19 +81,17 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
                 return true;
             }
         });
-
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_back:// 返回
-                finish();
-                break;
-            default:
-                break;
-        }
+    private void initDate() {
+        webView.loadUrl(url);// "http://m.zol.com/tuan/"
     }
+
+    @OnClick(R.id.tv_back)
+    public void onBack() {
+        onBackPressed();
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -115,7 +100,6 @@ public class WebActivity extends FragmentActivity implements OnClickListener {
 
         pool.shutdownNow();// 关闭线程
         super.onDestroy();
-
     }
 
 

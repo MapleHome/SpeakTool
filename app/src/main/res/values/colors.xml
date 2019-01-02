@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="app_main_bg">#5698D9</color>
+    <color name="colorPrimary">@color/app_main_bg</color>
+    <color name="colorPrimaryDark">@color/app_main_bg</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- app style -->
+    <color name="app_main_bg">#4b9afb</color>
 
     <color name="draw_left_bar_bg">#c80066cc</color> <!-- 左侧功能条颜色 -->
     <color name="draw_right_bar_bg">#aa0066CC</color> <!-- 右侧功能条颜色 -->

@@ -8,7 +8,8 @@
         android:id="@+id/tv_back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:drawableLeft="@drawable/ic_arrow_left"
+        android:background="@drawable/selector_base_pressed_bg"
+        android:drawableStart="@drawable/ic_arrow_left"
         android:gravity="center"
         android:text="@string/back"
         android:textColor="@android:color/white" />
@@ -29,10 +30,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/selector_base_pressed_bg"
         android:gravity="center"
         android:padding="5dp"
         android:text="save"
-        android:visibility="gone"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>
