@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -45,69 +45,73 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@color/split_line"
         android:gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/split_line" />
+
+        <RelativeLayout
             android:id="@+id/ll_check_update"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginTop="0.5dp"
-            android:background="@drawable/selector_base_fillet_bg"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:background="@drawable/selector_base_bg"
+            android:paddingStart="10dp"
+            android:paddingEnd="15dp">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_weight="5.2"
-                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="检查更新"
                 android:textColor="#ff333333"
                 android:textSize="16sp" />
 
             <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.8"
-                android:contentDescription="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
                 android:src="@drawable/ic_arrow_green" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/split_line" />
+
+        <RelativeLayout
             android:id="@+id/ll_service_tel"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginTop="0.5dp"
-            android:background="@drawable/selector_base_fillet_bg"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:background="@drawable/selector_base_bg"
+            android:paddingStart="10dp"
+            android:paddingEnd="15dp">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_weight="5.2"
-                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="客服热线"
                 android:textColor="#ff333333"
                 android:textSize="16sp" />
 
             <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.8"
-                android:contentDescription="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
                 android:src="@drawable/ic_arrow_green" />
-        </LinearLayout>
 
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="0.5dp"
-            android:contentDescription="@null"
-            android:src="@color/split_line" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/split_line" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -115,9 +119,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:orientation="vertical">
 

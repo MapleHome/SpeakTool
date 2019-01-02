@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.speaktool.Const;
@@ -32,13 +32,13 @@ public class SettingPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.ib_userPortrait) ImageButton ib_userPortrait;// 用户头像
     @BindView(R.id.user_name) TextView user_name;// 用户名
 
-    @BindView(R.id.ll_my_note) LinearLayout ll_my_note;// 我的笔记
-    @BindView(R.id.ll_my_record) LinearLayout ll_my_record;// 我的视频
+    @BindView(R.id.ll_my_note) RelativeLayout ll_my_note;// 我的笔记
+    @BindView(R.id.ll_my_record) RelativeLayout ll_my_record;// 我的视频
 
-    @BindView(R.id.ll_guanwang) LinearLayout ll_guanwang;// 官网
-    @BindView(R.id.ll_tieba) LinearLayout ll_tieba;// 贴吧
-    @BindView(R.id.ll_feedback) LinearLayout ll_feedback;// 意见反馈
-    @BindView(R.id.ll_about) LinearLayout ll_about;// 关于
+    @BindView(R.id.ll_guanwang) RelativeLayout ll_guanwang;// 官网
+    @BindView(R.id.ll_tieba) RelativeLayout ll_tieba;// 贴吧
+    @BindView(R.id.ll_feedback) RelativeLayout ll_feedback;// 意见反馈
+    @BindView(R.id.ll_about) RelativeLayout ll_about;// 关于
 
     @BindView(R.id.bt_logout) Button bt_logout;// 注销
 

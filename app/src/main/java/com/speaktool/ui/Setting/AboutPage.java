@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.speaktool.R;
@@ -19,14 +20,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 关于
  *
- * @author shao
+ * @author maple
+ * @time 2019/1/2
  */
 public class AboutPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.tv_version) TextView tv_version;// APP版本
-    @BindView(R.id.ll_check_update) LinearLayout ll_check_update;// 检查更新
-    @BindView(R.id.ll_service_tel) LinearLayout ll_service_tel;// 服务热线
+    @BindView(R.id.ll_check_update) RelativeLayout ll_check_update;// 检查更新
+    @BindView(R.id.ll_service_tel) RelativeLayout ll_service_tel;// 服务热线
 
     private UserFMActivity mActivity;
 
