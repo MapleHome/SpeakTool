@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 /**
  * Fragment基类
@@ -17,20 +16,12 @@ import androidx.fragment.app.FragmentManager;
  */
 public abstract class BaseFragment extends Fragment {
     public Context mContext;
-    public FragmentManager fm;
     public View view;
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.fm = getFragmentManager();
     }
 
     @Override
@@ -45,7 +36,6 @@ public abstract class BaseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         initData(savedInstanceState);
     }
-
 
     public boolean onKeyBackPressed() {
         // 是否消耗掉back事件

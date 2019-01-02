@@ -98,7 +98,8 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
 
         mLoadingDialog.dismiss();
         EventBus.getDefault().post(new RefreshCourseListEvent());
-        fm.popBackStack();// 退出当前界面
+        mActivity.onBackPressed();// 退出当前页面
+//        fm.popBackStack();// 退出当前界面
     }
 
 }

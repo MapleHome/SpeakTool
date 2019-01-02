@@ -101,9 +101,9 @@ public class SettingPage extends BaseFragment implements OnClickListener {
             case R.id.ib_userPortrait:// 头像
             case R.id.user_name:// 用户名
                 if (isLogin) {// 已登录
-                    mActivity.replacePage(new UserInfoChangePage());
+                    mActivity.replaceView(new UserInfoChangePage());
                 } else {// 未登录
-                    toLogin();
+                    mActivity.replaceView(new UserLoginPage());
                 }
                 break;
             case R.id.ll_my_note:// 我的笔记
@@ -119,10 +119,10 @@ public class SettingPage extends BaseFragment implements OnClickListener {
                 toWebPage("讲讲贴吧", Const.SPEEKTOOL_BBS_URL);// 前往 讲讲贴吧
                 break;
             case R.id.ll_feedback:// 意见反馈
-                mActivity.replacePage(new FeedbackPage());
+                mActivity.replaceView(new FeedbackPage());
                 break;
             case R.id.ll_about:// 关于
-                mActivity.replacePage(new AboutPage());
+                mActivity.replaceView(new AboutPage());
                 break;
             case R.id.bt_logout:// 注销
                 logout();
@@ -141,20 +141,7 @@ public class SettingPage extends BaseFragment implements OnClickListener {
         initData(getArguments());
         EventBus.getDefault().post(new RefreshCourseListEvent());
 
-        fm.popBackStack();// 退出当前页面
-    }
-
-    @Override
-    public boolean onKeyBackPressed() {
-
-        return false;
-    }
-
-    /**
-     * 去登陆界面
-     */
-    private void toLogin() {
-        mActivity.replacePage(new UserLoginPage());
+        mActivity.onBackPressed();// 退出当前页面
     }
 
     /**

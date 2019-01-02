@@ -2,31 +2,27 @@ package com.speaktool.ui.Setting;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.speaktool.R;
+import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.ui.Login.UserLoginPage;
 import com.speaktool.ui.Login.UserRegisterPage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 /**
  * 基本视图容器-管理器
- * <p>
  * 打造一个只需要传递，需要加载那个页面索引标志的加载器
  *
- * @author shaoshuai
+ * @author maple
+ * @time 2019/1/2
  */
-public class UserFMActivity extends FragmentActivity {
-    @BindView(R.id.iv_back) ImageView iv_back;// 返回
+public class UserFMActivity extends BaseFragmentActivity {
+    @BindView(R.id.tv_back) TextView tv_back;// 返回
     @BindView(R.id.tv_title) TextView tv_title;// 标题
 
     public static final int INIT_USER_REGISTER = 1;// 用户注册
@@ -42,7 +38,7 @@ public class UserFMActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fm);
+        setContentView(R.layout.activity_base_top_bar_fragment);
         ButterKnife.bind(this);
 
         initView();
@@ -53,63 +49,34 @@ public class UserFMActivity extends FragmentActivity {
         loadViewIndex = it.getIntExtra(LOAD_PAGE_INDEX, 0);
         switch (loadViewIndex) {
             case INIT_USER_REGISTER:// 注册
-                loadView(new UserRegisterPage());
+                addView(new UserRegisterPage());
                 break;
             case INIT_USER_LOGIN:// 登陆
-                loadView(new UserLoginPage());
+                addView(new UserLoginPage());
                 break;
             case INIT_USER_INFO:// 用户信息
-                loadView(new SettingPage());
+                addView(new SettingPage());
                 break;
             case INIT_USER_INFO_CHANGE:// 用户信息修改
-                loadView(new UserInfoChangePage());
+                addView(new UserInfoChangePage());
                 break;
             case INIT_APP_FEEDBACK:// 意见反馈
-                loadView(new FeedbackPage());
+                addView(new FeedbackPage());
                 break;
             case INIT_APP_ABOUT:// 其他
-                loadView(new AboutPage());
+                addView(new AboutPage());
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * 加载填充视图
-     */
-    private void loadView(Fragment fg) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.id_content, fg).commit();
+    @OnClick(R.id.tv_back)
+    public void onBack() {
+        onBackPressed();
     }
 
-    /**
-     * 替换视图
-     */
-    public void replacePage(Fragment fg) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.id_content, fg);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
-
-    /**
-     * 返回处理
-     */
-    public void onBack(View view) {
-        FragmentManager fm = getSupportFragmentManager();
-        int num = fm.getBackStackEntryCount();
-        Log.e("", "++ Fragment回退栈数量：" + num);
-        if (num > 0) {
-            fm.popBackStack();
-        } else {
-            finish();
-        }
-    }
-
-    public void setTitle(String title){
+    public void setTitle(String title) {
         tv_title.setText(title);
     }
 

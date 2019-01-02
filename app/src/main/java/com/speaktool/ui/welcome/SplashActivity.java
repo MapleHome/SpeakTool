@@ -3,11 +3,9 @@ package com.speaktool.ui.welcome;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.speaktool.Const;
 import com.speaktool.R;
@@ -47,20 +45,17 @@ public class SplashActivity extends BaseFragmentActivity {
             addView(new SplashFragment());
         } else {
             // null ContentView, 快速加载Styles.Theme中windowBackground.
-            // setBaseContentView(R.layout.activity_splash_view1);
-
             long sleepTime = Const.SplashMinTime - (System.currentTimeMillis() - startTime);
             handler.sendEmptyMessageDelayed(MSG_ENTER_HOME, sleepTime);
         }
-//        initData();
 //        checkPermission();
     }
 
-    private void initData() {
-        String display = Build.DISPLAY;// 显示器- JLS36C
-        String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
-        Log.e("Splash", "当前设备：" + display + " -- " + manufacturer);
-    }
+//    private void initData() {
+//        String display = Build.DISPLAY;// 显示器- JLS36C
+//        String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
+//        Log.e("Splash", "当前设备：" + display + " -- " + manufacturer);
+//    }
 
     private void checkPermission() {
         String[] permissions = new String[]{

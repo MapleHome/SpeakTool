@@ -50,7 +50,7 @@ public class UserLoginPage extends BaseFragment {
     @OnClick(R.id.btnRegister)
     public void toRegisterPage() {
         // 跳转到注册
-        mActivity.replacePage(new UserRegisterPage());
+        mActivity.replaceView(new UserRegisterPage());
     }
 
     /**
@@ -74,7 +74,8 @@ public class UserLoginPage extends BaseFragment {
         userBean.setAccount(account);
         userBean.setPassword(pwd);
 
-        fm.popBackStack();// 退出当前页面
+        mActivity.onBackPressed();// 退出当前页面
+//        fm.popBackStack();// 退出当前页面
     }
 
 
