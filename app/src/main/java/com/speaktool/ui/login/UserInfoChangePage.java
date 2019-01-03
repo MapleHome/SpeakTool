@@ -24,11 +24,9 @@ import com.speaktool.api.PhotoImporter;
 import com.speaktool.api.PhotoImporter.PickPhotoCallback;
 import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
-import com.speaktool.tasks.TaskModifyUserInfo;
-import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
 import com.speaktool.ui.setting.SettingActivity;
 import com.speaktool.utils.T;
-import com.speaktool.view.dialogs.LoadingDialog;
+import com.speaktool.utils.UserSPUtils;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
 import com.speaktool.view.popupwindow.L_M_AddSinglePhotosPoW;
 
@@ -66,8 +64,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private static final int REQUEST_CODE_PICK_IMAGE = 2;// 挑选图片
     private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
     private SettingActivity mActivity;
-    private LoadingDialog mLoadingDialog;
-    private UserBean session;
+    private UserBean userBean;
 
     @Override
     public int getLayoutRes() {
@@ -80,15 +77,14 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
         ButterKnife.bind(this, view);
         mActivity.setTitle("个人信息修改");
 
-        mLoadingDialog = new LoadingDialog(mActivity);
-        session = null;
-//        session = UserDatabase.getUserLocalSession(mContext);
-        if (session != null) {
-//            setPortrait(session.getPortraitPath());// 设置头像
-            tv_name.setText(session.getNickName());// 用户名
-            tv_introduce.setText(session.getIntroduce());// 个性签名
-            tv_mail.setText(session.getEmail()); // 邮箱
-        }
+
+        userBean = new UserSPUtils().getUser();
+        tv_name.setText(userBean.getNickName());// 用户名
+        tv_introduce.setText(userBean.getIntroduce());// 个性签名
+        tv_sex.setText(userBean.getSex());// 性别
+        tv_birthday.setText(userBean.getBirthdate());//生日
+        tv_mail.setText(userBean.getEmail()); // 邮箱
+
         initListener();
     }
 
@@ -324,35 +320,15 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
      * 保存修改信息
      */
     private void saveModifyInfo() {
-        mLoadingDialog.show("正在保存...");
-        // TODO 判空
-//        session.setPortraitPath(portraitPath);// 头像地址
-        session.setNickName(tv_name.getText().toString().trim());// 昵称
-        session.setIntroduce(tv_introduce.getText().toString().trim());// 自我介绍
-        // 性别
-        // 生日
-        session.setEmail(tv_mail.getText().toString().trim());// 邮箱
-        // session.setPassword("");// 密码
+        // userBean.setPortraitPath(portraitPath);// 头像地址
+        userBean.setNickName(tv_name.getText().toString().trim());// 昵称
+        userBean.setIntroduce(tv_introduce.getText().toString().trim());// 自我介绍
+        userBean.setSex(tv_sex.getText().toString().trim());// 性别
+        userBean.setBirthdate(tv_birthday.getText().toString().trim());// 生日
+        userBean.setEmail(tv_mail.getText().toString().trim());// 邮箱
 
-        new Thread(new TaskModifyUserInfo(new ModifyUserInfoCallback() {
-            @Override
-            public void onSuccess() {
-                mLoadingDialog.dismiss();
-                T.showShort(mContext, "修改成功");
-            }
-
-            @Override
-            public void onResponseFail() {
-                mLoadingDialog.dismiss();
-                T.showShort(mContext, "修改失败");
-            }
-
-            @Override
-            public void onConnectFail() {
-                mLoadingDialog.dismiss();
-                T.showShort(mContext, "服务器链接失败！请检查网络");
-            }
-        }, session)).start();
+        new UserSPUtils().setUser(userBean);
+        T.showShort(mContext, "修改成功");
     }
 
 }

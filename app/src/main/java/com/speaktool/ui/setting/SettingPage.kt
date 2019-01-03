@@ -5,15 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import com.google.gson.Gson
 import com.speaktool.Const
 import com.speaktool.R
 import com.speaktool.base.BaseFragment
 import com.speaktool.bean.UserBean
-import com.speaktool.busevents.RefreshCourseListEvent
 import com.speaktool.ui.login.UserInfoChangePage
 import com.speaktool.ui.login.UserLoginPage
+import com.speaktool.utils.SPUtils
+import com.speaktool.utils.UserSPUtils
 import kotlinx.android.synthetic.main.fragment_user_info.*
-import org.greenrobot.eventbus.EventBus
 
 /**
  * 用户信息界面
@@ -23,7 +24,7 @@ import org.greenrobot.eventbus.EventBus
  */
 class SettingPage : BaseFragment(), OnClickListener {
     private lateinit var mActivity: SettingActivity
-    private var isLogin = true// 是否登陆
+    private lateinit var userBean: UserBean
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_user_info
@@ -33,22 +34,11 @@ class SettingPage : BaseFragment(), OnClickListener {
         mActivity = activity as SettingActivity
         mActivity.setTitle("设置")
 
-        if (isLogin) {
-            isLogin = true
-            val session = UserBean()
-            session.id = "7b2d5a11803b4363977bf8923dbd36a6"
-            session.nickName = "小可爱"
-            session.portraitPath = Const.SPEAK_SERVER_URL + "userPhoto/7b2d5a11803b4363977bf8923dbd36a6.jpg"
-            session.introduce = "更改赫兹日龙"
-            session.email = "939078792@qq.com"
-
-            // UserBean session = UserDatabase.getUserLocalSession(mContext);
-            // setPortrait(session.getPortraitPath());// 设置头像
-            user_name.text = session.nickName// 用户名
+        userBean = UserSPUtils().user
+        if (userBean.activity) {
+            user_name.text = userBean.nickName// 用户名
             bt_logout.visibility = View.VISIBLE// 注销按钮
-            // session.getIntroduce()// 简介
         } else {
-            isLogin = false
             ib_userPortrait.setImageResource(R.drawable.user_portrait)// 默认头像
             user_name.text = "登陆"// 用户名
             bt_logout.visibility = View.GONE// 隐藏注销按钮
@@ -71,7 +61,7 @@ class SettingPage : BaseFragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ib_userPortrait, R.id.user_name -> {// 头像,用户名
-                if (isLogin) {
+                if (userBean.activity) {
                     mActivity.replaceView(UserInfoChangePage())
                 } else {
                     mActivity.replaceView(UserLoginPage())
@@ -93,11 +83,9 @@ class SettingPage : BaseFragment(), OnClickListener {
      * 注销
      */
     private fun logout() {
-        isLogin = false
-        initData(arguments)
-        EventBus.getDefault().post(RefreshCourseListEvent())
+        UserSPUtils().setUserActivity(false)
 
-        mActivity.onBackPressed()// 退出当前页面
+        initData(arguments)
     }
 
     /**

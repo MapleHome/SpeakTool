@@ -3,10 +3,8 @@ package com.speaktool.ui.login
 import android.os.Bundle
 import com.speaktool.R
 import com.speaktool.base.BaseFragment
-import com.speaktool.bean.UserBean
 import com.speaktool.ui.setting.SettingActivity
-import com.speaktool.utils.T
-import com.speaktool.utils.UserInfoValidateUtil
+import com.speaktool.utils.UserSPUtils
 import kotlinx.android.synthetic.main.fragment_user_login.*
 
 /**
@@ -37,25 +35,22 @@ class UserLoginPage : BaseFragment() {
     /**
      * 登陆界面-登陆
      */
-    fun doLogin() {
+    private fun doLogin() {
         val account = etAccount.text.toString().trim()// 账户
         val pwd = etPwd.text.toString().trim()// 密码
 
-        if (!UserInfoValidateUtil.checkAccount(account)) {
-            T.showShort(mContext, "帐号格式不正确！")
-            return
-        }
-        if (!UserInfoValidateUtil.checkPassword(pwd)) {
-            T.showShort(mContext, "密码格式不正确！")
-            return
-        }
+//        if (!UserInfoValidateUtil.checkAccount(account)) {
+//            T.showShort(mContext, "帐号格式不正确！")
+//            return
+//        }
+//        if (!UserInfoValidateUtil.checkPassword(pwd)) {
+//            T.showShort(mContext, "密码格式不正确！")
+//            return
+//        }
 
-        val userBean = UserBean()
-        userBean.account = account
-        userBean.password = pwd
+        UserSPUtils().setUserActivity(true)
 
         mActivity.onBackPressed()
-
     }
 
 }
