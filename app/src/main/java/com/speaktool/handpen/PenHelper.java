@@ -19,7 +19,7 @@ public class PenHelper {
      * 获取连接成功的笔的蓝牙信息
      */
     public static BluetoothDevice getConnectSuccessPen() {
-        String previousPenJson = SPUtils.getString(PREF_PREVIOUS_PEN, null);
+        String previousPenJson = new SPUtils().getString(PREF_PREVIOUS_PEN,"");
         return new Gson().fromJson(previousPenJson, BluetoothDevice.class);
     }
 
@@ -30,7 +30,7 @@ public class PenHelper {
         if (pen == null) {
             return;
         }
-        SPUtils.putString(PREF_PREVIOUS_PEN, new Gson().toJson(pen));
+        new SPUtils().put(PREF_PREVIOUS_PEN, new Gson().toJson(pen));
     }
 
     /**

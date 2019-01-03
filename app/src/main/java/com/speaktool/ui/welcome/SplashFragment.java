@@ -1,5 +1,6 @@
 package com.speaktool.ui.welcome;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import com.speaktool.R;
 import com.speaktool.base.BaseFragment;
 import com.speaktool.ui.adapters.SplashPageAdapter;
+import com.speaktool.utils.permission.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author maple
@@ -61,6 +65,8 @@ public class SplashFragment extends BaseFragment {
 
         guide_viewpager.setAdapter(new SplashPageAdapter(guideViews));
         guide_viewpager.addOnPageChangeListener(pageChangeListener);
+
+        checkPermission();
     }
 
     /**
@@ -87,6 +93,36 @@ public class SplashFragment extends BaseFragment {
         public void onPageScrollStateChanged(int arg0) {
         }
     };
+
+    private void checkPermission() {
+        new RxPermissions(this)
+                .request(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO
+                )
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+                });
+    }
 
 
 }
