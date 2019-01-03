@@ -45,15 +45,14 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     @OnClick(R.id.tvMakeVideo)
-    void make() {
+    void toDrawPage() {
         Intent it = new Intent(this, DrawActivity.class);
         startActivity(it);
     }
 
-    @OnClick(R.id.ivSetting)
-    void toSettingGPage() {
+    @OnClick(R.id.fdl_setting)
+    void toSettingPage() {
         Intent intent = new Intent(this, SettingActivity.class);
-//        intent.putExtra(SettingActivity.LOAD_PAGE_INDEX, SettingActivity.INIT_USER_INFO);
         startActivity(intent);
     }
 

@@ -1,6 +1,5 @@
 package com.speaktool.utils;
 
-
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -13,7 +12,7 @@ import com.speaktool.bean.UserBean;
  * @time 2019/1/3
  */
 public class UserSPUtils {
-    private static String user_key = "user";
+    private static final String user_key = "user";
 
     public void setUser(UserBean userBean) {
         String userStr = new Gson().toJson(userBean);

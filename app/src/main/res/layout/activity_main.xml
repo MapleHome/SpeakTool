@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/app_main_bg"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvMakeVideo"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/selector_finish_button"
-            android:gravity="center"
-            android:text="新建"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/app_main_bg"
+            android:orientation="horizontal">
 
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:background="@color/line_bg" />
+            <TextView
+                android:id="@+id/tvMakeVideo"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_finish_button"
+                android:gravity="center"
+                android:text="新建"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
-        <com.speaktool.view.layouts.SearchView
-            android:id="@+id/searchView"
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/line_bg" />
+
+            <com.speaktool.view.layouts.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="#fff" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/id_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:background="#fff" />
+            android:layout_weight="1">
+
+        </FrameLayout>
+
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/id_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-    </FrameLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/app_main_bg">
+    <com.speaktool.view.layouts.FloatDragLayout
+        android:id="@+id/fdl_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@null">
 
         <ImageView
-            android:id="@+id/ivSetting"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/selector_setting_icon" />
-    </RelativeLayout>
+            android:src="@drawable/guide_icon_1" />
 
-</LinearLayout>
+    </com.speaktool.view.layouts.FloatDragLayout>
+
+</RelativeLayout>
+
+
