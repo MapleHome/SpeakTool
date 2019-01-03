@@ -1,4 +1,4 @@
-package com.speaktool.ui.setting;
+package com.speaktool.ui.login;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -26,6 +26,7 @@ import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.tasks.TaskModifyUserInfo;
 import com.speaktool.tasks.TaskModifyUserInfo.ModifyUserInfoCallback;
+import com.speaktool.ui.setting.SettingActivity;
 import com.speaktool.utils.T;
 import com.speaktool.view.dialogs.LoadingDialog;
 import com.speaktool.view.popupwindow.BasePopupWindow.WeiZhi;
@@ -64,7 +65,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
     private static final int REQUEST_CODE_IMAGE_CAPTURE = 1;// 捕获图片
     private static final int REQUEST_CODE_PICK_IMAGE = 2;// 挑选图片
     private static final String CAMERA_TEMP_IMAGE_PATH = Const.TEMP_DIR + "/camera_temp.jpg";
-    private UserFMActivity mActivity;
+    private SettingActivity mActivity;
     private LoadingDialog mLoadingDialog;
     private UserBean session;
 
@@ -75,7 +76,7 @@ public class UserInfoChangePage extends BaseFragment implements OnClickListener 
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        mActivity = (UserFMActivity) getActivity();
+        mActivity = (SettingActivity) getActivity();
         ButterKnife.bind(this, view);
         mActivity.setTitle("个人信息修改");
 

@@ -53,14 +53,14 @@ public class Const {
     public static final int SCRIPT_INPUT_RATE = 60;
 
 
-    public static final String SPEEKTOOL_SERVER__URL = "http://www.speaktool.com/";// 讲讲服务器地址
-    public static final String SPEEKTOOL_SERVER_API_URL = "http://www.speaktool.com/api/";// 讲讲服务器API地址
-    public static final String SPEEKTOOL_BBS_URL = "http://bbs.speaktool.com:8080/";// 讲讲论坛地址
+    public static final String SPEAK_SERVER_URL = "http://www.speaktool.com/";// 讲讲服务器地址
+    public static final String SPEAK_SERVER_API_URL = "http://www.speaktool.com/api/";// 讲讲服务器API地址
+    public static final String SPEAK_BBS_URL = "http://bbs.speaktool.com:8080/";// 讲讲论坛地址
 
 
     //BMP图片最大可以分配内存
     public static final long MAX_MEMORY_BMP_CAN_ALLOCATE = 1 * 1024 * 1024;
     //上传课程
-    public static final String COURSE_UPLOAD_URL = SPEEKTOOL_SERVER_API_URL + "uploadCourse.do";
+    public static final String COURSE_UPLOAD_URL = SPEAK_SERVER_API_URL + "uploadCourse.do";
 
 }

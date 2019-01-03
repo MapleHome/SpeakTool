@@ -8,20 +8,19 @@ import kotlinx.android.synthetic.main.fragment_uc_feedback.*
 
 /**
  * 意见反馈
+ *
  * @author maple
  * @time 2019/1/2
  */
 class FeedbackPage : BaseFragment() {
-    private lateinit var mActivity: UserFMActivity
+    private lateinit var mActivity: SettingActivity
 
-    override
-    fun getLayoutRes(): Int {
+    override fun getLayoutRes(): Int {
         return R.layout.fragment_uc_feedback
     }
 
-    override
-    fun initData(savedInstanceState: Bundle?) {
-        mActivity = activity as UserFMActivity
+    override fun initData(savedInstanceState: Bundle?) {
+        mActivity = activity as SettingActivity
         mActivity.setTitle("意见反馈")
 
         // 提交反馈

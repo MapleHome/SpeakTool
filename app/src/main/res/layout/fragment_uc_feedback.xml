@@ -14,9 +14,7 @@
         android:background="@drawable/shape_base_fillet_border_bg"
         android:gravity="top"
         android:hint="请输入您的反馈意见"
-        android:paddingLeft="12dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="14dp"
+        android:padding="10dp"
         android:singleLine="false"
         android:textColor="#ff333333"
         android:textSize="16sp" />
@@ -29,8 +27,8 @@
         android:background="@drawable/shape_base_fillet_border_bg"
         android:gravity="center_vertical"
         android:hint="联系方式:邮箱/QQ/手机号"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:singleLine="true"
         android:textColor="#ff333333"
         android:textSize="16sp" />

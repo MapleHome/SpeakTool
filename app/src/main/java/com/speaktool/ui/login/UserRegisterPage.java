@@ -10,7 +10,7 @@ import com.speaktool.R;
 import com.speaktool.base.BaseFragment;
 import com.speaktool.bean.UserBean;
 import com.speaktool.busevents.RefreshCourseListEvent;
-import com.speaktool.ui.setting.UserFMActivity;
+import com.speaktool.ui.setting.SettingActivity;
 import com.speaktool.utils.T;
 import com.speaktool.utils.UserInfoValidateUtil;
 import com.speaktool.view.dialogs.LoadingDialog;
@@ -33,7 +33,7 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
     @BindView(R.id.etIntroduce) EditText etIntroduce;// 简介
     @BindView(R.id.btnFinish) Button btnFinish;// 完成
 
-    private UserFMActivity mActivity;
+    private SettingActivity mActivity;
     private LoadingDialog mLoadingDialog;
 
     @Override
@@ -43,7 +43,7 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        mActivity = (UserFMActivity) getActivity();
+        mActivity = (SettingActivity) getActivity();
         ButterKnife.bind(this, view);
         mActivity.setTitle("注册");
         //
@@ -99,7 +99,6 @@ public class UserRegisterPage extends BaseFragment implements OnClickListener {
         mLoadingDialog.dismiss();
         EventBus.getDefault().post(new RefreshCourseListEvent());
         mActivity.onBackPressed();// 退出当前页面
-//        fm.popBackStack();// 退出当前界面
     }
 
 }

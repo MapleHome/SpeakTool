@@ -12,7 +12,7 @@ import com.speaktool.base.BaseFragmentActivity;
 import com.speaktool.busevents.RefreshCourseListEvent;
 import com.speaktool.ui.draw.DrawActivity;
 import com.speaktool.ui.player.ReleaseBean;
-import com.speaktool.ui.setting.UserFMActivity;
+import com.speaktool.ui.setting.SettingActivity;
 import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.T;
 
@@ -52,8 +52,8 @@ public class MainActivity extends BaseFragmentActivity {
 
     @OnClick(R.id.ivSetting)
     void toSettingGPage() {
-        Intent intent = new Intent(this, UserFMActivity.class);
-        intent.putExtra(UserFMActivity.LOAD_PAGE_INDEX, UserFMActivity.INIT_USER_INFO);
+        Intent intent = new Intent(this, SettingActivity.class);
+//        intent.putExtra(SettingActivity.LOAD_PAGE_INDEX, SettingActivity.INIT_USER_INFO);
         startActivity(intent);
     }
 

@@ -39,6 +39,8 @@ public class SplashActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         long startTime = System.currentTimeMillis();
 
+        checkPermission();
+
         boolean isFirst = SPUtils.getBool(Const.First_ComeIn, true);
         if (isFirst) {
             setContentView(R.layout.activity_base_fragment);
@@ -48,14 +50,7 @@ public class SplashActivity extends BaseFragmentActivity {
             long sleepTime = Const.SplashMinTime - (System.currentTimeMillis() - startTime);
             handler.sendEmptyMessageDelayed(MSG_ENTER_HOME, sleepTime);
         }
-//        checkPermission();
     }
-
-//    private void initData() {
-//        String display = Build.DISPLAY;// 显示器- JLS36C
-//        String manufacturer = Build.MANUFACTURER;// 制造商- LENOVO
-//        Log.e("Splash", "当前设备：" + display + " -- " + manufacturer);
-//    }
 
     private void checkPermission() {
         String[] permissions = new String[]{

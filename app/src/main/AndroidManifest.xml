@@ -45,7 +45,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.setting.UserFMActivity"
+            android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait" />
 
         <activity android:name=".ui.setting.WebActivity" />
