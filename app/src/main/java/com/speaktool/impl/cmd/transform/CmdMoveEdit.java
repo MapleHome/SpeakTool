@@ -3,11 +3,11 @@ package com.speaktool.impl.cmd.transform;
 import android.graphics.Color;
 import android.os.SystemClock;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Page;
-import com.speaktool.bean.ChangeEditData;
-import com.speaktool.bean.EditCommonData;
-import com.speaktool.bean.MoveData;
+import com.speaktool.impl.api.BaseDraw;
+import com.speaktool.impl.api.Page;
+import com.speaktool.impl.bean.ChangeEditData;
+import com.speaktool.impl.bean.EditCommonData;
+import com.speaktool.impl.bean.MoveData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.view.layouts.WordEdit;
 

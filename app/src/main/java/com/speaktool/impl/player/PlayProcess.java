@@ -2,12 +2,9 @@ package com.speaktool.impl.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
 
-import com.maple.msdialog.AlertDialog;
-import com.speaktool.SpeakApp;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.ui.Player.PlayService;
+import com.speaktool.ui.player.PlayService;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.ScreenFitUtil;
 

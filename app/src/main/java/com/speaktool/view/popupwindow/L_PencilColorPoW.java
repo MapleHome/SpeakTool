@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.speaktool.R;
-import com.speaktool.bean.PaintInfoBean;
+import com.speaktool.impl.bean.PaintInfoBean;
 import com.speaktool.impl.paint.DrawPaint;
 import com.speaktool.tasks.TaskLoadPaintColors;
 import com.speaktool.tasks.TaskLoadPaintColors.Callback;

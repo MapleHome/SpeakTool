@@ -7,11 +7,11 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.speaktool.Const;
-import com.speaktool.api.Play;
-import com.speaktool.bean.TransformShapeData;
+import com.speaktool.impl.api.Play;
+import com.speaktool.impl.bean.TransformShapeData;
 import com.speaktool.busevents.PlayTimeChangedEvent;
 import com.speaktool.impl.cmd.ICmd;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 
 import org.greenrobot.eventbus.EventBus;
 

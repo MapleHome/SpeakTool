@@ -10,9 +10,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.speaktool.R;
-import com.speaktool.api.Draw;
-import com.speaktool.api.Page;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.impl.api.Draw;
+import com.speaktool.impl.api.Page;
+import com.speaktool.ui.draw.RecordBean;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.utils.RecordFileUtils;
 import com.speaktool.utils.T;

@@ -10,7 +10,6 @@ public class PlayTimeChangedEvent {
     private final long closeTime;
 
     public PlayTimeChangedEvent(long now, long closeTime) {
-        super();
         this.now = now;
         this.closeTime = closeTime;
     }
@@ -20,7 +19,6 @@ public class PlayTimeChangedEvent {
     }
 
     public long getCloseTime() {
-
         return closeTime;
     }
 

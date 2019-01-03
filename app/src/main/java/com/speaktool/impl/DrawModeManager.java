@@ -2,9 +2,8 @@ package com.speaktool.impl;
 
 import android.view.MotionEvent;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
-import com.speaktool.api.DrawMode;
+import com.speaktool.impl.api.BaseDraw;
+import com.speaktool.impl.modes.DrawMode;
 import com.speaktool.busevents.DrawModeChangedEvent;
 import com.speaktool.impl.modes.DrawModeChoice;
 import com.speaktool.impl.modes.DrawModeCode;
@@ -29,8 +28,6 @@ public class DrawModeManager {
 	public static DrawModeManager getIns() {
 		return sIns;
 	}
-
-
 
 	private DrawMode mode = new DrawModeChoice();
 

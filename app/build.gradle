@@ -1,10 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.speektool"
+        applicationId "com.speaktool"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 8
@@ -19,14 +21,18 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':msdraw')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'ch.acra:acra:4.9.2'
     // other
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
@@ -35,5 +41,7 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
     implementation 'com.github.shaoshuai904:iOS_Style_Dialog:1.2.2'
     implementation 'com.github.shaoshuai904:RecordWav:1.0.2'
-
+}
+repositories {
+    mavenCentral()
 }

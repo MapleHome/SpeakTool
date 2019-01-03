@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <!-- 用户登陆 -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +11,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
@@ -22,7 +20,7 @@
 
             <EditText
                 android:id="@+id/etAccount"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_base_fillet_border_bg"
                 android:ems="10"
@@ -36,7 +34,7 @@
 
             <EditText
                 android:id="@+id/etPwd"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/selector_base_fillet_border_bg"

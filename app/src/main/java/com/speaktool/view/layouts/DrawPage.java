@@ -15,12 +15,11 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 
 import com.speaktool.R;
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
-import com.speaktool.api.Page;
-import com.speaktool.api.PlayMode;
-import com.speaktool.bean.ImageCommonData;
+import com.speaktool.impl.api.Page;
+import com.speaktool.impl.api.PlayMode;
+import com.speaktool.impl.bean.ImageCommonData;
 import com.speaktool.bean.ScreenInfoBean;
 import com.speaktool.busevents.EraserEvent;
 import com.speaktool.busevents.RedoEvent;

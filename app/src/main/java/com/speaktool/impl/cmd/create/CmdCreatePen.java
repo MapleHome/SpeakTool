@@ -4,11 +4,11 @@ import android.graphics.Color;
 import android.graphics.Path;
 import android.os.SystemClock;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Page;
-import com.speaktool.bean.CreatePenData;
-import com.speaktool.bean.DeleteShapeData;
-import com.speaktool.bean.MoveData;
+import com.speaktool.impl.api.BaseDraw;
+import com.speaktool.impl.api.Page;
+import com.speaktool.impl.bean.CreatePenData;
+import com.speaktool.impl.bean.DeleteShapeData;
+import com.speaktool.impl.bean.MoveData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.delete.CmdDeletePen;
 import com.speaktool.impl.shapes.Path_;

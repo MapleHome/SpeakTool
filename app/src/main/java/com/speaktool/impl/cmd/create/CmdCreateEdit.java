@@ -1,10 +1,9 @@
 package com.speaktool.impl.cmd.create;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
-import com.speaktool.api.Page;
-import com.speaktool.bean.DeleteShapeData;
-import com.speaktool.bean.EditCommonData;
+import com.speaktool.impl.api.BaseDraw;
+import com.speaktool.impl.api.Page;
+import com.speaktool.impl.bean.DeleteShapeData;
+import com.speaktool.impl.bean.EditCommonData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.impl.cmd.delete.CmdDeleteEdit;
 import com.speaktool.view.layouts.WordEdit;

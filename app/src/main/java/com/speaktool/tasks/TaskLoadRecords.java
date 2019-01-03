@@ -1,7 +1,7 @@
 package com.speaktool.tasks;
 
 import com.speaktool.Const;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 import com.speaktool.utils.FileUtils;
 import com.speaktool.utils.record.RecordFileAnalytic;
 

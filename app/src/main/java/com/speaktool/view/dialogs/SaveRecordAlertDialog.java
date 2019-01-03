@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.speaktool.R;
-import com.speaktool.api.Draw;
+import com.speaktool.impl.api.Draw;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

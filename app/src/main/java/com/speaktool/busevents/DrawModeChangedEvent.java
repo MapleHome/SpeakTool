@@ -23,7 +23,6 @@ public class DrawModeChangedEvent {
 	 *            -当前绘制模式
 	 */
 	public DrawModeChangedEvent(DrawModeCode preMode, DrawModeCode nowMode) {
-		super();
 		this.preMode = preMode;
 		this.nowMode = nowMode;
 	}

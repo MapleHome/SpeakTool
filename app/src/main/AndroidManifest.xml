@@ -4,12 +4,12 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
     <!-- ble -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!--<uses-permission android:name="android.permission.BLUETOOTH" />-->
+    <!--<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />-->
 
     <application
         android:name=".SpeakApp"
@@ -28,32 +28,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.Home.MainActivity"
+            android:name=".ui.home.MainActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.Draw.DrawActivity"
+            android:name=".ui.draw.DrawActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.Player.PlayVideoActivity"
+            android:name=".ui.player.PlayVideoActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.Player.PlayUrlVideoActivity"
+            android:name=".ui.player.PlayUrlVideoActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name=".ui.Setting.UserFMActivity"
+            android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.Setting.WebActivity" />
+        <activity android:name=".ui.setting.WebActivity" />
 
         <!--  ******************************** 服务  ************************************* -->
 
         <service
-            android:name=".ui.Player.PlayService"
+            android:name=".ui.player.PlayService"
             android:enabled="true"
             android:exported="false"
             android:process=":play" />

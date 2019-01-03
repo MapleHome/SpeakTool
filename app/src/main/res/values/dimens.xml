@@ -1,6 +1,6 @@
 <resources>
 
-    <dimen name="top_bar_height">60dp</dimen>
-    <dimen name="jiaodu">8dp</dimen>
+    <dimen name="top_bar_height">48dp</dimen>
+    <dimen name="app_radius">8dp</dimen>
 
 </resources>

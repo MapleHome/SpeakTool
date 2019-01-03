@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.speaktool.Const;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 import com.speaktool.utils.MD5Util;
 import com.speaktool.utils.RecordFileUtils;
 

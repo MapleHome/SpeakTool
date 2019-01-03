@@ -10,10 +10,9 @@ import com.maple.recorder.recording.MsRecorder;
 import com.maple.recorder.recording.PullTransport;
 import com.maple.recorder.recording.Recorder;
 import com.speaktool.Const;
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.bean.ScreenInfoBean;
-import com.speaktool.bean.ScriptData;
+import com.speaktool.ui.player.ScriptData;
 import com.speaktool.impl.cmd.ICmd;
 import com.speaktool.utils.ScreenFitUtil;
 
@@ -191,9 +190,9 @@ public class PageRecorder {
         ScreenInfoBean info = ScreenFitUtil.getCurrentDeviceInfo();
 
         ScriptData scriptData = new ScriptData();
-        scriptData.setDensity(info.density);
-        scriptData.setInputScreenWidth(info.width);
-        scriptData.setInputScreenHeight(info.height);
+        scriptData.setDensity(info.getDensity());
+        scriptData.setInputScreenWidth(info.getWidth());
+        scriptData.setInputScreenHeight(info.getHeight());
         scriptData.setInputRate(60);
         scriptData.setVersion(1);
         scriptData.setWbEvents(cmdList);

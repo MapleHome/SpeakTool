@@ -1,6 +1,6 @@
 package com.speaktool.impl.shapes;
 
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 
 import android.view.View;
 

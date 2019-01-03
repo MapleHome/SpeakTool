@@ -6,9 +6,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 
 import com.bumptech.glide.Glide;
-import com.speaktool.api.CourseItem;
 import com.speaktool.base.AbsAdapter;
-import com.speaktool.ui.Draw.RecordBean;
+import com.speaktool.ui.draw.RecordBean;
 import com.speaktool.utils.DeviceUtils;
 import com.speaktool.view.layouts.ItemViewLocalRecord;
 

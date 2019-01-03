@@ -2,11 +2,9 @@ package com.speaktool.impl.modes;
 
 import android.view.MotionEvent;
 
-import com.speaktool.api.BaseDraw;
-import com.speaktool.api.Draw;
-import com.speaktool.api.DrawMode;
+import com.speaktool.impl.api.BaseDraw;
 import com.speaktool.api.FocusedView;
-import com.speaktool.api.Page;
+import com.speaktool.impl.api.Page;
 import com.speaktool.busevents.CloseEditPopupWindowEvent;
 
 import org.greenrobot.eventbus.EventBus;
