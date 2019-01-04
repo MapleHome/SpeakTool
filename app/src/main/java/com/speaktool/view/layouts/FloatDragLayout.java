@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -24,9 +25,10 @@ import androidx.annotation.Nullable;
  */
 public class FloatDragLayout extends FrameLayout {
     private final int OFFSET_ALLOW_DISTANCE = 10;
-
-    private boolean isNearScreenEdge = true;// 是否自动贴边
-    private boolean isDragAction;
+    private boolean isNearScreenEdge = false;// 是否自动贴边
+    private boolean isDrag = true;// 是否可拖拽
+    private boolean isMoving;// 正在移动
+    RectF paddingRect = new RectF(25, 25, 25, 25);// 距离四周的边距
     PointF startPosition = new PointF();
     PointF lastTouchPoint = new PointF();
 
@@ -57,12 +59,6 @@ public class FloatDragLayout extends FrameLayout {
         // setLocation(parent.getWidth(), parent.getHeight() / 2);
     }
 
-    public void setLocation(float x, float y) {
-        this.setX(x);
-        this.setY(y);
-        nearScreenEdge(0);
-    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return true;
@@ -73,42 +69,41 @@ public class FloatDragLayout extends FrameLayout {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 getParent().requestDisallowInterceptTouchEvent(true);
-
                 startPosition.x = getX() - event.getRawX();
                 startPosition.y = getY() - event.getRawY();
                 // save last touch point
                 lastTouchPoint.x = event.getRawX();
                 lastTouchPoint.y = event.getRawY();
-
                 break;
             case MotionEvent.ACTION_MOVE:
-                float distanceX = event.getRawX() - lastTouchPoint.x;
-                float distanceY = event.getRawY() - lastTouchPoint.y;
-
-                if (Math.sqrt(distanceX * distanceX + distanceY * distanceY) > OFFSET_ALLOW_DISTANCE) {
-                    isDragAction = true;
-                    setX(event.getRawX() + startPosition.x);
-                    setY(event.getRawY() + startPosition.y);
+                if (isDrag) {
+                    float distanceX = event.getRawX() - lastTouchPoint.x;
+                    float distanceY = event.getRawY() - lastTouchPoint.y;
+                    if (Math.sqrt(distanceX * distanceX + distanceY * distanceY) > OFFSET_ALLOW_DISTANCE) {
+                        isMoving = true;
+                        setX(event.getRawX() + startPosition.x);
+                        setY(event.getRawY() + startPosition.y);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (isDragAction) {
+                if (isMoving) {
                     setPressed(false);
                     // save last touch point
                     lastTouchPoint.x = event.getRawX();
                     lastTouchPoint.y = event.getRawY();
 
                     if (isNearScreenEdge) {
-                        nearScreenEdge(300);
+                        animatorMove(getNearPoint(), 300);
                     } else {
-                        updateLayoutParams();
+                        animatorMove(fixedValue(new PointF(getX(), getY())), 100);
                     }
-                    isDragAction = false;
+                    isMoving = false;
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
-                if (isDragAction) {
-                    isDragAction = false;
+                if (isMoving) {
+                    isMoving = false;
                 }
                 break;
             default:
@@ -118,51 +113,67 @@ public class FloatDragLayout extends FrameLayout {
         return true;
     }
 
+    // 计算贴边位置
     private PointF getNearPoint() {
         View parent = (View) getParent();
         int parentWidth = parent.getWidth();
         int parentHeight = parent.getHeight();
-        int bottomY = parentHeight - getHeight();
 
-        float rightDistance = parentWidth - getX();
-        float bottomDistance = parentHeight - getY();
+        float rightDistance = parentWidth - getX();// 距离右侧距离
+        float bottomDistance = parentHeight - getY();// 距离底部距离
 
         float xMinDistance = getX() <= rightDistance ? getX() : rightDistance;
         float yMinDistance = getY() <= bottomDistance ? getY() : bottomDistance;
 
         float xValue = 0;
         float yValue = 0;
-        if (xMinDistance <= yMinDistance) {
+        if (xMinDistance <= yMinDistance) {// 向X边靠拢
             yValue = getY();
-            if (getX() > parentWidth / 2) {
+            if (getX() > parentWidth / 2) {// 向X右边靠拢
                 xValue = parentWidth - getWidth();
             }
-        } else {
+        } else {// 向Y边靠拢
             xValue = getX();
-            if (getY() > parentHeight / 2) {
-                yValue = bottomY;
+            if (getY() > parentHeight / 2) {// 向Y底边靠拢
+                yValue = parentHeight - getHeight();
             }
         }
-        // [ minValue , maxValue ]
-        float maxX = parentWidth - getWidth();
-        xValue = xValue < 0 ? 0 : xValue;
-        xValue = xValue > maxX ? maxX : xValue;
-        float maxY = parentHeight - getHeight();
-        yValue = yValue < 0 ? 0 : yValue;
-        yValue = yValue > maxY ? maxY : yValue;
-
-        return new PointF(xValue, yValue);
+        // 修正值
+        return fixedValue(new PointF(xValue, yValue));
     }
 
-    private void nearScreenEdge(long duration) {
-        PointF pointF = getNearPoint();
-        // save last position
-        // defLocationPoint = pointF;
-        // add animator
+
+    // 修正值
+    private PointF fixedValue(PointF point) {
+        View parent = (View) getParent();
+        return fixedValue(point,
+                0 + paddingRect.left, parent.getWidth() - getWidth() - paddingRect.right,
+                0 + paddingRect.top, parent.getHeight() - getHeight() - paddingRect.bottom
+        );
+    }
+
+    // 修正值
+    private PointF fixedValue(PointF point, float minX, float maxX, float minY, float maxY) {
+        // xValue -> [ minX , maxX ]
+        point.x = point.x < minX ? minX : point.x;
+        point.x = point.x > maxX ? maxX : point.x;
+        // yValue -> [ minY , maxY ]
+        point.y = point.y < minY ? minY : point.y;
+        point.y = point.y > maxY ? maxY : point.y;
+        return point;
+    }
+
+    /**
+     * 从当前位置A 动画移动到 某个位置B
+     *
+     * @param targetPoint 目标位置
+     * @param duration    动画时间
+     */
+    private void animatorMove(PointF targetPoint, long duration) {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
-                ObjectAnimator.ofFloat(this, "x", getX(), pointF.x),
-                ObjectAnimator.ofFloat(this, "y", getY(), pointF.y)
+                ObjectAnimator.ofFloat(this, "x", getX(), targetPoint.x),
+                ObjectAnimator.ofFloat(this, "y", getY(), targetPoint.y)
         );
         animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -182,10 +193,35 @@ public class FloatDragLayout extends FrameLayout {
 //        setLayoutParams(layoutParams);
     }
 
+    //------------------------------ public method ------------------------------
+
+    // 是否自动贴边
     public void setNearScreenEdge(boolean nearScreenEdge) {
-        isNearScreenEdge = nearScreenEdge;
+        this.isNearScreenEdge = nearScreenEdge;
     }
 
+    // 是否可拖拽
+    public void setDrag(boolean isDrag) {
+        this.isDrag = isDrag;
+    }
+
+    // 更新位置
+    public void updateLocation(float x, float y) {
+        updateLocation(new PointF(x, y));
+    }
+
+    // 更新位置
+    public void updateLocation(PointF point) {
+        point = fixedValue(point);
+        this.setX(point.x);
+        this.setY(point.y);
+    }
+
+    // 设置四周边距
+    public void setPaddingRect(RectF rect) {
+        this.paddingRect = rect;
+        updateLocation(getX(), getY());
+    }
     //------------------------------ view state save ------------------------------
 
     @Override
@@ -193,7 +229,7 @@ public class FloatDragLayout extends FrameLayout {
         FloatDragLayout.SavedViewState state = new FloatDragLayout.SavedViewState(super.onSaveInstanceState());
         state.lastPoint.x = lastTouchPoint.x;
         state.lastPoint.y = lastTouchPoint.y;
-        state.isDragAction = isDragAction;
+        state.isMoving = isMoving;
         return state;
     }
 
@@ -205,13 +241,13 @@ public class FloatDragLayout extends FrameLayout {
             FloatDragLayout.SavedViewState ss = (FloatDragLayout.SavedViewState) state;
             lastTouchPoint.x = ss.lastPoint.x;
             lastTouchPoint.y = ss.lastPoint.y;
-            isDragAction = ss.isDragAction;
+            isMoving = ss.isMoving;
         }
     }
 
     static class SavedViewState extends BaseSavedState {
         PointF lastPoint = new PointF();
-        boolean isDragAction;
+        boolean isMoving;
 
         SavedViewState(Parcelable superState) {
             super(superState);
@@ -221,7 +257,7 @@ public class FloatDragLayout extends FrameLayout {
             super(source);
             lastPoint.x = source.readFloat();
             lastPoint.y = source.readFloat();
-            isDragAction = source.readByte() == (byte) 1;
+            isMoving = source.readByte() == (byte) 1;
         }
 
         @Override
@@ -229,7 +265,7 @@ public class FloatDragLayout extends FrameLayout {
             super.writeToParcel(out, flags);
             out.writeFloat(lastPoint.x);
             out.writeFloat(lastPoint.y);
-            out.writeByte(isDragAction ? (byte) 1 : (byte) 0);
+            out.writeByte(isMoving ? (byte) 1 : (byte) 0);
         }
 
         public static final Creator<SavedViewState> CREATOR = new Creator<SavedViewState>() {

@@ -7,7 +7,6 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.speaktool.R;
 import com.speaktool.utils.DensityUtils;
 
 public class StrokeWidthPreview extends View {
@@ -17,15 +16,16 @@ public class StrokeWidthPreview extends View {
         init();
     }
 
+    public StrokeWidthPreview(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
     public StrokeWidthPreview(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public StrokeWidthPreview(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
 
     @Override
     public void draw(Canvas canvas) {
