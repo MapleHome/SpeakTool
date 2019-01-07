@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <!-- app style -->
     <color name="app_main_bg">#4b9afb</color>
+    <color name="app_main_white">#EBEBEB</color>
 
     <color name="draw_left_bar_bg">#c80066cc</color> <!-- 左侧功能条颜色 -->
     <color name="draw_right_bar_bg">#aa0066CC</color> <!-- 右侧功能条颜色 -->
@@ -13,10 +14,9 @@
     <!-- PopoWindow -->
     <color name="pow_text_color">#676767</color> <!-- 字体颜色 -->
     <!-- 记录条目 -->
-    <color name="taikonghui_def">#F2F2F2</color>
-    <color name="taikonghui_sel">#d2d2d2</color>
+    <color name="record_bg">#F2F2F2</color>
+    <color name="record_img_bg">#aacccccc</color>
     <color name="line_bg">#BBBBBB</color>
     <!-- 其他 -->
     <color name="split_line">#DDDDDD</color> <!-- LV分割线 -->
-    <color name="split_bg">#EBEBEB</color> <!-- LV背景 -->
 </resources>

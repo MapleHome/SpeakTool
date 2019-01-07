@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_rectangle_white"
-    android:paddingBottom="5dp">
+    android:background="@drawable/shape_record_bg"
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/tvRecordTitle"
-        android:layout_margin="5dp"
-        android:background="@drawable/shape_rectangle_darker_gray"
-        android:gravity="center_horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_record_image_bg"
+        android:gravity="center_horizontal"
+        android:padding="1px">
 
         <ImageView
             android:id="@+id/ivThumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="0.5dp"
-            android:contentDescription="@null"
-            android:scaleType="fitCenter"
-            android:src="#abcdef" />
+            android:scaleType="fitCenter" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tvRecordTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:ellipsize="end"
-        android:maxEms="15"
         android:singleLine="true"
         android:text="课程记录名称"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
-</RelativeLayout>
+</LinearLayout>

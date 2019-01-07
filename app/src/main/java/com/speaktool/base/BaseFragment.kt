@@ -22,15 +22,13 @@ abstract class BaseFragment : Fragment() {
         mContext = context
     }
 
-    override
-    fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view = inflater.inflate(getLayoutRes(), container, false)
         view.isClickable = true // 防止点击穿透，底层的fragment响应上层点击触摸事件
         return view
     }
 
-    override
-    fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initData(savedInstanceState)
     }

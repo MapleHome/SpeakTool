@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class RecordsAdapter extends AbsAdapter<RecordBean> {
 
-    public RecordsAdapter(Context ctx, List<RecordBean> datas) {
-        super(ctx, datas);
+    public RecordsAdapter(Context context, List<RecordBean> datas) {
+        super(context, datas);
     }
 
     @Override
