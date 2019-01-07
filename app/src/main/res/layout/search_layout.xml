@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_base_fillet_border_bg"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingStart="5dp"
+    android:paddingTop="2dp"
+    android:paddingEnd="5dp"
+    android:paddingBottom="2dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layDropdownHandle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/tvCheckedType"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:singleLine="true"
             android:text="全部分类"
@@ -28,18 +31,16 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/tvCheckedType"
+            android:layout_marginStart="5dp"
             android:scaleType="centerInside"
             android:src="@drawable/class_pulldown_s" />
-    </RelativeLayout>
+
+    </LinearLayout>
 
     <View
-        android:layout_width="1dp"
+        android:layout_width="1px"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:background="#000" />
+        android:background="@color/split_line" />
 
     <EditText
         android:id="@+id/etSearch"
@@ -48,8 +49,6 @@
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:background="@android:color/transparent"
-        android:ems="10"
-        android:gravity="left"
         android:hint="请输入名称进行搜索"
         android:padding="5dp"
         android:singleLine="true"
@@ -59,8 +58,7 @@
     <ImageView
         android:id="@+id/ivSearch"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingRight="5dp"
+        android:layout_height="wrap_content"
         android:scaleType="centerInside"
         android:src="@drawable/selector_search_icon" />
 

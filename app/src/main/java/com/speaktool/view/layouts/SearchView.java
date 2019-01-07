@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.speaktool.R;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
  * @author shaoshuai
  */
 public class SearchView extends FrameLayout {
-    @BindView(R.id.layDropdownHandle) View layDropdownHandle;// 类型选择- 根视图
+    @BindView(R.id.layDropdownHandle) LinearLayout layDropdownHandle;// 类型选择- 根视图
     @BindView(R.id.tvCheckedType) TextView tvCheckedType;// 课程类型
 
     @BindView(R.id.etSearch) EditText etSearch;// 搜索输入框
@@ -29,11 +30,13 @@ public class SearchView extends FrameLayout {
     private SearchCategoryBean mSearchCategory;
 
     public SearchView(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public SearchView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context,attrs);
+        init();
     }
 
     public SearchView(Context context, AttributeSet attrs, int defStyle) {

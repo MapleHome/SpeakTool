@@ -18,7 +18,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 /**
  * @author maple
  * @time 2018/4/15.
